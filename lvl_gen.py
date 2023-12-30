@@ -37,21 +37,24 @@ class Board:
         self.cell_size = cell_size
 
     def render(self, sc):
-        tochesx.empty()
+        toches.empty()
         for x in range(self.width):
             for y in range(self.height):
                 if self.board[y][x] == '0':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                                self.cell_size, floor, tochesx)
+                        self.cell_size, floor, toches)
+                elif self.board[y][x] == '#':
+                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                        self.cell_size, wallx, toches)
                 else:
                     pass
 
-        tochesx.draw(sc)
+        toches.draw(sc)
 
-    def get_cell(self, mouse_pos):
-        if self.left < mouse_pos[0] < self.left + (self.cell_size * self.width) and \
-                self.top < mouse_pos[1] < self.top + (self.cell_size * self.height):
-            return int((mouse_pos[0] - 10) / 30), int((mouse_pos[1] - 10) / 30)
+    def get_cell(self, mouse_pos, k):
+        if self.left * k < mouse_pos[0] < self.left * k + (self.cell_size * self.width * k) and \
+                self.top * k < mouse_pos[1] < self.top * k + (self.cell_size * self.height) * k:
+            return int((mouse_pos[0] - 10) / self.cell_size), int((mouse_pos[1] - 10) / self.cell_size)
         else:
             return None
 
@@ -76,6 +79,5 @@ class Background(pygame.sprite.Sprite):
 
 
 invisibles = pygame.sprite.Group()
-tochesx = pygame.sprite.Group()
-tochesy = pygame.sprite.Group()
+toches = pygame.sprite.Group()
 bgroup = pygame.sprite.Group()

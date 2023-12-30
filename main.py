@@ -1,7 +1,7 @@
 from Load_image import load_image
 from konst import *
 from WINDOWS import *
-from lvl_gen import Board, tochesx
+from lvl_gen import Board, toches
 
 
 class Hero(pygame.sprite.Sprite):
@@ -16,7 +16,7 @@ class Hero(pygame.sprite.Sprite):
         self.rect = self.rect.move(x, y)
 
     def cut_sheet(self, sprites, koef, rows, kakaya_animacia):
-        self.rect = pygame.Rect(0, 0, 108 * koef,
+        self.rect = pygame.Rect(0, 0, 80 * koef,
                                 108 * koef)
         for j in range(rows):
             frame_location = (self.rect.w * kakaya_animacia, self.rect.h * j)
@@ -27,8 +27,11 @@ class Hero(pygame.sprite.Sprite):
     def update(self):
         self.cur_frame = (self.cur_frame + 1) % len(self.frames)
         self.image = self.frames[self.cur_frame]
-        if pygame.sprite.spritecollide(self, tochesx, False):
-            self.move(0, -yspeed * k ** fullscreen)
+        if pygame.sprite.spritecollide(self, toches, False):
+            for s in pygame.sprite.spritecollide(self, toches, False):
+                print(hero.__sizeof__())
+                print(s.rect[0], s.rect[1], s.rect[0] + s.rect[2], s.rect[1] + s.rect[3])
+                # self.move(0, -yspeed * k ** fullscreen)
 
     def change_act(self, act, koords, koef):
         global fullscreen
@@ -60,6 +63,9 @@ class Hero(pygame.sprite.Sprite):
 
     def set_coords(self, x, y):
         self.rect[:2] = [x, y]
+
+    def get_size(self):
+        return self.rect[2:4]
 
 
 class Background(pygame.sprite.Sprite):
@@ -100,7 +106,7 @@ class Background(pygame.sprite.Sprite):
 
 characters = pygame.sprite.Group()
 wai = load_image(wai)
-hero = Hero(wai, 8, 0, height - 173, *wai.get_size(), 1, 0)
+hero = Hero(wai, 8, 1, height - 172, *wai.get_size(), 1, 0)
 
 bgroup = pygame.sprite.Group()
 bg = Background(*size, 0, 0, k)
@@ -119,7 +125,7 @@ if __name__ == '__main__':
     lookingright = 1
     fps = 60
     xspeed = 4
-    yspeed = 3
+    yspeed = 2
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -157,29 +163,27 @@ if __name__ == '__main__':
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_d:
                     runright = False
-                    if runleft:
-                        hero = hero.change_act('l', hero.get_coords(), k ** fullscreen)
                 elif event.key == pygame.K_w:
                     lookingup = False
                 elif event.key == pygame.K_s:
                     sitting = False
                 elif event.key == pygame.K_a:
                     runleft = False
-                    if runright:
-                        hero = hero.change_act('r', hero.get_coords(), k ** fullscreen)
                 if not (runright or runleft or sitting or shooting or lookingup):
                     if lookingright:
                         hero = hero.change_act('sr', hero.get_coords(), k ** fullscreen)
                     else:
                         hero = hero.change_act('sl', hero.get_coords(), k ** fullscreen)
-        if runright:
-            hero.move(xspeed * k ** fullscreen, 0)
-        if runleft:
-            hero.move((-1) * xspeed * k ** fullscreen, 0)
-        if lookingup:
-            hero.move(0, -yspeed * k ** fullscreen)
-        if sitting:
-            hero.move(0, yspeed * k ** fullscreen)
+        if runright or runleft:
+            if runright:
+                hero.move(xspeed * k ** fullscreen, 0)
+            if runleft:
+                hero.move((-1) * xspeed * k ** fullscreen, 0)
+        else:
+            if sitting:
+                hero.move(0, yspeed * k ** fullscreen)
+            elif lookingup:
+                hero.move(0, -yspeed * k ** fullscreen)
         hero.update()
         bgroup.draw(screen)
         board.render(screen)
