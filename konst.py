@@ -1,2 +1,5 @@
 test = 'pp_test_level.txt'
-wai = load_image('pp_Wai.png')
+wai = 'pp_Wai.png'
+bg1 = 'background1.png'
+floor = 'pp_0.png'
+
