@@ -87,7 +87,7 @@ class Hero(pygame.sprite.Sprite):
 
 
 class Background(pygame.sprite.Sprite):
-    image_bg = load_image('background.png')
+    image_bg = load_image('background1.png')
 
     def __init__(self, w, h, left, top, koef):
         super().__init__(bgroup)
