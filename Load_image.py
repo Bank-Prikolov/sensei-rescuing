@@ -1,4 +1,7 @@
-import pygame, os, sys
+import pygame
+import sys
+import os
+
 
 def load_image(name, colorkey=None):
     fullname = os.path.join('data', name)

@@ -1,19 +1,13 @@
 import pygame
 import os
 import sys
-import screeninfo
 from Load_image import load_image
+from konst import *
+from WINDOWS import *
+
 
 pygame.init()
-size = width, height = 1024, 704
-fullsize = tuple(map(int, '='.join(
-    (str(screeninfo.get_monitors()).lstrip('[Monitor(').rstrip(')]').split(', '))[2: 4]).split('=')[1::2]))
-k = fullsize[1] // size[1]
-otstupx = (fullsize[0] - size[0] * k) // 2
-otstupy = (fullsize[1] - size[1] * k) * k
 screen = pygame.display.set_mode(size)
-last_screen = pygame.display.Info().current_w, pygame.display.Info().current_h
-test = 'pp_test_level.txt'
 
 
 class Hero(pygame.sprite.Sprite):
@@ -127,13 +121,12 @@ def generate_level(txt_file):
         sys.exit()
     level = fullname
     level_load = list(map(lambda x: x.rstrip('\n'), open(level).readlines()))
-    for y in range(len(level_load)):                # y
-        for x in range(len(level_load[y])):         # x
+    for y in range(len(level_load)):
+        for x in range(len(level_load[y])):
             print(level_load[y][x])
 
 
 characters = pygame.sprite.Group()
-wai = load_image('pp_Wai.png')
 hero = Hero(wai, 8, 0, height - 173, *wai.get_size(), 1, 0)
 
 bgroup = pygame.sprite.Group()
