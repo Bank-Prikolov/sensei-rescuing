@@ -12,6 +12,7 @@ otstupx = (fullsize[0] - size[0] * k) // 2
 otstupy = (fullsize[1] - size[1] * k) * k
 screen = pygame.display.set_mode(size)
 last_screen = pygame.display.Info().current_w, pygame.display.Info().current_h
+test = 'pp_test_level.txt'
 
 
 def load_image(name, colorkey=None):
@@ -135,7 +136,16 @@ class Board:
 
 
 def generate_level(txt_file):
-    pass
+    fullname = os.path.join('data\levels', txt_file)
+    if not os.path.isfile(fullname):
+        print(f"Файл с изображением '{fullname}' не найден")
+        sys.exit()
+    level = fullname
+    level_load = list(map(lambda x: x.rstrip('\n'), open(level).readlines()))
+    for y in range(len(level_load)):                # y
+        for x in range(len(level_load[y])):         # x
+            print(level_load[y][x])
+
 
 characters = pygame.sprite.Group()
 wai = load_image('pp_Wai.png')
