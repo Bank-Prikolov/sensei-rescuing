@@ -1,6 +1,6 @@
 import pygame, os, sys
-from Load_image import load_image
-from konst import *
+from load_image import load_image
+from const import *
 
 
 class Pic(pygame.sprite.Sprite):

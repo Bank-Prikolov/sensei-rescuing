@@ -1,6 +1,6 @@
-from Load_image import load_image
-from konst import *
-from WINDOWS import *
+from load_image import load_image
+from const import *
+from windows import *
 from lvl_gen import Board, toches
 
 
