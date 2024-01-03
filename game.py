@@ -27,11 +27,6 @@ class Hero(pygame.sprite.Sprite):
     def update(self):
         self.cur_frame = (self.cur_frame + 1) % len(self.frames)
         self.image = self.frames[self.cur_frame]
-        if pygame.sprite.spritecollide(self, toches, False):
-            for s in pygame.sprite.spritecollide(self, toches, False):
-                print(hero.__sizeof__())
-                print(s.rect[0], s.rect[1], s.rect[0] + s.rect[2], s.rect[1] + s.rect[3])
-                # self.move(0, -yspeed * k ** fullscreen)
 
     def change_act(self, act, koords, koef):
         global fullscreen
@@ -57,6 +52,8 @@ class Hero(pygame.sprite.Sprite):
 
     def move(self, x, y):
         self.rect = self.rect.move(x, y)
+        if pygame.sprite.spritecollide(self, toches, False):
+            self.rect = self.rect.move(-x, -y)
 
     def get_coords(self):
         return self.rect[0], self.rect[1]
@@ -145,6 +142,10 @@ if __name__ == '__main__':
                     lookingright = 0
                     runleft = True
                     runright = False
+                elif event.key == pygame.K_SPACE:
+                    # hero = hero.change_act('jump', hero.get_coords(), k ** fullscreen)
+
+                    pass
                 elif event.key == pygame.K_F11:
                     if fullscreen:
                         screen = pygame.display.set_mode(size)
