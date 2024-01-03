@@ -78,6 +78,5 @@ class Background(pygame.sprite.Sprite):
         return newground
 
 
-invisibles = pygame.sprite.Group()
 toches = pygame.sprite.Group()
 bgroup = pygame.sprite.Group()
