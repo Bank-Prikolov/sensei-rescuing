@@ -64,6 +64,10 @@ class Hero(pygame.sprite.Sprite):
     def get_size(self):
         return self.rect[2:4]
 
+    def jump(self):
+        global jumping
+        jumping = False
+
 
 class Background(pygame.sprite.Sprite):
     image_bg = load_image(bg1)
@@ -79,6 +83,7 @@ class Background(pygame.sprite.Sprite):
         bgroup.empty()
         newground = Background(w, h, left, top, koef)
         return newground
+
 
 
 # class Camera:
@@ -120,6 +125,7 @@ if __name__ == '__main__':
     running = True
     runright, runleft, lookingup, sitting, shooting = False, False, False, False, False
     lookingright = 1
+    jumping = False
     fps = 60
     xspeed = 4
     yspeed = 2
@@ -129,7 +135,8 @@ if __name__ == '__main__':
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
-                    hero = hero.change_act('r', hero.get_coords(), k ** fullscreen)
+                    if not jumping:
+                        hero = hero.change_act('r', hero.get_coords(), k ** fullscreen)
                     lookingright = 1
                     runright = True
                     runleft = False
@@ -138,14 +145,19 @@ if __name__ == '__main__':
                 elif event.key == pygame.K_s:
                     sitting = True
                 elif event.key == pygame.K_a:
-                    hero = hero.change_act('l', hero.get_coords(), k ** fullscreen)
+                    if not jumping:
+                        hero = hero.change_act('l', hero.get_coords(), k ** fullscreen)
                     lookingright = 0
                     runleft = True
                     runright = False
                 elif event.key == pygame.K_SPACE:
                     # hero = hero.change_act('jump', hero.get_coords(), k ** fullscreen)
-
-                    pass
+                    jumping = True
+                    if lookingright:
+                        pass
+                    else:
+                        pass
+                    hero.jump()
                 elif event.key == pygame.K_F11:
                     if fullscreen:
                         screen = pygame.display.set_mode(size)
