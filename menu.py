@@ -10,7 +10,7 @@ screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 pygame.display.set_caption('Menu')
 
-start_btn = Button(WIDTH / 2 - (252 / 2), 100, 252, 74, "", "buttons\start-btn.png", "buttons\hover-start-btn.png")
+start_btn = Button(WIDTH - 312, 100, 260, 100, "buttons\start-btn.png", "buttons\hover-start-btn.png")
 
 tmp = load_image('buttons\pp_menu_bg.png')
 tmp1 = pygame.transform.scale(tmp, (tmp.get_width() * 2, tmp.get_height() * 2))
