@@ -12,6 +12,8 @@ pygame.display.set_caption('Sensei Rescuing')
 
 bg_group = pygame.sprite.Group()
 
+pygame.mixer.music.load("data\sounds\start-screen-sound.mp3")
+pygame.mixer.music.play(-1)
 
 class AnimatedStartScreen(pygame.sprite.Sprite):
     def __init__(self, sheet, columns, rows, x, y):
@@ -67,9 +69,6 @@ def start_screen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
-            pygame.mixer.music.load("data\sounds\start-screen-sound.mp3")
-            pygame.mixer.music.play(-1)
 
             da_btn.handle_event(event)
             net_btn.handle_event(event)
