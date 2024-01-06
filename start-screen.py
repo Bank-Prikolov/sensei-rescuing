@@ -15,6 +15,7 @@ bg_group = pygame.sprite.Group()
 pygame.mixer.music.load("data\sounds\start-screen-sound.mp3")
 pygame.mixer.music.play(-1)
 
+
 class AnimatedStartScreen(pygame.sprite.Sprite):
     def __init__(self, sheet, columns, rows, x, y):
         super().__init__(bg_group)
