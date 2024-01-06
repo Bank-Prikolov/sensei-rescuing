@@ -48,9 +48,9 @@ start_bg = AnimatedStartScreen(bg_img, 46, 1, WIDTH // 2 - 320,
                                HEIGHT // 2 - 145)
 
 da_btn = Button(WIDTH // 2 - 165, HEIGHT // 2 - 10, 67, 60, "buttons\da-btn.png", "buttons\hover-da-btn.png",
-                "data\sounds\sound-button.mp3")
+                "data\sounds\da-sound.mp3")
 net_btn = Button(WIDTH // 2 + 40, HEIGHT // 2 - 10, 86, 58, "buttons\cda-btn.png", "buttons\hover-cda-btn.png",
-                "data\sounds\sound-button.mp3")
+                "data\sounds\hi-hi-hi-ha-sound.mp3")
 
 
 def start_screen():
