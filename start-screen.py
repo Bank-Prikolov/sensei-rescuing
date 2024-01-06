@@ -68,6 +68,7 @@ def start_screen():
     running = True
     fps = 60
     while running:
+
         screen.fill((0, 0, 0))
 
         for event in pygame.event.get():
