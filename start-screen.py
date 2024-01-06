@@ -1,6 +1,7 @@
 import pygame, sys, screeninfo
 from load_image import *
 from buttons import Button
+import menu
 from const import *
 
 pygame.init()
@@ -11,9 +12,6 @@ clock = pygame.time.Clock()
 pygame.display.set_caption('Sensei Rescuing')
 
 bg_group = pygame.sprite.Group()
-
-pygame.mixer.music.load("data\sounds\start-screen-sound.mp3")
-pygame.mixer.music.play(-1)
 
 
 class AnimatedStartScreen(pygame.sprite.Sprite):
@@ -64,12 +62,22 @@ net_btn = Button(WIDTH // 2 + 40, HEIGHT // 2 - 10, 86, 58, "buttons\cda-btn.png
 
 
 def start_screen():
+    pygame.mixer.music.load("data\sounds\start-screen-sound.mp3")
+    pygame.mixer.music.play(-1)
+
     running = True
     fps = 60
     while running:
+        screen.fill((0, 0, 0))
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                sys.exit()
+
+            if event.type == pygame.USEREVENT and event.button == da_btn:
+                print('da-btn tapped')
+                menu.main_menu()
 
             da_btn.handle_event(event)
             net_btn.handle_event(event)
