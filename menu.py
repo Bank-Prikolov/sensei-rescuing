@@ -11,11 +11,10 @@ pygame.display.set_caption('Sensei Rescuing')
 clock = pygame.time.Clock()
 
 
-# pygame.mixer.music.load("data\sounds\menu-sound.mp3")
-# pygame.mixer.music.play(-1)
-
-
 def main_menu():
+    pygame.mixer.music.load("data\sounds\menu-sound.mp3")
+    pygame.mixer.music.play(-1)
+
     img = load_image('buttons\pp_menu_bg.png')
     bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 
@@ -31,11 +30,13 @@ def main_menu():
     buttons = [start_btn, settings_btn, info_btn, exit_btn]
 
     running = True
-    screen.blit(bg, (0, 0))
     while running:
+        screen.fill((0, 0, 0))
+        screen.blit(bg, (0, 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                sys.exit()
 
             for button in buttons:
                 button.handle_event(event)
@@ -53,6 +54,3 @@ def settings_menu():
 
 def about_authors_menu():
     pass
-
-
-main_menu()
