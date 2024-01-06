@@ -5,7 +5,7 @@ from lvl_gen import Board, toches
 
 
 class Hero(pygame.sprite.Sprite):
-    def __init__(self, sprites, rows, x, y, w, h, koef, anim):
+    def __init__(self, sprites, rows, x, y, w, h, koef, anim, movement=False, act='sr'):
         super().__init__(characters)
         self.health = 3
         self.sprites = pygame.transform.scale(sprites, (w * koef, h * koef))
@@ -14,8 +14,10 @@ class Hero(pygame.sprite.Sprite):
         self.cur_frame = 0
         self.image = self.frames[self.cur_frame]
         self.rect = self.rect.move(x, y)
-        self.xs = 4
+        self.xs = 5
         self.ys = -16
+        self.movement = movement
+        self.act = act
 
     def cut_sheet(self, sprites, koef, rows, kakaya_animacia):
         self.rect = pygame.Rect(0, 0, 80 * koef,
@@ -30,13 +32,15 @@ class Hero(pygame.sprite.Sprite):
         self.cur_frame = (self.cur_frame + 1) % len(self.frames)
         self.image = self.frames[self.cur_frame]
 
-        global yspeed, jumping, hero, falling
+        global yspeed, xspeed, jumping, hero, falling
+
         if (yspeed - (self.ys // 20) >= 0) and yspeed < 0:
             falling = True
             if lookingright:
                 hero = hero.change_act('fallr', hero.get_coords(), k ** fullscreen)
             else:
                 hero = hero.change_act('falll', hero.get_coords(), k ** fullscreen)
+
         yspeed -= (self.ys // 20)
         self.rect = self.rect.move(0, yspeed * k ** fullscreen)
 
@@ -46,27 +50,46 @@ class Hero(pygame.sprite.Sprite):
             self.ys = -16
             jumping = False
             falling = False
+            if self.movement and yspeed == 0:
+                if xspeed == 0:
+                    if lookingright:
+                        hero = hero.change_act('sr', hero.get_coords(), k ** fullscreen)
+                    else:
+                        hero = hero.change_act('sl', hero.get_coords(), k ** fullscreen)
+                else:
+                    if not (self.act == 'r' or self.act == 'l'):
+                        if runright:
+                            hero = hero.change_act('r', hero.get_coords(), k ** fullscreen)
+                        if runleft:
+                            hero = hero.change_act('l', hero.get_coords(), k ** fullscreen)
+        if yspeed > 6 and not falling:
+            if not (self.act == 'falll' or self.act == 'fallr'):
+                if lookingright:
+                    hero = hero.change_act('fallr', hero.get_coords(), k ** fullscreen)
+                else:
+                    hero = hero.change_act('falll', hero.get_coords(), k ** fullscreen)
+                    falling = True
 
     def change_act(self, act, koords, koef):
         global fullscreen
         characters.empty()
         hc = koords[0], koords[1]
         if act == 'sr':
-            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 0)
+            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 0, act=act)
         elif act == 'sl':
-            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 3)
+            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 3, act=act)
         elif act == 'r':
-            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 1)
+            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 1, movement=True, act=act)
         elif act == 'l':
-            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 2)
+            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 2, movement=True, act=act)
         elif act == 'jumpr':
-            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 4)
+            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 4, movement=True, act=act)
         elif act == 'fallr':
-            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 5)
+            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 5, movement=True, act=act)
         elif act == 'jumpl':
-            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 6)
+            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 6, movement=True, act=act)
         elif act == 'falll':
-            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 7)
+            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 7, movement=True, act=act)
         else:
             ho = None
         return ho
@@ -143,7 +166,7 @@ if __name__ == '__main__':
     jumping = False
     falling = False
     fps = 60
-    xspeed = 4
+    xspeed = 0
     yspeed = 0
     while running:
         for event in pygame.event.get():
@@ -151,6 +174,7 @@ if __name__ == '__main__':
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
+                    xspeed = hero.xs
                     if not jumping:
                         hero = hero.change_act('r', hero.get_coords(), k ** fullscreen)
                     else:
@@ -166,6 +190,7 @@ if __name__ == '__main__':
                 elif event.key == pygame.K_s:
                     sitting = True
                 elif event.key == pygame.K_a:
+                    xspeed = hero.xs
                     if not jumping:
                         hero = hero.change_act('l', hero.get_coords(), k ** fullscreen)
                     else:
@@ -177,7 +202,7 @@ if __name__ == '__main__':
                     runleft = True
                     runright = False
                 elif event.key == pygame.K_SPACE:
-                    if not jumping:
+                    if not (jumping or falling):
                         jumping = True
                         yspeed = -17
                         hero.ys = -8
@@ -202,11 +227,6 @@ if __name__ == '__main__':
                         hero = hero.change_act('sl', hero.get_coords(), k ** fullscreen)
                     board.set_view(otstupx * fullscreen, otstupy * fullscreen, 128 * k ** fullscreen)
                     bgroup.update(*size, otstupx * fullscreen, otstupy * fullscreen, k ** fullscreen)
-                if not (runright, runleft, jumping, lookingup, sitting, shooting):
-                    if lookingright:
-                        hero = hero.change_act('sr', hero.get_coords(), k ** fullscreen)
-                    else:
-                        hero = hero.change_act('sl', hero.get_coords(), k ** fullscreen)
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_d:
                     runright = False
@@ -216,17 +236,13 @@ if __name__ == '__main__':
                     sitting = False
                 elif event.key == pygame.K_a:
                     runleft = False
-                if not (runright or runleft or jumping or lookingup or sitting or shooting or falling):
-                    if lookingright:
-                        hero = hero.change_act('sr', hero.get_coords(), k ** fullscreen)
-                    else:
-                        hero = hero.change_act('sl', hero.get_coords(), k ** fullscreen)
         if runright or runleft:
             if runright:
                 hero.move(xspeed * k ** fullscreen, 0)
             if runleft:
                 hero.move(-xspeed * k ** fullscreen, 0)
         else:
+            xspeed = 0
             if sitting:
                 hero.move(0, 0)
             elif lookingup:
