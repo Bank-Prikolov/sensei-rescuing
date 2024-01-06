@@ -29,18 +29,23 @@ class Hero(pygame.sprite.Sprite):
     def update(self):
         self.cur_frame = (self.cur_frame + 1) % len(self.frames)
         self.image = self.frames[self.cur_frame]
-        global yspeed, jumping, hero
+
+        global yspeed, jumping, hero, falling
         if (yspeed - (self.ys // 20) >= 0) and yspeed < 0:
+            falling = True
             if lookingright:
-                print('change')
                 hero = hero.change_act('fallr', hero.get_coords(), k ** fullscreen)
+            else:
+                hero = hero.change_act('falll', hero.get_coords(), k ** fullscreen)
         yspeed -= (self.ys // 20)
         self.rect = self.rect.move(0, yspeed * k ** fullscreen)
+
         if pygame.sprite.spritecollide(self, toches, False):
             self.rect = self.rect.move(0, -yspeed * k ** fullscreen)
             yspeed = 0
             self.ys = -16
             jumping = False
+            falling = False
 
     def change_act(self, act, koords, koef):
         global fullscreen
@@ -58,6 +63,10 @@ class Hero(pygame.sprite.Sprite):
             ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 4)
         elif act == 'fallr':
             ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 5)
+        elif act == 'jumpl':
+            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 6)
+        elif act == 'falll':
+            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 7)
         else:
             ho = None
         return ho
@@ -132,6 +141,7 @@ if __name__ == '__main__':
     runright, runleft, lookingup, sitting, shooting = False, False, False, False, False
     lookingright = 1
     jumping = False
+    falling = False
     fps = 60
     xspeed = 4
     yspeed = 0
@@ -144,8 +154,10 @@ if __name__ == '__main__':
                     if not jumping:
                         hero = hero.change_act('r', hero.get_coords(), k ** fullscreen)
                     else:
-                        hero = hero.change_act('jumpr', hero.get_coords(), k ** fullscreen)
-                        pass
+                        if not falling:
+                            hero = hero.change_act('jumpr', hero.get_coords(), k ** fullscreen)
+                        else:
+                            hero = hero.change_act('fallr', hero.get_coords(), k ** fullscreen)
                     lookingright = 1
                     runright = True
                     runleft = False
@@ -157,8 +169,10 @@ if __name__ == '__main__':
                     if not jumping:
                         hero = hero.change_act('l', hero.get_coords(), k ** fullscreen)
                     else:
-                        # hero = hero.change_act('jumpl', hero.get_coords(), k ** fullscreen)
-                        pass
+                        if not falling:
+                            hero = hero.change_act('jumpl', hero.get_coords(), k ** fullscreen)
+                        else:
+                            hero = hero.change_act('falll', hero.get_coords(), k ** fullscreen)
                     lookingright = 0
                     runleft = True
                     runright = False
@@ -171,7 +185,7 @@ if __name__ == '__main__':
                             hero = hero.change_act('jumpr', hero.get_coords(), k ** fullscreen)
                             pass
                         else:
-                            # hero = hero.change_act('jumpl', hero.get_coords(), k ** fullscreen)
+                            hero = hero.change_act('jumpl', hero.get_coords(), k ** fullscreen)
                             pass
                 elif event.key == pygame.K_F11:
                     if fullscreen:
@@ -202,7 +216,7 @@ if __name__ == '__main__':
                     sitting = False
                 elif event.key == pygame.K_a:
                     runleft = False
-                if not (runright or runleft or jumping or lookingup or sitting or shooting):
+                if not (runright or runleft or jumping or lookingup or sitting or shooting or falling):
                     if lookingright:
                         hero = hero.change_act('sr', hero.get_coords(), k ** fullscreen)
                     else:
