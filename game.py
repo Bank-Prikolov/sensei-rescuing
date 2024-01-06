@@ -29,7 +29,11 @@ class Hero(pygame.sprite.Sprite):
     def update(self):
         self.cur_frame = (self.cur_frame + 1) % len(self.frames)
         self.image = self.frames[self.cur_frame]
-        global yspeed, jumping
+        global yspeed, jumping, hero
+        if (yspeed - (self.ys // 20) >= 0) and yspeed < 0:
+            if lookingright:
+                print('change')
+                hero = hero.change_act('fallr', hero.get_coords(), k ** fullscreen)
         yspeed -= (self.ys // 20)
         self.rect = self.rect.move(0, yspeed * k ** fullscreen)
         if pygame.sprite.spritecollide(self, toches, False):
@@ -40,21 +44,20 @@ class Hero(pygame.sprite.Sprite):
 
     def change_act(self, act, koords, koef):
         global fullscreen
+        characters.empty()
         hc = koords[0], koords[1]
         if act == 'sr':
-            characters.empty()
             ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 0)
         elif act == 'sl':
-            characters.empty()
             ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 3)
         elif act == 'r':
-            characters.empty()
             ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 1)
         elif act == 'l':
-            characters.empty()
             ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 2)
         elif act == 'jumpr':
             ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 4)
+        elif act == 'fallr':
+            ho = Hero(wai, 8, *hc, wai.get_width(), wai.get_height(), koef, 5)
         else:
             ho = None
         return ho
@@ -161,7 +164,6 @@ if __name__ == '__main__':
                     runright = False
                 elif event.key == pygame.K_SPACE:
                     if not jumping:
-                        # hero = hero.change_act('jump', hero.get_coords(), k ** fullscreen)
                         jumping = True
                         yspeed = -17
                         hero.ys = -8
@@ -186,6 +188,11 @@ if __name__ == '__main__':
                         hero = hero.change_act('sl', hero.get_coords(), k ** fullscreen)
                     board.set_view(otstupx * fullscreen, otstupy * fullscreen, 128 * k ** fullscreen)
                     bgroup.update(*size, otstupx * fullscreen, otstupy * fullscreen, k ** fullscreen)
+                if not (runright, runleft, jumping, lookingup, sitting, shooting):
+                    if lookingright:
+                        hero = hero.change_act('sr', hero.get_coords(), k ** fullscreen)
+                    else:
+                        hero = hero.change_act('sl', hero.get_coords(), k ** fullscreen)
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_d:
                     runright = False
@@ -195,7 +202,7 @@ if __name__ == '__main__':
                     sitting = False
                 elif event.key == pygame.K_a:
                     runleft = False
-                if not (runright or runleft or sitting or shooting or lookingup or jumping):
+                if not (runright or runleft or jumping or lookingup or sitting or shooting):
                     if lookingright:
                         hero = hero.change_act('sr', hero.get_coords(), k ** fullscreen)
                     else:
