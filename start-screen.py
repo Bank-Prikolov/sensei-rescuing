@@ -28,16 +28,19 @@ class AnimatedStartScreen(pygame.sprite.Sprite):
         for j in range(rows):
             for i in range(columns):
                 frame_location = (self.rect.w * i, self.rect.h * j)
-                for _ in range(8):
+                for _ in range(10):
                     self.frames.append(sheet.subsurface(pygame.Rect(
                         frame_location, self.rect.size)))
 
     def update(self):
-        if self.cur_frame < 45 * 8:
+        if self.cur_frame < 41 * 10:
             self.cur_frame = (self.cur_frame + 1) % len(self.frames)
             self.image = self.frames[self.cur_frame]
-        if self.cur_frame == 10 * 8:
-            clock.tick(1)
+        if self.cur_frame >= 40 * 10:
+            da_btn.check_hover(pygame.mouse.get_pos())
+            da_btn.draw(screen)
+            net_btn.check_hover(pygame.mouse.get_pos())
+            net_btn.draw(screen)
 
 
 bg_img = load_image("start-screen-bg.png")
@@ -46,7 +49,7 @@ start_bg = AnimatedStartScreen(bg_img, 46, 1, WIDTH // 2 - 320,
 
 da_btn = Button(WIDTH // 2 - 165, HEIGHT // 2 - 10, 67, 60, "buttons\da-btn.png", "buttons\hover-da-btn.png",
                 "data\sounds\sound-button.mp3")
-net_btn = Button(WIDTH // 2 + 53, HEIGHT // 2 - 10, 86, 58, "buttons\cda-btn.png", "buttons\hover-cda-btn.png",
+net_btn = Button(WIDTH // 2 + 40, HEIGHT // 2 - 10, 86, 58, "buttons\cda-btn.png", "buttons\hover-cda-btn.png",
                 "data\sounds\sound-button.mp3")
 
 
@@ -64,12 +67,6 @@ def start_screen():
         start_bg.update()
         clock.tick(fps)
         bg_group.draw(screen)
-
-        da_btn.check_hover(pygame.mouse.get_pos())
-        da_btn.draw(screen)
-
-        net_btn.check_hover(pygame.mouse.get_pos())
-        net_btn.draw(screen)
 
         pygame.display.flip()
 
