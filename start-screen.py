@@ -40,6 +40,11 @@ bg_img = load_image("start-screen-bg.png")
 start_bg = AnimatedStartScreen(bg_img, 46, 1, WIDTH // 2 - 320,
                                HEIGHT // 2 - 145)
 
+da_btn = Button(WIDTH // 2 - 165, HEIGHT // 2 - 10, 67, 60, "buttons\da-btn.png", "buttons\hover-da-btn.png",
+                "data\sounds\sound-button.mp3")
+net_btn = Button(WIDTH // 2 + 55, HEIGHT // 2 - 10, 86, 58, "buttons\cda-btn.png", "buttons\hover-cda-btn.png",
+                "data\sounds\sound-button.mp3")
+
 
 def start_screen():
     running = True
@@ -49,10 +54,19 @@ def start_screen():
             if event.type == pygame.QUIT:
                 running = False
 
-    start_bg.update()
-    clock.tick(fps)
-    bg_group.draw(screen)
-    pygame.display.flip()
+        da_btn.handle_event(event)
+        net_btn.handle_event(event)
+
+        da_btn.check_hover(pygame.mouse.get_pos())
+        da_btn.draw(screen)
+
+        net_btn.check_hover(pygame.mouse.get_pos())
+        net_btn.draw(screen)
+
+        start_bg.update()
+        clock.tick(fps)
+        bg_group.draw(screen)
+        pygame.display.flip()
 
 
 start_screen()
