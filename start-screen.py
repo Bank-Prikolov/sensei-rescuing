@@ -37,21 +37,22 @@ class AnimatedStartScreen(pygame.sprite.Sprite):
 
 
 bg_img = load_image("start-screen-bg.png")
-start_bg = AnimatedStartScreen(bg_img, 38, 1, WIDTH // 2 - 160,
-                               HEIGHT // 2 - 30)
+start_bg = AnimatedStartScreen(bg_img, 46, 1, WIDTH // 2 - 320,
+                               HEIGHT // 2 - 145)
 
 
 def start_screen():
     running = True
+    fps = 5
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        start_bg.update()
-        clock.tick(60)
-        bg_group.draw(screen)
-        pygame.display.flip()
+    start_bg.update()
+    clock.tick(fps)
+    bg_group.draw(screen)
+    pygame.display.flip()
 
 
 start_screen()
