@@ -28,12 +28,16 @@ class AnimatedStartScreen(pygame.sprite.Sprite):
         for j in range(rows):
             for i in range(columns):
                 frame_location = (self.rect.w * i, self.rect.h * j)
-                self.frames.append(sheet.subsurface(pygame.Rect(
-                    frame_location, self.rect.size)))
+                for _ in range(8):
+                    self.frames.append(sheet.subsurface(pygame.Rect(
+                        frame_location, self.rect.size)))
 
     def update(self):
-        self.cur_frame = (self.cur_frame + 1) % len(self.frames)
-        self.image = self.frames[self.cur_frame]
+        if self.cur_frame < 45 * 8:
+            self.cur_frame = (self.cur_frame + 1) % len(self.frames)
+            self.image = self.frames[self.cur_frame]
+        if self.cur_frame == 10 * 8:
+            clock.tick(1)
 
 
 bg_img = load_image("start-screen-bg.png")
@@ -48,7 +52,7 @@ net_btn = Button(WIDTH // 2 + 53, HEIGHT // 2 - 10, 86, 58, "buttons\cda-btn.png
 
 def start_screen():
     running = True
-    fps = 5
+    fps = 60
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
