@@ -70,7 +70,8 @@ class Hero(pygame.sprite.Sprite):
                     hero = hero.change_hero('falll', hero.get_coords(), k ** fullscreen)
                     falling = True
 
-    def change_hero(self, act, koords, koef):
+    @staticmethod
+    def change_hero(act, koords, koef):
         global fullscreen
         characters.empty()
         hc = koords[0], koords[1]
