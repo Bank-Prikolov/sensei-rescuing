@@ -1,5 +1,6 @@
-import pygame, sys, screeninfo
-from load_image import *
+import pygame
+import sys
+from load_image import load_image
 from buttons import Button
 from const import *
 
@@ -9,6 +10,12 @@ size = WIDTH, HEIGHT = 1024, 704
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption('Sensei Rescuing')
 clock = pygame.time.Clock()
+
+imgSI = load_image('background1.png')
+bgSI = pygame.transform.scale(imgSI, (imgSI.get_width() * 2, imgSI.get_height() * 2))
+
+cross_btn = Button(WIDTH - 40, 10, 32, 32, "buttons\cross.png", "",
+                   "data\sounds\menu-button-sound.mp3")
 
 
 def main_menu():
@@ -35,8 +42,24 @@ def main_menu():
         screen.blit(bg, (0, 0))
         for event in pygame.event.get():
             if (event.type == pygame.QUIT) or (event.type == pygame.USEREVENT and event.button == exit_btn):
+                print('game quit | exit-btn tapped')
                 running = False
+                pygame.quit()
                 sys.exit()
+
+            if event.type == pygame.USEREVENT and event.button == start_btn:
+                print('start-btn tapped')
+                pass
+
+            if event.type == pygame.USEREVENT and event.button == settings_btn:
+                print('settings-btn tapped')
+                transition()
+                settings_menu()
+
+            if event.type == pygame.USEREVENT and event.button == info_btn:
+                print('info-btn tapped')
+                transition()
+                info_menu()
 
             for button in buttons:
                 button.handle_event(event)
@@ -49,8 +72,89 @@ def main_menu():
 
 
 def settings_menu():
-    pass
+    running = True
+    while running:
+        screen.fill((0, 0, 0))
+        screen.blit(bgSI, (0, 0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                print('game quit')
+                running = False
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    transition()
+                    running = False
+
+            if event.type == pygame.USEREVENT and event.button == cross_btn:
+                print('cross-btn tapped from settings')
+                transition()
+                running = False
+
+            cross_btn.handle_event(event)
+
+        cross_btn.check_hover(pygame.mouse.get_pos())
+        cross_btn.draw(screen)
+
+        pygame.display.flip()
 
 
-def about_authors_menu():
-    pass
+def info_menu():
+    running = True
+    while running:
+        screen.fill((0, 0, 0))
+        screen.blit(bgSI, (0, 0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                print('game quit')
+                running = False
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    transition()
+                    running = False
+
+            if event.type == pygame.USEREVENT and event.button == cross_btn:
+                print('cross-btn tapped from info')
+                transition()
+                running = False
+
+            cross_btn.handle_event(event)
+
+        cross_btn.check_hover(pygame.mouse.get_pos())
+        cross_btn.draw(screen)
+
+        pygame.display.flip()
+
+
+def transition():
+    running = True
+    transition_level = 0
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                print('game quit')
+                running = False
+                pygame.quit()
+                sys.exit()
+
+        transition_surface = pygame.Surface((WIDTH, HEIGHT))
+        transition_surface.fill((0, 0, 0))
+        transition_surface.set_alpha(transition_level)
+        screen.blit(transition_surface, (0, 0))
+
+        transition_level += 5
+        if transition_level >= 105:
+            transition_level = 255
+            running = False
+
+        pygame.display.flip()
+        clock.tick(80)
+
+
+main_menu()
