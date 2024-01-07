@@ -15,6 +15,9 @@ pygame.display.set_caption('Sensei Rescuing')
 
 bg_group = pygame.sprite.Group()
 
+cursor = load_image('cursor.png')
+pygame.mouse.set_visible(False)
+
 
 class AnimatedStartScreen(pygame.sprite.Sprite):
     def __init__(self, sheet, columns, rows, x, y):
@@ -90,6 +93,10 @@ def start_screen():
         start_bg.update()
         clock.tick(fps)
         bg_group.draw(screen)
+
+        x_c, y_c = pygame.mouse.get_pos()
+        if x_c >= 1 and y_c >= 1:
+            screen.blit(cursor, (x_c - 3, y_c - 3))
 
         pygame.display.flip()
 

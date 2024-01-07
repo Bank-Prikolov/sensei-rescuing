@@ -18,6 +18,9 @@ bgSI = pygame.transform.scale(imgSI, (imgSI.get_width() * 2, imgSI.get_height() 
 cross_btn = Button(WIDTH - 40, 10, 32, 32, "buttons\cross.png", "",
                    "data\sounds\menu-button-sound.mp3")
 
+cursor = load_image('cursor.png')
+pygame.mouse.set_visible(False)
+
 
 def main_menu():
     pygame.mixer.music.load("data\sounds\menu-sound.mp3")
@@ -69,6 +72,10 @@ def main_menu():
             button.check_hover(pygame.mouse.get_pos())
             button.draw(screen)
 
+        x_c, y_c = pygame.mouse.get_pos()
+        if x_c >= 1 and y_c >= 1:
+            screen.blit(cursor, (x_c - 3, y_c - 3))
+
         pygame.display.flip()
 
 
@@ -98,6 +105,10 @@ def settings_menu():
 
         cross_btn.check_hover(pygame.mouse.get_pos())
         cross_btn.draw(screen)
+
+        x_c, y_c = pygame.mouse.get_pos()
+        if x_c >= 1 and y_c >= 1:
+            screen.blit(cursor, (x_c - 3, y_c - 3))
 
         pygame.display.flip()
 
@@ -130,7 +141,11 @@ def info_menu():
         cross_btn.check_hover(pygame.mouse.get_pos())
         cross_btn.draw(screen)
 
+        x_c, y_c = pygame.mouse.get_pos()
+        if x_c >= 1 and y_c >= 1:
+            screen.blit(cursor, (x_c - 3, y_c - 3))
+
         pygame.display.flip()
 
 
-# main_menu()
+main_menu()
