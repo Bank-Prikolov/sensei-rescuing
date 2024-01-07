@@ -12,7 +12,7 @@ screen = pygame.display.set_mode(size)
 pygame.display.set_caption('Sensei Rescuing')
 clock = pygame.time.Clock()
 
-imgSI = load_image('background1.png')
+imgSI = load_image(bg1)
 bgSI = pygame.transform.scale(imgSI, (imgSI.get_width() * 2, imgSI.get_height() * 2))
 
 cross_btn = Button(WIDTH - 40, 10, 32, 32, "buttons\cross.png", "",
@@ -23,8 +23,8 @@ pygame.mouse.set_visible(False)
 
 
 def main_menu():
-    pygame.mixer.music.load("data\sounds\menu-sound.mp3")
-    pygame.mixer.music.play(-1)
+    # pygame.mixer.music.load("data\sounds\menu-sound.mp3")
+    # pygame.mixer.music.play(-1)
 
     img = load_image('backgrounds\main-menu-bg.png')
     bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
