@@ -23,7 +23,7 @@ class Board:
         self.cell_size = 30
 
     def read_txt(self, txt_file):
-        fullname = os.path.join('data\levels', txt_file)
+        fullname = os.path.join(r'data\levels', txt_file)
         if not os.path.isfile(fullname):
             print(f"Файл с изображением '{fullname}' не найден")
             sys.exit()
