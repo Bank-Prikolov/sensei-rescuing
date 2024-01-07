@@ -1,5 +1,6 @@
-import pygame, sys, screeninfo
-from load_image import *
+import pygame
+import sys
+from load_image import load_image
 from buttons import Button
 import menu
 from const import *
