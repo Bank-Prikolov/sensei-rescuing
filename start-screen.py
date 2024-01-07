@@ -4,7 +4,7 @@ from load_image import load_image
 from buttons import Button
 import menu
 from transition import transition
-from const import *
+from consts import *
 
 pygame.init()
 

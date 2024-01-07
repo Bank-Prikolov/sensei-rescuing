@@ -1,5 +1,5 @@
 from load_image import load_image
-from const import *
+from consts import *
 from windows import *
 from lvl_gen import Board, toches
 
