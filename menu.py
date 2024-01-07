@@ -21,22 +21,22 @@ cross_btn = Button(WIDTH - 40, 10, 32, 32, r"buttons\cross.png", "",
 cursor = load_image('cursor.png')
 pygame.mouse.set_visible(False)
 
+img = load_image(r'backgrounds\main-menu-bg-test.png')
+bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
+
 
 def main_menu():
     # pygame.mixer.music.load("data\sounds\menu-sound.mp3")
     # pygame.mixer.music.play(-1)
 
-    img = load_image(r'backgrounds\main-menu-bg.png')
-    bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
-
-    start_btn = Button(WIDTH - 265, 168, 190, 80, r"buttons\start-btn.png", r"buttons\hover-start-btn.png",
-                       r"data\sounds\menu-button-sound.mp3")
-    settings_btn = Button(WIDTH - 265, 248, 190, 80, r"buttons\settings-btn.png", r"buttons\hover-settings-btn.png",
-                          r"data\sounds\menu-button-sound.mp3")
-    info_btn = Button(WIDTH - 265, 328, 190, 80, r"buttons\info-btn.png", r"buttons\hover-info-btn.png",
-                      r"data\sounds\menu-button-sound.mp3")
-    exit_btn = Button(WIDTH - 265, 408, 190, 80, r"buttons\exit-btn.png", r"buttons\hover-exit-btn.png",
-                      r"data\sounds\menu-button-sound.mp3")
+    start_btn = Button(WIDTH // 2 - 240 // 2, 186, 240, 100, r"buttons\start-btn.png",
+                       r"buttons\hover-start-btn.png", r"data\sounds\menu-button-sound.mp3")
+    settings_btn = Button(WIDTH // 2 - 240 // 2, 284, 240, 100, r"buttons\settings-btn.png",
+                          r"buttons\hover-settings-btn.png", r"data\sounds\menu-button-sound.mp3")
+    info_btn = Button(WIDTH // 2 - 240 // 2, 382, 240, 100, r"buttons\info-btn.png",
+                      r"buttons\hover-info-btn.png", r"data\sounds\menu-button-sound.mp3")
+    exit_btn = Button(WIDTH // 2 - 240 // 2, 480, 240, 100, r"buttons\exit-btn.png",
+                      r"buttons\hover-exit-btn.png", r"data\sounds\menu-button-sound.mp3")
 
     buttons = [start_btn, settings_btn, info_btn, exit_btn]
 
@@ -77,14 +77,10 @@ def main_menu():
 
 
 def settings_menu():
-
-    imgSet = load_image(r'backgrounds\settings-bg.png')
-    bgSet = pygame.transform.scale(imgSet, (imgSet.get_width() * 2, imgSet.get_height() * 2))
-
     running = True
     while running:
         screen.fill((0, 0, 0))
-        screen.blit(bgSet, (0, 0))
+        screen.blit(bg, (0, 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -116,7 +112,7 @@ def levels_menu():
     running = True
     while running:
         screen.fill((0, 0, 0))
-        screen.blit(bgSI, (0, 0))
+        screen.blit(bg, (0, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -146,14 +142,10 @@ def levels_menu():
 
 
 def info_menu():
-
-    imgInf = load_image(r'backgrounds\info-bg.png')
-    bgInf = pygame.transform.scale(imgInf, (imgInf.get_width() * 2, imgInf.get_height() * 2))
-
     running = True
     while running:
         screen.fill((0, 0, 0))
-        screen.blit(bgInf, (0, 0))
+        screen.blit(bg, (0, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -182,4 +174,4 @@ def info_menu():
         pygame.display.flip()
 
 
-# main_menu()
+main_menu()
