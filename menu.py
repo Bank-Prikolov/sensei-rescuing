@@ -73,8 +73,8 @@ def main_menu():
             button.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
-        if x_c >= 1 and y_c >= 1:
-            screen.blit(cursor, (x_c - 3, y_c - 3))
+        if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
+            screen.blit(cursor, (x_c, y_c))
 
         pygame.display.flip()
 
@@ -107,8 +107,8 @@ def settings_menu():
         cross_btn.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
-        if x_c >= 1 and y_c >= 1:
-            screen.blit(cursor, (x_c - 3, y_c - 3))
+        if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
+            screen.blit(cursor, (x_c, y_c))
 
         pygame.display.flip()
 
@@ -142,10 +142,10 @@ def info_menu():
         cross_btn.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
-        if x_c >= 1 and y_c >= 1:
-            screen.blit(cursor, (x_c - 3, y_c - 3))
+        if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
+            screen.blit(cursor, (x_c, y_c))
 
         pygame.display.flip()
 
 
-main_menu()
+# main_menu()
