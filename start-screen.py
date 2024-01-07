@@ -74,6 +74,7 @@ def start_screen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                pygame.quit()
                 sys.exit()
 
             if event.type == pygame.USEREVENT and event.button == da_btn:
