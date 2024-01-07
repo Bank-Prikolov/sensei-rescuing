@@ -26,7 +26,7 @@ def main_menu():
     pygame.mixer.music.load("data\sounds\menu-sound.mp3")
     pygame.mixer.music.play(-1)
 
-    img = load_image('pp_menu_bg.png')
+    img = load_image('backgrounds\main-menu-bg.png')
     bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 
     start_btn = Button(WIDTH - 265, 168, 190, 80, "buttons\start-btn.png", "buttons\hover-start-btn.png",
@@ -81,10 +81,14 @@ def main_menu():
 
 
 def settings_menu():
+
+    imgSet = load_image('backgrounds\settings-bg.png')
+    bgSet = pygame.transform.scale(imgSet, (imgSet.get_width() * 2, imgSet.get_height() * 2))
+
     running = True
     while running:
         screen.fill((0, 0, 0))
-        screen.blit(bgSI, (0, 0))
+        screen.blit(bgSet, (0, 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 print('game quit')
@@ -150,10 +154,14 @@ def levels_menu():
 
 
 def info_menu():
+
+    imgInf = load_image('backgrounds\info-bg.png')
+    bgInf = pygame.transform.scale(imgInf, (imgInf.get_width() * 2, imgInf.get_height() * 2))
+
     running = True
     while running:
         screen.fill((0, 0, 0))
-        screen.blit(bgSI, (0, 0))
+        screen.blit(bgInf, (0, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -184,4 +192,4 @@ def info_menu():
         pygame.display.flip()
 
 
-# main_menu()
+main_menu()
