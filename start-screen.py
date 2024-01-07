@@ -56,7 +56,7 @@ class AnimatedStartScreen(pygame.sprite.Sprite):
             net_btn.draw(screen)
 
 
-bg_img = load_image("start-screen-bg.png")
+bg_img = load_image("backgrounds\start-screen-bg.png")
 start_bg = AnimatedStartScreen(bg_img, 46, 1, WIDTH // 2 - 320,
                                HEIGHT // 2 - 145)
 
