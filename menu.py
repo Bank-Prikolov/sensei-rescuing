@@ -2,6 +2,7 @@ import pygame
 import sys
 from load_image import load_image
 from buttons import Button
+from transition import transition
 from const import *
 
 pygame.init()
@@ -132,29 +133,4 @@ def info_menu():
         pygame.display.flip()
 
 
-def transition():
-    running = True
-    transition_level = 0
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                print('game quit')
-                running = False
-                pygame.quit()
-                sys.exit()
-
-        transition_surface = pygame.Surface((WIDTH, HEIGHT))
-        transition_surface.fill((0, 0, 0))
-        transition_surface.set_alpha(transition_level)
-        screen.blit(transition_surface, (0, 0))
-
-        transition_level += 5
-        if transition_level >= 105:
-            transition_level = 255
-            running = False
-
-        pygame.display.flip()
-        clock.tick(80)
-
-
-main_menu()
+# main_menu()
