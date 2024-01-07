@@ -15,8 +15,8 @@ clock = pygame.time.Clock()
 imgSI = load_image(bg1)
 bgSI = pygame.transform.scale(imgSI, (imgSI.get_width() * 2, imgSI.get_height() * 2))
 
-cross_btn = Button(WIDTH - 40, 10, 32, 32, "buttons\cross.png", "",
-                   "data\sounds\menu-button-sound.mp3")
+cross_btn = Button(WIDTH - 40, 10, 32, 32, r"buttons\cross.png", "",
+                   r"data\sounds\menu-button-sound.mp3")
 
 cursor = load_image('cursor.png')
 pygame.mouse.set_visible(False)
@@ -26,17 +26,17 @@ def main_menu():
     # pygame.mixer.music.load("data\sounds\menu-sound.mp3")
     # pygame.mixer.music.play(-1)
 
-    img = load_image('backgrounds\main-menu-bg.png')
+    img = load_image(r'backgrounds\main-menu-bg.png')
     bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 
-    start_btn = Button(WIDTH - 265, 168, 190, 80, "buttons\start-btn.png", "buttons\hover-start-btn.png",
-                       "data\sounds\menu-button-sound.mp3")
-    settings_btn = Button(WIDTH - 265, 248, 190, 80, "buttons\settings-btn.png", "buttons\hover-settings-btn.png",
-                          "data\sounds\menu-button-sound.mp3")
-    info_btn = Button(WIDTH - 265, 328, 190, 80, "buttons\info-btn.png", "buttons\hover-info-btn.png",
-                      "data\sounds\menu-button-sound.mp3")
-    exit_btn = Button(WIDTH - 265, 408, 190, 80, "buttons\exit-btn.png", "buttons\hover-exit-btn.png",
-                      "data\sounds\menu-button-sound.mp3")
+    start_btn = Button(WIDTH - 265, 168, 190, 80, r"buttons\start-btn.png", r"buttons\hover-start-btn.png",
+                       r"data\sounds\menu-button-sound.mp3")
+    settings_btn = Button(WIDTH - 265, 248, 190, 80, r"buttons\settings-btn.png", r"buttons\hover-settings-btn.png",
+                          r"data\sounds\menu-button-sound.mp3")
+    info_btn = Button(WIDTH - 265, 328, 190, 80, r"buttons\info-btn.png", r"buttons\hover-info-btn.png",
+                      r"data\sounds\menu-button-sound.mp3")
+    exit_btn = Button(WIDTH - 265, 408, 190, 80, r"buttons\exit-btn.png", r"buttons\hover-exit-btn.png",
+                      r"data\sounds\menu-button-sound.mp3")
 
     buttons = [start_btn, settings_btn, info_btn, exit_btn]
 
@@ -46,23 +46,19 @@ def main_menu():
         screen.blit(bg, (0, 0))
         for event in pygame.event.get():
             if (event.type == pygame.QUIT) or (event.type == pygame.USEREVENT and event.button == exit_btn):
-                print('game quit | exit-btn tapped')
                 running = False
                 pygame.quit()
                 sys.exit()
 
             if event.type == pygame.USEREVENT and event.button == start_btn:
-                print('start-btn tapped')
                 transition()
                 levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == settings_btn:
-                print('settings-btn tapped')
                 transition()
                 settings_menu()
 
             if event.type == pygame.USEREVENT and event.button == info_btn:
-                print('info-btn tapped')
                 transition()
                 info_menu()
 
@@ -82,7 +78,7 @@ def main_menu():
 
 def settings_menu():
 
-    imgSet = load_image('backgrounds\settings-bg.png')
+    imgSet = load_image(r'backgrounds\settings-bg.png')
     bgSet = pygame.transform.scale(imgSet, (imgSet.get_width() * 2, imgSet.get_height() * 2))
 
     running = True
@@ -91,7 +87,6 @@ def settings_menu():
         screen.blit(bgSet, (0, 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                print('game quit')
                 running = False
                 pygame.quit()
                 sys.exit()
@@ -102,7 +97,6 @@ def settings_menu():
                     running = False
 
             if event.type == pygame.USEREVENT and event.button == cross_btn:
-                print('cross-btn tapped from settings')
                 transition()
                 running = False
 
@@ -126,7 +120,6 @@ def levels_menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                print('game quit')
                 running = False
                 pygame.quit()
                 sys.exit()
@@ -137,7 +130,6 @@ def levels_menu():
                     running = False
 
             if event.type == pygame.USEREVENT and event.button == cross_btn:
-                print('cross-btn tapped from levels')
                 transition()
                 running = False
 
@@ -155,7 +147,7 @@ def levels_menu():
 
 def info_menu():
 
-    imgInf = load_image(backgrounds['info-bg'])
+    imgInf = load_image(r'backgrounds\info-bg.png')
     bgInf = pygame.transform.scale(imgInf, (imgInf.get_width() * 2, imgInf.get_height() * 2))
 
     running = True
@@ -165,7 +157,6 @@ def info_menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                print('game quit')
                 running = False
                 pygame.quit()
                 sys.exit()
@@ -176,7 +167,6 @@ def info_menu():
                     running = False
 
             if event.type == pygame.USEREVENT and event.button == cross_btn:
-                print('cross-btn tapped from info')
                 transition()
                 running = False
 
@@ -192,4 +182,4 @@ def info_menu():
         pygame.display.flip()
 
 
-main_menu()
+# main_menu()
