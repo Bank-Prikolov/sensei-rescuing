@@ -77,10 +77,10 @@ def start_screen():
         screen.fill((0, 0, 0))
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-                pygame.quit()
-                sys.exit()
+            # if event.type == pygame.QUIT:
+            #    running = False
+            #    pygame.quit()
+            #    sys.exit()
 
             if event.type == pygame.USEREVENT and event.button == da_btn:
                 print('da-btn tapped')
