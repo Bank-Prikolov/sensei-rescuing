@@ -53,7 +53,8 @@ def main_menu():
 
             if event.type == pygame.USEREVENT and event.button == start_btn:
                 print('start-btn tapped')
-                pass
+                transition()
+                levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == settings_btn:
                 print('settings-btn tapped')
@@ -98,6 +99,41 @@ def settings_menu():
 
             if event.type == pygame.USEREVENT and event.button == cross_btn:
                 print('cross-btn tapped from settings')
+                transition()
+                running = False
+
+            cross_btn.handle_event(event)
+
+        cross_btn.check_hover(pygame.mouse.get_pos())
+        cross_btn.draw(screen)
+
+        x_c, y_c = pygame.mouse.get_pos()
+        if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
+            screen.blit(cursor, (x_c, y_c))
+
+        pygame.display.flip()
+
+
+def levels_menu():
+    running = True
+    while running:
+        screen.fill((0, 0, 0))
+        screen.blit(bgSI, (0, 0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                print('game quit')
+                running = False
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    transition()
+                    running = False
+
+            if event.type == pygame.USEREVENT and event.button == cross_btn:
+                print('cross-btn tapped from levels')
                 transition()
                 running = False
 
