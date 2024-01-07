@@ -3,6 +3,7 @@ import sys
 from load_image import load_image
 from buttons import Button
 import menu
+from transition import transition
 from const import *
 
 pygame.init()
@@ -80,6 +81,7 @@ def start_screen():
 
             if event.type == pygame.USEREVENT and event.button == da_btn:
                 print('da-btn tapped')
+                transition()
                 menu.main_menu()
 
             da_btn.handle_event(event)
