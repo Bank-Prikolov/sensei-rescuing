@@ -56,18 +56,18 @@ class AnimatedStartScreen(pygame.sprite.Sprite):
             net_btn.draw(screen)
 
 
-bg_img = load_image("backgrounds\start-screen-bg.png")
+bg_img = load_image(r"backgrounds\start-screen-bg.png")
 start_bg = AnimatedStartScreen(bg_img, 46, 1, WIDTH // 2 - 320,
                                HEIGHT // 2 - 145)
 
-da_btn = Button(WIDTH // 2 - 165, HEIGHT // 2 - 10, 67, 60, "buttons\da-btn.png", "buttons\hover-da-btn.png",
-                "data\sounds\da-sound.mp3")
-net_btn = Button(WIDTH // 2 + 40, HEIGHT // 2 - 10, 86, 58, "buttons\cda-btn.png", "buttons\hover-cda-btn.png",
-                "data\sounds\hi-hi-hi-ha-sound.mp3")
+da_btn = Button(WIDTH // 2 - 165, HEIGHT // 2 - 10, 67, 60, r"buttons\da-btn.png", r"buttons\hover-da-btn.png",
+                r"data\sounds\da-sound.mp3")
+net_btn = Button(WIDTH // 2 + 40, HEIGHT // 2 - 10, 86, 58, r"buttons\cda-btn.png", r"buttons\hover-cda-btn.png",
+                r"data\sounds\hi-hi-hi-ha-sound.mp3")
 
 
 def start_screen():
-    pygame.mixer.music.load("data\sounds\start-screen-sound.mp3")
+    pygame.mixer.music.load(r"data\sounds\start-screen-sound.mp3")
     pygame.mixer.music.play(-1)
 
     running = True
