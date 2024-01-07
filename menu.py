@@ -155,7 +155,7 @@ def levels_menu():
 
 def info_menu():
 
-    imgInf = load_image('backgrounds\info-bg.png')
+    imgInf = load_image(backgrounds['info-bg'])
     bgInf = pygame.transform.scale(imgInf, (imgInf.get_width() * 2, imgInf.get_height() * 2))
 
     running = True
@@ -192,4 +192,4 @@ def info_menu():
         pygame.display.flip()
 
 
-# main_menu()
+main_menu()
