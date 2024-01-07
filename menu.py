@@ -26,7 +26,7 @@ def main_menu():
     pygame.mixer.music.load("data\sounds\menu-sound.mp3")
     pygame.mixer.music.play(-1)
 
-    img = load_image('buttons\pp_menu_bg.png')
+    img = load_image('pp_menu_bg.png')
     bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 
     start_btn = Button(WIDTH - 265, 168, 190, 80, "buttons\start-btn.png", "buttons\hover-start-btn.png",
