@@ -174,4 +174,4 @@ def info_menu():
         pygame.display.flip()
 
 
-main_menu()
+# main_menu()
