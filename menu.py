@@ -2,6 +2,7 @@ import pygame
 import sys
 from load_image import load_image
 from buttons import Button
+from objects import Object
 from transition import transition
 from consts import *
 
@@ -18,16 +19,18 @@ bgSI = pygame.transform.scale(imgSI, (imgSI.get_width() * 2, imgSI.get_height() 
 cross_btn = Button(WIDTH - 40, 10, 32, 32, r"buttons\cross.png", "",
                    r"data\sounds\menu-button-sound.mp3")
 
-cursor = load_image('cursor.png')
+cursor = load_image(r'objects\cursor-obj.png')
 pygame.mouse.set_visible(False)
 
-img = load_image(r'backgrounds\main-menu-bg-test.png')
+img = load_image(r'backgrounds\main-menu-bg.png')
 bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 
 
 def main_menu():
     # pygame.mixer.music.load("data\sounds\menu-sound.mp3")
     # pygame.mixer.music.play(-1)
+
+    title = Object(WIDTH // 2 - 886 // 2, 49, 886, 80, r"objects\title-obj.png")
 
     start_btn = Button(WIDTH // 2 - 240 // 2, 186, 240, 100, r"buttons\start-btn.png",
                        r"buttons\hover-start-btn.png", r"data\sounds\menu-button-sound.mp3")
@@ -65,9 +68,13 @@ def main_menu():
             for button in buttons:
                 button.handle_event(event)
 
+            title.handle_event(event)
+
         for button in buttons:
             button.check_hover(pygame.mouse.get_pos())
             button.draw(screen)
+
+        title.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
         if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
