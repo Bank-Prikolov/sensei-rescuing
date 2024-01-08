@@ -109,8 +109,8 @@ def settings_menu():
 
 
 def levels_menu():
-    start_btn = Button(WIDTH // 2 - 240 // 2, 186, 240, 100, r"buttons\start-btn1.png",
-                       r"buttons\hover-start-btn1.png", r"data\sounds\menu-button-sound.mp3")
+    start_btn = Button(WIDTH // 2 - 240 // 2, 186, 240, 100, r"buttons\start-btn.png",
+                       r"buttons\hover-start-btn.png", r"data\sounds\menu-button-sound.mp3")
 
     running = True
     while running:
