@@ -46,6 +46,9 @@ class Board:
                 elif self.board[y][x] == '#':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                         self.cell_size, wallx, toches)
+                elif self.board[y][x] == '=':
+                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                        self.cell_size, wally, toches)
                 else:
                     pass
 
