@@ -16,7 +16,7 @@ clock = pygame.time.Clock()
 imgSI = load_image(bg1)
 bgSI = pygame.transform.scale(imgSI, (imgSI.get_width() * 2, imgSI.get_height() * 2))
 
-cross_btn = Button(WIDTH - 40, 10, 32, 32, r"buttons\cross.png", "",
+cross_btn = Button(WIDTH - 100, 10, 48, 52, r"buttons\cross-btn.png", "buttons\hover-cross-btn.png",
                    r"data\sounds\menu-button-sound.mp3")
 
 cursor = load_image(r'objects\cursor-obj.png')
@@ -191,4 +191,4 @@ def info_menu():
         pygame.display.flip()
 
 
-main_menu()
+# main_menu()
