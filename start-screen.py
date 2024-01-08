@@ -15,7 +15,7 @@ pygame.display.set_caption('Sensei Rescuing')
 
 bg_group = pygame.sprite.Group()
 
-cursor = load_image('cursor.png')
+cursor = load_image(r'objects\cursor.png')
 pygame.mouse.set_visible(False)
 
 
