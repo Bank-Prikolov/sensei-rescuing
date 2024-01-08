@@ -21,7 +21,7 @@ cross_btn = Button(WIDTH - 40, 10, 32, 32, r"buttons\cross.png", "",
 cursor = load_image('cursor.png')
 pygame.mouse.set_visible(False)
 
-img = load_image(r'backgrounds\main-menu-bg.png')
+img = load_image(r'backgrounds\main-menu-bg-test.png')
 bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 
 
