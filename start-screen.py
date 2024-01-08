@@ -15,7 +15,7 @@ pygame.display.set_caption('Sensei Rescuing')
 
 bg_group = pygame.sprite.Group()
 
-cursor = load_image(r'objects\cursor.png')
+cursor = load_image(r'objects\cursor-obj.png')
 pygame.mouse.set_visible(False)
 
 
@@ -62,7 +62,7 @@ start_bg = AnimatedStartScreen(bg_img, 46, 1, WIDTH // 2 - 320,
 
 da_btn = Button(WIDTH // 2 - 165, HEIGHT // 2 - 10, 67, 60, r"buttons\da-btn.png", r"buttons\hover-da-btn.png",
                 r"data\sounds\da-sound.mp3")
-net_btn = Button(WIDTH // 2 + 40, HEIGHT // 2 - 10, 86, 58, r"buttons\cda-btn.png", r"buttons\hover-cda-btn.png",
+net_btn = Button(WIDTH // 2 + 40, HEIGHT // 2 - 10, 86, 58, r"buttons\net-btn.png", r"buttons\hover-net-btn.png",
                 r"data\sounds\hi-hi-hi-ha-sound.mp3")
 
 
@@ -83,7 +83,6 @@ def start_screen():
             #    sys.exit()
 
             if event.type == pygame.USEREVENT and event.button == da_btn:
-                print('da-btn tapped')
                 transition()
                 menu.main_menu()
 
