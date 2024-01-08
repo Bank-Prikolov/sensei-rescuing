@@ -29,8 +29,8 @@ def main_menu():
     # pygame.mixer.music.load("data\sounds\menu-sound.mp3")
     # pygame.mixer.music.play(-1)
 
-    start_btn = Button(WIDTH // 2 - 240 // 2, 186, 240, 100, r"buttons\start-btn.png",
-                       r"buttons\hover-start-btn.png", r"data\sounds\menu-button-sound.mp3")
+    start_btn = Button(WIDTH // 2 - 240 // 2, 186, 240, 100, r"buttons\start-btn1.png",
+                       r"buttons\hover-start-btn1.png", r"data\sounds\menu-button-sound.mp3")
     settings_btn = Button(WIDTH // 2 - 240 // 2, 284, 240, 100, r"buttons\settings-btn.png",
                           r"buttons\hover-settings-btn.png", r"data\sounds\menu-button-sound.mp3")
     info_btn = Button(WIDTH // 2 - 240 // 2, 382, 240, 100, r"buttons\info-btn.png",
@@ -109,6 +109,9 @@ def settings_menu():
 
 
 def levels_menu():
+    start_btn = Button(WIDTH // 2 - 240 // 2, 186, 240, 100, r"buttons\start-btn1.png",
+                       r"buttons\hover-start-btn1.png", r"data\sounds\menu-button-sound.mp3")
+
     running = True
     while running:
         screen.fill((0, 0, 0))
@@ -129,8 +132,15 @@ def levels_menu():
                 transition()
                 running = False
 
-            cross_btn.handle_event(event)
+            if event.type == pygame.USEREVENT and event.button == start_btn:
+                transition()
+                levels_menu()
 
+            cross_btn.handle_event(event)
+            start_btn.handle_event(event)
+
+        start_btn.check_hover(pygame.mouse.get_pos())
+        start_btn.draw(screen)
         cross_btn.check_hover(pygame.mouse.get_pos())
         cross_btn.draw(screen)
 
@@ -174,4 +184,4 @@ def info_menu():
         pygame.display.flip()
 
 
-# main_menu()
+main_menu()
