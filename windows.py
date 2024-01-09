@@ -8,4 +8,4 @@ fullsize = tuple(map(int, '='.join(
 k = fullsize[1] // size[1]
 otstupx = (fullsize[0] - size[0] * k) // 2
 otstupy = (fullsize[1] - size[1] * k) * k
-screen = pygame.display.set_mode(size)
+fullscreen = 0
