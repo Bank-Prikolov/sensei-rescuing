@@ -16,7 +16,7 @@ clock = pygame.time.Clock()
 imgSI = load_image(bg1)
 bgSI = pygame.transform.scale(imgSI, (imgSI.get_width() * 2, imgSI.get_height() * 2))
 
-cross_btn = Button(WIDTH - 100, 10, 48, 52, r"buttons\cross-btn.png", "buttons\hover-cross-btn.png",
+cross_btn = Button(WIDTH - 100, 10, 48, 52, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
                    r"data\sounds\menu-button-sound.mp3")
 
 cursor = load_image(r'objects\cursor-obj.png')
@@ -84,6 +84,10 @@ def main_menu():
 
 
 def settings_menu():
+
+    field_left = Object(WIDTH // 2 - 450, 215, 420, 430, r"objects\field-obj.png")
+    field_right = Object(WIDTH // 2 + 30, 215, 420, 430, r"objects\field-obj.png")
+
     running = True
     while running:
         screen.fill((0, 0, 0))
@@ -103,10 +107,16 @@ def settings_menu():
                 transition()
                 running = False
 
+            field_left.handle_event(event)
+            field_right.handle_event(event)
+
             cross_btn.handle_event(event)
 
         cross_btn.check_hover(pygame.mouse.get_pos())
         cross_btn.draw(screen)
+
+        field_left.draw(screen)
+        field_right.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
         if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
@@ -159,6 +169,9 @@ def levels_menu():
 
 
 def info_menu():
+
+    field = Object(WIDTH // 2 - 450, 215, 900, 430, r"objects\field-obj.png")
+
     running = True
     while running:
         screen.fill((0, 0, 0))
@@ -179,7 +192,11 @@ def info_menu():
                 transition()
                 running = False
 
+            field.handle_event(event)
+
             cross_btn.handle_event(event)
+
+        field.draw(screen)
 
         cross_btn.check_hover(pygame.mouse.get_pos())
         cross_btn.draw(screen)
@@ -191,4 +208,4 @@ def info_menu():
         pygame.display.flip()
 
 
-# main_menu()
+main_menu()
