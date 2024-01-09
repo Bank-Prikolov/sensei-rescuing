@@ -1,3 +1,5 @@
+import pygame.sprite
+
 from lvl_gen import *
 
 
@@ -40,6 +42,11 @@ class Hero(pygame.sprite.Sprite):
 
         yspeed -= (self.ys // 20)
         self.rect = self.rect.move(0, yspeed * k ** fullscreen)
+        # collision = False
+        # hero.move(0, 128 * k ** fullscreen)
+        # if pygame.sprite.spritecollide(self, platformgroup, False):
+        #     if (hero.get_coords()[1] + hero.rect[3] - 1) <= (pygame.sprite.spritecollide(self, platformgroup, False))[0].rect[1]:
+        #         collision = True
 
         if pygame.sprite.spritecollide(self, toches, False):
             self.rect = self.rect.move(0, -yspeed * k ** fullscreen)

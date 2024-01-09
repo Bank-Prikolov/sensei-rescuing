@@ -6,6 +6,7 @@ from windows import *
 
 toches = pygame.sprite.Group()
 bgroup = pygame.sprite.Group()
+platformgroup = pygame.sprite.Group()
 characters = pygame.sprite.Group()
 heropic = wai
 if not fullscreen:
@@ -50,6 +51,7 @@ class Board:
 
     def render(self, sc):
         toches.empty()
+        platformgroup.empty()
         for x in range(len(self.board[0])):
             for y in range(len(self.board)):
                 if self.board[y][x] == '0':
@@ -63,9 +65,13 @@ class Board:
                         self.cell_size, wally, toches)
                 elif self.board[y][x] == '@':
                     pass
+                elif self.board[y][x] == '_':
+                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                        self.cell_size, plat, platformgroup)
                 else:
                     pass
         toches.draw(sc)
+        platformgroup.draw(sc)
 
     def get_cell(self, mouse_pos):
         if self.left * k < mouse_pos[0] < self.left * k + (self.cell_size * len(self.board[0]) * k) and \
@@ -81,8 +87,8 @@ class Board:
         for x in range(len(self.board[0])):
             for y in range(len(self.board)):
                 if self.board[y][x] == '@':
-                    return otstupx * fullscreen + (20 + self.cell_size * x) * k ** fullscreen, (
-                            otstupy + self.cell_size * y - 44) * k ** fullscreen
+                    return otstupx * fullscreen + (20 + self.cell_size * x) * k ** fullscreen, otstupy * fullscreen + (
+                                20 + self.cell_size * y) * k ** fullscreen
 
 
 class Background(pygame.sprite.Sprite):
@@ -111,10 +117,10 @@ def generate_level(lvlnum):
     global board, screen, start_coords, bg
     if lvlnum == 1:
         level = lvl1
-        bground = 1
+        # bground = 1
     else:
         level = lvl2
-        bground = 2
+        # bground = 2
     bg = Background(*size, 0, 0, k)
     board = Board(level)
     board.set_view(otstupx * fullscreen, otstupy * fullscreen, 128 * k ** fullscreen)
