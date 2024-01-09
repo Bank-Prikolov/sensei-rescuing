@@ -16,9 +16,6 @@ clock = pygame.time.Clock()
 imgSI = load_image(bg1)
 bgSI = pygame.transform.scale(imgSI, (imgSI.get_width() * 2, imgSI.get_height() * 2))
 
-cross_btn = Button(WIDTH - 100, 10, 48, 52, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
-                   r"data\sounds\menu-button-sound.mp3")
-
 cursor = load_image(r'objects\cursor-obj.png')
 pygame.mouse.set_visible(False)
 
@@ -30,7 +27,7 @@ def main_menu():
     # pygame.mixer.music.load("data\sounds\menu-sound.mp3")
     # pygame.mixer.music.play(-1)
 
-    title = Object(WIDTH // 2 - 886 // 2, 49, 886, 80, r"objects\title-obj.png")
+    title = Object(WIDTH // 2 - 886 // 2, 49, 886, 80, r"objects\menu-title-obj.png")
 
     start_btn = Button(WIDTH // 2 - 240 // 2, 186, 240, 100, r"buttons\start-btn.png",
                        r"buttons\hover-start-btn.png", r"data\sounds\menu-button-sound.mp3")
@@ -85,8 +82,12 @@ def main_menu():
 
 def settings_menu():
 
-    field_left = Object(WIDTH // 2 - 450, 215, 420, 430, r"objects\field-obj.png")
-    field_right = Object(WIDTH // 2 + 30, 215, 420, 430, r"objects\field-obj.png")
+    title = Object(WIDTH // 2 - 626 // 2 - 50, 85, 626, 82, r"objects\settings-title-obj.png")
+    field_left = Object(WIDTH // 2 - 450, 200, 420, 430, r"objects\field-obj.png")
+    field_right = Object(WIDTH // 2 + 30, 200, 420, 430, r"objects\field-obj.png")
+
+    cross_btn = Button(WIDTH - 229, 93, 67, 72, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
+                       r"data\sounds\menu-button-sound.mp3")
 
     running = True
     while running:
@@ -107,6 +108,7 @@ def settings_menu():
                 transition()
                 running = False
 
+            title.handle_event(event)
             field_left.handle_event(event)
             field_right.handle_event(event)
 
@@ -115,6 +117,7 @@ def settings_menu():
         cross_btn.check_hover(pygame.mouse.get_pos())
         cross_btn.draw(screen)
 
+        title.draw(screen)
         field_left.draw(screen)
         field_right.draw(screen)
 
@@ -169,8 +172,11 @@ def levels_menu():
 
 
 def info_menu():
+    cross_btn = Button(WIDTH - 228, 93, 67, 72, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
+                       r"data\sounds\menu-button-sound.mp3")
 
-    field = Object(WIDTH // 2 - 450, 215, 900, 430, r"objects\field-obj.png")
+    title = Object(WIDTH // 2 - 640 // 2 - 56, 85, 640, 82, r"objects\info-title-obj.png")
+    field = Object(WIDTH // 2 - 450, 200, 900, 430, r"objects\field-obj.png")
 
     running = True
     while running:
@@ -193,10 +199,12 @@ def info_menu():
                 running = False
 
             field.handle_event(event)
+            title.handle_event(event)
 
             cross_btn.handle_event(event)
 
         field.draw(screen)
+        title.draw(screen)
 
         cross_btn.check_hover(pygame.mouse.get_pos())
         cross_btn.draw(screen)
