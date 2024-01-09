@@ -132,6 +132,9 @@ def levels_menu():
     start_btn = Button(WIDTH // 2 - 240 // 2, 186, 240, 100, r"buttons\start-btn.png",
                        r"buttons\hover-start-btn.png", r"data\sounds\menu-button-sound.mp3")
 
+    cross_btn = Button(WIDTH - 228, 93, 67, 72, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
+                       r"data\sounds\menu-button-sound.mp3")
+
     running = True
     while running:
         screen.fill((0, 0, 0))
@@ -172,12 +175,11 @@ def levels_menu():
 
 
 def info_menu():
-    cross_btn = Button(WIDTH - 228, 93, 67, 72, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
+    cross_btn = Button(WIDTH - 220, 93, 67, 72, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
                        r"data\sounds\menu-button-sound.mp3")
 
-    title = Object(WIDTH // 2 - 640 // 2 - 56, 85, 640, 82, r"objects\info-title-obj.png")
-    field = Object(WIDTH // 2 - 450, 200, 900, 430, r"objects\field-obj.png")
-
+    title = Object(WIDTH // 2 - 640 // 2 - 48, 85, 640, 82, r"objects\info-title-obj.png")
+    field = Object(WIDTH // 2 - 450, 200, 900, 430, r"objects\info-field-obj.png")
     running = True
     while running:
         screen.fill((0, 0, 0))
@@ -216,4 +218,4 @@ def info_menu():
         pygame.display.flip()
 
 
-main_menu()
+# main_menu()
