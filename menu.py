@@ -1,5 +1,6 @@
 import pygame
 import sys
+import webbrowser
 from load_image import load_image
 from buttons import Button
 from objects import Object
@@ -177,9 +178,16 @@ def levels_menu():
 def info_menu():
     cross_btn = Button(WIDTH - 220, 93, 67, 72, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
                        r"data\sounds\menu-button-sound.mp3")
+    github_left_btn = Button(WIDTH // 2 - 345, HEIGHT - 170, 67, 72, r"buttons\github-btn.png", r"buttons\hover-github-btn.png",
+                       r"data\sounds\menu-button-sound.mp3")
+    github_right_btn = Button(WIDTH // 2 + 100, HEIGHT - 170, 67, 72, r"buttons\github-btn.png", r"buttons\hover-github-btn.png",
+                       r"data\sounds\menu-button-sound.mp3")
 
     title = Object(WIDTH // 2 - 640 // 2 - 48, 85, 640, 82, r"objects\info-title-obj.png")
     field = Object(WIDTH // 2 - 450, 200, 900, 430, r"objects\info-field-obj.png")
+    alexandr = Object(WIDTH // 2 - 265, HEIGHT - 157, 269, 45, r"objects\alexandr-obj.png")
+    igor = Object(WIDTH // 2 + 180, HEIGHT - 157, 142, 45, r"objects\igor-obj.png")
+
     running = True
     while running:
         screen.fill((0, 0, 0))
@@ -200,14 +208,29 @@ def info_menu():
                 transition()
                 running = False
 
+            if event.type == pygame.USEREVENT and event.button == github_left_btn:
+                webbrowser.open('https://github.com/mikhalexandr')
+
+            if event.type == pygame.USEREVENT and event.button == github_right_btn:
+                webbrowser.open('https://github.com/WaizorSote')
+
+            alexandr.handle_event(event)
+            igor.handle_event(event)
             field.handle_event(event)
             title.handle_event(event)
-
+            github_left_btn.handle_event(event)
+            github_right_btn.handle_event(event)
             cross_btn.handle_event(event)
 
         field.draw(screen)
         title.draw(screen)
+        alexandr.draw(screen)
+        igor.draw(screen)
 
+        github_right_btn.check_hover(pygame.mouse.get_pos())
+        github_right_btn.draw(screen)
+        github_left_btn.check_hover(pygame.mouse.get_pos())
+        github_left_btn.draw(screen)
         cross_btn.check_hover(pygame.mouse.get_pos())
         cross_btn.draw(screen)
 
@@ -218,4 +241,4 @@ def info_menu():
         pygame.display.flip()
 
 
-# main_menu()
+main_menu()
