@@ -84,8 +84,8 @@ def main_menu():
 def settings_menu():
 
     title = Object(WIDTH // 2 - 626 // 2 - 50, 85, 626, 82, r"objects\settings-title-obj.png")
-    field_left = Object(WIDTH // 2 - 450, 200, 420, 430, r"objects\field-obj.png")
-    field_right = Object(WIDTH // 2 + 30, 200, 420, 430, r"objects\field-obj.png")
+    field_audio = Object(WIDTH // 2 - 450, 200, 420, 430, r"objects\audio-field-obj.png")
+    field_video = Object(WIDTH // 2 + 30, 200, 420, 430, r"objects\video-field-obj.png")
 
     cross_btn = Button(WIDTH - 229, 93, 67, 72, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
                        r"data\sounds\menu-button-sound.mp3")
@@ -110,8 +110,8 @@ def settings_menu():
                 running = False
 
             title.handle_event(event)
-            field_left.handle_event(event)
-            field_right.handle_event(event)
+            field_audio.handle_event(event)
+            field_video.handle_event(event)
 
             cross_btn.handle_event(event)
 
@@ -119,8 +119,8 @@ def settings_menu():
         cross_btn.draw(screen)
 
         title.draw(screen)
-        field_left.draw(screen)
-        field_right.draw(screen)
+        field_audio.draw(screen)
+        field_video.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
         if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
@@ -176,14 +176,14 @@ def levels_menu():
 
 
 def info_menu():
-    cross_btn = Button(WIDTH - 220, 93, 67, 72, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
+    cross_btn = Button(WIDTH - 218, 93, 67, 72, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
                        r"data\sounds\menu-button-sound.mp3")
     github_left_btn = Button(WIDTH // 2 - 345, HEIGHT - 170, 67, 72, r"buttons\github-btn.png", r"buttons\hover-github-btn.png",
                        r"data\sounds\menu-button-sound.mp3")
     github_right_btn = Button(WIDTH // 2 + 100, HEIGHT - 170, 67, 72, r"buttons\github-btn.png", r"buttons\hover-github-btn.png",
                        r"data\sounds\menu-button-sound.mp3")
 
-    title = Object(WIDTH // 2 - 640 // 2 - 48, 85, 640, 82, r"objects\info-title-obj.png")
+    title = Object(WIDTH // 2 - 640 // 2 - 46, 85, 640, 82, r"objects\info-title-obj.png")
     field = Object(WIDTH // 2 - 450, 200, 900, 430, r"objects\info-field-obj.png")
     alexandr = Object(WIDTH // 2 - 265, HEIGHT - 157, 269, 45, r"objects\alexandr-obj.png")
     igor = Object(WIDTH // 2 + 180, HEIGHT - 157, 142, 45, r"objects\igor-obj.png")
@@ -241,4 +241,4 @@ def info_menu():
         pygame.display.flip()
 
 
-# main_menu()
+main_menu()
