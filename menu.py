@@ -53,7 +53,7 @@ def main_menu():
 
             if event.type == pygame.USEREVENT and event.button == start_btn:
                 transition()
-                levels_menu()
+                levels_menu_1()
 
             if event.type == pygame.USEREVENT and event.button == settings_btn:
                 transition()
@@ -129,12 +129,13 @@ def settings_menu():
         pygame.display.flip()
 
 
-def levels_menu():
-    start_btn = Button(WIDTH // 2 - 240 // 2, 186, 240, 100, r"buttons\start-btn.png",
-                       r"buttons\hover-start-btn.png", r"data\sounds\menu-button-sound.mp3")
-
-    cross_btn = Button(WIDTH - 228, 93, 67, 72, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
+def levels_menu_1():
+    cross_btn = Button(WIDTH - 192, 93, 67, 72, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
                        r"data\sounds\menu-button-sound.mp3")
+    arrow_btn = Button(WIDTH - 100, HEIGHT // 2 - 72 // 2, 67, 72, r"buttons\arrow-btn.png", r"buttons\hover-arrow-btn.png",
+                       r"data\sounds\menu-button-sound.mp3")
+
+    title = Object(WIDTH // 2 - 700 // 2 - 49, 85, 700, 82, r"objects\level-menu-1-title-obj.png")
 
     running = True
     while running:
@@ -156,15 +157,69 @@ def levels_menu():
                 transition()
                 running = False
 
-            if event.type == pygame.USEREVENT and event.button == start_btn:
+            if event.type == pygame.USEREVENT and event.button == arrow_btn:
                 transition()
-                levels_menu()
+                levels_menu_2()
+                running = False
 
+            title.handle_event(event)
+            arrow_btn.handle_event(event)
             cross_btn.handle_event(event)
-            start_btn.handle_event(event)
 
-        start_btn.check_hover(pygame.mouse.get_pos())
-        start_btn.draw(screen)
+        title.draw(screen)
+
+        arrow_btn.check_hover(pygame.mouse.get_pos())
+        arrow_btn.draw(screen)
+        cross_btn.check_hover(pygame.mouse.get_pos())
+        cross_btn.draw(screen)
+
+        x_c, y_c = pygame.mouse.get_pos()
+        if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
+            screen.blit(cursor, (x_c, y_c))
+
+        pygame.display.flip()
+
+
+def levels_menu_2():
+    cross_btn = Button(WIDTH - 192, 93, 67, 72, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
+                       r"data\sounds\menu-button-sound.mp3")
+    arrowBack_btn = Button(33, HEIGHT // 2 - 72 // 2, 67, 72, r"buttons\arrow-back-btn.png",
+                       r"buttons\hover-arrow-back-btn.png",
+                       r"data\sounds\menu-button-sound.mp3")
+    title = Object(WIDTH // 2 - 700 // 2 - 49, 85, 700, 82, r"objects\level-menu-2-title-obj.png")
+
+    running = True
+    while running:
+        screen.fill((0, 0, 0))
+        screen.blit(bg, (0, 0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    transition()
+                    running = False
+
+            if event.type == pygame.USEREVENT and event.button == cross_btn:
+                transition()
+                running = False
+
+            if event.type == pygame.USEREVENT and event.button == arrowBack_btn:
+                transition()
+                levels_menu_1()
+                running = False
+
+            title.handle_event(event)
+            arrowBack_btn.handle_event(event)
+            cross_btn.handle_event(event)
+
+        title.draw(screen)
+        arrowBack_btn.check_hover(pygame.mouse.get_pos())
+        arrowBack_btn.draw(screen)
         cross_btn.check_hover(pygame.mouse.get_pos())
         cross_btn.draw(screen)
 
@@ -241,4 +296,4 @@ def info_menu():
         pygame.display.flip()
 
 
-main_menu()
+# main_menu()
