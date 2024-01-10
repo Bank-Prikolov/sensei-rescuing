@@ -185,7 +185,7 @@ def info_menu():
 
     title = Object(WIDTH // 2 - 640 // 2 - 46, 85, 640, 82, r"objects\info-title-obj.png")
     field = Object(WIDTH // 2 - 450, 200, 900, 430, r"objects\info-field-obj.png")
-    alexandr = Object(WIDTH // 2 - 265, HEIGHT - 157, 269, 45, r"objects\alexandr-obj.png")
+    alexandr = Object(WIDTH // 2 - 265, HEIGHT - 157, 269, 46, r"objects\alexandr-obj.png")
     igor = Object(WIDTH // 2 + 180, HEIGHT - 157, 142, 45, r"objects\igor-obj.png")
 
     running = True
