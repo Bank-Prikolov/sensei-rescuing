@@ -42,13 +42,11 @@ class Hero(pygame.sprite.Sprite):
 
         yspeed -= (self.ys // 20)
         self.rect = self.rect.move(0, yspeed * k ** fullscreen)
-        # collision = False
-        # hero.move(0, 128 * k ** fullscreen)
-        # if pygame.sprite.spritecollide(self, platformgroup, False):
-        #     if (hero.get_coords()[1] + hero.rect[3] - 1) <= (pygame.sprite.spritecollide(self, platformgroup, False))[0].rect[1]:
-        #         collision = True
-
-        if pygame.sprite.spritecollide(self, toches, False):
+        if hero.act == 'jumpr' or hero.act == 'jumpl':
+            touchable = True
+        else:
+            touchable = False
+        if pygame.sprite.spritecollide(self, toches, False) or (pygame.sprite.spritecollide(self, platformgroup, False) and touchable):
             self.rect = self.rect.move(0, -yspeed * k ** fullscreen)
             yspeed = 0
             self.ys = -16
@@ -144,6 +142,7 @@ if __name__ == '__main__':
     lookingright = 1
     jumping = False
     falling = False
+    platstand = False
     fps = 60
     xspeed = 0
     yspeed = 0
