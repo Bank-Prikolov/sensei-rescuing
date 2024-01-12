@@ -1,5 +1,8 @@
 import os
 import sys
+
+import pygame.surface
+
 from load_image import load_image
 from consts import *
 from windows import *
@@ -8,6 +11,7 @@ toches = pygame.sprite.Group()
 bgroup = pygame.sprite.Group()
 platformgroup = pygame.sprite.Group()
 characters = pygame.sprite.Group()
+untouches = pygame.sprite.Group()
 heropic = wai
 if not fullscreen:
     screen = pygame.display.set_mode(size)
@@ -19,7 +23,12 @@ else:
 
 class Pic(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h, sprite, *group):
-        sprite = load_image(sprite)
+        if type(sprite) != pygame.Surface:
+            sprite = load_image(sprite)
+            group = group
+        else:
+            sprite = sprite
+            group = platformgroup
         super().__init__(*group)
         self.image = pygame.transform.scale(sprite, (w, h))
         self.rect = self.image.get_rect()
@@ -52,6 +61,7 @@ class Board:
     def render(self, sc):
         toches.empty()
         platformgroup.empty()
+        untouches.empty()
         for x in range(len(self.board[0])):
             for y in range(len(self.board)):
                 if self.board[y][x] == '0':
@@ -67,10 +77,16 @@ class Board:
                     pass
                 elif self.board[y][x] == '_':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, plat, platformgroup)
+                        self.cell_size, plat, untouches)
+                    rect = pygame.Surface((self.cell_size, self.cell_size // 16))
+                    rect.fill('#000000')
+                    rect.get_rect()
+                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                        self.cell_size // 16, rect, platformgroup)
                 else:
                     pass
         toches.draw(sc)
+        untouches.draw(sc)
         platformgroup.draw(sc)
 
     def get_cell(self, mouse_pos):
