@@ -39,8 +39,6 @@ def main_menu():
     exit_btn = Button(WIDTH // 2 - 240 // 2, 480, 240, 100, r"buttons\exit-btn.png",
                       r"buttons\hover-exit-btn.png", r"data\sounds\menu-button-sound.mp3")
 
-    buttons = [start_btn, settings_btn, info_btn, exit_btn]
-
     running = True
     while running:
         screen.fill((0, 0, 0))
@@ -53,7 +51,7 @@ def main_menu():
 
             if event.type == pygame.USEREVENT and event.button == start_btn:
                 transition()
-                levels_menu_1()
+                levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == settings_btn:
                 transition()
@@ -63,12 +61,12 @@ def main_menu():
                 transition()
                 info_menu()
 
-            for button in buttons:
+            for button in [start_btn, settings_btn, info_btn, exit_btn]:
                 button.handle_event(event)
 
             title.handle_event(event)
 
-        for button in buttons:
+        for button in [start_btn, settings_btn, info_btn, exit_btn]:
             button.check_hover(pygame.mouse.get_pos())
             button.draw(screen)
 
@@ -109,18 +107,16 @@ def settings_menu():
                 transition()
                 running = False
 
-            title.handle_event(event)
-            field_audio.handle_event(event)
-            field_video.handle_event(event)
+            for obj in [title, field_audio, field_video]:
+                obj.handle_event(event)
 
             cross_btn.handle_event(event)
 
+        for obj in [title, field_audio, field_video]:
+            obj.draw(screen)
+
         cross_btn.check_hover(pygame.mouse.get_pos())
         cross_btn.draw(screen)
-
-        title.draw(screen)
-        field_audio.draw(screen)
-        field_video.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
         if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
@@ -129,13 +125,20 @@ def settings_menu():
         pygame.display.flip()
 
 
-def levels_menu_1():
+def levels_menu():
     cross_btn = Button(WIDTH - 192, 93, 67, 72, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
                        r"data\sounds\menu-button-sound.mp3")
-    arrow_btn = Button(WIDTH - 100, HEIGHT // 2 - 72 // 2, 67, 72, r"buttons\arrow-btn.png", r"buttons\hover-arrow-btn.png",
-                       r"data\sounds\menu-button-sound.mp3")
+    level1Button = Button(64, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\first-btn.png",
+                          r"buttons\hover-first-btn.png", r"data\sounds\menu-button-sound.mp3")
+    level2Button = Button(WIDTH // 2 - 73, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\second-btn.png",
+                          r"buttons\hover-second-btn.png", r"data\sounds\menu-button-sound.mp3")
+    levelBossButton = Button(WIDTH // 2 + 300, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\boss-btn.png",
+                          r"buttons\hover-boss-btn.png", r"data\sounds\menu-button-sound.mp3")
 
-    title = Object(WIDTH // 2 - 700 // 2 - 49, 85, 700, 82, r"objects\level-menu-1-title-obj.png")
+    title = Object(WIDTH // 2 - 700 // 2 - 49, 85, 700, 82, r"objects\level-menu-title-obj.png")
+    level1Field = Object(43, HEIGHT // 2 - 189 // 2 + 25, 186, 189, r"objects\start-level-field-obj.png")
+    level2Field = Object(WIDTH // 2 - 269, HEIGHT // 2 - 189 // 2 + 25, 360, 189, r"objects\hover-level-field-obj.png")
+    levelBossField = Object(WIDTH // 2 + 104, HEIGHT // 2 - 189 // 2 + 25, 360, 189, r"objects\hover-level-field-obj.png")
 
     running = True
     while running:
@@ -157,71 +160,18 @@ def levels_menu_1():
                 transition()
                 running = False
 
-            if event.type == pygame.USEREVENT and event.button == arrow_btn:
-                transition()
-                levels_menu_2()
-                running = False
+            for obj in [title, level1Field, level2Field, levelBossField]:
+                obj.handle_event(event)
 
-            title.handle_event(event)
-            arrow_btn.handle_event(event)
-            cross_btn.handle_event(event)
+            for button in [cross_btn, level1Button, level2Button, levelBossButton]:
+                button.handle_event(event)
 
-        title.draw(screen)
+        for obj in [title, level1Field, level2Field, levelBossField]:
+            obj.draw(screen)
 
-        arrow_btn.check_hover(pygame.mouse.get_pos())
-        arrow_btn.draw(screen)
-        cross_btn.check_hover(pygame.mouse.get_pos())
-        cross_btn.draw(screen)
-
-        x_c, y_c = pygame.mouse.get_pos()
-        if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
-            screen.blit(cursor, (x_c, y_c))
-
-        pygame.display.flip()
-
-
-def levels_menu_2():
-    cross_btn = Button(WIDTH - 192, 93, 67, 72, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
-                       r"data\sounds\menu-button-sound.mp3")
-    arrowBack_btn = Button(33, HEIGHT // 2 - 72 // 2, 67, 72, r"buttons\arrow-back-btn.png",
-                       r"buttons\hover-arrow-back-btn.png",
-                       r"data\sounds\menu-button-sound.mp3")
-    title = Object(WIDTH // 2 - 700 // 2 - 49, 85, 700, 82, r"objects\level-menu-2-title-obj.png")
-
-    running = True
-    while running:
-        screen.fill((0, 0, 0))
-        screen.blit(bg, (0, 0))
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-                pygame.quit()
-                sys.exit()
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    transition()
-                    running = False
-
-            if event.type == pygame.USEREVENT and event.button == cross_btn:
-                transition()
-                running = False
-
-            if event.type == pygame.USEREVENT and event.button == arrowBack_btn:
-                transition()
-                levels_menu_1()
-                running = False
-
-            title.handle_event(event)
-            arrowBack_btn.handle_event(event)
-            cross_btn.handle_event(event)
-
-        title.draw(screen)
-        arrowBack_btn.check_hover(pygame.mouse.get_pos())
-        arrowBack_btn.draw(screen)
-        cross_btn.check_hover(pygame.mouse.get_pos())
-        cross_btn.draw(screen)
+        for button in [cross_btn, level1Button, level2Button, levelBossButton]:
+            button.check_hover(pygame.mouse.get_pos())
+            button.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
         if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
@@ -269,25 +219,18 @@ def info_menu():
             if event.type == pygame.USEREVENT and event.button == github_right_btn:
                 webbrowser.open('https://github.com/WaizorSote')
 
-            alexandr.handle_event(event)
-            igor.handle_event(event)
-            field.handle_event(event)
-            title.handle_event(event)
-            github_left_btn.handle_event(event)
-            github_right_btn.handle_event(event)
-            cross_btn.handle_event(event)
+            for obj in [title, field, alexandr, igor]:
+                obj.handle_event(event)
 
-        field.draw(screen)
-        title.draw(screen)
-        alexandr.draw(screen)
-        igor.draw(screen)
+            for button in [github_left_btn, github_right_btn, cross_btn]:
+                button.handle_event(event)
 
-        github_right_btn.check_hover(pygame.mouse.get_pos())
-        github_right_btn.draw(screen)
-        github_left_btn.check_hover(pygame.mouse.get_pos())
-        github_left_btn.draw(screen)
-        cross_btn.check_hover(pygame.mouse.get_pos())
-        cross_btn.draw(screen)
+        for obj in [title, field, alexandr, igor]:
+            obj.draw(screen)
+
+        for button in [github_left_btn, github_right_btn, cross_btn]:
+            button.check_hover(pygame.mouse.get_pos())
+            button.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
         if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
