@@ -193,7 +193,6 @@ if __name__ == '__main__':
                             pass
                 elif event.key == pygame.K_F11:
                     if fullscreen:
-                        print('0')
                         fullscreen = 0
                         hero.set_coords((hero.get_coords()[0] - otstupx) // k, (hero.get_coords()[1] - otstupy) // k)
                     else:
