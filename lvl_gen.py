@@ -123,7 +123,7 @@ class Background(pygame.sprite.Sprite):
         return newground
 
 
-board = Board('pp_test_level.txt')
+board = Board('1-level.txt')
 board.set_view(0, 0, 128)
 start_coords = board.get_start_pos()
 bg = Background(*size, 0, 0, k)
