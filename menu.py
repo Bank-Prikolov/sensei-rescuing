@@ -23,6 +23,9 @@ pygame.mouse.set_visible(False)
 img = load_image(r'backgrounds\main-menu-bg.png')
 bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 
+checkPassing2 = True
+checkPassingBoss = False
+
 
 def main_menu():
     # pygame.mixer.music.load("data\sounds\menu-sound.mp3")
@@ -126,6 +129,7 @@ def settings_menu():
 
 
 def levels_menu():
+    global checkPassing2, checkPassingBoss
     cross_btn = Button(WIDTH - 192, 93, 67, 72, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
                        r"data\sounds\menu-button-sound.mp3")
     level1Button = Button(64, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\first-btn.png",
@@ -137,8 +141,10 @@ def levels_menu():
 
     title = Object(WIDTH // 2 - 700 // 2 - 49, 85, 700, 82, r"objects\level-menu-title-obj.png")
     level1Field = Object(43, HEIGHT // 2 - 189 // 2 + 25, 186, 189, r"objects\start-level-field-obj.png")
-    level2Field = Object(WIDTH // 2 - 269, HEIGHT // 2 - 189 // 2 + 25, 360, 189, r"objects\hover-level-field-obj.png")
-    levelBossField = Object(WIDTH // 2 + 104, HEIGHT // 2 - 189 // 2 + 25, 360, 189, r"objects\hover-level-field-obj.png")
+    level2Field = Object(WIDTH // 2 - 269, HEIGHT // 2 - 189 // 2 + 25, 360, 189, r"objects\level-field-obj.png",
+                         r"objects\hover-level-field-obj.png")
+    levelBossField = Object(WIDTH // 2 + 104, HEIGHT // 2 - 189 // 2 + 25, 360, 189,
+                            r"objects\level-field-obj.png", r"objects\hover-level-field-obj.png")
 
     running = True
     while running:
@@ -166,8 +172,14 @@ def levels_menu():
             for button in [cross_btn, level1Button, level2Button, levelBossButton]:
                 button.handle_event(event)
 
-        for obj in [title, level1Field, level2Field, levelBossField]:
+        for obj in [title, level1Field]:
             obj.draw(screen)
+
+        level2Field.check_passing(checkPassing2)
+        level2Field.draw(screen)
+
+        levelBossField.check_passing(checkPassingBoss)
+        levelBossField.draw(screen)
 
         for button in [cross_btn, level1Button, level2Button, levelBossButton]:
             button.check_hover(pygame.mouse.get_pos())
