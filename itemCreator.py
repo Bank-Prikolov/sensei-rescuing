@@ -14,22 +14,22 @@ class Object:
 
         self.no_active_image = self.image
         if no_active_image_path:
+            self.is_no_active = True
             self.no_active_image = load_image(no_active_image_path)
             self.no_active_image = pygame.transform.scale(self.no_active_image, (width, height))
+        else:
+            self.is_no_active = False
 
         self.rect = self.image.get_rect(topleft=(x, y))
-
-        self.is_no_active = True
 
     def check_passing(self, isActive=False):
         if isActive:
             self.is_no_active = False
 
     def draw(self, screen):
+        current_image = self.image
         if self.is_no_active:
             current_image = self.no_active_image
-        else:
-            current_image = self.image
         screen.blit(current_image, self.rect.topleft)
 
 

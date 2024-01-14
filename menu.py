@@ -26,7 +26,7 @@ bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 checkIsActive2 = False
 checkIsActiveBoss = False
 
-checkIsPassing1 = False
+checkIsPassing1 = True
 checkIsPassing2 = False
 checkIsPassingBoss = False
 
@@ -134,7 +134,8 @@ def settings_menu():
             cross_btn.handle_event(event)
             fs_btn.handle_event(event)
 
-        for obj in [title, field_audio, field_video, fs_name, sound_name, music_name, music_slider_btn, sound_slider_btn]:
+        for obj in [title, field_audio, field_video, fs_name, sound_name, music_name, music_slider_btn,
+                    sound_slider_btn]:
             obj.draw(screen)
 
         fs_btn.check_hover(pygame.mouse.get_pos())
@@ -161,8 +162,11 @@ def levels_menu():
     levelBossButton = Button(WIDTH // 2 + 300, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\default-boss-btn.png",
                              r"buttons\hover-boss-btn.png", r"buttons\press-boss-btn.png",
                              r"data\sounds\menu-button-sound.mp3", r"buttons\no-active-boss-btn.png")
+    info_btn = Button(WIDTH - 54, 263, 18, 18, r"buttons\default-level-info-btn.png",
+                      r"buttons\hover-level-info-btn.png", r"buttons\hover-level-info-btn.png")
 
     title = Object(WIDTH // 2 - 700 // 2 - 49, 85, 700, 82, r"objects\level-menu-title-obj.png")
+    field = Object(WIDTH // 2 - 490, 251, 980, 305, r"objects\level-menu-field-obj.png")
     level1Field = Object(43, HEIGHT // 2 - 189 // 2 + 25, 186, 189, r"objects\start-level-field-obj.png")
     level2Field = Object(WIDTH // 2 - 269, HEIGHT // 2 - 189 // 2 + 25, 360, 189, r"objects\level-field-obj.png",
                          r"objects\hover-level-field-obj.png")
@@ -172,8 +176,10 @@ def levels_menu():
     zeroStars, oneStar, twoStars, threeStars = (r"objects\stars-zero-obj.png", r"objects\stars-one-obj.png",
                                                 r"objects\stars-two-obj.png", r"objects\stars-three-obj.png")
     level1Stars = Stars(10, HEIGHT // 2 - 189 // 2 + 43 + 180, 252, 44, zeroStars, oneStar, twoStars, threeStars)
-    level2Stars = Stars(WIDTH // 2 - 252 // 2, HEIGHT // 2 - 189 // 2 + 43 + 180, 252, 44, zeroStars, oneStar, twoStars, threeStars)
-    levelBossStars = Stars(WIDTH // 2 + 248, HEIGHT // 2 - 189 // 2 + 43 + 180, 252, 44, zeroStars, oneStar, twoStars, threeStars)
+    level2Stars = Stars(WIDTH // 2 - 252 // 2, HEIGHT // 2 - 189 // 2 + 43 + 180, 252, 44, zeroStars, oneStar, twoStars,
+                        threeStars)
+    levelBossStars = Stars(WIDTH // 2 + 248, HEIGHT // 2 - 189 // 2 + 43 + 180, 252, 44, zeroStars, oneStar, twoStars,
+                           threeStars)
 
     running = True
     while running:
@@ -211,12 +217,17 @@ def levels_menu():
             for button in [cross_btn, level1Button, level2Button, levelBossButton]:
                 button.handle_event(event)
 
-        for obj in [title, level1Field]:
+        for obj in [title, field, level1Field]:
             obj.draw(screen)
 
-        for activityObj in [level2Field, levelBossField]:
-            activityObj.check_passing(checkIsActive2)
-            activityObj.draw(screen)
+        level2Field.check_passing(checkIsActive2)
+        level2Field.draw(screen)
+        levelBossField.check_passing(checkIsActiveBoss)
+        levelBossField.draw(screen)
+
+        for button in [cross_btn, info_btn, level1Button, level2Button, levelBossButton]:
+            button.check_hover(pygame.mouse.get_pos())
+            button.draw(screen)
 
         level2Button.check_passing(checkIsActive2)
         levelBossButton.check_passing(checkIsActiveBoss)
@@ -227,10 +238,6 @@ def levels_menu():
             level2Stars.draw(screen, record2)
         if checkIsPassingBoss:
             levelBossStars.draw(screen, record3)
-
-        for button in [cross_btn, level1Button, level2Button, levelBossButton]:
-            button.check_hover(pygame.mouse.get_pos())
-            button.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
         if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
