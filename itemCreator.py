@@ -63,6 +63,7 @@ class Button:
 
     def draw(self, screen):
         current_image = self.image
+
         if self.is_hovered:
             current_image = self.hover_image
         if self.is_pushed:
