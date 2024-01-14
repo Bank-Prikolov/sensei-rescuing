@@ -1,9 +1,11 @@
 import pygame
-from load_image import *
+from load_image import load_image
+
+clock = pygame.time.Clock()
 
 
 class Button:
-    def __init__(self, x, y, width, height, image_path, hover_image_path=None, sound_path=None):
+    def __init__(self, x, y, width, height, image_path, hover_image_path=None, press_image_path=None, sound_path=None):
         self.x = x
         self.y = y
         self.width = width
@@ -12,9 +14,13 @@ class Button:
         self.image = load_image(image_path)
         self.image = pygame.transform.scale(self.image, (width, height))
         self.hover_image = self.image
+        self.push_image = self.image
         if hover_image_path:
             self.hover_image = load_image(hover_image_path)
             self.hover_image = pygame.transform.scale(self.hover_image, (width, height))
+        if press_image_path:
+            self.push_image = load_image(press_image_path)
+            self.push_image = pygame.transform.scale(self.push_image, (width, height))
         self.rect = self.image.get_rect(topleft=(x, y))
 
         self.sound = None
@@ -22,16 +28,24 @@ class Button:
             self.sound = pygame.mixer.Sound(sound_path)
 
         self.is_hovered = False
+        self.is_pushed = False
 
     def draw(self, screen):
-        current_image = self.hover_image if self.is_hovered else self.image
+        current_image = self.image
+        if self.is_hovered:
+            current_image = self.hover_image
+        if self.is_pushed:
+            current_image = self.push_image
         screen.blit(current_image, self.rect.topleft)
 
     def check_hover(self, mouse_pos):
         self.is_hovered = self.rect.collidepoint(mouse_pos)
 
     def handle_event(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.is_hovered:
+        if event.type == pygame.MOUSEBUTTONDOWN and self.is_hovered:
+            self.is_pushed = True
+        if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and self.is_pushed:
+            self.is_pushed = False
             if self.sound:
                 self.sound.play()
             pygame.event.post(pygame.event.Event(pygame.USEREVENT, button=self))

@@ -16,7 +16,6 @@ def transition():
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                print('game quit')
                 running = False
                 pygame.quit()
                 sys.exit()
@@ -32,4 +31,4 @@ def transition():
             running = False
 
         pygame.display.flip()
-        clock.tick(70)
+        clock.tick(65)
