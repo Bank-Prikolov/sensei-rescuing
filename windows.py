@@ -6,6 +6,9 @@ size = width, height = 1024, 704
 fullsize = tuple(map(int, '='.join(
     (str(screeninfo.get_monitors()).lstrip('[Monitor(').rstrip(')]').split(', '))[2: 4]).split('=')[1::2]))
 k = fullsize[1] // size[1]
+if k in [1, 2]:
+    lis = max([(int(height * 0.5 * x), 0.5 * x) for x in range(2, 5) if not int(height * 0.5 * x) > fullsize[1]])
+    k = lis[1]
 otstupx = (fullsize[0] - size[0] * k) // 2
 otstupy = (fullsize[1] - size[1] * k) * k
 fullscreen = 0

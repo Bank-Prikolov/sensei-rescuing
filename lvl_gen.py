@@ -23,7 +23,7 @@ else:
 
 class Pic(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h, sprite, *group):
-        if type(sprite) != pygame.Surface:
+        if type(sprite) is not pygame.Surface:
             sprite = load_image(sprite)
             group = group
         else:
@@ -78,11 +78,8 @@ class Board:
                 elif self.board[y][x] == '_':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                         self.cell_size, plat, untouches)
-                    rect = pygame.Surface((self.cell_size, self.cell_size // 16))
-                    rect.fill('#000000')
-                    rect.get_rect()
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size // 16, rect, platformgroup)
+                        self.cell_size // 32, placeholder, platformgroup)
                 else:
                     pass
         toches.draw(sc)
