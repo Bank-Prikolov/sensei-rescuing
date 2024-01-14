@@ -33,20 +33,45 @@ class Hero(pygame.sprite.Sprite):
 
         global yspeed, xspeed, jumping, hero, falling
 
-        if (yspeed - (self.ys // 20) >= 0) and yspeed < 0:
-            falling = True
-            if lookingright:
-                hero = hero.change_hero('fallr', hero.get_coords(), k ** fullscreen)
-            else:
-                hero = hero.change_hero('falll', hero.get_coords(), k ** fullscreen)
-
         yspeed -= (self.ys // 20)
         self.rect = self.rect.move(0, yspeed * k ** fullscreen)
-        if hero.act == 'jumpr' or hero.act == 'jumpl':
-            touchable = True
-        else:
+
+        if ((yspeed >= 0) and (yspeed + (self.ys // 20)) < 0) or (yspeed > 6 and not falling):
+            if not (self.act == 'falll' or self.act == 'fallr'):
+                if lookingright:
+                    hero = hero.change_hero('fallr', hero.get_coords(), k ** fullscreen)
+                else:
+                    hero = hero.change_hero('falll', hero.get_coords(), k ** fullscreen)
+            jumping = False
+            falling = True
+        elif ((yspeed >= 0) and (yspeed + (self.ys // 20)) < 0) or (yspeed > 6 and not falling):
+            jumping = False
+            falling = True
+
+        heropos = [self.get_coords()[0], self.get_coords()[1] + self.get_size()[1]]
+        if jumping:
             touchable = False
-        if pygame.sprite.spritecollide(self, toches, False) or (pygame.sprite.spritecollide(self, platformgroup, False) and touchable):
+        elif falling:
+            if pygame.sprite.spritecollide(self, platformgroup, False):
+                if k == 1.5:
+                    if fullscreen:
+                        checklist = [-6, -25, -8, -16, -24, -26, -18, -12, -22]
+                    else:
+                        checklist = [-2, -17, -8, -12, -20, -22, -14, -18. -16]
+                else:
+                    checklist = list(map(lambda x: int(x * k ** fullscreen), [-2, -17, -8, -12, -20, -22, -14, -18, -16]))
+                print(list(pygame.sprite.spritecollide(self, platformgroup, False))[0].rect[1] - heropos[1])
+                if not (list(pygame.sprite.spritecollide(self, platformgroup, False))[0].rect[1] - heropos[1]
+                        in checklist):
+                    touchable = False
+                else:
+                    touchable = True
+            else:
+                touchable = True
+        else:
+            touchable = True
+        if pygame.sprite.spritecollide(self, toches, False) or (
+                (pygame.sprite.spritecollide(self, platformgroup, False)) and touchable):
             self.rect = self.rect.move(0, -yspeed * k ** fullscreen)
             yspeed = 0
             self.ys = -16
@@ -64,13 +89,6 @@ class Hero(pygame.sprite.Sprite):
                             hero = hero.change_hero('r', hero.get_coords(), k ** fullscreen)
                         if runleft:
                             hero = hero.change_hero('l', hero.get_coords(), k ** fullscreen)
-        if yspeed > 6 and not falling:
-            if not (self.act == 'falll' or self.act == 'fallr'):
-                if lookingright:
-                    hero = hero.change_hero('fallr', hero.get_coords(), k ** fullscreen)
-                else:
-                    hero = hero.change_hero('falll', hero.get_coords(), k ** fullscreen)
-                    falling = True
 
     @staticmethod
     def change_hero(act, koords, koef):
