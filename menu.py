@@ -2,7 +2,7 @@ import pygame
 import sys
 import webbrowser
 from load_image import load_image
-from itemCreator import Object, Button
+from itemCreator import Object, Button, Stars
 from transition import transition
 from consts import *
 
@@ -25,6 +25,14 @@ bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 
 checkIsActive2 = False
 checkIsActiveBoss = False
+
+checkIsPassing1 = False
+checkIsPassing2 = False
+checkIsPassingBoss = False
+
+record1 = 0
+record2 = 0
+record3 = 0
 
 
 def main_menu():
@@ -142,22 +150,17 @@ def settings_menu():
 
 
 def levels_menu():
-    global checkIsActive2, checkIsActiveBoss
     cross_btn = Button(WIDTH - 192, 93, 67, 72, r"buttons\default-cross-btn.png", r"buttons\hover-cross-btn.png",
                        r"buttons\press-cross-btn.png", r"data\sounds\menu-button-sound.mp3")
     level1Button = Button(64, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\default-first-btn.png",
                           r"buttons\hover-first-btn.png", r"buttons\press-first-btn.png",
                           r"data\sounds\menu-button-sound.mp3")
-    level1Stars = Object(10, HEIGHT // 2 - 189 // 2 + 43 + 180, 252, 44, r"objects\three-stars-obj.png")
     level2Button = Button(WIDTH // 2 - 73, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\default-second-btn.png",
                           r"buttons\hover-second-btn.png", r"buttons\press-second-btn.png",
-                          r"data\sounds\menu-button-sound.mp3")
-    level2Stars = Object(WIDTH // 2 - 252 // 2, HEIGHT // 2 - 189 // 2 + 43 + 180, 252, 44,
-                         r"objects\three-stars-obj.png")
+                          r"data\sounds\menu-button-sound.mp3", r"buttons\no-active-second-btn.png")
     levelBossButton = Button(WIDTH // 2 + 300, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\default-boss-btn.png",
                              r"buttons\hover-boss-btn.png", r"buttons\press-boss-btn.png",
-                             r"data\sounds\menu-button-sound.mp3")
-    levelBossStars = Object(WIDTH // 2 + 248, HEIGHT // 2 - 189 // 2 + 43 + 180, 252, 44, r"objects\three-stars-obj.png")
+                             r"data\sounds\menu-button-sound.mp3", r"buttons\no-active-boss-btn.png")
 
     title = Object(WIDTH // 2 - 700 // 2 - 49, 85, 700, 82, r"objects\level-menu-title-obj.png")
     level1Field = Object(43, HEIGHT // 2 - 189 // 2 + 25, 186, 189, r"objects\start-level-field-obj.png")
@@ -165,6 +168,12 @@ def levels_menu():
                          r"objects\hover-level-field-obj.png")
     levelBossField = Object(WIDTH // 2 + 104, HEIGHT // 2 - 189 // 2 + 25, 360, 189,
                             r"objects\level-field-obj.png", r"objects\hover-level-field-obj.png")
+
+    zeroStars, oneStar, twoStars, threeStars = (r"objects\stars-zero-obj.png", r"objects\stars-one-obj.png",
+                                                r"objects\stars-two-obj.png", r"objects\stars-three-obj.png")
+    level1Stars = Stars(10, HEIGHT // 2 - 189 // 2 + 43 + 180, 252, 44, zeroStars, oneStar, twoStars, threeStars)
+    level2Stars = Stars(WIDTH // 2 - 252 // 2, HEIGHT // 2 - 189 // 2 + 43 + 180, 252, 44, zeroStars, oneStar, twoStars, threeStars)
+    levelBossStars = Stars(WIDTH // 2 + 248, HEIGHT // 2 - 189 // 2 + 43 + 180, 252, 44, zeroStars, oneStar, twoStars, threeStars)
 
     running = True
     while running:
@@ -187,15 +196,37 @@ def levels_menu():
                 transition()
                 running = False
 
+            if event.type == pygame.USEREVENT and event.button == level1Button:
+                print(' -> Level 1')
+                transition()
+
+            if event.type == pygame.USEREVENT and event.button == level2Button and checkIsActive2:
+                print(' -> Level 2')
+                transition()
+
+            if event.type == pygame.USEREVENT and event.button == levelBossButton and checkIsActiveBoss:
+                print(' -> Level 3 (Boss)')
+                transition()
+
             for button in [cross_btn, level1Button, level2Button, levelBossButton]:
                 button.handle_event(event)
 
-        for obj in [title, level1Field, level1Stars, level2Stars, levelBossStars]:
+        for obj in [title, level1Field]:
             obj.draw(screen)
 
         for activityObj in [level2Field, levelBossField]:
             activityObj.check_passing(checkIsActive2)
             activityObj.draw(screen)
+
+        level2Button.check_passing(checkIsActive2)
+        levelBossButton.check_passing(checkIsActiveBoss)
+
+        if checkIsPassing1:
+            level1Stars.draw(screen, record1)
+        if checkIsPassing2:
+            level2Stars.draw(screen, record2)
+        if checkIsPassingBoss:
+            levelBossStars.draw(screen, record3)
 
         for button in [cross_btn, level1Button, level2Button, levelBossButton]:
             button.check_hover(pygame.mouse.get_pos())
@@ -267,4 +298,4 @@ def info_menu():
         pygame.display.flip()
 
 
-# main_menu()
+main_menu()
