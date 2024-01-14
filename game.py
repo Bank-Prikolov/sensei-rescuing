@@ -1,5 +1,4 @@
 import pygame.sprite
-
 from lvl_gen import *
 
 
@@ -35,16 +34,19 @@ class Hero(pygame.sprite.Sprite):
 
         yspeed -= (self.ys // 20)
         self.rect = self.rect.move(0, yspeed * k ** fullscreen)
+        if falling and not pygame.sprite.spritecollide(self, toches, False):
+            if not (self.act == 'falll' or self.act == 'fallr'):
+                if lookingright:
+                    hero = self.change_hero('fallr', self.get_coords(), k ** fullscreen)
+                else:
+                    hero = self.change_hero('falll', self.get_coords(), k ** fullscreen)
 
         if ((yspeed >= 0) and (yspeed + (self.ys // 20)) < 0) or (yspeed > 6 and not falling):
             if not (self.act == 'falll' or self.act == 'fallr'):
                 if lookingright:
-                    hero = hero.change_hero('fallr', hero.get_coords(), k ** fullscreen)
+                    hero = self.change_hero('fallr', self.get_coords(), k ** fullscreen)
                 else:
-                    hero = hero.change_hero('falll', hero.get_coords(), k ** fullscreen)
-            jumping = False
-            falling = True
-        elif ((yspeed >= 0) and (yspeed + (self.ys // 20)) < 0) or (yspeed > 6 and not falling):
+                    hero = self.change_hero('falll', self.get_coords(), k ** fullscreen)
             jumping = False
             falling = True
 
@@ -55,12 +57,13 @@ class Hero(pygame.sprite.Sprite):
             if pygame.sprite.spritecollide(self, platformgroup, False):
                 if k == 1.5:
                     if fullscreen:
-                        checklist = [-6, -25, -8, -16, -24, -26, -18, -12, -22]
+                        checklist = [-6, -25, -16, -24, -26, -18, -12, -22]
                     else:
                         checklist = [-2, -17, -8, -12, -20, -22, -14, -18, -16]
                 else:
-                    checklist = list(map(lambda x: int(x * k ** fullscreen), [-2, -17, -8, -12, -20, -22, -14, -18, -16]))
-                print(list(pygame.sprite.spritecollide(self, platformgroup, False))[0].rect[1] - heropos[1])
+                    checklist = list(
+                        map(lambda x: int(x * k ** fullscreen), [-2, -17, -8, -12, -20, -22, -14, -18, -16])
+                    )
                 if not (list(pygame.sprite.spritecollide(self, platformgroup, False))[0].rect[1] - heropos[1]
                         in checklist):
                     touchable = False
@@ -80,15 +83,15 @@ class Hero(pygame.sprite.Sprite):
             if self.movement and yspeed == 0:
                 if xspeed == 0:
                     if lookingright:
-                        hero = hero.change_hero('sr', hero.get_coords(), k ** fullscreen)
+                        hero = self.change_hero('sr', hero.get_coords(), k ** fullscreen)
                     else:
-                        hero = hero.change_hero('sl', hero.get_coords(), k ** fullscreen)
+                        hero = self.change_hero('sl', hero.get_coords(), k ** fullscreen)
                 else:
                     if not (self.act == 'r' or self.act == 'l'):
                         if runright:
-                            hero = hero.change_hero('r', hero.get_coords(), k ** fullscreen)
+                            hero = self.change_hero('r', hero.get_coords(), k ** fullscreen)
                         if runleft:
-                            hero = hero.change_hero('l', hero.get_coords(), k ** fullscreen)
+                            hero = self.change_hero('l', hero.get_coords(), k ** fullscreen)
 
     @staticmethod
     def change_hero(act, koords, koef):
@@ -130,28 +133,31 @@ class Hero(pygame.sprite.Sprite):
         return self.rect[2:4]
 
 
-# class Camera:
-#     # зададим начальный сдвиг камеры
-#     def __init__(self):
-#         self.dx = 0
-#         self.dy = 0
-#
-#     # сдвинуть объект obj на смещение камеры
-#     def apply(self, obj):
-#         obj.rect.x += self.dx
-#         obj.rect.y += self.dy
-#
-#     # позиционировать камеру на объекте target
-#     def update(self, target):
-#         self.dx = -(target.rect.x + target.rect.w // 2 - width // 2)
-#         self.dy = -(target.rect.y + target.rect.h // 2 - height // 2)
-#
-#     def get_apple(self):
-#         return self.dx, self.dy
-#
-generate_level(1)
+class Camera:
+    # зададим начальный сдвиг камеры
+    def __init__(self):
+        self.dx = 0
+        self.dy = 0
+
+    # сдвинуть объект obj на смещение камеры
+    def apply(self, obj):
+        obj.rect.x += self.dx
+        obj.rect.y += self.dy
+
+    # позиционировать камеру на объекте target
+    def update(self, target):
+        self.dx = -(target.rect.x + target.rect.w // 2 - width // 2)
+        self.dy = -(target.rect.y + target.rect.h // 2 - height // 2)
+
+    def get_apple(self):
+        return self.dx, self.dy
+
+
+generate_level(2)
 wai = load_image(wai)
 hero = Hero(wai, 8, *start_coords, *wai.get_size(), k ** fullscreen, 0)
+end_coords = end_coords
+camera = Camera()
 if __name__ == '__main__':
     clock = pygame.time.Clock()
     pygame.display.set_caption('Platformer')
@@ -161,6 +167,7 @@ if __name__ == '__main__':
     jumping = False
     falling = False
     platstand = False
+    winning = False
     fps = 60
     xspeed = 0
     yspeed = 0
@@ -198,16 +205,19 @@ if __name__ == '__main__':
                     runleft = True
                     runright = False
                 elif event.key == pygame.K_SPACE:
-                    if not (jumping or falling):
-                        jumping = True
-                        yspeed = -17
-                        hero.ys = -8
-                        if lookingright:
-                            hero = hero.change_hero('jumpr', hero.get_coords(), k ** fullscreen)
-                            pass
-                        else:
-                            hero = hero.change_hero('jumpl', hero.get_coords(), k ** fullscreen)
-                            pass
+                    if sitting:
+                        falling = True
+                    else:
+                        if not (jumping or falling or sitting):
+                            jumping = True
+                            yspeed = -17
+                            hero.ys = -8
+                            if lookingright:
+                                hero = hero.change_hero('jumpr', hero.get_coords(), k ** fullscreen)
+                                pass
+                            else:
+                                hero = hero.change_hero('jumpl', hero.get_coords(), k ** fullscreen)
+                                pass
                 elif event.key == pygame.K_F11:
                     if fullscreen:
                         fullscreen = 0
@@ -220,6 +230,14 @@ if __name__ == '__main__':
                     else:
                         hero = hero.change_hero('sl', hero.get_coords(), k ** fullscreen)
                     rescreen(fullscreen)
+            elif event.type == pygame.MOUSEMOTION:
+                if pygame.sprite.spritecollide(hero, finale, False):
+                    winning = True
+                else:
+                    winning = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == 1025 and board.get_cell(event.pos) == end_coords and winning:
+                    running = False
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_d:
                     runright = False
@@ -236,10 +254,10 @@ if __name__ == '__main__':
                 hero.move(-xspeed * k ** fullscreen, 0)
         else:
             xspeed = 0
-            if sitting:
-                hero.move(0, 0)
-            elif lookingup:
-                hero.move(0, 0)
+        camera.update(hero)
+        print(camera.get_apple())
+        for sprite in all_sprites:
+            camera.apply(sprite)
         updater()
         hero.update()
         characters.draw(screen)
