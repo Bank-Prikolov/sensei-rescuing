@@ -57,7 +57,7 @@ class Hero(pygame.sprite.Sprite):
                     if fullscreen:
                         checklist = [-6, -25, -8, -16, -24, -26, -18, -12, -22]
                     else:
-                        checklist = [-2, -17, -8, -12, -20, -22, -14, -18. -16]
+                        checklist = [-2, -17, -8, -12, -20, -22, -14, -18, -16]
                 else:
                     checklist = list(map(lambda x: int(x * k ** fullscreen), [-2, -17, -8, -12, -20, -22, -14, -18, -16]))
                 print(list(pygame.sprite.spritecollide(self, platformgroup, False))[0].rect[1] - heropos[1])
