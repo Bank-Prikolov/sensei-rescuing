@@ -83,13 +83,19 @@ def main_menu():
 
 
 def settings_menu():
-
     title = Object(WIDTH // 2 - 626 // 2 - 50, 85, 626, 82, r"objects\settings-title-obj.png")
     field_audio = Object(WIDTH // 2 - 450, 200, 420, 430, r"objects\audio-field-obj.png")
     field_video = Object(WIDTH // 2 + 30, 200, 420, 430, r"objects\video-field-obj.png")
+    fs_name = Object(WIDTH // 2 + 478 // 2 - 332 // 2, 330, 332, 75, r"objects\fullscreen-obj.png")
+    sound_name = Object(WIDTH // 2 - 450 // 2 - 332 // 2 - 18, 470, 332, 35, r"objects\sound-obj.png")
+    music_name = Object(WIDTH // 2 - 450 // 2 - 332 // 2 - 18, 334, 332, 35, r"objects\music-obj.png")
 
     cross_btn = Button(WIDTH - 229, 93, 67, 72, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
                        r"data\sounds\menu-button-sound.mp3")
+    fs_btn = Button(WIDTH // 2 + 478 // 2 - 136 // 2, 420, 136, 62, r"buttons\no-fullscreen-btn.png", r"buttons\fullscreen-btn.png",
+                    r"data\sounds\menu-button-sound.mp3")
+    music_slider_btn = Object(WIDTH // 2 - 450 // 2 - 385 // 2 - 18, 378, 385, 14, r"buttons\slider-btn.png")
+    sound_slider_btn = Object(WIDTH // 2 - 450 // 2 - 385 // 2 - 18, 514, 385, 14, r"buttons\slider-btn.png")
 
     running = True
     while running:
@@ -110,14 +116,17 @@ def settings_menu():
                 transition()
                 running = False
 
-            for obj in [title, field_audio, field_video]:
+            for obj in [title, field_audio, field_video, fs_name, sound_name, music_name, music_slider_btn, sound_slider_btn]:
                 obj.handle_event(event)
 
             cross_btn.handle_event(event)
+            fs_btn.handle_event(event)
 
-        for obj in [title, field_audio, field_video]:
+        for obj in [title, field_audio, field_video, fs_name, sound_name, music_name, music_slider_btn, sound_slider_btn]:
             obj.draw(screen)
 
+        fs_btn.check_hover(pygame.mouse.get_pos())
+        fs_btn.draw(screen)
         cross_btn.check_hover(pygame.mouse.get_pos())
         cross_btn.draw(screen)
 
@@ -137,7 +146,7 @@ def levels_menu():
     level2Button = Button(WIDTH // 2 - 73, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\second-btn.png",
                           r"buttons\hover-second-btn.png", r"data\sounds\menu-button-sound.mp3")
     levelBossButton = Button(WIDTH // 2 + 300, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\boss-btn.png",
-                          r"buttons\hover-boss-btn.png", r"data\sounds\menu-button-sound.mp3")
+                             r"buttons\hover-boss-btn.png", r"data\sounds\menu-button-sound.mp3")
 
     title = Object(WIDTH // 2 - 700 // 2 - 49, 85, 700, 82, r"objects\level-menu-title-obj.png")
     level1Field = Object(43, HEIGHT // 2 - 189 // 2 + 25, 186, 189, r"objects\start-level-field-obj.png")
@@ -195,10 +204,12 @@ def levels_menu():
 def info_menu():
     cross_btn = Button(WIDTH - 218, 93, 67, 72, r"buttons\cross-btn.png", r"buttons\hover-cross-btn.png",
                        r"data\sounds\menu-button-sound.mp3")
-    github_left_btn = Button(WIDTH // 2 - 345, HEIGHT - 170, 67, 72, r"buttons\github-btn.png", r"buttons\hover-github-btn.png",
-                       r"data\sounds\menu-button-sound.mp3")
-    github_right_btn = Button(WIDTH // 2 + 100, HEIGHT - 170, 67, 72, r"buttons\github-btn.png", r"buttons\hover-github-btn.png",
-                       r"data\sounds\menu-button-sound.mp3")
+    github_left_btn = Button(WIDTH // 2 - 345, HEIGHT - 170, 67, 72, r"buttons\github-btn.png",
+                             r"buttons\hover-github-btn.png",
+                             r"data\sounds\menu-button-sound.mp3")
+    github_right_btn = Button(WIDTH // 2 + 100, HEIGHT - 170, 67, 72, r"buttons\github-btn.png",
+                              r"buttons\hover-github-btn.png",
+                              r"data\sounds\menu-button-sound.mp3")
 
     title = Object(WIDTH // 2 - 640 // 2 - 46, 85, 640, 82, r"objects\info-title-obj.png")
     field = Object(WIDTH // 2 - 450, 200, 900, 430, r"objects\info-field-obj.png")
