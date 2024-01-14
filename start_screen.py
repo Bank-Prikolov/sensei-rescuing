@@ -60,10 +60,11 @@ bg_img = load_image(r"backgrounds\start-screen-bg.png")
 start_bg = AnimatedStartScreen(bg_img, 46, 1, WIDTH // 2 - 320,
                                HEIGHT // 2 - 145)
 
-da_btn = Button(WIDTH // 2 - 165, HEIGHT // 2 - 10, 67, 60, r"buttons\da-btn.png", r"buttons\hover-da-btn.png",
-                r"data\sounds\da-sound.mp3")
-net_btn = Button(WIDTH // 2 + 40, HEIGHT // 2 - 10, 86, 58, r"buttons\net-btn.png", r"buttons\hover-net-btn.png",
-                r"data\sounds\hi-hi-hi-ha-sound.mp3")
+da_btn = Button(WIDTH // 2 - 165, HEIGHT // 2 - 10, 67, 60, r"buttons\default-da-btn.png", r"buttons\hover-da-btn.png",
+                r"buttons\hover-da-btn.png", r"data\sounds\da-sound.mp3")
+net_btn = Button(WIDTH // 2 + 40, HEIGHT // 2 - 10, 86, 58, r"buttons\default-net-btn.png",
+                 r"buttons\hover-net-btn.png",
+                 r"buttons\hover-net-btn.png", r"data\sounds\hi-hi-hi-ha-sound.mp3")
 
 
 def start_screen():
@@ -98,6 +99,5 @@ def start_screen():
             screen.blit(cursor, (x_c, y_c))
 
         pygame.display.flip()
-
 
 # start_screen()
