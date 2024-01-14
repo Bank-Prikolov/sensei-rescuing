@@ -143,10 +143,13 @@ def levels_menu():
                        r"data\sounds\menu-button-sound.mp3")
     level1Button = Button(64, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\first-btn.png",
                           r"buttons\hover-first-btn.png", r"data\sounds\menu-button-sound.mp3")
+    level1Stars = Object(10, HEIGHT // 2 - 189 // 2 + 43 + 180, 252, 44, r"objects\three-stars-obj.png")
     level2Button = Button(WIDTH // 2 - 73, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\second-btn.png",
                           r"buttons\hover-second-btn.png", r"data\sounds\menu-button-sound.mp3")
+    level2Stars = Object(WIDTH // 2 - 252 // 2, HEIGHT // 2 - 189 // 2 + 43 + 180, 252, 44, r"objects\three-stars-obj.png")
     levelBossButton = Button(WIDTH // 2 + 300, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\boss-btn.png",
                              r"buttons\hover-boss-btn.png", r"data\sounds\menu-button-sound.mp3")
+    levelBossStars = Object(WIDTH // 2 + 248, HEIGHT // 2 - 189 // 2 + 43 + 180, 252, 44, r"objects\three-stars-obj.png")
 
     title = Object(WIDTH // 2 - 700 // 2 - 49, 85, 700, 82, r"objects\level-menu-title-obj.png")
     level1Field = Object(43, HEIGHT // 2 - 189 // 2 + 25, 186, 189, r"objects\start-level-field-obj.png")
@@ -175,13 +178,13 @@ def levels_menu():
                 transition()
                 running = False
 
-            for obj in [title, level1Field, level2Field, levelBossField]:
+            for obj in [title, level1Field, level2Field, levelBossField, level1Stars, level2Stars, levelBossStars]:
                 obj.handle_event(event)
 
             for button in [cross_btn, level1Button, level2Button, levelBossButton]:
                 button.handle_event(event)
 
-        for obj in [title, level1Field]:
+        for obj in [title, level1Field, level1Stars, level2Stars, levelBossStars]:
             obj.draw(screen)
 
         level2Field.check_passing(checkPassing2)
