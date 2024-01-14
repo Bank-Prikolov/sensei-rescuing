@@ -87,8 +87,9 @@ def start_screen():
                 transition()
                 menu.main_menu()
 
-            da_btn.handle_event(event)
-            net_btn.handle_event(event)
+            for button in [da_btn, net_btn]:
+                button.handle_event(event)
+                button.handle_event(event)
 
         start_bg.update()
         clock.tick(fps)
