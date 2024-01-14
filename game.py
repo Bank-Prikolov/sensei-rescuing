@@ -255,7 +255,6 @@ if __name__ == '__main__':
         else:
             xspeed = 0
         camera.update(hero)
-        print(camera.get_apple())
         for sprite in all_sprites:
             camera.apply(sprite)
         updater()
