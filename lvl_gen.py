@@ -7,11 +7,13 @@ from load_image import load_image
 from consts import *
 from windows import *
 
+all_sprites = pygame.sprite.Group()
 toches = pygame.sprite.Group()
 bgroup = pygame.sprite.Group()
 platformgroup = pygame.sprite.Group()
 characters = pygame.sprite.Group()
 untouches = pygame.sprite.Group()
+finale = pygame.sprite.Group()
 heropic = wai
 if not fullscreen:
     screen = pygame.display.set_mode(size)
@@ -23,12 +25,8 @@ else:
 
 class Pic(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h, sprite, *group):
-        if type(sprite) is not pygame.Surface:
-            sprite = load_image(sprite)
-            group = group
-        else:
-            sprite = sprite
-            group = platformgroup
+        sprite = load_image(sprite)
+        group = group
         super().__init__(*group)
         self.image = pygame.transform.scale(sprite, (w, h))
         self.rect = self.image.get_rect()
@@ -62,46 +60,61 @@ class Board:
         toches.empty()
         platformgroup.empty()
         untouches.empty()
+        finale.empty()
+        all_sprites.empty()
         for x in range(len(self.board[0])):
             for y in range(len(self.board)):
                 if self.board[y][x] == '0':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, floor, toches)
+                        self.cell_size, floor, toches, all_sprites)
                 elif self.board[y][x] == '#':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, wallx, toches)
+                        self.cell_size, wallx, toches, all_sprites)
                 elif self.board[y][x] == '=':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, wally, toches)
+                        self.cell_size, wally, toches, all_sprites)
                 elif self.board[y][x] == '@':
                     pass
                 elif self.board[y][x] == '_':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, plat, untouches)
+                        self.cell_size, plat, untouches, all_sprites)
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size // 32, placeholder, platformgroup)
+                        self.cell_size // 32, placeholder, platformgroup, all_sprites)
+                elif self.board[y][x] == 'F':
+                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                        self.cell_size, finish, finale, all_sprites)
                 else:
                     pass
         toches.draw(sc)
-        untouches.draw(sc)
         platformgroup.draw(sc)
+        untouches.draw(sc)
+        finale.draw(sc)
 
     def get_cell(self, mouse_pos):
-        if self.left * k < mouse_pos[0] < self.left * k + (self.cell_size * len(self.board[0]) * k) and \
-                self.top * k < mouse_pos[1] < self.top * k + (self.cell_size * len(self.board)) * k:
-            return int((mouse_pos[0] - 10) / self.cell_size), int((mouse_pos[1] - 10) / self.cell_size)
+        if board.left < mouse_pos[0] < board.left + (
+                board.cell_size * len(self.board[0])) and \
+                board.top < mouse_pos[1] < board.top + (
+                board.cell_size * len(self.board)):
+            return (mouse_pos[0] - board.left) // board.cell_size, (mouse_pos[1] - board.top) // board.cell_size
         else:
             return None
 
     def get_size(self):
         return self.cell_size
 
-    def get_start_pos(self):
+    def get_start_end_pos(self):
+        a = 0
+        b = 0
         for x in range(len(self.board[0])):
             for y in range(len(self.board)):
                 if self.board[y][x] == '@':
-                    return otstupx * fullscreen + (20 + self.cell_size * x) * k ** fullscreen, otstupy * fullscreen + (
-                                20 + self.cell_size * y) * k ** fullscreen
+                    a = otstupx * fullscreen + (20 + self.cell_size * x) * k ** fullscreen, otstupy * fullscreen + (
+                            20 + self.cell_size * y) * k ** fullscreen
+                elif self.board[y][x] == 'F':
+                    b = x, y
+                if bool(a) and bool(b):
+                    break
+        return a, b
 
 
 class Background(pygame.sprite.Sprite):
@@ -120,9 +133,10 @@ class Background(pygame.sprite.Sprite):
         return newground
 
 
-board = Board('1-level.txt')
+board = Board('2-level.txt')
 board.set_view(0, 0, 128)
-start_coords = board.get_start_pos()
+start_coords = board.get_start_end_pos()[0]
+end_coords = board.get_start_end_pos()[1]
 bg = Background(*size, 0, 0, k)
 
 
@@ -138,7 +152,7 @@ def generate_level(lvlnum):
     board = Board(level)
     board.set_view(otstupx * fullscreen, otstupy * fullscreen, 128 * k ** fullscreen)
     bgroup.update(*size, otstupx * fullscreen, otstupy * fullscreen, k ** fullscreen)
-    start_coords = board.get_start_pos()
+    start_coords = board.get_start_end_pos()[0]
 
 
 def otrisovka_urovnya():
