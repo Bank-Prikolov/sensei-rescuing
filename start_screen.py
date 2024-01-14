@@ -1,7 +1,7 @@
 import pygame
 import sys
 from load_image import load_image
-from buttons import Button
+from itemCreator import Button
 import menu
 from transition import transition
 from consts import *

@@ -1,7 +1,36 @@
 import pygame
 from load_image import load_image
 
-clock = pygame.time.Clock()
+
+class Object:
+    def __init__(self, x, y, width, height, image_path, no_active_image_path=None):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+        self.image = load_image(image_path)
+        self.image = pygame.transform.scale(self.image, (width, height))
+
+        self.no_active_image = self.image
+        if no_active_image_path:
+            self.no_active_image = load_image(no_active_image_path)
+            self.no_active_image = pygame.transform.scale(self.no_active_image, (width, height))
+
+        self.rect = self.image.get_rect(topleft=(x, y))
+
+        self.is_no_active = True
+
+    def check_passing(self, isActive=False):
+        if isActive:
+            self.is_no_active = False
+
+    def draw(self, screen):
+        if self.is_no_active:
+            current_image = self.no_active_image
+        else:
+            current_image = self.image
+        screen.blit(current_image, self.rect.topleft)
 
 
 class Button:
@@ -13,6 +42,7 @@ class Button:
 
         self.image = load_image(image_path)
         self.image = pygame.transform.scale(self.image, (width, height))
+
         self.hover_image = self.image
         self.push_image = self.image
         if hover_image_path:
@@ -21,6 +51,7 @@ class Button:
         if press_image_path:
             self.push_image = load_image(press_image_path)
             self.push_image = pygame.transform.scale(self.push_image, (width, height))
+
         self.rect = self.image.get_rect(topleft=(x, y))
 
         self.sound = None

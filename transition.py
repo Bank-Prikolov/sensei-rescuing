@@ -1,6 +1,5 @@
 import pygame
 import sys
-from load_image import load_image
 
 pygame.init()
 
@@ -31,4 +30,4 @@ def transition():
             running = False
 
         pygame.display.flip()
-        clock.tick(65)
+        clock.tick(70)

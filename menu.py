@@ -2,8 +2,7 @@ import pygame
 import sys
 import webbrowser
 from load_image import load_image
-from buttons import Button
-from objects import Object
+from itemCreator import Object, Button
 from transition import transition
 from consts import *
 
@@ -13,6 +12,7 @@ size = WIDTH, HEIGHT = 1024, 704
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption('Sensei Rescuing')
 clock = pygame.time.Clock()
+fps = 60
 
 imgSI = load_image(bg1)
 bgSI = pygame.transform.scale(imgSI, (imgSI.get_width() * 2, imgSI.get_height() * 2))
@@ -23,8 +23,8 @@ pygame.mouse.set_visible(False)
 img = load_image(r'backgrounds\main-menu-bg.png')
 bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 
-checkPassing2 = True
-checkPassingBoss = False
+checkIsActive2 = False
+checkIsActiveBoss = False
 
 
 def main_menu():
@@ -47,7 +47,6 @@ def main_menu():
                       r"data\sounds\menu-button-sound.mp3")
 
     running = True
-    fps = 60
     while running:
         clock.tick(fps)
         screen.fill((0, 0, 0))
@@ -72,8 +71,6 @@ def main_menu():
 
             for button in [start_btn, settings_btn, info_btn, exit_btn]:
                 button.handle_event(event)
-
-            title.handle_event(event)
 
         for button in [settings_btn, info_btn, exit_btn]:
             button.check_hover(pygame.mouse.get_pos())
@@ -108,6 +105,7 @@ def settings_menu():
 
     running = True
     while running:
+        clock.tick(fps)
         screen.fill((0, 0, 0))
         screen.blit(bg, (0, 0))
         for event in pygame.event.get():
@@ -124,9 +122,6 @@ def settings_menu():
             if event.type == pygame.USEREVENT and event.button == cross_btn:
                 transition()
                 running = False
-
-            for obj in [title, field_audio, field_video, fs_name, sound_name, music_name, music_slider_btn, sound_slider_btn]:
-                obj.handle_event(event)
 
             cross_btn.handle_event(event)
             fs_btn.handle_event(event)
@@ -147,7 +142,7 @@ def settings_menu():
 
 
 def levels_menu():
-    global checkPassing2, checkPassingBoss
+    global checkIsActive2, checkIsActiveBoss
     cross_btn = Button(WIDTH - 192, 93, 67, 72, r"buttons\default-cross-btn.png", r"buttons\hover-cross-btn.png",
                        r"buttons\press-cross-btn.png", r"data\sounds\menu-button-sound.mp3")
     level1Button = Button(64, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\default-first-btn.png",
@@ -173,6 +168,7 @@ def levels_menu():
 
     running = True
     while running:
+        clock.tick(fps)
         screen.fill((0, 0, 0))
         screen.blit(bg, (0, 0))
 
@@ -191,20 +187,15 @@ def levels_menu():
                 transition()
                 running = False
 
-            for obj in [title, level1Field, level2Field, levelBossField, level1Stars, level2Stars, levelBossStars]:
-                obj.handle_event(event)
-
             for button in [cross_btn, level1Button, level2Button, levelBossButton]:
                 button.handle_event(event)
 
         for obj in [title, level1Field, level1Stars, level2Stars, levelBossStars]:
             obj.draw(screen)
 
-        level2Field.check_passing(checkPassing2)
-        level2Field.draw(screen)
-
-        levelBossField.check_passing(checkPassingBoss)
-        levelBossField.draw(screen)
+        for activityObj in [level2Field, levelBossField]:
+            activityObj.check_passing(checkIsActive2)
+            activityObj.draw(screen)
 
         for button in [cross_btn, level1Button, level2Button, levelBossButton]:
             button.check_hover(pygame.mouse.get_pos())
@@ -234,6 +225,7 @@ def info_menu():
 
     running = True
     while running:
+        clock.tick(fps)
         screen.fill((0, 0, 0))
         screen.blit(bg, (0, 0))
 
@@ -257,9 +249,6 @@ def info_menu():
 
             if event.type == pygame.USEREVENT and event.button == github_right_btn:
                 webbrowser.open('https://github.com/WaizorSote')
-
-            for obj in [title, field, alexandr, igor]:
-                obj.handle_event(event)
 
             for button in [github_left_btn, github_right_btn, cross_btn]:
                 button.handle_event(event)
