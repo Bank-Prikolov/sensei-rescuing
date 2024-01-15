@@ -70,6 +70,7 @@ class Button:
 
         self.is_hovered = False
         self.is_pushed = False
+        self.is_slider = False
 
     def draw(self, screen):
         current_image = self.image
@@ -80,6 +81,13 @@ class Button:
                 current_image = self.hover_image
             if self.is_pushed:
                 current_image = self.push_image
+        screen.blit(current_image, self.rect.topleft)
+
+    def draw_f11(self, screen, checkF11=None):
+        if checkF11:
+            current_image = self.push_image
+        else:
+            current_image = self.image
         screen.blit(current_image, self.rect.topleft)
 
     def check_passing(self, isActive=False):
@@ -97,6 +105,14 @@ class Button:
             if self.sound:
                 self.sound.play()
             pygame.event.post(pygame.event.Event(pygame.USEREVENT, button=self))
+
+    def handle_event_slider(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN and self.is_hovered and not self.is_no_active:
+            self.is_pushed = True
+            pygame.event.post(pygame.event.Event(pygame.MOUSEBUTTONDOWN, button=self))
+        if event.type == pygame.MOUSEBUTTONUP and self.is_pushed:
+            self.is_pushed = False
+            pygame.event.post(pygame.event.Event(pygame.MOUSEBUTTONUP, button=self))
 
 
 class Stars:
@@ -131,6 +147,3 @@ class Stars:
         if record == 3:
             current_image = self.threeStar_image
         screen.blit(current_image, self.rect.topleft)
-
-
-

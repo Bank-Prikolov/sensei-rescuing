@@ -26,6 +26,12 @@ bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 checkIsActive2 = False
 checkIsActiveBoss = False
 
+checkF11 = False
+isSliderMusic = False
+isSliderSound = False
+actMusic = True
+actSound = True
+
 checkIsPassing1 = True
 checkIsPassing2 = False
 checkIsPassingBoss = False
@@ -36,9 +42,13 @@ record3 = 0
 
 
 def main_menu():
-    # pygame.mixer.music.load("data\sounds\menu-sound.mp3")
-    # pygame.mixer.music.play(-1)
+    global vol
+    vol = 1
+    pygame.mixer.music.load(r"data\sounds\menu-sound.mp3")
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(vol)
 
+    global checkF11
     title = Object(WIDTH // 2 - 886 // 2, 49, 886, 80, r"objects\menu-title-obj.png")
 
     start_btn = Button(WIDTH // 2 - 240 // 2, 186, 240, 100, r"buttons\default-start-btn.png",
@@ -77,6 +87,14 @@ def main_menu():
                 transition()
                 info_menu()
 
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
+                if checkF11:
+                    checkF11 = False
+                    print('f11 off')
+                else:
+                    checkF11 = True
+                    print('f11 on')
+
             for button in [start_btn, settings_btn, info_btn, exit_btn]:
                 button.handle_event(event)
 
@@ -97,6 +115,8 @@ def main_menu():
 
 
 def settings_menu():
+    global WIDTH, HEIGHT, screen, size
+    global checkF11, isSliderMusic, isSliderSound, actMusic, actSound, sl, sd
     title = Object(WIDTH // 2 - 626 // 2 - 50, 85, 626, 82, r"objects\settings-title-obj.png")
     field_audio = Object(WIDTH // 2 - 450, 200, 420, 430, r"objects\audio-field-obj.png")
     field_video = Object(WIDTH // 2 + 30, 200, 420, 430, r"objects\video-field-obj.png")
@@ -108,9 +128,19 @@ def settings_menu():
                        r"buttons\press-cross-btn.png", r"data\sounds\menu-button-sound.mp3")
     fs_btn = Button(WIDTH // 2 + 478 // 2 - 136 // 2, 420, 136, 62, r"buttons\fullscreen-off-btn.png", "",
                     r"buttons\fullscreen-on-btn.png", r"data\sounds\menu-button-sound.mp3")
-    music_slider_btn = Object(WIDTH // 2 - 450 // 2 - 385 // 2 - 18, 378, 385, 14, r"buttons\slider-btn.png")
-    sound_slider_btn = Object(WIDTH // 2 - 450 // 2 - 385 // 2 - 18, 514, 385, 14, r"buttons\slider-btn.png")
+    if actMusic:
+        sl = WIDTH // 2 - 450 // 2 - 302 // 2 - 18 + 300 - 32
+    music_slider_btn = Button(sl, 387, 26, 28,
+                              r"buttons\default-slider-btn.png", r"buttons\hover-slider-btn.png",
+                              r"buttons\press-slider-btn.png")
+    if actSound:
+        sd = WIDTH // 2 - 450 // 2 - 302 // 2 - 18 + 300 - 32
+    sound_slider_btn = Button(sd, 523, 26, 28,
+                              r"buttons\default-slider-btn.png", r"buttons\hover-slider-btn.png",
+                              r"buttons\press-slider-btn.png")
 
+    music_slider_obj = Object(WIDTH // 2 - 450 // 2 - 302 // 2 - 18, 393, 302, 16, r"objects\slider-obj.png")
+    sound_slider_obj = Object(WIDTH // 2 - 450 // 2 - 302 // 2 - 18, 529, 302, 16, r"objects\slider-obj.png")
     running = True
     while running:
         clock.tick(fps)
@@ -131,17 +161,94 @@ def settings_menu():
                 transition()
                 running = False
 
-            cross_btn.handle_event(event)
-            fs_btn.handle_event(event)
+            if ((event.type == pygame.USEREVENT and event.button == fs_btn) or
+                    (event.type == pygame.KEYDOWN and event.key == pygame.K_F11)):
+                if checkF11:
+                    checkF11 = False
+                    print('f11 off')
+                    screen = pygame.display.set_mode(size)
+                    transition()
+                else:
+                    checkF11 = True
+                    print('f11 on')
+                    WIDTH, HEIGHT = 1920, 1080
+                    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+                    transition()
 
-        for obj in [title, field_audio, field_video, fs_name, sound_name, music_name, music_slider_btn,
-                    sound_slider_btn]:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == music_slider_btn:
+                isSliderMusic = True
+
+            elif event.type == pygame.MOUSEBUTTONUP and event.button == music_slider_btn:
+                isSliderMusic = False
+
+            elif event.type == pygame.MOUSEMOTION:
+                # 118 - 420
+                if (isSliderMusic and music_slider_obj.x < event.pos[0] < music_slider_obj.x + music_slider_obj.width and
+                        music_slider_btn.y < event.pos[1] < music_slider_btn.y + music_slider_btn.height):
+                    xM = music_slider_btn.rect[0]
+                    x_cube_M = event.pos[0] - xM
+                    music_slider_btn.rect = music_slider_btn.rect.move(x_cube_M - 13, 0)
+                    sl = music_slider_btn.rect[0]
+                    sl = int(sl)
+                    if 118 <= sl <= 120:
+                        pygame.mixer.music.set_volume(0)
+                    if 120 < sl <= 150:
+                        pygame.mixer.music.set_volume(0.1)
+                    if 150 < sl <= 180:
+                        pygame.mixer.music.set_volume(0.2)
+                    if 180 < sl <= 210:
+                        pygame.mixer.music.set_volume(0.3)
+                    if 210 < sl <= 240:
+                        pygame.mixer.music.set_volume(0.4)
+                    if 240 < sl <= 270:
+                        pygame.mixer.music.set_volume(0.5)
+                    if 270 < sl <= 300:
+                        pygame.mixer.music.set_volume(0.6)
+                    if 300 < sl <= 330:
+                        pygame.mixer.music.set_volume(0.7)
+                    if 330 < sl <= 360:
+                        pygame.mixer.music.set_volume(0.8)
+                    if 360 < sl <= 390:
+                        pygame.mixer.music.set_volume(0.9)
+                    if 390 < sl <= 418:
+                        pygame.mixer.music.set_volume(1)
+                    actMusic = False
+                else:
+                    isSliderMusic = False
+
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == sound_slider_btn:
+                isSliderSound = True
+
+            elif event.type == pygame.MOUSEBUTTONUP and event.button == sound_slider_btn:
+                isSliderSound = False
+
+            elif event.type == pygame.MOUSEMOTION:
+                if (isSliderSound and sound_slider_obj.x < event.pos[0] < sound_slider_obj.x + sound_slider_obj.width
+                        and sound_slider_btn.y < event.pos[1] < sound_slider_btn.y + sound_slider_btn.height):
+                    xS = sound_slider_btn.rect[0]
+                    x_cube_S = event.pos[0] - xS
+                    sound_slider_btn.rect = sound_slider_btn.rect.move(x_cube_S - 13, 0)
+                    sd = sound_slider_btn.rect[0]
+                    actSound = False
+                else:
+                    isSliderSound = False
+
+            for button in [cross_btn, fs_btn]:
+                button.handle_event(event)
+
+            for slider_button in [music_slider_btn, sound_slider_btn]:
+                slider_button.handle_event_slider(event)
+
+        for obj in [title, field_audio, field_video, fs_name, sound_name, music_name, music_slider_obj,
+                    sound_slider_obj]:
             obj.draw(screen)
 
+        for slider_button in [cross_btn, music_slider_btn, sound_slider_btn]:
+            slider_button.check_hover(pygame.mouse.get_pos())
+            slider_button.draw(screen)
+
         fs_btn.check_hover(pygame.mouse.get_pos())
-        fs_btn.draw(screen)
-        cross_btn.check_hover(pygame.mouse.get_pos())
-        cross_btn.draw(screen)
+        fs_btn.draw_f11(screen, checkF11)
 
         x_c, y_c = pygame.mouse.get_pos()
         if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
@@ -151,6 +258,7 @@ def settings_menu():
 
 
 def levels_menu():
+    global checkF11
     cross_btn = Button(WIDTH - 192, 93, 67, 72, r"buttons\default-cross-btn.png", r"buttons\hover-cross-btn.png",
                        r"buttons\press-cross-btn.png", r"data\sounds\menu-button-sound.mp3")
     level1Button = Button(64, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\default-first-btn.png",
@@ -214,6 +322,14 @@ def levels_menu():
                 print(' -> Level 3 (Boss)')
                 transition()
 
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
+                if checkF11:
+                    checkF11 = False
+                    print('f11 off')
+                else:
+                    checkF11 = True
+                    print('f11 on')
+
             for button in [cross_btn, level1Button, level2Button, levelBossButton]:
                 button.handle_event(event)
 
@@ -253,6 +369,7 @@ def levels_menu():
 
 
 def info_menu():
+    global checkF11
     cross_btn = Button(WIDTH - 218, 93, 67, 72, r"buttons\default-cross-btn.png", r"buttons\hover-cross-btn.png",
                        r"buttons\press-cross-btn.png", r"data\sounds\menu-button-sound.mp3")
     github_left_btn = Button(WIDTH // 2 - 345, HEIGHT - 170, 67, 72, r"buttons\default-github-btn.png",
@@ -293,6 +410,14 @@ def info_menu():
 
             if event.type == pygame.USEREVENT and event.button == github_right_btn:
                 webbrowser.open('https://github.com/WaizorSote')
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
+                if checkF11:
+                    checkF11 = False
+                    print('f11 off')
+                else:
+                    checkF11 = True
+                    print('f11 on')
 
             for button in [github_left_btn, github_right_btn, cross_btn]:
                 button.handle_event(event)
