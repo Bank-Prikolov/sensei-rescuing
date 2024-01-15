@@ -14,9 +14,6 @@ pygame.display.set_caption('Sensei Rescuing')
 clock = pygame.time.Clock()
 fps = 60
 
-imgSI = load_image(bg1)
-bgSI = pygame.transform.scale(imgSI, (imgSI.get_width() * 2, imgSI.get_height() * 2))
-
 cursor = load_image(r'objects\cursor-obj.png')
 pygame.mouse.set_visible(False)
 
@@ -115,7 +112,6 @@ def main_menu():
 
 
 def settings_menu():
-    global WIDTH, HEIGHT, screen, size
     global checkF11, isSliderMusic, isSliderSound, actMusic, actSound, sl, sd
     title = Object(WIDTH // 2 - 626 // 2 - 50, 85, 626, 82, r"objects\settings-title-obj.png")
     field_audio = Object(WIDTH // 2 - 450, 200, 420, 430, r"objects\audio-field-obj.png")
@@ -166,14 +162,11 @@ def settings_menu():
                 if checkF11:
                     checkF11 = False
                     print('f11 off')
-                    screen = pygame.display.set_mode(size)
-                    transition()
+                    change_fullScreen(1024, 704)
                 else:
                     checkF11 = True
                     print('f11 on')
-                    WIDTH, HEIGHT = 1920, 1080
-                    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-                    transition()
+                    change_fullScreen(1920, 1080, pygame.FULLSCREEN)
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == music_slider_btn:
                 isSliderMusic = True
@@ -434,6 +427,18 @@ def info_menu():
             screen.blit(cursor, (x_c, y_c))
 
         pygame.display.flip()
+
+
+def change_fullScreen(width, height, fullScreen=0):
+    global WIDTH, HEIGHT, screen, img, bg
+    WIDTH, HEIGHT = width, height
+    screen = pygame.display.set_mode((WIDTH, HEIGHT), fullScreen)
+    if checkF11:
+        tmp = load_image(r"backgrounds\main-menu-fullScreen-bg.png")
+        bg = pygame.transform.scale(tmp, (tmp.get_width() * 0.8, tmp.get_height() * 0.8))
+    else:
+        bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
+    transition()
 
 
 main_menu()
