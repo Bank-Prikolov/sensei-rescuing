@@ -72,6 +72,10 @@ class Button:
         self.is_pushed = False
         self.is_slider = False
 
+    def set_pos(self, x, y=None):
+        self.x = x
+        self.rect = self.image.get_rect(topleft=(self.x, self.y))
+
     def draw(self, screen):
         current_image = self.image
         if self.is_no_active:
