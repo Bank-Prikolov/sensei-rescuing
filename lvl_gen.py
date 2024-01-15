@@ -155,6 +155,7 @@ def generate_level(lvlnum):
     start_coords = board.get_start_end_pos()[0]
 
 
+
 def otrisovka_urovnya():
     bgroup.draw(screen)
     characters.draw(screen)

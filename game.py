@@ -27,9 +27,9 @@ class Hero(pygame.sprite.Sprite):
                     frame_location, self.rect.size)))
 
     def update(self):
+
         self.cur_frame = (self.cur_frame + 1) % len(self.frames)
         self.image = self.frames[self.cur_frame]
-
         global yspeed, xspeed, jumping, hero, falling
 
         yspeed -= (self.ys // 20)
@@ -132,12 +132,21 @@ class Hero(pygame.sprite.Sprite):
     def get_size(self):
         return self.rect[2:4]
 
+    # def shoot(self, coords):
+    #     radius = 40
+    #     image = pygame.Surface((2 * radius, 2 * radius),
+    #                                 pygame.SRCALPHA, 32)
+    #     pygame.draw.circle(image, pygame.Color("red"),
+    #                        (radius, radius), radius)
+    #     rect = pygame.Rect(coords[0] + hero.get_size()[0] // 2, coords[1] + hero.get_size()[1] // 2, 2 * radius, 2 * radius)
+    #     vx = 2
+    #     vy = 2
 
 class Camera:
     # зададим начальный сдвиг камеры
     def __init__(self):
-        self.dx = 0
-        self.dy = 0
+        self.dx = width // 2
+        self.dy = height // 2
 
     # сдвинуть объект obj на смещение камеры
     def apply(self, obj):
@@ -154,6 +163,7 @@ class Camera:
 
 
 generate_level(2)
+updater()
 wai = load_image(wai)
 hero = Hero(wai, 8, *start_coords, *wai.get_size(), k ** fullscreen, 0)
 end_coords = end_coords
@@ -230,6 +240,7 @@ if __name__ == '__main__':
                     else:
                         hero = hero.change_hero('sl', hero.get_coords(), k ** fullscreen)
                     rescreen(fullscreen)
+                    updater()
             elif event.type == pygame.MOUSEMOTION:
                 if pygame.sprite.spritecollide(hero, finale, False):
                     winning = True
@@ -238,6 +249,10 @@ if __name__ == '__main__':
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.type == 1025 and board.get_cell(event.pos) == end_coords and winning:
                     running = False
+                if event.type == 1025:
+                    if not shooting:
+                        shooting = True
+                        hero.shoot(event.pos)
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_d:
                     runright = False
@@ -254,12 +269,13 @@ if __name__ == '__main__':
                 hero.move(-xspeed * k ** fullscreen, 0)
         else:
             xspeed = 0
-        camera.update(hero)
-        for sprite in all_sprites:
-            camera.apply(sprite)
-        updater()
+        # camera.update(hero)
+        # for sprite in all_sprites:
+        #     print(camera.get_apple())
+        #     camera.apply(sprite)
+        bgd = pygame.Surface(hero.get_size())
         hero.update()
         characters.draw(screen)
         clock.tick(fps)
-        pygame.display.flip()
+        pygame.display.update()
     pygame.quit()
