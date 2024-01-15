@@ -162,8 +162,7 @@ def levels_menu():
     levelBossButton = Button(WIDTH // 2 + 300, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\default-boss-btn.png",
                              r"buttons\hover-boss-btn.png", r"buttons\press-boss-btn.png",
                              r"data\sounds\menu-button-sound.mp3", r"buttons\no-active-boss-btn.png")
-    info_btn = Button(WIDTH - 54, 263, 18, 18, r"buttons\default-level-info-btn.png",
-                      r"buttons\hover-level-info-btn.png", r"buttons\hover-level-info-btn.png")
+    info_btn = Button(WIDTH - 54, 263, 18, 18, r"buttons\default-level-info-btn.png")
 
     title = Object(WIDTH // 2 - 700 // 2 - 49, 85, 700, 82, r"objects\level-menu-title-obj.png")
     field = Object(WIDTH // 2 - 490, 251, 980, 305, r"objects\level-menu-field-obj.png")
@@ -225,9 +224,17 @@ def levels_menu():
         levelBossField.check_passing(checkIsActiveBoss)
         levelBossField.draw(screen)
 
-        for button in [cross_btn, info_btn, level1Button, level2Button, levelBossButton]:
+        for button in [cross_btn, level1Button, level2Button, levelBossButton]:
             button.check_hover(pygame.mouse.get_pos())
             button.draw(screen)
+
+        # доработать!!!
+        if (WIDTH - 54, 263) <= pygame.mouse.get_pos() <= (WIDTH - 54 + 18, 263 + 18):
+            info_btn = Button(WIDTH - 54 - 230, 263 - 109 + 18, 249, 109, r"buttons\hover-level-info-btn.png")
+        else:
+            info_btn = Button(WIDTH - 54, 263, 18, 18, r"buttons\default-level-info-btn.png")
+        info_btn.draw(screen)
+        ###
 
         level2Button.check_passing(checkIsActive2)
         levelBossButton.check_passing(checkIsActiveBoss)
@@ -305,4 +312,4 @@ def info_menu():
         pygame.display.flip()
 
 
-main_menu()
+# main_menu()
