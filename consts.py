@@ -1,6 +1,5 @@
 test = r'1-level.txt'
 wai = r'characters\hero.png'
-bg1 = r'backgrounds\game-bg.png'
 floor = r'textures\0-texture.png'
 wallx = r'textures\#-texture.png'
 wally = r'textures\=-texture.png'

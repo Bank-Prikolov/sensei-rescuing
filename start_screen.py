@@ -101,4 +101,5 @@ def start_screen():
 
         pygame.display.flip()
 
-# start_screen()
+
+start_screen()
