@@ -27,10 +27,10 @@ class Hero(pygame.sprite.Sprite):
                     frame_location, self.rect.size)))
 
     def update(self):
+        global yspeed, xspeed, jumping, hero, falling
 
         self.cur_frame = (self.cur_frame + 1) % len(self.frames)
         self.image = self.frames[self.cur_frame]
-        global yspeed, xspeed, jumping, hero, falling
 
         yspeed -= (self.ys // 20)
         self.rect = self.rect.move(0, yspeed * k ** fullscreen)
@@ -249,10 +249,10 @@ if __name__ == '__main__':
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.type == 1025 and board.get_cell(event.pos) == end_coords and winning:
                     running = False
-                if event.type == 1025:
+                elif event.type == 1025:
                     if not shooting:
                         shooting = True
-                        hero.shoot(event.pos)
+                        # hero.shoot(event.pos)
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_d:
                     runright = False
@@ -273,7 +273,6 @@ if __name__ == '__main__':
         # for sprite in all_sprites:
         #     print(camera.get_apple())
         #     camera.apply(sprite)
-        bgd = pygame.Surface(hero.get_size())
         hero.update()
         characters.draw(screen)
         clock.tick(fps)
