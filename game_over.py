@@ -53,7 +53,7 @@ class AnimatedGameOver(pygame.sprite.Sprite):
 
 bg_img = load_image(r"backgrounds\game-over-bg.png")
 bg_tr = pygame.transform.scale(bg_img, (bg_img.get_width() * 2.5, bg_img.get_height() * 2.5))
-game_over_bg = AnimatedGameOver(bg_tr, 14, 1, WIDTH // 2 - 640, HEIGHT // 2 - 180)
+game_over_bg = AnimatedGameOver(bg_tr, 14, 1, WIDTH // 2 - 650, HEIGHT // 2 - 180)
 
 repeat_btn = Button(WIDTH // 2 + 50, HEIGHT // 2 - 30, 94, 104, r"buttons\default-repeat-btn.png", r"buttons\hover-repeat-btn.png",
                 r"buttons\press-repeat-btn.png", r"data\sounds\menu-button-sound.mp3")
@@ -70,7 +70,7 @@ def game_over():
     fps = 60
     while running:
 
-        screen.fill((0, 0, 0))
+        screen.fill((255, 255, 255))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -97,4 +97,4 @@ def game_over():
         pygame.display.flip()
 
 
-# game_over()
+game_over()

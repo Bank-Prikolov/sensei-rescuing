@@ -53,7 +53,7 @@ class AnimatedGameComplete(pygame.sprite.Sprite):
 
 bg_img = load_image(r"backgrounds\game-complete-bg.png")
 bg_tr = pygame.transform.scale(bg_img, (bg_img.get_width() * 2.5, bg_img.get_height() * 2.5))
-game_complete_bg = AnimatedGameComplete(bg_tr, 16, 1, WIDTH // 2 - 640, HEIGHT // 2 - 180)
+game_complete_bg = AnimatedGameComplete(bg_tr, 16, 1, WIDTH // 2 - 250, HEIGHT // 2 - 180)
 
 repeat_btn = Button(WIDTH // 2 + 50, HEIGHT // 2 - 30, 94, 104, r"buttons\default-repeat-btn.png", r"buttons\hover-repeat-btn.png",
                 r"buttons\press-repeat-btn.png", r"data\sounds\menu-button-sound.mp3")
@@ -70,7 +70,7 @@ def game_complete():
     fps = 60
     while running:
 
-        screen.fill((0, 0, 0))
+        screen.fill("#ffffff")
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -97,4 +97,4 @@ def game_complete():
         pygame.display.flip()
 
 
-# game_complete()
+game_complete()

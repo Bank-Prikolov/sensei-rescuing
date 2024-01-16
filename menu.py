@@ -172,37 +172,17 @@ def settings_menu():
                 isSliderMusic = False
 
             elif event.type == pygame.MOUSEMOTION:
-                # 118 - 420
-                if (isSliderMusic and music_slider_obj.x < event.pos[0] < music_slider_obj.x + music_slider_obj.width and
-                        music_slider_btn.y < event.pos[1] < music_slider_btn.y + music_slider_btn.height):
+                # 118 - 420 | and music_slider_obj.x <= event.pos[0] <= music_slider_obj.x + music_slider_obj.width
+                if isSliderMusic:
                     xM = music_slider_btn.rect[0]
-                    x_cube_M = event.pos[0] - xM
+                    if 118 < event.pos[0] < 420:
+                        x_cube_M = event.pos[0] - xM
+                    else:
+                        x_cube_M = 13
                     music_slider_btn.rect = music_slider_btn.rect.move(x_cube_M - 13, 0)
                     sl = music_slider_btn.rect[0]
                     tmp = sl
-                    sl = int(sl)
-                    if 118 <= sl <= 120:
-                        pygame.mixer.music.set_volume(0)
-                    if 120 < sl <= 150:
-                        pygame.mixer.music.set_volume(0.1)
-                    if 150 < sl <= 180:
-                        pygame.mixer.music.set_volume(0.2)
-                    if 180 < sl <= 210:
-                        pygame.mixer.music.set_volume(0.3)
-                    if 210 < sl <= 240:
-                        pygame.mixer.music.set_volume(0.4)
-                    if 240 < sl <= 270:
-                        pygame.mixer.music.set_volume(0.5)
-                    if 270 < sl <= 300:
-                        pygame.mixer.music.set_volume(0.6)
-                    if 300 < sl <= 330:
-                        pygame.mixer.music.set_volume(0.7)
-                    if 330 < sl <= 360:
-                        pygame.mixer.music.set_volume(0.8)
-                    if 360 < sl <= 390:
-                        pygame.mixer.music.set_volume(0.9)
-                    if 390 < sl <= 418:
-                        pygame.mixer.music.set_volume(1)
+                    pygame.mixer.music.set_volume((event.pos[0] - 118) / 302)
                     actMusic = False
                 else:
                     isSliderMusic = False
@@ -214,35 +194,15 @@ def settings_menu():
                 isSliderSound = False
 
             elif event.type == pygame.MOUSEMOTION:
-                if (isSliderSound and sound_slider_obj.x < event.pos[0] < sound_slider_obj.x + sound_slider_obj.width
-                        and sound_slider_btn.y < event.pos[1] < sound_slider_btn.y + sound_slider_btn.height):
+                if isSliderSound:
                     xS = sound_slider_btn.rect[0]
-                    x_cube_S = event.pos[0] - xS
+                    if 118 < event.pos[0] < 420:
+                        x_cube_S = event.pos[0] - xS
+                    else:
+                        x_cube_S = 13
                     sound_slider_btn.rect = sound_slider_btn.rect.move(x_cube_S - 13, 0)
                     sd = sound_slider_btn.rect[0]
-                    sd = int(sd)
-                    if 118 <= sd <= 120:
-                        volS = 0
-                    if 120 < sd <= 150:
-                        volS = 0.1
-                    if 150 < sd <= 180:
-                        volS = 0.2
-                    if 180 < sd <= 210:
-                        volS = 0.3
-                    if 210 < sd <= 240:
-                        volS = 0.4
-                    if 240 < sd <= 270:
-                        volS = 0.5
-                    if 270 < sd <= 300:
-                        volS = 0.6
-                    if 300 < sd <= 330:
-                        volS = 0.7
-                    if 330 < sd <= 360:
-                        volS = 0.8
-                    if 360 < sd <= 390:
-                        volS = 0.9
-                    if 390 < sd <= 418:
-                        volS = 1
+                    volS = (event.pos[0] - 118) / 302
                     actSound = False
                 else:
                     isSliderSound = False
