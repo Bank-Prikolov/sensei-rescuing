@@ -462,4 +462,4 @@ def change_fullScreen(width, height, fullScreen=0):
     transition()
 
 
-main_menu()
+# main_menu()
