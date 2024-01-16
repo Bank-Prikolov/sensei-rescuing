@@ -39,13 +39,18 @@ record1 = 0
 record2 = 0
 record3 = 0
 
+a = open(r"data\settings.txt", "r", encoding="utf-8")
+checkActDet = list(map(lambda x: float(x.rstrip('\n')), a))
+wM = checkActDet[0]
+wS = checkActDet[1]
+
 
 def main_menu():
+    global checkActDet, wM, wS, checkF11
     pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
     pygame.mixer.music.play(-1)
-    pygame.mixer.music.set_volume(1)
+    pygame.mixer.music.set_volume(wM)
 
-    global checkF11
     title = Object(WIDTH // 2 - 886 // 2, 49, 886, 80, r"objects\menu-title-obj.png")
 
     start_btn = Button(WIDTH // 2 - 240 // 2, 186, 240, 100, r"buttons\default-start-btn.png",
@@ -68,7 +73,6 @@ def main_menu():
         screen.blit(bg, (0, 0))
         for event in pygame.event.get():
             if (event.type == pygame.QUIT) or (event.type == pygame.USEREVENT and event.button == exit_btn):
-                running = False
                 pygame.quit()
                 sys.exit()
 
@@ -110,7 +114,7 @@ def main_menu():
 
 
 def settings_menu():
-    global checkF11, isSliderMusic, isSliderSound, actMusic, actSound, sl, sd, tmp, volS
+    global checkF11, isSliderMusic, isSliderSound, actMusic, actSound, sl, sd, tmp, volS, wM, wS, checkActDet
     title = Object(WIDTH // 2 - 626 // 2 - 50, 85, 626, 82, r"objects\settings-title-obj.png")
     field_audio = Object(WIDTH // 2 - 450, 200, 420, 430, r"objects\audio-field-obj.png")
     field_video = Object(WIDTH // 2 + 30, 200, 420, 430, r"objects\video-field-obj.png")
@@ -122,15 +126,13 @@ def settings_menu():
                        r"buttons\press-cross-btn.png", r"data\sounds\menu-button-sound.mp3")
     fs_btn = Button(WIDTH // 2 + 478 // 2 - 136 // 2, 420, 136, 62, r"buttons\fullscreen-off-btn.png", "",
                     r"buttons\fullscreen-on-btn.png", r"data\sounds\menu-button-sound.mp3")
-    checkActDet = list(map(float, open(r"data\settings.txt", "r", encoding="utf-8").read().rstrip("\n").split(', ')))
-    checkActDetW = open(r"data\settings.txt", "w")
-    print(checkActDet)
-    sl = 119 + 284 * checkActDet[0]
+
+    sl = 106 + 300 * wM
     music_slider_btn = Button(sl, 387, 26, 28,
                               r"buttons\default-slider-btn.png", r"buttons\hover-slider-btn.png",
                               r"buttons\press-slider-btn.png")
 
-    sd = 119 + 284 * checkActDet[1]
+    sd = 106 + 300 * wS
     sound_slider_btn = Button(sd, 523, 26, 28,
                               r"buttons\default-slider-btn.png", r"buttons\hover-slider-btn.png",
                               r"buttons\press-slider-btn.png")
@@ -144,7 +146,6 @@ def settings_menu():
         screen.blit(bg, (0, 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
                 pygame.quit()
                 sys.exit()
 
@@ -176,37 +177,32 @@ def settings_menu():
 
             elif event.type == pygame.MOUSEMOTION:
                 # 118 - 420 | and music_slider_obj.x <= event.pos[0] <= music_slider_obj.x + music_slider_obj.width
-                wM = checkActDet[0]
-                wS = checkActDet[1]
-                if isSliderMusic:
-                    xM = music_slider_btn.rect[0]
-                    if 118 < event.pos[0] < 420:
-                        x_cube_M = event.pos[0] - xM
-                    else:
-                        x_cube_M = 13
-                    music_slider_btn.rect = music_slider_btn.rect.move(x_cube_M - 13, 0)
-                    sl = music_slider_btn.rect[0]
-                    wM = (event.pos[0] - 118) / 302
-                    pygame.mixer.music.set_volume(wM)
-                    actMusic = False
-                else:
-                    isSliderMusic = False
-                    checkActDetW.write(f"{str(wM), str(wS)}")
+                if isSliderMusic or isSliderSound:
+                    checkActDet = open(r"data\settings.txt", "w")
+                    if isSliderMusic:
+                        xM = music_slider_btn.rect[0]
+                        if 118 < event.pos[0] < 420:
+                            x_cube_M = event.pos[0] - xM
+                        else:
+                            x_cube_M = 13
+                        music_slider_btn.rect = music_slider_btn.rect.move(x_cube_M - 13, 0)
+                        sl = music_slider_btn.rect[0]
+                        wM = (music_slider_btn.rect[0] - 106) / 300
+                        pygame.mixer.music.set_volume(wM)
+                        actMusic = False
 
-                if isSliderSound:
-                    xS = sound_slider_btn.rect[0]
-                    if 118 < event.pos[0] < 420:
-                        x_cube_S = event.pos[0] - xS
-                    else:
-                        x_cube_S = 13
-                    sound_slider_btn.rect = sound_slider_btn.rect.move(x_cube_S - 13, 0)
-                    sd = sound_slider_btn.rect[0]
-                    wS = (event.pos[0] - 118) / 302
-                    volS = wS
-                    actSound = False
-                else:
-                    isSliderSound = False
-                    checkActDetW.write(f"{wM, wS}")
+                    elif isSliderSound:
+                        xS = sound_slider_btn.rect[0]
+                        if 118 < event.pos[0] < 420:
+                            x_cube_S = event.pos[0] - xS
+                        else:
+                            x_cube_S = 13
+                        sound_slider_btn.rect = sound_slider_btn.rect.move(x_cube_S - 13, 0)
+                        sd = sound_slider_btn.rect[0]
+                        wS = (sound_slider_btn.rect[0] - 106) / 300
+                        volS = wS
+                        actSound = False
+                    checkActDet.writelines([str(wM) + '\n', str(wS)])
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == sound_slider_btn:
                 isSliderSound = True
@@ -278,7 +274,6 @@ def levels_menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
                 pygame.quit()
                 sys.exit()
 
@@ -373,7 +368,6 @@ def info_menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
                 pygame.quit()
                 sys.exit()
 
