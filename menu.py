@@ -22,6 +22,7 @@ bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 
 checkIsActive2 = False
 checkIsActiveBoss = False
+volS = 1
 
 checkF11 = False
 isSliderMusic = False
@@ -39,11 +40,9 @@ record3 = 0
 
 
 def main_menu():
-    global vol
-    vol = 1
-    pygame.mixer.music.load(r"data\sounds\menu-sound.mp3")
+    pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
     pygame.mixer.music.play(-1)
-    pygame.mixer.music.set_volume(vol)
+    pygame.mixer.music.set_volume(1)
 
     global checkF11
     title = Object(WIDTH // 2 - 886 // 2, 49, 886, 80, r"objects\menu-title-obj.png")
@@ -93,14 +92,12 @@ def main_menu():
                     print('f11 on')
 
             for button in [start_btn, settings_btn, info_btn, exit_btn]:
-                button.handle_event(event)
+                button.handle_event(event, volS)
 
-        for button in [settings_btn, info_btn, exit_btn]:
+        for button in [start_btn, settings_btn, info_btn, exit_btn]:
+            button.set_pos(WIDTH // 2 - 300, checkF11)
             button.check_hover(pygame.mouse.get_pos())
             button.draw(screen)
-
-        start_btn.check_hover(pygame.mouse.get_pos())
-        start_btn.draw(screen)
 
         title.draw(screen)
 
@@ -112,7 +109,7 @@ def main_menu():
 
 
 def settings_menu():
-    global checkF11, isSliderMusic, isSliderSound, actMusic, actSound, sl, sd
+    global checkF11, isSliderMusic, isSliderSound, actMusic, actSound, sl, sd, tmp, volS
     title = Object(WIDTH // 2 - 626 // 2 - 50, 85, 626, 82, r"objects\settings-title-obj.png")
     field_audio = Object(WIDTH // 2 - 450, 200, 420, 430, r"objects\audio-field-obj.png")
     field_video = Object(WIDTH // 2 + 30, 200, 420, 430, r"objects\video-field-obj.png")
@@ -182,6 +179,7 @@ def settings_menu():
                     x_cube_M = event.pos[0] - xM
                     music_slider_btn.rect = music_slider_btn.rect.move(x_cube_M - 13, 0)
                     sl = music_slider_btn.rect[0]
+                    tmp = sl
                     sl = int(sl)
                     if 118 <= sl <= 120:
                         pygame.mixer.music.set_volume(0)
@@ -222,12 +220,35 @@ def settings_menu():
                     x_cube_S = event.pos[0] - xS
                     sound_slider_btn.rect = sound_slider_btn.rect.move(x_cube_S - 13, 0)
                     sd = sound_slider_btn.rect[0]
+                    sd = int(sd)
+                    if 118 <= sd <= 120:
+                        volS = 0
+                    if 120 < sd <= 150:
+                        volS = 0.1
+                    if 150 < sd <= 180:
+                        volS = 0.2
+                    if 180 < sd <= 210:
+                        volS = 0.3
+                    if 210 < sd <= 240:
+                        volS = 0.4
+                    if 240 < sd <= 270:
+                        volS = 0.5
+                    if 270 < sd <= 300:
+                        volS = 0.6
+                    if 300 < sd <= 330:
+                        volS = 0.7
+                    if 330 < sd <= 360:
+                        volS = 0.8
+                    if 360 < sd <= 390:
+                        volS = 0.9
+                    if 390 < sd <= 418:
+                        volS = 1
                     actSound = False
                 else:
                     isSliderSound = False
 
             for button in [cross_btn, fs_btn]:
-                button.handle_event(event)
+                button.handle_event(event, volS)
 
             for slider_button in [music_slider_btn, sound_slider_btn]:
                 slider_button.handle_event_slider(event)
@@ -324,7 +345,7 @@ def levels_menu():
                     print('f11 on')
 
             for button in [cross_btn, level1Button, level2Button, levelBossButton]:
-                button.handle_event(event)
+                button.handle_event(event, volS)
 
         for obj in [title, field, level1Field]:
             obj.draw(screen)
@@ -413,7 +434,7 @@ def info_menu():
                     print('f11 on')
 
             for button in [github_left_btn, github_right_btn, cross_btn]:
-                button.handle_event(event)
+                button.handle_event(event, volS)
 
         for obj in [title, field, alexandr, igor]:
             obj.draw(screen)

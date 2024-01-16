@@ -72,9 +72,10 @@ class Button:
         self.is_pushed = False
         self.is_slider = False
 
-    def set_pos(self, x, y=None):
-        self.x = x
-        self.rect = self.image.get_rect(topleft=(self.x, self.y))
+    def set_pos(self, x, checkF11=False, y=None):
+        if checkF11:
+            self.x = x
+            self.rect = self.image.get_rect(topleft=(self.x, self.y))
 
     def draw(self, screen):
         current_image = self.image
@@ -101,12 +102,13 @@ class Button:
     def check_hover(self, mouse_pos):
         self.is_hovered = self.rect.collidepoint(mouse_pos)
 
-    def handle_event(self, event):
+    def handle_event(self, event, volS=1):
         if event.type == pygame.MOUSEBUTTONDOWN and self.is_hovered and not self.is_no_active:
             self.is_pushed = True
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and self.is_pushed:
             self.is_pushed = False
             if self.sound:
+                pygame.mixer.Sound.set_volume(self.sound, volS)
                 self.sound.play()
             pygame.event.post(pygame.event.Event(pygame.USEREVENT, button=self))
 
