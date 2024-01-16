@@ -5,6 +5,7 @@ from load_image import load_image
 from itemCreator import Object, Button, Stars
 from transition import transition
 from consts import *
+from windows import fullscreen, k
 
 pygame.init()
 
@@ -24,7 +25,7 @@ checkIsActive2 = False
 checkIsActiveBoss = False
 volS = 1
 
-checkF11 = False
+checkF11 = fullscreen
 isSliderMusic = False
 isSliderSound = False
 actMusic = True
@@ -121,13 +122,15 @@ def settings_menu():
                        r"buttons\press-cross-btn.png", r"data\sounds\menu-button-sound.mp3")
     fs_btn = Button(WIDTH // 2 + 478 // 2 - 136 // 2, 420, 136, 62, r"buttons\fullscreen-off-btn.png", "",
                     r"buttons\fullscreen-on-btn.png", r"data\sounds\menu-button-sound.mp3")
-    if actMusic:
-        sl = WIDTH // 2 - 450 // 2 - 302 // 2 - 18 + 300 - 32
+    checkActDet = list(map(float, open(r"data\settings.txt", "r", encoding="utf-8").read().rstrip("\n").split(', ')))
+    checkActDetW = open(r"data\settings.txt", "w")
+    print(checkActDet)
+    sl = 119 + 284 * checkActDet[0]
     music_slider_btn = Button(sl, 387, 26, 28,
                               r"buttons\default-slider-btn.png", r"buttons\hover-slider-btn.png",
                               r"buttons\press-slider-btn.png")
-    if actSound:
-        sd = WIDTH // 2 - 450 // 2 - 302 // 2 - 18 + 300 - 32
+
+    sd = 119 + 284 * checkActDet[1]
     sound_slider_btn = Button(sd, 523, 26, 28,
                               r"buttons\default-slider-btn.png", r"buttons\hover-slider-btn.png",
                               r"buttons\press-slider-btn.png")
@@ -173,6 +176,8 @@ def settings_menu():
 
             elif event.type == pygame.MOUSEMOTION:
                 # 118 - 420 | and music_slider_obj.x <= event.pos[0] <= music_slider_obj.x + music_slider_obj.width
+                wM = checkActDet[0]
+                wS = checkActDet[1]
                 if isSliderMusic:
                     xM = music_slider_btn.rect[0]
                     if 118 < event.pos[0] < 420:
@@ -181,19 +186,13 @@ def settings_menu():
                         x_cube_M = 13
                     music_slider_btn.rect = music_slider_btn.rect.move(x_cube_M - 13, 0)
                     sl = music_slider_btn.rect[0]
-                    tmp = sl
-                    pygame.mixer.music.set_volume((event.pos[0] - 118) / 302)
+                    wM = (event.pos[0] - 118) / 302
+                    pygame.mixer.music.set_volume(wM)
                     actMusic = False
                 else:
                     isSliderMusic = False
+                    checkActDetW.write(f"{str(wM), str(wS)}")
 
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == sound_slider_btn:
-                isSliderSound = True
-
-            elif event.type == pygame.MOUSEBUTTONUP and event.button == sound_slider_btn:
-                isSliderSound = False
-
-            elif event.type == pygame.MOUSEMOTION:
                 if isSliderSound:
                     xS = sound_slider_btn.rect[0]
                     if 118 < event.pos[0] < 420:
@@ -202,10 +201,18 @@ def settings_menu():
                         x_cube_S = 13
                     sound_slider_btn.rect = sound_slider_btn.rect.move(x_cube_S - 13, 0)
                     sd = sound_slider_btn.rect[0]
-                    volS = (event.pos[0] - 118) / 302
+                    wS = (event.pos[0] - 118) / 302
+                    volS = wS
                     actSound = False
                 else:
                     isSliderSound = False
+                    checkActDetW.write(f"{wM, wS}")
+
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == sound_slider_btn:
+                isSliderSound = True
+
+            elif event.type == pygame.MOUSEBUTTONUP and event.button == sound_slider_btn:
+                isSliderSound = False
 
             for button in [cross_btn, fs_btn]:
                 button.handle_event(event, volS)
@@ -422,4 +429,4 @@ def change_fullScreen(width, height, fullScreen=0):
     transition()
 
 
-# main_menu()
+main_menu()
