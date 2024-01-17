@@ -22,6 +22,11 @@ class Object:
 
         self.rect = self.image.get_rect(topleft=(x, y))
 
+    def set_pos(self, x, y=None):
+        self.x = x
+        self.y = y
+        self.rect = self.image.get_rect(topleft=(self.x, self.y))
+
     def check_passing(self, isActive=False):
         if isActive:
             self.is_no_active = False
@@ -72,10 +77,9 @@ class Button:
         self.is_pushed = False
         self.is_slider = False
 
-    def set_pos(self, x, checkF11=False, y=None):
-        if checkF11:
-            self.x = x
-            self.rect = self.image.get_rect(topleft=(self.x, self.y))
+    def set_pos(self, x, y=None):
+        self.x = x
+        self.rect = self.image.get_rect(topleft=(self.x, self.y))
 
     def draw(self, screen):
         current_image = self.image
@@ -141,6 +145,11 @@ class Stars:
         self.threeStar_image = pygame.transform.scale(self.threeStar_image, (width, height))
 
         self.rect = self.zeroStar_image.get_rect(topleft=(x, y))
+
+    def set_pos(self, x, y=None):
+        self.x = x
+        self.y = y
+        self.rect = self.zeroStar_image.get_rect(topleft=(self.x, self.y))
 
     def draw(self, screen, record):
         current_image = load_image(r"objects\stars-none-obj.png")

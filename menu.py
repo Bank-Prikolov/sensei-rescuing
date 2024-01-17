@@ -7,6 +7,8 @@ from transition import transition
 from consts import *
 from windows import fullscreen, k
 
+# сначала в меню, инфо и сеттингс пересчитать x и Y относительно title, потом сделать fs
+
 pygame.init()
 
 size = WIDTH, HEIGHT = 1024, 704
@@ -23,13 +25,9 @@ bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 
 checkIsActive2 = False
 checkIsActiveBoss = False
-volS = 1
-
-checkF11 = fullscreen
+checkF11 = False
 isSliderMusic = False
 isSliderSound = False
-actMusic = True
-actSound = True
 
 checkIsPassing1 = True
 checkIsPassing2 = False
@@ -43,12 +41,17 @@ a = open(r"data\settings.txt", "r", encoding="utf-8")
 checkActDet = list(map(lambda x: float(x.rstrip('\n')), a))
 wM = checkActDet[0]
 wS = checkActDet[1]
+volS = wS
+
+ft = True
 
 
 def main_menu():
-    global checkActDet, wM, wS, checkF11
-    pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
-    pygame.mixer.music.play(-1)
+    global checkActDet, wM, wS, checkF11, ft
+    if ft:
+        pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
+        pygame.mixer.music.play(-1)
+        ft = False
     pygame.mixer.music.set_volume(wM)
 
     title = Object(WIDTH // 2 - 886 // 2, 49, 886, 80, r"objects\menu-title-obj.png")
@@ -100,21 +103,145 @@ def main_menu():
                 button.handle_event(event, volS)
 
         for button in [start_btn, settings_btn, info_btn, exit_btn]:
-            button.set_pos(WIDTH // 2 - 300, checkF11)
             button.check_hover(pygame.mouse.get_pos())
             button.draw(screen)
 
         title.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
-        if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
+        if not checkF11:
+            if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
+                screen.blit(cursor, (x_c, y_c))
+        else:
+            screen.blit(cursor, (x_c, y_c))
+
+        pygame.display.flip()
+
+
+def levels_menu():
+    global checkF11
+
+    if not checkF11:
+        all_w, all_h = WIDTH // 2 - 399, HEIGHT - 619
+    else:
+        all_w, all_h = WIDTH // 2 - 399, HEIGHT - 770
+    title = Object(all_w, all_h, 700, 82, r"objects\level-menu-title-obj.png")
+    cross_btn = Button(all_w + title.width + 18, all_h + 8, 67, 72, r"buttons\default-cross-btn.png", r"buttons\hover-cross-btn.png",
+                       r"buttons\press-cross-btn.png", r"data\sounds\menu-button-sound.mp3")
+    level1Button = Button(all_w - 49, all_h + 215.5, 144, 155, r"buttons\default-first-btn.png",
+                          r"buttons\hover-first-btn.png", r"buttons\press-first-btn.png",
+                          r"data\sounds\menu-button-sound.mp3")
+    level2Button = Button(all_w + 326, all_h + 215.5, 144, 155, r"buttons\default-second-btn.png",
+                          r"buttons\hover-second-btn.png", r"buttons\press-second-btn.png",
+                          r"data\sounds\menu-button-sound.mp3", r"buttons\no-active-second-btn.png")
+    levelBossButton = Button(all_w + 699, all_h + 215.5, 144, 155, r"buttons\default-boss-btn.png",
+                             r"buttons\hover-boss-btn.png", r"buttons\press-boss-btn.png",
+                             r"data\sounds\menu-button-sound.mp3", r"buttons\no-active-boss-btn.png")
+    info_btn = Button(all_w + 857, all_h + 178, 18, 18, r"buttons\default-level-info-btn.png",
+                      r"buttons\hover-level-info-btn.png")
+
+    field = Object(all_w - 91, all_h + 166, 980, 305, r"objects\level-menu-field-obj.png")
+    level1Field = Object(all_w - 70, all_h + 197.5, 186, 189, r"objects\start-level-field-obj.png")
+    level2Field = Object(all_w + 130, all_h + 197.5, 360, 189, r"objects\level-field-obj.png",
+                         r"objects\hover-level-field-obj.png")
+    levelBossField = Object(all_w + 503, all_h + 197.5, 360, 189,
+                            r"objects\level-field-obj.png", r"objects\hover-level-field-obj.png")
+
+    zeroStars, oneStar, twoStars, threeStars = (r"objects\stars-zero-obj.png", r"objects\stars-one-obj.png",
+                                                r"objects\stars-two-obj.png", r"objects\stars-three-obj.png")
+    level1Stars = Stars(all_w - 103, all_h + 395.5, 252, 44, zeroStars, oneStar, twoStars, threeStars)
+    level2Stars = Stars(all_w + 273, all_h + 395.5, 252, 44, zeroStars, oneStar, twoStars,
+                        threeStars)
+    levelBossStars = Stars(all_w + 647, all_h + 395.5, 252, 44, zeroStars, oneStar, twoStars,
+                           threeStars)
+
+    running = True
+    while running:
+        clock.tick(fps)
+        screen.fill((0, 0, 0))
+        screen.blit(bg, (0, 0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    transition()
+                    running = False
+
+            if event.type == pygame.USEREVENT and event.button == cross_btn:
+                transition()
+                main_menu()
+
+            if event.type == pygame.USEREVENT and event.button == level1Button:
+                print(' -> Level 1')
+                transition()
+
+            if event.type == pygame.USEREVENT and event.button == level2Button and checkIsActive2:
+                print(' -> Level 2')
+                transition()
+
+            if event.type == pygame.USEREVENT and event.button == levelBossButton and checkIsActiveBoss:
+                print(' -> Level 3 (Boss)')
+                transition()
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
+                if checkF11:
+                    checkF11 = False
+                    print('f11 off')
+                    change_fullScreen(1024, 704)
+                    levels_menu()
+                else:
+                    checkF11 = True
+                    print('f11 on')
+                    change_fullScreen(1920, 1080, pygame.FULLSCREEN)
+                    levels_menu()
+
+            for button in [cross_btn, level1Button, level2Button, levelBossButton]:
+                button.handle_event(event, volS)
+
+        for obj in [title, field, level1Field]:
+            obj.draw(screen)
+
+        level2Field.check_passing(checkIsActive2)
+        level2Field.draw(screen)
+        levelBossField.check_passing(checkIsActiveBoss)
+        levelBossField.draw(screen)
+
+        for button in [cross_btn, level1Button, level2Button, levelBossButton]:
+            button.check_hover(pygame.mouse.get_pos())
+            button.draw(screen)
+
+        info_btn.check_hover(pygame.mouse.get_pos())
+        if info_btn.rect.collidepoint(pygame.mouse.get_pos()):
+            field_d = Object(all_w + 357, all_h - 40, 498, 218, r"objects\level-info-field-obj.png")
+            field_d.draw(screen)
+        info_btn.draw(screen)
+
+        level2Button.check_passing(checkIsActive2)
+        levelBossButton.check_passing(checkIsActiveBoss)
+
+        if checkIsPassing1:
+            level1Stars.draw(screen, record1)
+        if checkIsPassing2:
+            level2Stars.draw(screen, record2)
+        if checkIsPassingBoss:
+            levelBossStars.draw(screen, record3)
+
+        x_c, y_c = pygame.mouse.get_pos()
+        if not checkF11:
+            if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
+                screen.blit(cursor, (x_c, y_c))
+        else:
             screen.blit(cursor, (x_c, y_c))
 
         pygame.display.flip()
 
 
 def settings_menu():
-    global checkF11, isSliderMusic, isSliderSound, actMusic, actSound, sl, sd, tmp, volS, wM, wS, checkActDet
+    global checkF11, isSliderMusic, isSliderSound, sl, sd, tmp, volS, wM, wS, checkActDet
     title = Object(WIDTH // 2 - 626 // 2 - 50, 85, 626, 82, r"objects\settings-title-obj.png")
     field_audio = Object(WIDTH // 2 - 450, 200, 420, 430, r"objects\audio-field-obj.png")
     field_video = Object(WIDTH // 2 + 30, 200, 420, 430, r"objects\video-field-obj.png")
@@ -176,7 +303,6 @@ def settings_menu():
                 isSliderMusic = False
 
             elif event.type == pygame.MOUSEMOTION:
-                # 118 - 420 | and music_slider_obj.x <= event.pos[0] <= music_slider_obj.x + music_slider_obj.width
                 if isSliderMusic or isSliderSound:
                     checkActDet = open(r"data\settings.txt", "w")
                     if isSliderMusic:
@@ -189,7 +315,6 @@ def settings_menu():
                         sl = music_slider_btn.rect[0]
                         wM = (music_slider_btn.rect[0] - 106) / 300
                         pygame.mixer.music.set_volume(wM)
-                        actMusic = False
 
                     elif isSliderSound:
                         xS = sound_slider_btn.rect[0]
@@ -201,7 +326,6 @@ def settings_menu():
                         sd = sound_slider_btn.rect[0]
                         wS = (sound_slider_btn.rect[0] - 106) / 300
                         volS = wS
-                        actSound = False
                     checkActDet.writelines([str(wM) + '\n', str(wS)])
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == sound_slider_btn:
@@ -228,117 +352,10 @@ def settings_menu():
         fs_btn.draw_f11(screen, checkF11)
 
         x_c, y_c = pygame.mouse.get_pos()
-        if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
-            screen.blit(cursor, (x_c, y_c))
-
-        pygame.display.flip()
-
-
-def levels_menu():
-    global checkF11
-    cross_btn = Button(WIDTH - 192, 93, 67, 72, r"buttons\default-cross-btn.png", r"buttons\hover-cross-btn.png",
-                       r"buttons\press-cross-btn.png", r"data\sounds\menu-button-sound.mp3")
-    level1Button = Button(64, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\default-first-btn.png",
-                          r"buttons\hover-first-btn.png", r"buttons\press-first-btn.png",
-                          r"data\sounds\menu-button-sound.mp3")
-    level2Button = Button(WIDTH // 2 - 73, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\default-second-btn.png",
-                          r"buttons\hover-second-btn.png", r"buttons\press-second-btn.png",
-                          r"data\sounds\menu-button-sound.mp3", r"buttons\no-active-second-btn.png")
-    levelBossButton = Button(WIDTH // 2 + 300, HEIGHT // 2 - 189 // 2 + 43, 144, 155, r"buttons\default-boss-btn.png",
-                             r"buttons\hover-boss-btn.png", r"buttons\press-boss-btn.png",
-                             r"data\sounds\menu-button-sound.mp3", r"buttons\no-active-boss-btn.png")
-    info_btn = Button(WIDTH - 54, 263, 18, 18, r"buttons\default-level-info-btn.png",
-                      r"buttons\hover-level-info-btn.png")
-
-    title = Object(WIDTH // 2 - 700 // 2 - 49, 85, 700, 82, r"objects\level-menu-title-obj.png")
-    field = Object(WIDTH // 2 - 490, 251, 980, 305, r"objects\level-menu-field-obj.png")
-    level1Field = Object(43, HEIGHT // 2 - 189 // 2 + 25, 186, 189, r"objects\start-level-field-obj.png")
-    level2Field = Object(WIDTH // 2 - 269, HEIGHT // 2 - 189 // 2 + 25, 360, 189, r"objects\level-field-obj.png",
-                         r"objects\hover-level-field-obj.png")
-    levelBossField = Object(WIDTH // 2 + 104, HEIGHT // 2 - 189 // 2 + 25, 360, 189,
-                            r"objects\level-field-obj.png", r"objects\hover-level-field-obj.png")
-
-    zeroStars, oneStar, twoStars, threeStars = (r"objects\stars-zero-obj.png", r"objects\stars-one-obj.png",
-                                                r"objects\stars-two-obj.png", r"objects\stars-three-obj.png")
-    level1Stars = Stars(10, HEIGHT // 2 - 189 // 2 + 43 + 180, 252, 44, zeroStars, oneStar, twoStars, threeStars)
-    level2Stars = Stars(WIDTH // 2 - 252 // 2, HEIGHT // 2 - 189 // 2 + 43 + 180, 252, 44, zeroStars, oneStar, twoStars,
-                        threeStars)
-    levelBossStars = Stars(WIDTH // 2 + 248, HEIGHT // 2 - 189 // 2 + 43 + 180, 252, 44, zeroStars, oneStar, twoStars,
-                           threeStars)
-
-    running = True
-    while running:
-        clock.tick(fps)
-        screen.fill((0, 0, 0))
-        screen.blit(bg, (0, 0))
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    transition()
-                    running = False
-
-            if event.type == pygame.USEREVENT and event.button == cross_btn:
-                transition()
-                running = False
-
-            if event.type == pygame.USEREVENT and event.button == level1Button:
-                print(' -> Level 1')
-                transition()
-
-            if event.type == pygame.USEREVENT and event.button == level2Button and checkIsActive2:
-                print(' -> Level 2')
-                transition()
-
-            if event.type == pygame.USEREVENT and event.button == levelBossButton and checkIsActiveBoss:
-                print(' -> Level 3 (Boss)')
-                transition()
-
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-                if checkF11:
-                    checkF11 = False
-                    print('f11 off')
-                else:
-                    checkF11 = True
-                    print('f11 on')
-
-            for button in [cross_btn, level1Button, level2Button, levelBossButton]:
-                button.handle_event(event, volS)
-
-        for obj in [title, field, level1Field]:
-            obj.draw(screen)
-
-        level2Field.check_passing(checkIsActive2)
-        level2Field.draw(screen)
-        levelBossField.check_passing(checkIsActiveBoss)
-        levelBossField.draw(screen)
-
-        for button in [cross_btn, level1Button, level2Button, levelBossButton]:
-            button.check_hover(pygame.mouse.get_pos())
-            button.draw(screen)
-
-        info_btn.check_hover(pygame.mouse.get_pos())
-        if info_btn.rect.collidepoint(pygame.mouse.get_pos()):
-            field_d = Object(WIDTH - 54 - 500, 263 - 218, 498, 218, r"objects\level-info-field-obj.png")
-            field_d.draw(screen)
-        info_btn.draw(screen)
-
-        level2Button.check_passing(checkIsActive2)
-        levelBossButton.check_passing(checkIsActiveBoss)
-
-        if checkIsPassing1:
-            level1Stars.draw(screen, record1)
-        if checkIsPassing2:
-            level2Stars.draw(screen, record2)
-        if checkIsPassingBoss:
-            levelBossStars.draw(screen, record3)
-
-        x_c, y_c = pygame.mouse.get_pos()
-        if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
+        if not checkF11:
+            if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
+                screen.blit(cursor, (x_c, y_c))
+        else:
             screen.blit(cursor, (x_c, y_c))
 
         pygame.display.flip()
@@ -405,22 +422,24 @@ def info_menu():
             button.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
-        if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
+        if not checkF11:
+            if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
+                screen.blit(cursor, (x_c, y_c))
+        else:
             screen.blit(cursor, (x_c, y_c))
 
         pygame.display.flip()
 
 
-def change_fullScreen(width, height, fullScreen=0):
+def change_fullScreen(width, height, fullScreen=1):
     global WIDTH, HEIGHT, screen, img, bg
     WIDTH, HEIGHT = width, height
     screen = pygame.display.set_mode((WIDTH, HEIGHT), fullScreen)
     if checkF11:
         tmp = load_image(r"backgrounds\main-menu-fullScreen-bg.png")
-        bg = pygame.transform.scale(tmp, (tmp.get_width() * 0.8, tmp.get_height() * 0.8))
+        bg = pygame.transform.scale(tmp, (tmp.get_width(), tmp.get_height()))
     else:
         bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
-    transition()
 
 
-main_menu()
+# main_menu()
