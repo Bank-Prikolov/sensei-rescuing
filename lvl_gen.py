@@ -1,26 +1,26 @@
+import pygame
 import os
 import sys
-
-import pygame.surface
-
 from load_image import load_image
 from consts import *
-from windows import *
+import windows
 
-all_sprites = pygame.sprite.Group()
+all_sprites = list()
 toches = pygame.sprite.Group()
 bgroup = pygame.sprite.Group()
 platformgroup = pygame.sprite.Group()
 characters = pygame.sprite.Group()
 untouches = pygame.sprite.Group()
 finale = pygame.sprite.Group()
+all_sprites.append([toches, bgroup, platformgroup, untouches])
+
 heropic = wai
-if not fullscreen:
-    screen = pygame.display.set_mode(size)
-    fullscreen = 0
+if not windows.fullscreen:
+    screen = pygame.display.set_mode(windows.size)
+    windows.fullscreen = 0
 else:
-    screen = pygame.display.set_mode(fullsize, pygame.FULLSCREEN)
-    fullscreen = 1
+    screen = pygame.display.set_mode(windows.fullsize, pygame.FULLSCREEN)
+    windows.fullscreen = 1
 
 
 class Pic(pygame.sprite.Sprite):
@@ -53,36 +53,35 @@ class Board:
 
     def set_view(self, left, top, cell_size):
         self.left = left
-        self.top = top
         self.cell_size = cell_size
+        self.top = top
 
     def render(self, sc):
         toches.empty()
         platformgroup.empty()
         untouches.empty()
         finale.empty()
-        all_sprites.empty()
         for x in range(len(self.board[0])):
             for y in range(len(self.board)):
                 if self.board[y][x] == '0':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, floor, toches, all_sprites)
+                        self.cell_size, floor, toches)
                 elif self.board[y][x] == '#':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, wallx, toches, all_sprites)
+                        self.cell_size, wallx, toches)
                 elif self.board[y][x] == '=':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, wally, toches, all_sprites)
+                        self.cell_size, wally, toches)
                 elif self.board[y][x] == '@':
                     pass
                 elif self.board[y][x] == '_':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, plat, untouches, all_sprites)
-                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size // 32, placeholder, platformgroup, all_sprites)
+                        self.cell_size, plat, untouches)
+                    Pic(self.left + (self.cell_size * x) + self.cell_size // 4, self.top + (self.cell_size * y), self.cell_size - self.cell_size // 2,
+                        self.cell_size // 64, placeholder, platformgroup)
                 elif self.board[y][x] == 'F':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, finish, finale, all_sprites)
+                        self.cell_size, finish, finale)
                 else:
                     pass
         toches.draw(sc)
@@ -108,8 +107,10 @@ class Board:
         for x in range(len(self.board[0])):
             for y in range(len(self.board)):
                 if self.board[y][x] == '@':
-                    a = otstupx * fullscreen + (20 + self.cell_size * x) * k ** fullscreen, otstupy * fullscreen + (
-                            20 + self.cell_size * y) * k ** fullscreen
+                    a = (self.left + (
+                            10 * windows.k ** windows.fullscreen + self.cell_size * x),
+                         (self.top + (
+                            10 * windows.k ** windows.fullscreen + self.cell_size * y)))
                 elif self.board[y][x] == 'F':
                     b = x, y
                 if bool(a) and bool(b):
@@ -133,27 +134,27 @@ class Background(pygame.sprite.Sprite):
         return newground
 
 
-board = Board('2-level.txt')
-board.set_view(0, 0, 128)
-start_coords = board.get_start_end_pos()[0]
-end_coords = board.get_start_end_pos()[1]
-bg = Background(*size, 0, 0, k)
+board = Board('test2.txt')
 
 
 def generate_level(lvlnum):
-    global board, screen, start_coords, bg
+    global board, screen
     if lvlnum == 1:
         level = lvl1
         # bground = 1
-    else:
+    elif lvlnum == 2:
         level = lvl2
         # bground = 2
-    bg = Background(*size, 0, 0, k)
+    else:
+        level = lvl3
+    bg = Background(*windows.size, 0, 0, windows.k)
     board = Board(level)
-    board.set_view(otstupx * fullscreen, otstupy * fullscreen, 128 * k ** fullscreen)
-    bgroup.update(*size, otstupx * fullscreen, otstupy * fullscreen, k ** fullscreen)
-    start_coords = board.get_start_end_pos()[0]
-
+    board.set_view(windows.otstupx * windows.fullscreen,
+                   - board.cell_size * abs(windows.fullscreen - 1) - windows.otstupy * windows.fullscreen,
+                   64 * windows.k ** windows.fullscreen)
+    bgroup.update(*windows.size, windows.otstupx * windows.fullscreen, windows.otstupy * windows.fullscreen,
+                  windows.k ** windows.fullscreen)
+    return board.get_start_end_pos()[0], board.get_start_end_pos()[1]
 
 
 def otrisovka_urovnya():
@@ -161,14 +162,17 @@ def otrisovka_urovnya():
     characters.draw(screen)
 
 
-def rescreen(fs):
+def rescreen():
     global screen, board, bgroup
-    if fs:
-        screen = pygame.display.set_mode(fullsize, pygame.FULLSCREEN)
+    if windows.fullscreen:
+        screen = pygame.display.set_mode(windows.fullsize, pygame.FULLSCREEN)
     else:
-        screen = pygame.display.set_mode(size)
-    board.set_view(otstupx * fs, otstupy * fs, 128 * k ** fs)
-    bgroup.update(*size, otstupx * fs, otstupy * fs, k ** fs)
+        screen = pygame.display.set_mode(windows.size)
+    board.set_view(windows.otstupx * windows.fullscreen,
+                   -windows.otstupy * windows.k ** windows.fullscreen,
+                   64 * windows.k ** windows.fullscreen)
+    bgroup.update(*windows.size, windows.otstupx * windows.fullscreen, windows.otstupy * windows.k * windows.fullscreen,
+                  windows.k ** windows.fullscreen)
 
 
 def updater():

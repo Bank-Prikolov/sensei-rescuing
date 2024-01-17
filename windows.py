@@ -11,5 +11,5 @@ if k in [1, 2]:
     lis = max([(int(height * 0.5 * x), 0.5 * x) for x in range(2, 5) if not int(height * 0.5 * x) > fullsize[1]])
     k = lis[1]
 otstupx = (fullsize[0] - size[0] * k) // 2
-otstupy = (fullsize[1] - size[1] * k) * k
+otstupy = (fullsize[1] - size[1] * k) * k // 2
 fullscreen = 0
