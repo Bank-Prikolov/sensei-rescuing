@@ -12,6 +12,7 @@ platformgroup = pygame.sprite.Group()
 characters = pygame.sprite.Group()
 untouches = pygame.sprite.Group()
 finale = pygame.sprite.Group()
+shadowgroup = pygame.sprite.Group()
 all_sprites.append([toches, bgroup, platformgroup, untouches])
 
 heropic = wai
@@ -141,13 +142,19 @@ def generate_level(lvlnum):
     global board, screen
     if lvlnum == 1:
         level = lvl1
-        # bground = 1
     elif lvlnum == 2:
         level = lvl2
-        # bground = 2
-    else:
+    elif lvlnum == 2.1:
+        level = lvl2_1
+    elif lvlnum == 3:
         level = lvl3
-    bg = Background(*windows.size, 0, 0, windows.k)
+    elif lvlnum == 3:
+        level = lvl3
+    elif lvlnum == 3.1:
+        level = lvl3_1
+    else:
+        level = lvl3_2
+    Background(*windows.size, 0, 0, windows.k)
     board = Board(level)
     board.set_view(windows.otstupx * windows.fullscreen,
                    - board.cell_size * abs(windows.fullscreen - 1) - windows.otstupy * windows.fullscreen,
@@ -179,3 +186,9 @@ def updater():
     global bgroup, screen, board
     bgroup.draw(screen)
     board.render(screen)
+
+def get_shadow(x, y, w, h):
+    shadowgroup.empty()
+    sp = shadow
+    Pic(x, y, w, h, sp, shadowgroup)
+

@@ -15,6 +15,7 @@ class Hero(pygame.sprite.Sprite):
             Hero.pic, (Hero.pic.get_width() // 2 * koef, Hero.pic.get_height() // 2 * koef))
         self.frames = []
         self.cut_sheet(self.sprites, koef, anim)
+        self.anim = anim
         self.cur_frame = 0
         self.image = self.frames[self.cur_frame]
         self.rect = self.rect.move(x, y)
@@ -38,10 +39,10 @@ class Hero(pygame.sprite.Sprite):
         self.image = self.frames[self.cur_frame]
         self.set_coords(*self.get_coords())
         if self.counter == 5:
-            self.cur_frame = (self.cur_frame + 1) % len(self.frames)
+
+            self.cur_frame = (self.cur_frame + 1) % 8
             self.counter = 0
         self.counter += 1
-
         yspeed -= self.ys
         self.rect = self.rect.move(0, yspeed * windows.k ** windows.fullscreen)
         if falling and self.act not in ['falll', 'fallr']:
@@ -79,12 +80,12 @@ class Hero(pygame.sprite.Sprite):
                 touchable = True
         else:
             touchable = True
-
         if pygame.sprite.spritecollide(self, lvl_gen.toches, False) or (
                 pygame.sprite.spritecollide(self, lvl_gen.platformgroup, False) and touchable):
             if pygame.sprite.spritecollide(self, lvl_gen.toches, False):
                 self.rect = self.rect.move(0, pygame.sprite.spritecollide(
                     self, lvl_gen.toches, False)[0].rect[1] - hero.get_coords()[1] - hero.get_size()[1])
+
             else:
                 self.rect = self.rect.move(0, pygame.sprite.spritecollide(
                     self, lvl_gen.platformgroup, False)[0].rect[1] - hero.get_coords()[1] - hero.get_size()[1])
@@ -103,6 +104,7 @@ class Hero(pygame.sprite.Sprite):
                             hero = self.change_hero('r', self.get_coords())
                         if runleft:
                             hero = self.change_hero('l', self.get_coords())
+        # lvl_gen.characters.add(hero)
 
     def change_hero(self, act, coords):
         lvl_gen.characters.empty()
@@ -153,7 +155,7 @@ class Hero(pygame.sprite.Sprite):
     #     vy = 2
 
 
-start_coords, end_coords = lvl_gen.generate_level(1)
+start_coords, end_coords = lvl_gen.generate_level(2)
 lvl_gen.updater()
 runright, runleft, lookingup, sitting, shooting = False, False, False, False, False
 jumping = False
@@ -169,6 +171,7 @@ if __name__ == '__main__':
     lookingright = 1
     winning = False
     fps = 60
+    lvl_gen.characters.draw(lvl_gen.screen)
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -230,6 +233,7 @@ if __name__ == '__main__':
                     else:
                         hero = hero.change_hero('sl', new)
                     lvl_gen.rescreen()
+                    lvl_gen.updater()
             elif event.type == pygame.MOUSEMOTION:
                 if pygame.sprite.spritecollide(hero, lvl_gen.finale, False):
                     winning = True
@@ -263,9 +267,13 @@ if __name__ == '__main__':
 
         else:
             xspeed = 0
-        lvl_gen.updater()
         hero.update()
+        lvl_gen.get_shadow(*hero.get_coords(), *hero.get_size())
+
+        lvl_gen.shadowgroup.draw(lvl_gen.screen)
         lvl_gen.characters.draw(lvl_gen.screen)
+        lvl_gen.finale.draw((lvl_gen.screen))
+        lvl_gen.untouches.draw(lvl_gen.screen)
         clock.tick(fps)
         pygame.display.flip()
     pygame.quit()
