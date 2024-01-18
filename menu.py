@@ -4,6 +4,7 @@ import webbrowser
 from load_image import load_image
 from itemCreator import Object, Button, Stars
 import windows
+import game
 
 pygame.init()
 
@@ -19,8 +20,8 @@ pygame.mouse.set_visible(False)
 img = load_image(r'backgrounds\main-menu-bg.png')
 bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 
-checkIsActive2 = False
-checkIsActiveBoss = False
+checkIsActive2 = True
+checkIsActiveBoss = True
 isSliderMusic = False
 isSliderSound = False
 
@@ -179,16 +180,16 @@ def levels_menu():
                 main_menu()
 
             if event.type == pygame.USEREVENT and event.button == level1Button:
-                print(' -> Level 1')
                 transition()
+                game.game_def(1)
 
             if event.type == pygame.USEREVENT and event.button == level2Button and checkIsActive2:
-                print(' -> Level 2')
                 transition()
+                game.game_def(2)
 
             if event.type == pygame.USEREVENT and event.button == levelBossButton and checkIsActiveBoss:
-                print(' -> Level 3 (Boss)')
                 transition()
+                game.game_def(3)
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
                 if windows.fullscreen:
@@ -261,12 +262,12 @@ def settings_menu():
     fs_btn = Button(all_w + 534, all_h + 335, 136, 62, r"buttons\fullscreen-off-btn.png", "",
                     r"buttons\fullscreen-on-btn.png", r"data\sounds\menu-button-sound.mp3")
 
-    sl = 106 + all_w * windows.fullscreen + (300 + all_w * windows.fullscreen) * wM
+    sl = 106 + 300 * wM
     music_slider_btn = Button(sl, all_h + 302, 26, 28,
                               r"buttons\default-slider-btn.png", r"buttons\hover-slider-btn.png",
                               r"buttons\press-slider-btn.png")
 
-    sd = 106 + all_w * windows.fullscreen + (300 + all_w * windows.fullscreen) * wS
+    sd = 106 + 300 * wS
     sound_slider_btn = Button(sd, all_h + 438, 26, 28,
                               r"buttons\default-slider-btn.png", r"buttons\hover-slider-btn.png",
                               r"buttons\press-slider-btn.png")
@@ -315,7 +316,6 @@ def settings_menu():
                     if isSliderMusic:
                         xM = music_slider_btn.rect[0]
                         print(xM)
-                        # 118 < event.pos[0] < 420
                         # 555 853
                         if all_w - 32 < event.pos[0] < all_w + 270:
                             x_cube_M = event.pos[0] - xM

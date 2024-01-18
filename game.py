@@ -1,3 +1,5 @@
+import sys
+
 import lvl_gen
 import pygame
 from consts import *
@@ -161,121 +163,122 @@ class Hero(pygame.sprite.Sprite):
     #     vx = 2
     #     vy = 2
 
+
 def game_def(lvl):
-    global runright, runleft, lookingup, sitting, shooting, jumping, falling, lookingright, xspeed, yspeed
+    global runright, runleft, lookingup, sitting, shooting, jumping, falling, lookingright, xspeed, yspeed, hero
     start_coords, end_coords = lvl_gen.generate_level(lvl)
     lvl_gen.updater()
     hero = Hero(*start_coords, windows.k ** windows.fullscreen)
-    if __name__ == '__main__':
-        clock = pygame.time.Clock()
-        pygame.display.set_caption('Platformer')
-        running = True
-        winning = False
-        fps = 60
-        lvl_gen.characters.draw(lvl_gen.screen)
-        while running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_d:
-                        xspeed = hero.xs
-                        if not jumping:
-                            hero = hero.change_hero('r', hero.get_coords())
-                        else:
-                            if not falling:
-                                hero = hero.change_hero('jumpr', hero.get_coords())
-                            else:
-                                hero = hero.change_hero('fallr', hero.get_coords())
-                        lookingright = 1
-                        runright = True
-                        runleft = False
-                    elif event.key == pygame.K_w:
-                        lookingup = True
-                    elif event.key == pygame.K_s:
-                        sitting = True
-                    elif event.key == pygame.K_a:
-                        xspeed = hero.xs
-                        if not jumping:
-                            hero = hero.change_hero('l', hero.get_coords())
-                        else:
-                            if not falling:
-                                hero = hero.change_hero('jumpl', hero.get_coords())
-                            else:
-                                hero = hero.change_hero('falll', hero.get_coords())
-                        lookingright = 0
-                        runleft = True
-                        runright = False
-                    elif event.key == pygame.K_SPACE:
-                        if sitting:
-                            falling = True
-                            yspeed = 7
-                        else:
-                            if not (jumping or falling or sitting):
-                                jumping = True
-                                yspeed = -9
-                                if lookingright:
-                                    hero = hero.change_hero('jumpr', hero.get_coords())
-                                    pass
-                                else:
-                                    hero = hero.change_hero('jumpl', hero.get_coords())
-                                    pass
-                    elif event.key == pygame.K_F11:
-                        if windows.fullscreen:
-                            windows.fullscreen = 0
-                            new = ((hero.get_coords()[0] - windows.otstupx) // windows.k,
-                                   (hero.get_coords()[1] - windows.otstupy) // windows.k)
-                        else:
-                            windows.fullscreen = 1
-                            new = (windows.otstupx + hero.get_coords()[0] * windows.k,
-                                   (windows.otstupy // windows.k + hero.get_coords()[1]) * windows.k)
-                        if lookingright:
-                            hero = hero.change_hero('sr', new)
-                        else:
-                            hero = hero.change_hero('sl', new)
-                        lvl_gen.rescreen()
-                        lvl_gen.updater()
-                elif event.type == pygame.MOUSEMOTION:
-                    if pygame.sprite.spritecollide(hero, lvl_gen.finale, False):
-                        winning = True
+    clock = pygame.time.Clock()
+    pygame.display.set_caption('Sensei Rescuing')
+    running = True
+    winning = False
+    fps = 60
+    lvl_gen.characters.draw(lvl_gen.screen)
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_d:
+                    xspeed = hero.xs
+                    if not jumping:
+                        hero = hero.change_hero('r', hero.get_coords())
                     else:
-                        winning = False
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1 and lvl_gen.board.get_cell(event.pos) == end_coords and winning:
-                        running = False
-                    elif event.button == 1:
-                        hero.set_coords(*event.pos)
+                        if not falling:
+                            hero = hero.change_hero('jumpr', hero.get_coords())
+                        else:
+                            hero = hero.change_hero('fallr', hero.get_coords())
+                    lookingright = 1
+                    runright = True
+                    runleft = False
+                elif event.key == pygame.K_w:
+                    lookingup = True
+                elif event.key == pygame.K_s:
+                    sitting = True
+                elif event.key == pygame.K_a:
+                    xspeed = hero.xs
+                    if not jumping:
+                        hero = hero.change_hero('l', hero.get_coords())
+                    else:
+                        if not falling:
+                            hero = hero.change_hero('jumpl', hero.get_coords())
+                        else:
+                            hero = hero.change_hero('falll', hero.get_coords())
+                    lookingright = 0
+                    runleft = True
+                    runright = False
+                elif event.key == pygame.K_SPACE:
+                    if sitting:
+                        falling = True
+                        yspeed = 7
+                    else:
+                        if not (jumping or falling or sitting):
+                            jumping = True
+                            yspeed = -9
+                            if lookingright:
+                                hero = hero.change_hero('jumpr', hero.get_coords())
+                                pass
+                            else:
+                                hero = hero.change_hero('jumpl', hero.get_coords())
+                                pass
+                elif event.key == pygame.K_F11:
+                    if windows.fullscreen:
+                        windows.fullscreen = 0
+                        new = ((hero.get_coords()[0] - windows.otstupx) // windows.k,
+                               (hero.get_coords()[1] - windows.otstupy) // windows.k)
+                    else:
+                        windows.fullscreen = 1
+                        new = (windows.otstupx + hero.get_coords()[0] * windows.k,
+                               (windows.otstupy // windows.k + hero.get_coords()[1]) * windows.k)
+                    if lookingright:
+                        hero = hero.change_hero('sr', new)
+                    else:
+                        hero = hero.change_hero('sl', new)
+                    lvl_gen.rescreen()
+                    lvl_gen.updater()
+            elif event.type == pygame.MOUSEMOTION:
+                if pygame.sprite.spritecollide(hero, lvl_gen.finale, False):
+                    winning = True
+                else:
+                    winning = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1 and lvl_gen.board.get_cell(event.pos) == end_coords and winning:
+                    running = False
+                elif event.button == 1:
+                    hero.set_coords(*event.pos)
 
-                        # yspeed = 0
-                        # if not shooting:
-                        #     shooting = True
-                        # hero.shoot(event.pos)
+                    # yspeed = 0
+                    # if not shooting:
+                    #     shooting = True
+                    # hero.shoot(event.pos)
 
-                elif event.type == pygame.KEYUP:
-                    if event.key == pygame.K_d:
-                        runright = False
-                    elif event.key == pygame.K_w:
-                        lookingup = False
-                    elif event.key == pygame.K_s:
-                        sitting = False
-                    elif event.key == pygame.K_a:
-                        runleft = False
-            if runright or runleft:
-                if runright:
-                    hero.move(xspeed * windows.k ** windows.fullscreen, 0)
-                if runleft:
-                    hero.move(-xspeed * windows.k ** windows.fullscreen, 0)
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_d:
+                    runright = False
+                elif event.key == pygame.K_w:
+                    lookingup = False
+                elif event.key == pygame.K_s:
+                    sitting = False
+                elif event.key == pygame.K_a:
+                    runleft = False
+        if runright or runleft:
+            if runright:
+                hero.move(xspeed * windows.k ** windows.fullscreen, 0)
+            if runleft:
+                hero.move(-xspeed * windows.k ** windows.fullscreen, 0)
+        else:
+            xspeed = 0
+        hero.update()
+        lvl_gen.get_shadow(*hero.get_coords(), *hero.get_size())
+        lvl_gen.shadowgroup.draw(lvl_gen.screen)
+        lvl_gen.characters.draw(lvl_gen.screen)
+        lvl_gen.finale.draw(lvl_gen.screen)
+        lvl_gen.untouches.draw(lvl_gen.screen)
+        clock.tick(fps)
+        pygame.display.flip()
+    pygame.quit()
+    sys.exit()
 
-            else:
-                xspeed = 0
-            hero.update()
-            lvl_gen.get_shadow(*hero.get_coords(), *hero.get_size())
-            lvl_gen.shadowgroup.draw(lvl_gen.screen)
-            lvl_gen.characters.draw(lvl_gen.screen)
-            lvl_gen.finale.draw(lvl_gen.screen)
-            lvl_gen.untouches.draw(lvl_gen.screen)
-            clock.tick(fps)
-            pygame.display.flip()
-        pygame.quit()
 
-game_def(1)
+# game_def(1)

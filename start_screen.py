@@ -83,7 +83,6 @@ def start_screen():
             #    sys.exit()
 
             if event.type == pygame.USEREVENT and event.button == da_btn:
-                transition()
                 menu.main_menu()
 
             for button in [da_btn, net_btn]:
@@ -99,6 +98,3 @@ def start_screen():
             screen.blit(cursor, (x_c, y_c))
 
         pygame.display.flip()
-
-
-start_screen()
