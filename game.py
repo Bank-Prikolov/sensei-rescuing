@@ -272,7 +272,7 @@ if __name__ == '__main__':
 
         lvl_gen.shadowgroup.draw(lvl_gen.screen)
         lvl_gen.characters.draw(lvl_gen.screen)
-        lvl_gen.finale.draw((lvl_gen.screen))
+        lvl_gen.finale.draw(lvl_gen.screen)
         lvl_gen.untouches.draw(lvl_gen.screen)
         clock.tick(fps)
         pygame.display.flip()
