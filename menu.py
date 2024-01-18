@@ -52,22 +52,22 @@ def main_menu():
     pygame.mixer.music.set_volume(wM)
 
     if not checkF11:
-        all_w, all_h = WIDTH // 2 - 443, HEIGHT - 655
+        all_w, all_h = WIDTH // 2 - 443, HEIGHT - 619
     else:
         all_w, all_h = WIDTH // 2 - 443, HEIGHT - 820
 
     title = Object(all_w, all_h, 886, 80, r"objects\menu-title-obj.png")
 
-    start_btn = Button(all_w + 323, all_h + 129, 240, 100, r"buttons\default-start-btn.png",
+    start_btn = Button(all_w + 323, all_h + 110, 240, 100, r"buttons\default-start-btn.png",
                        r"buttons\hover-start-btn.png", r"buttons\press-start-btn.png",
                        r"data\sounds\menu-button-sound.mp3")
-    settings_btn = Button(all_w + 323, all_h + 229, 240, 100, r"buttons\default-settings-btn.png",
+    settings_btn = Button(all_w + 323, all_h + 210, 240, 100, r"buttons\default-settings-btn.png",
                           r"buttons\hover-settings-btn.png", r"buttons\press-settings-btn.png",
                           r"data\sounds\menu-button-sound.mp3")
-    info_btn = Button(all_w + 323, all_h + 329, 240, 100, r"buttons\default-info-btn.png",
+    info_btn = Button(all_w + 323, all_h + 310, 240, 100, r"buttons\default-info-btn.png",
                       r"buttons\hover-info-btn.png", r"buttons\press-info-btn.png",
                       r"data\sounds\menu-button-sound.mp3")
-    exit_btn = Button(all_w + 323, all_h + 429, 240, 100, r"buttons\default-exit-btn.png",
+    exit_btn = Button(all_w + 323, all_h + 410, 240, 100, r"buttons\default-exit-btn.png",
                       r"buttons\hover-exit-btn.png", r"buttons\press-exit-btn.png",
                       r"data\sounds\menu-button-sound.mp3")
 
