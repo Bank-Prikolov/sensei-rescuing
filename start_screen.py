@@ -3,7 +3,6 @@ import sys
 from load_image import load_image
 from itemCreator import Button
 import menu
-from transition import transition
 from consts import *
 
 pygame.init()

@@ -3,7 +3,7 @@ import sys
 import webbrowser
 from load_image import load_image
 from itemCreator import Object, Button, Stars
-from windows import fullscreen
+import windows
 
 pygame.init()
 
@@ -24,15 +24,13 @@ checkIsActiveBoss = False
 isSliderMusic = False
 isSliderSound = False
 
-checkF11 = fullscreen
-
 checkIsPassing1 = True
-checkIsPassing2 = True
-checkIsPassingBoss = True
+checkIsPassing2 = False
+checkIsPassingBoss = False
 
-record1 = 1
-record2 = 2
-record3 = 3
+record1 = 0
+record2 = 0
+record3 = 0
 
 a = open(r"data\settings.txt", "r", encoding="utf-8")
 checkActDet = list(map(lambda x: float(x.rstrip('\n')), a))
@@ -44,14 +42,14 @@ ft = True
 
 
 def main_menu():
-    global checkActDet, wM, wS, checkF11, ft
+    global checkActDet, wM, wS, ft
     if ft:
         pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
         pygame.mixer.music.play(-1)
         ft = False
     pygame.mixer.music.set_volume(wM)
 
-    if not checkF11:
+    if not windows.fullscreen:
         all_w, all_h = WIDTH // 2 - 443, HEIGHT - 619
     else:
         all_w, all_h = WIDTH // 2 - 443, HEIGHT - 820
@@ -94,14 +92,12 @@ def main_menu():
                 info_menu()
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-                if checkF11:
-                    checkF11 = False
-                    print('f11 off')
+                if windows.fullscreen:
+                    windows.fullscreen = 0
                     change_fullScreen(1024, 704)
                     main_menu()
                 else:
-                    checkF11 = True
-                    print('f11 on')
+                    windows.fullscreen = 1
                     change_fullScreen(1920, 1080, pygame.FULLSCREEN)
                     main_menu()
 
@@ -115,7 +111,7 @@ def main_menu():
         title.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
-        if not checkF11:
+        if not windows.fullscreen:
             if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
                 screen.blit(cursor, (x_c, y_c))
         else:
@@ -125,16 +121,16 @@ def main_menu():
 
 
 def levels_menu():
-    global checkF11
-    if not checkF11:
-        all_w, all_h = WIDTH // 2 - 395, HEIGHT - 565
+    if not windows.fullscreen:
+        all_w, all_h = WIDTH // 2 - 395, HEIGHT - 580
     else:
         all_w, all_h = WIDTH // 2 - 395, HEIGHT - 770
 
     title = Object(all_w, all_h, 700, 82, r"objects\level-menu-title-obj.png")
 
-    cross_btn = Button(all_w + title.width + 18, all_h + 8, 67, 72, r"buttons\default-cross-btn.png", r"buttons\hover-cross-btn.png",
-                       r"buttons\press-cross-btn.png", r"data\sounds\menu-button-sound.mp3")
+    cross_btn = Button(all_w + title.width + 18, all_h + 8, 67, 72, r"buttons\default-cross-btn.png",
+                       r"buttons\hover-cross-btn.png", r"buttons\press-cross-btn.png",
+                       r"data\sounds\menu-button-sound.mp3")
     level1Button = Button(all_w - 58, all_h + 160, 144, 155, r"buttons\default-first-btn.png",
                           r"buttons\hover-first-btn.png", r"buttons\press-first-btn.png",
                           r"data\sounds\menu-button-sound.mp3")
@@ -195,12 +191,12 @@ def levels_menu():
                 transition()
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-                if checkF11:
-                    checkF11 = False
+                if windows.fullscreen:
+                    windows.fullscreen = 0
                     change_fullScreen(1024, 704)
                     levels_menu()
                 else:
-                    checkF11 = True
+                    windows.fullscreen = 1
                     change_fullScreen(1920, 1080, pygame.FULLSCREEN)
                     levels_menu()
 
@@ -236,7 +232,7 @@ def levels_menu():
             levelBossStars.draw(screen, record3)
 
         x_c, y_c = pygame.mouse.get_pos()
-        if not checkF11:
+        if not windows.fullscreen:
             if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
                 screen.blit(cursor, (x_c, y_c))
         else:
@@ -246,8 +242,8 @@ def levels_menu():
 
 
 def settings_menu():
-    global checkF11, isSliderMusic, isSliderSound, sl, sd, tmp, volS, wM, wS, checkActDet
-    if not checkF11:
+    global isSliderMusic, isSliderSound, volS, wM, wS, checkActDet
+    if not windows.fullscreen:
         all_w, all_h = WIDTH // 2 - 363, HEIGHT - 619
     else:
         all_w, all_h = WIDTH // 2 - 363, HEIGHT - 820
@@ -265,12 +261,12 @@ def settings_menu():
     fs_btn = Button(all_w + 534, all_h + 335, 136, 62, r"buttons\fullscreen-off-btn.png", "",
                     r"buttons\fullscreen-on-btn.png", r"data\sounds\menu-button-sound.mp3")
 
-    sl = 106 + 300 * wM
+    sl = 106 + all_w * windows.fullscreen + (300 + all_w * windows.fullscreen) * wM
     music_slider_btn = Button(sl, all_h + 302, 26, 28,
                               r"buttons\default-slider-btn.png", r"buttons\hover-slider-btn.png",
                               r"buttons\press-slider-btn.png")
 
-    sd = 106 + 300 * wS
+    sd = 106 + all_w * windows.fullscreen + (300 + all_w * windows.fullscreen) * wS
     sound_slider_btn = Button(sd, all_h + 438, 26, 28,
                               r"buttons\default-slider-btn.png", r"buttons\hover-slider-btn.png",
                               r"buttons\press-slider-btn.png")
@@ -298,12 +294,12 @@ def settings_menu():
 
             if ((event.type == pygame.USEREVENT and event.button == fs_btn) or
                     (event.type == pygame.KEYDOWN and event.key == pygame.K_F11)):
-                if checkF11:
-                    checkF11 = False
+                if windows.fullscreen:
+                    windows.fullscreen = 0
                     change_fullScreen(1024, 704)
                     settings_menu()
                 else:
-                    checkF11 = True
+                    windows.fullscreen = 1
                     change_fullScreen(1920, 1080, pygame.FULLSCREEN)
                     settings_menu()
 
@@ -318,12 +314,14 @@ def settings_menu():
                     checkActDet = open(r"data\settings.txt", "w")
                     if isSliderMusic:
                         xM = music_slider_btn.rect[0]
+                        print(xM)
+                        # 118 < event.pos[0] < 420
+                        # 555 853
                         if all_w - 32 < event.pos[0] < all_w + 270:
                             x_cube_M = event.pos[0] - xM
                         else:
                             x_cube_M = 13
                         music_slider_btn.rect = music_slider_btn.rect.move(x_cube_M - 13, 0)
-                        sl = music_slider_btn.rect[0]
                         wM = (music_slider_btn.rect[0] - 106) / 300
                         pygame.mixer.music.set_volume(wM)
 
@@ -334,7 +332,6 @@ def settings_menu():
                         else:
                             x_cube_S = 13
                         sound_slider_btn.rect = sound_slider_btn.rect.move(x_cube_S - 13, 0)
-                        sd = sound_slider_btn.rect[0]
                         wS = (sound_slider_btn.rect[0] - 106) / 300
                         volS = wS
                     checkActDet.writelines([str(wM) + '\n', str(wS)])
@@ -360,10 +357,10 @@ def settings_menu():
             slider_button.draw(screen)
 
         fs_btn.check_hover(pygame.mouse.get_pos())
-        fs_btn.draw_f11(screen, checkF11)
+        fs_btn.draw_f11(screen, windows.fullscreen)
 
         x_c, y_c = pygame.mouse.get_pos()
-        if not checkF11:
+        if not windows.fullscreen:
             if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
                 screen.blit(cursor, (x_c, y_c))
         else:
@@ -373,8 +370,7 @@ def settings_menu():
 
 
 def info_menu():
-    global checkF11
-    if not checkF11:
+    if not windows.fullscreen:
         all_w, all_h = WIDTH // 2 - 364, HEIGHT - 619
     else:
         all_w, all_h = WIDTH // 2 - 364, HEIGHT - 820
@@ -422,12 +418,12 @@ def info_menu():
                 webbrowser.open('https://github.com/WaizorSote')
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-                if checkF11:
-                    checkF11 = False
+                if windows.fullscreen:
+                    windows.fullscreen = 0
                     change_fullScreen(1024, 704)
                     info_menu()
                 else:
-                    checkF11 = True
+                    windows.fullscreen = 1
                     change_fullScreen(1920, 1080, pygame.FULLSCREEN)
                     info_menu()
 
@@ -442,7 +438,7 @@ def info_menu():
             button.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
-        if not checkF11:
+        if not windows.fullscreen:
             if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
                 screen.blit(cursor, (x_c, y_c))
         else:
@@ -478,7 +474,7 @@ def change_fullScreen(width, height, fullScreen=1):
     global WIDTH, HEIGHT, screen, img, bg
     WIDTH, HEIGHT = width, height
     screen = pygame.display.set_mode((WIDTH, HEIGHT), fullScreen)
-    if checkF11:
+    if windows.fullscreen:
         tmp_img = load_image(r"backgrounds\main-menu-fullScreen-bg.png")
         bg = pygame.transform.scale(tmp_img, (tmp_img.get_width(), tmp_img.get_height()))
     else:

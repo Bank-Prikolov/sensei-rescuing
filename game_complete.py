@@ -3,7 +3,6 @@ import sys
 from load_image import load_image
 from itemCreator import Button
 import menu
-from transition import transition
 from consts import *
 
 pygame.init()
@@ -79,7 +78,6 @@ def game_complete():
                 sys.exit()
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
-                transition()
                 menu.levels_menu()
 
             for button in [repeat_btn, to_lvlmenu_btn]:
