@@ -3,7 +3,6 @@ import sys
 from load_image import load_image
 from itemCreator import Button, Object
 import menu
-from consts import *
 
 pygame.init()
 
@@ -50,7 +49,7 @@ class AnimatedGameOver(pygame.sprite.Sprite):
 
 bg_img = load_image(r"backgrounds\game-over-bg.png")
 bg_tr = pygame.transform.scale(bg_img, (bg_img.get_width() * 2.5, bg_img.get_height() * 2.5))
-game_over_bg = AnimatedGameOver(bg_tr, 14, 1, WIDTH // 2 - 630, HEIGHT // 2 - 180)
+game_over_bg = AnimatedGameOver(bg_tr, 14, 1, WIDTH // 2 - 640, HEIGHT // 2 - 180)
 
 repeat_btn = Button(WIDTH // 2 + 57, HEIGHT // 2 - 55, 94, 104, r"buttons\default-repeat-btn.png", r"buttons\hover-repeat-btn.png",
                 r"buttons\press-repeat-btn.png", r"data\sounds\menu-button-sound.mp3")

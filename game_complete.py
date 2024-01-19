@@ -17,7 +17,7 @@ bg_group_complete = pygame.sprite.Group()
 cursor = load_image(r'objects\cursor-obj.png')
 pygame.mouse.set_visible(False)
 
-record = 1
+record = 0
 zeroStars, oneStar, twoStars, threeStars = (r"objects\stars-zero-obj.png", r"objects\stars-one-obj.png",
                                             r"objects\stars-two-obj.png", r"objects\stars-three-obj.png")
 stars = Stars(WIDTH // 2 - 236, HEIGHT // 2 - 55, 470, 78, zeroStars, oneStar, twoStars, threeStars)
