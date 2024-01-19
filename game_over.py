@@ -1,9 +1,8 @@
 import pygame
 import sys
 from load_image import load_image
-from itemCreator import Button
+from itemCreator import Button, Object
 import menu
-from transition import transition
 from consts import *
 
 pygame.init()
@@ -44,47 +43,44 @@ class AnimatedGameOver(pygame.sprite.Sprite):
             self.image = self.frames[self.cur_frame]
 
         if self.cur_frame >= 13 * 10:
-            pygame.mixer.music.stop()
-            repeat_btn.check_hover(pygame.mouse.get_pos())
-            repeat_btn.draw(screen)
-            to_lvlmenu_btn.check_hover(pygame.mouse.get_pos())
-            to_lvlmenu_btn.draw(screen)
+            for button in [repeat_btn, to_lvlmenu_btn]:
+                button.check_hover(pygame.mouse.get_pos())
+                button.draw(screen)
 
 
 bg_img = load_image(r"backgrounds\game-over-bg.png")
 bg_tr = pygame.transform.scale(bg_img, (bg_img.get_width() * 2.5, bg_img.get_height() * 2.5))
-game_over_bg = AnimatedGameOver(bg_tr, 14, 1, WIDTH // 2 - 650, HEIGHT // 2 - 180)
+game_over_bg = AnimatedGameOver(bg_tr, 14, 1, WIDTH // 2 - 630, HEIGHT // 2 - 180)
 
-repeat_btn = Button(WIDTH // 2 + 50, HEIGHT // 2 - 30, 94, 104, r"buttons\default-repeat-btn.png", r"buttons\hover-repeat-btn.png",
+repeat_btn = Button(WIDTH // 2 + 57, HEIGHT // 2 - 55, 94, 104, r"buttons\default-repeat-btn.png", r"buttons\hover-repeat-btn.png",
                 r"buttons\press-repeat-btn.png", r"data\sounds\menu-button-sound.mp3")
-to_lvlmenu_btn = Button(WIDTH // 2 - 150, HEIGHT // 2 - 30, 94, 104, r"buttons\default-tolvlmenu-btn.png",
+to_lvlmenu_btn = Button(WIDTH // 2 - 94 - 48, HEIGHT // 2 - 55, 94, 104, r"buttons\default-tolvlmenu-btn.png",
                  r"buttons\hover-tolvlmenu-btn.png",
                  r"buttons\press-tolvlmenu-btn.png", r"data\sounds\menu-button-sound.mp3")
 
+field = Object(WIDTH - 1016, HEIGHT - 696, 1008, 688, r"objects\windows-field-obj.png")
+
 
 def game_over():
-    pygame.mixer.music.load(r"data\sounds\start-screen-sound.mp3")
-    pygame.mixer.music.play(-1)
+    pygame.mixer.music.load(r"data\sounds\game-over-sound.mp3")
+    pygame.mixer.music.play(1)
 
     running = True
     fps = 60
     while running:
-
-        screen.fill((255, 255, 255))
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
                 pygame.quit()
                 sys.exit()
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
-                transition()
                 menu.levels_menu()
 
             for button in [repeat_btn, to_lvlmenu_btn]:
                 button.handle_event(event)
                 button.handle_event(event)
+
+        field.draw(screen)
 
         game_over_bg.update()
         clock.tick(fps)

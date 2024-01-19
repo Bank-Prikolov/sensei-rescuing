@@ -3,7 +3,6 @@ import sys
 from load_image import load_image
 from itemCreator import Button, Object
 import menu
-from consts import *
 
 pygame.init()
 
@@ -18,12 +17,12 @@ pygame.mouse.set_visible(False)
 title = Object(WIDTH // 2 - 150, HEIGHT - 520, 300, 100, r"objects\pause-title-obj.png")
 field = Object(WIDTH - 1016, HEIGHT - 696, 1008, 688, r"objects\windows-field-obj.png")
 
-repeat_btn = Button(WIDTH // 2 - 150 + 100, HEIGHT // 2 - 30, 94, 104, r"buttons\default-repeat-btn.png", r"buttons\hover-repeat-btn.png",
+repeat_btn = Button(WIDTH // 2 - 150 + 102, HEIGHT // 2 - 30, 94, 104, r"buttons\default-repeat-btn.png", r"buttons\hover-repeat-btn.png",
                 r"buttons\press-repeat-btn.png", r"data\sounds\menu-button-sound.mp3")
-to_lvlmenu_btn = Button(WIDTH // 2 - 150 + 211, HEIGHT // 2 - 30, 94, 104, r"buttons\default-tolvlmenu-btn.png",
+to_lvlmenu_btn = Button(WIDTH // 2 - 150 + 212, HEIGHT // 2 - 30, 94, 104, r"buttons\default-tolvlmenu-btn.png",
                  r"buttons\hover-tolvlmenu-btn.png",
                  r"buttons\press-tolvlmenu-btn.png", r"data\sounds\menu-button-sound.mp3")
-play_btn = Button(WIDTH // 2 - 150 - 10, HEIGHT // 2 - 30, 94, 104, r"buttons\default-play-btn.png",
+play_btn = Button(WIDTH // 2 - 150 - 7, HEIGHT // 2 - 30, 94, 104, r"buttons\default-play-btn.png",
                  r"buttons\hover-play-btn.png",
                  r"buttons\press-play-btn.png", r"data\sounds\menu-button-sound.mp3")
 

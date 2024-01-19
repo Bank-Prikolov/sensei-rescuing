@@ -481,4 +481,4 @@ def change_fullScreen(width, height, fullScreen=1):
         bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 
 
-main_menu()
+# main_menu()
