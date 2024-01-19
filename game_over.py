@@ -2,6 +2,7 @@ import pygame
 import sys
 from load_image import load_image
 from itemCreator import Button, Object
+import game
 import menu
 
 pygame.init()
@@ -75,8 +76,10 @@ def game_over():
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
                 menu.levels_menu()
 
+            if event.type == pygame.USEREVENT and event.button == repeat_btn:
+                game.game_def(menu.lvlNow)
+
             for button in [repeat_btn, to_lvlmenu_btn]:
-                button.handle_event(event)
                 button.handle_event(event)
 
         field.draw(screen)
@@ -92,4 +95,4 @@ def game_over():
         pygame.display.flip()
 
 
-game_over()
+# game_over()

@@ -2,6 +2,9 @@ import sys
 
 import lvl_gen
 import pygame
+
+import game_over
+import menu
 from consts import *
 import windows
 from load_image import load_image
@@ -181,7 +184,8 @@ def game_def(lvl):
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                pygame.quit()
+                sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
                     xspeed = hero.xs
@@ -239,8 +243,7 @@ def game_def(lvl):
                     lvl_gen.updater()
                 elif event.key == pygame.K_w:
                     if pygame.sprite.spritecollide(hero, lvl_gen.finale, False):
-                        print('ура победа')
-                        running = False
+                        menu.levels_menu()
                     elif not lvl_gen.projectilesgroup:
                         if lookingright:
                             shooting = projectile_speed * windows.k ** windows.fullscreen
@@ -308,12 +311,10 @@ def game_def(lvl):
         lvl_gen.nmeprojectilesgroup.draw(lvl_gen.screen)
 
         if pygame.sprite.spritecollide(hero, lvl_gen.thorngroup, False):
-            print('умер')
-            running = False
+            menu.main_menu()
         if pygame.sprite.spritecollide(hero, lvl_gen.sloniks, False):
-            print('умер')
             running = False
-
+            menu.levels_menu()
         if pygame.sprite.spritecollide(hero, lvl_gen.triggergroup, True):
             if lvl == 2 and thing == 1:
                 lvl_gen.remover(lvl_gen.board.get_cell(hero.get_coords()))
@@ -339,7 +340,6 @@ def game_def(lvl):
                 lvl_gen.remover((7, 4), 'S')
             elif lvl == 3 and thing == 2:
                 print('ура победа')
-                sys.exit()
         if runright or runleft:
             if runright:
                 hero.move(xspeed * windows.k ** windows.fullscreen, 0)
@@ -355,8 +355,6 @@ def game_def(lvl):
         lvl_gen.untouches.draw(lvl_gen.screen)
         clock.tick(fps)
         pygame.display.flip()
-    pygame.quit()
-    sys.exit()
 
 
-game_def(3)
+# game_def(3)

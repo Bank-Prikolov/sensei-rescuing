@@ -3,7 +3,8 @@ import sys
 from load_image import load_image
 from itemCreator import Button, Object, Stars
 import menu
-from consts import *
+from menu import lvlNow
+import game
 
 pygame.init()
 
@@ -17,7 +18,7 @@ bg_group_complete = pygame.sprite.Group()
 cursor = load_image(r'objects\cursor-obj.png')
 pygame.mouse.set_visible(False)
 
-record = 0
+record = 3
 zeroStars, oneStar, twoStars, threeStars = (r"objects\stars-zero-obj.png", r"objects\stars-one-obj.png",
                                             r"objects\stars-two-obj.png", r"objects\stars-three-obj.png")
 stars = Stars(WIDTH // 2 - 236, HEIGHT // 2 - 55, 470, 78, zeroStars, oneStar, twoStars, threeStars)
@@ -76,12 +77,14 @@ def game_complete():
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
                 pygame.quit()
                 sys.exit()
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
                 menu.levels_menu()
+
+            if event.type == pygame.USEREVENT and event.button == repeat_btn:
+                game.game_def(lvlNow)
 
             for button in [repeat_btn, to_lvlmenu_btn]:
                 button.handle_event(event)
@@ -100,4 +103,4 @@ def game_complete():
         pygame.display.flip()
 
 
-game_complete()
+# game_complete()

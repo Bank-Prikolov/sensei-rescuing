@@ -25,13 +25,15 @@ checkIsActiveBoss = True
 isSliderMusic = False
 isSliderSound = False
 
-checkIsPassing1 = True
+checkIsPassing1 = False
 checkIsPassing2 = False
 checkIsPassingBoss = False
 
-record1 = 0
-record2 = 0
+record1 = 3
+record2 = 2
 record3 = 0
+
+lvlNow = 1
 
 a = open(r"data\settings.txt", "r", encoding="utf-8")
 checkActDet = list(map(lambda x: float(x.rstrip('\n')), a))
@@ -122,6 +124,7 @@ def main_menu():
 
 
 def levels_menu():
+    global lvlNow
     if not windows.fullscreen:
         all_w, all_h = WIDTH // 2 - 395, HEIGHT - 580
     else:
@@ -180,14 +183,17 @@ def levels_menu():
                 main_menu()
 
             if event.type == pygame.USEREVENT and event.button == level1Button:
+                lvlNow = 1
                 transition()
                 game.game_def(1)
 
             if event.type == pygame.USEREVENT and event.button == level2Button and checkIsActive2:
+                lvlNow = 2
                 transition()
                 game.game_def(2)
 
             if event.type == pygame.USEREVENT and event.button == levelBossButton and checkIsActiveBoss:
+                lvlNow = 3
                 transition()
                 game.game_def(3)
 
@@ -262,12 +268,18 @@ def settings_menu():
     fs_btn = Button(all_w + 534, all_h + 335, 136, 62, r"buttons\fullscreen-off-btn.png", "",
                     r"buttons\fullscreen-on-btn.png", r"data\sounds\menu-button-sound.mp3")
 
-    sl = 106 + 300 * wM
+    if not windows.fullscreen:
+        sl = 106 + 300 * wM
+    else:
+        sl = 553 + 300 * wM
     music_slider_btn = Button(sl, all_h + 302, 26, 28,
                               r"buttons\default-slider-btn.png", r"buttons\hover-slider-btn.png",
                               r"buttons\press-slider-btn.png")
 
-    sd = 106 + 300 * wS
+    if not windows.fullscreen:
+        sd = 106 + 300 * wS
+    else:
+        sd = 553 + 300 * wS
     sound_slider_btn = Button(sd, all_h + 438, 26, 28,
                               r"buttons\default-slider-btn.png", r"buttons\hover-slider-btn.png",
                               r"buttons\press-slider-btn.png")
@@ -315,14 +327,16 @@ def settings_menu():
                     checkActDet = open(r"data\settings.txt", "w")
                     if isSliderMusic:
                         xM = music_slider_btn.rect[0]
-                        print(xM)
-                        # 555 853
+                        # 553 853
                         if all_w - 32 < event.pos[0] < all_w + 270:
                             x_cube_M = event.pos[0] - xM
                         else:
                             x_cube_M = 13
                         music_slider_btn.rect = music_slider_btn.rect.move(x_cube_M - 13, 0)
-                        wM = (music_slider_btn.rect[0] - 106) / 300
+                        if not windows.fullscreen:
+                            wM = (music_slider_btn.rect[0] - 106) / 300
+                        else:
+                            wM = (music_slider_btn.rect[0] - 553) / 300
                         pygame.mixer.music.set_volume(wM)
 
                     elif isSliderSound:
@@ -332,8 +346,12 @@ def settings_menu():
                         else:
                             x_cube_S = 13
                         sound_slider_btn.rect = sound_slider_btn.rect.move(x_cube_S - 13, 0)
-                        wS = (sound_slider_btn.rect[0] - 106) / 300
-                        volS = wS
+                        if not windows.fullscreen:
+                            wS = (sound_slider_btn.rect[0] - 106) / 300
+                            volS = wS
+                        else:
+                            wS = (sound_slider_btn.rect[0] - 553) / 300
+                            volS = wS
                     checkActDet.writelines([str(wM) + '\n', str(wS)])
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == sound_slider_btn:
@@ -481,4 +499,4 @@ def change_fullScreen(width, height, fullScreen=1):
         bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 
 
-# main_menu()
+
