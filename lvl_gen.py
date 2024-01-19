@@ -14,7 +14,13 @@ untouches = pygame.sprite.Group()
 finale = pygame.sprite.Group()
 shadowgroup = pygame.sprite.Group()
 projectilesgroup = pygame.sprite.Group()
-all_sprites.append([toches, bgroup, platformgroup, untouches])
+changegroup = pygame.sprite.Group()
+thorngroup = pygame.sprite.Group()
+breakgroup = pygame.sprite.Group()
+triggergroup = pygame.sprite.Group()
+sloniks = pygame.sprite.Group()
+nmeprojectilesgroup = pygame.sprite.Group()
+anothertoches = pygame.sprite.Group()
 
 heropic = wai
 
@@ -24,6 +30,63 @@ if not windows.fullscreen:
 else:
     screen = pygame.display.set_mode(windows.fullsize, pygame.FULLSCREEN)
     windows.fullscreen = 1
+
+
+class Slonik(pygame.sprite.Sprite):
+    pic = load_image(slonik)
+    php = load_image(php)
+
+    def __init__(self, x, y, koef, flip=True):
+        super().__init__(sloniks)
+        self.sprites = pygame.transform.scale(
+            Slonik.pic, (Slonik.pic.get_width() // 2 * koef, Slonik.pic.get_height() // 2 * koef))
+        # if flip:
+        #     pygame.transform.flip(Slonik.pic, True, False)
+        self.k = koef
+        self.frames = []
+        self.cut_sheet(self.sprites, koef)
+        self.cur_frame = 0
+        self.image = self.frames[self.cur_frame]
+        self.rect = self.rect.move(x, y)
+        self.counter = 0
+
+    def cut_sheet(self, sprites, koef):
+        self.rect = pygame.Rect(0, 0, 64 * koef,
+                                64 * koef)
+
+        for i in range(sprites.get_height() // int(64 * koef)):
+            frame_location = (0, self.rect.h * i)
+            self.frames.append(sprites.subsurface(pygame.Rect(
+                frame_location, self.rect.size)))
+
+    def update(self):
+        self.image = self.frames[self.cur_frame]
+        self.set_coords(*self.get_coords())
+        if self.counter == 12:
+            self.cur_frame = (self.cur_frame + 1) % 2
+            self.counter = 0
+        self.counter += 1
+
+    def get_coords(self):
+        return self.rect[0], self.rect[1]
+
+    def set_coords(self, x, y):
+        self.rect[:2] = [x, y]
+
+    def get_size(self):
+        return self.rect[2:4]
+
+    def shoot(self):
+        Pic(self.get_coords()[0] + self.get_size()[0] // 4,
+            self.get_coords()[1] + self.get_size()[1] // 2,
+            Slonik.php.get_width() // 2.5 * windows.k ** windows.fullscreen,
+            Slonik.php.get_height() // 2.5 * windows.k ** windows.fullscreen, php,
+            nmeprojectilesgroup)
+
+    def set_angle(self, right=True):
+        if right:
+            for n in self.frames:
+                pygame.transform.flip(n, True, False)
 
 
 class Pic(pygame.sprite.Sprite):
@@ -38,8 +101,9 @@ class Pic(pygame.sprite.Sprite):
 
 
 class Board:
-    def __init__(self, txt):
-        self.board = self.read_txt(txt)
+    def __init__(self, txt=None):
+        if txt:
+            self.board = self.read_txt(txt)
         self.left = 10
         self.top = 10
         self.cell_size = 30
@@ -64,6 +128,11 @@ class Board:
         platformgroup.empty()
         untouches.empty()
         finale.empty()
+        changegroup.empty()
+        thorngroup.empty()
+        breakgroup.empty()
+        anothertoches.empty()
+        sloniks.empty()
         for x in range(len(self.board[0])):
             for y in range(len(self.board)):
                 if self.board[y][x] == '0':
@@ -80,13 +149,43 @@ class Board:
                 elif self.board[y][x] == '_':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                         self.cell_size, plat, untouches)
-                    Pic(self.left + (self.cell_size * x) + self.cell_size // 4, self.top + (self.cell_size * y), self.cell_size - self.cell_size // 2,
+                    Pic(self.left + (self.cell_size * x) + self.cell_size // 4, self.top + (self.cell_size * y),
+                        self.cell_size - self.cell_size // 2,
                         self.cell_size // 64, placeholder, platformgroup)
                 elif self.board[y][x] == 'F':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                         self.cell_size, finish, finale)
+                elif self.board[y][x] == 'C':
+                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                        self.cell_size, change, changegroup, untouches)
+                elif self.board[y][x] == '^':
+                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                        self.cell_size, thorn, thorngroup, anothertoches)
+                elif self.board[y][x] == 'S':
+                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                        self.cell_size, boss_door, changegroup, untouches)
+                elif self.board[y][x] == '%':
+                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                        self.cell_size, wally, breakgroup)
+                elif self.board[y][x] == 't':
+                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                        self.cell_size, trigger, triggergroup)
+                elif self.board[y][x] == 'e':
+                    for z in range(len(board.board)):
+                        if '@' in board.board[z]:
+                            if board.board[z].find('@') - x > 0:
+                                endth = True
+                            else:
+                                endth = False
+                    Slonik(self.left + (self.cell_size * x), self.top + (self.cell_size * y),
+                           windows.k ** windows.fullscreen, endth)
                 else:
                     pass
+        triggergroup.draw(sc)
+        breakgroup.draw(sc)
+        thorngroup.draw(sc)
+        anothertoches.draw(sc)
+        changegroup.draw(sc)
         toches.draw(sc)
         platformgroup.draw(sc)
         untouches.draw(sc)
@@ -106,19 +205,15 @@ class Board:
 
     def get_start_end_pos(self):
         a = 0
-        b = 0
         for x in range(len(self.board[0])):
             for y in range(len(self.board)):
                 if self.board[y][x] == '@':
                     a = (self.left + (
                             10 * windows.k ** windows.fullscreen + self.cell_size * x),
                          (self.top + (
-                            10 * windows.k ** windows.fullscreen + self.cell_size * y)))
-                elif self.board[y][x] == 'F':
-                    b = x, y
-                if bool(a) and bool(b):
+                                 10 * windows.k ** windows.fullscreen + self.cell_size * y)))
                     break
-        return a, b
+        return a
 
 
 class Background(pygame.sprite.Sprite):
@@ -137,11 +232,11 @@ class Background(pygame.sprite.Sprite):
         return newground
 
 
-board = Board('test2.txt')
+board = Board()
 
 
 def generate_level(lvlnum):
-    global board, screen
+    global screen, board
     if lvlnum == 1:
         level = lvl1
     elif lvlnum == 2:
@@ -159,20 +254,15 @@ def generate_level(lvlnum):
     Background(*windows.size, 0, 0, windows.k)
     board = Board(level)
     board.set_view(windows.otstupx * windows.fullscreen,
-                   - board.cell_size * abs(windows.fullscreen - 1) - windows.otstupy * windows.fullscreen,
+                   -windows.otstupy * windows.k ** windows.fullscreen,
                    64 * windows.k ** windows.fullscreen)
     bgroup.update(*windows.size, windows.otstupx * windows.fullscreen, windows.otstupy * windows.fullscreen,
                   windows.k ** windows.fullscreen)
-    return board.get_start_end_pos()[0], board.get_start_end_pos()[1]
-
-
-def otrisovka_urovnya():
-    bgroup.draw(screen)
-    characters.draw(screen)
+    return board.get_start_end_pos()
 
 
 def rescreen():
-    global screen, board, bgroup
+    global screen, bgroup
     if windows.fullscreen:
         screen = pygame.display.set_mode(windows.fullsize, pygame.FULLSCREEN)
     else:
@@ -189,8 +279,14 @@ def updater():
     bgroup.draw(screen)
     board.render(screen)
 
+
 def get_shadow(x, y, w, h):
     shadowgroup.empty()
     sp = shadow
     Pic(x, y, w, h, sp, shadowgroup)
 
+
+def remover(pos, block='.'):
+    x, y = pos
+    board.board[int(y)] = board.board[int(y)][:int(x)] + block + board.board[int(y)][int(x) + 1:]
+    updater()

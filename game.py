@@ -46,7 +46,7 @@ class Hero(pygame.sprite.Sprite):
                 frame_location, self.rect.size)))
 
     def update(self):
-        global yspeed, falling, lookingright, hero, jumping
+        global yspeed, falling, lookingright, hero, jumping, thing
         self.image = self.frames[self.cur_frame]
         self.set_coords(*self.get_coords())
         if self.counter == 5:
@@ -100,7 +100,7 @@ class Hero(pygame.sprite.Sprite):
                     self.rect = self.rect.move(0, pygame.sprite.spritecollide(
                         self, lvl_gen.toches, False)[0].rect[1] - self.get_coords()[1] - self.get_size()[1])
                 else:
-                    self.rect = self.rect.move(xspeed, -yspeed)
+                    self.rect = self.rect.move(0, -yspeed * windows.k)
             else:
                 self.rect = self.rect.move(0, pygame.sprite.spritecollide(
                     self, lvl_gen.platformgroup, False)[0].rect[1] - hero.get_coords()[1] - hero.get_size()[1])
@@ -168,7 +168,7 @@ class Hero(pygame.sprite.Sprite):
 
 def game_def(lvl):
     global runright, runleft, lookingup, sitting, shooting, jumping, falling, lookingright, xspeed, yspeed, hero
-    start_coords, end_coords = lvl_gen.generate_level(lvl)
+    start_coords = lvl_gen.generate_level(lvl)
     lvl_gen.updater()
     hero = Hero(*start_coords, windows.k ** windows.fullscreen)
     clock = pygame.time.Clock()
@@ -177,6 +177,7 @@ def game_def(lvl):
     projectile_speed = 8
     fps = 60
     lvl_gen.characters.draw(lvl_gen.screen)
+    thing = ''
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -238,6 +239,7 @@ def game_def(lvl):
                     lvl_gen.updater()
                 elif event.key == pygame.K_w:
                     if pygame.sprite.spritecollide(hero, lvl_gen.finale, False):
+                        print('ура победа')
                         running = False
                     elif not lvl_gen.projectilesgroup:
                         if lookingright:
@@ -245,9 +247,10 @@ def game_def(lvl):
                         else:
                             shooting = -projectile_speed * windows.k ** windows.fullscreen
                         hero.shoot()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    hero.set_coords(*event.pos)
+            # elif event.type == pygame.MOUSEBUTTONDOWN:
+            #     # if event.button == 1:
+            #     #     for x in lvl_gen.sloniks:
+            #     #         x.shoot()
             elif event.type == pygame.WINDOWEXPOSED:
                 if lookingright:
                     hero = hero.change_hero('sr', hero.get_coords())
@@ -264,15 +267,71 @@ def game_def(lvl):
                     sitting = False
                 elif event.key == pygame.K_a:
                     runleft = False
+        if pygame.sprite.spritecollide(hero, lvl_gen.changegroup, False):
+            if thing == '':
+                thing = 1
+            else:
+                thing += 1
+            hero.set_coords(*lvl_gen.generate_level(lvl + thing / 10))
+            lvl_gen.screen.fill('#000000')
+            lvl_gen.updater()
         lvl_gen.get_shadow(*hero.get_coords(), *hero.get_size())
         lvl_gen.shadowgroup.draw(lvl_gen.screen)
 
         for sprite in range(len(lvl_gen.projectilesgroup)):
             pygame.draw.rect(lvl_gen.screen, (36, 34, 52), list(lvl_gen.projectilesgroup)[sprite].rect)
             list(lvl_gen.projectilesgroup)[sprite].rect = list(lvl_gen.projectilesgroup)[sprite].rect.move(shooting, 0)
-            if pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.toches, False):
-                list(lvl_gen.projectilesgroup)[sprite].kill()
+            if lookingright:
+                if pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.sloniks, True):
+                    lvl_gen.remover(lvl_gen.board.get_cell((list(lvl_gen.projectilesgroup)[sprite].rect.right,
+                                                           list(lvl_gen.projectilesgroup)[sprite].rect[1])))
+                    list(lvl_gen.projectilesgroup)[sprite].kill()
+                    lvl_gen.updater()
+            else:
+                if pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.sloniks, True):
+                    lvl_gen.remover(lvl_gen.board.get_cell(list(lvl_gen.projectilesgroup)[sprite].rect[:2]))
+                    list(lvl_gen.projectilesgroup)[sprite].kill()
+                    lvl_gen.updater()
+
+            if lvl_gen.projectilesgroup:
+                if (pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.toches, False)
+                        or pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.anothertoches, False)):
+                    list(lvl_gen.projectilesgroup)[sprite].kill()
         lvl_gen.projectilesgroup.draw(lvl_gen.screen)
+
+        for sprite in range(len(lvl_gen.nmeprojectilesgroup)):
+            pygame.draw.rect(lvl_gen.screen, (36, 34, 52), list(lvl_gen.nmeprojectilesgroup)[sprite].rect)
+            list(lvl_gen.nmeprojectilesgroup)[sprite].rect = list(lvl_gen.nmeprojectilesgroup)[sprite].rect.move(shooting * 1.5, 0)
+
+            if pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite], lvl_gen.toches, False):
+                list(lvl_gen.nmeprojectilesgroup)[sprite].kill()
+        lvl_gen.nmeprojectilesgroup.draw(lvl_gen.screen)
+
+        if pygame.sprite.spritecollide(hero, lvl_gen.thorngroup, False):
+            print('умер')
+            running = False
+        if pygame.sprite.spritecollide(hero, lvl_gen.sloniks, False):
+            print('умер')
+            running = False
+
+        if pygame.sprite.spritecollide(hero, lvl_gen.triggergroup, True):
+            if lvl == 2 and thing == 1:
+                lvl_gen.remover(lvl_gen.board.get_cell(hero.get_coords()))
+                hero.set_coords(hero.get_coords()[0], hero.get_coords()[1] - lvl_gen.board.get_size())
+                lvl_gen.remover((8, 5), '=')
+                lvl_gen.remover((9, 5), '=')
+                lvl_gen.remover((10, 5), '=')
+                lvl_gen.remover((11, 5), '=')
+                lvl_gen.remover((12, 5), '=')
+                lvl_gen.remover((13, 5), '=')
+                lvl_gen.remover((14, 5), '=')
+                lvl_gen.remover((7, 4), 'F')
+            elif lvl == 3:
+                lvl_gen.remover(lvl_gen.board.get_cell(hero.get_coords()))
+                lvl_gen.remover((11, 10))
+
+        if not lvl_gen.slonik:
+            lvl_gen.remover((2, 7), 'C')
 
         if runright or runleft:
             if runright:
@@ -282,7 +341,9 @@ def game_def(lvl):
         else:
             xspeed = 0
         hero.update()
+        lvl_gen.sloniks.update()
         lvl_gen.characters.draw(lvl_gen.screen)
+        lvl_gen.sloniks.draw(lvl_gen.screen)
         lvl_gen.finale.draw(lvl_gen.screen)
         lvl_gen.untouches.draw(lvl_gen.screen)
         clock.tick(fps)
@@ -291,4 +352,4 @@ def game_def(lvl):
     sys.exit()
 
 
-game_def(1)
+game_def(2)
