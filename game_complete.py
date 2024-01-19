@@ -1,7 +1,7 @@
 import pygame
 import sys
 from load_image import load_image
-from itemCreator import Button
+from itemCreator import Button, Object, Stars
 import menu
 from consts import *
 
@@ -16,6 +16,11 @@ bg_group_complete = pygame.sprite.Group()
 
 cursor = load_image(r'objects\cursor-obj.png')
 pygame.mouse.set_visible(False)
+
+record = 0
+zeroStars, oneStar, twoStars, threeStars = (r"objects\stars-zero-obj.png", r"objects\stars-one-obj.png",
+                                            r"objects\stars-two-obj.png", r"objects\stars-three-obj.png")
+stars = Stars(WIDTH // 2 - 236, HEIGHT // 2 - 55, 470, 78, zeroStars, oneStar, twoStars, threeStars)
 
 
 class AnimatedGameComplete(pygame.sprite.Sprite):
@@ -43,34 +48,32 @@ class AnimatedGameComplete(pygame.sprite.Sprite):
             self.image = self.frames[self.cur_frame]
 
         if self.cur_frame >= 15 * 10:
-            pygame.mixer.music.stop()
-            repeat_btn.check_hover(pygame.mouse.get_pos())
-            repeat_btn.draw(screen)
-            to_lvlmenu_btn.check_hover(pygame.mouse.get_pos())
-            to_lvlmenu_btn.draw(screen)
+            stars.draw(screen, record)
+            for button in [repeat_btn, to_lvlmenu_btn]:
+                button.check_hover(pygame.mouse.get_pos())
+                button.draw(screen)
 
 
 bg_img = load_image(r"backgrounds\game-complete-bg.png")
 bg_tr = pygame.transform.scale(bg_img, (bg_img.get_width() * 2.5, bg_img.get_height() * 2.5))
-game_complete_bg = AnimatedGameComplete(bg_tr, 16, 1, WIDTH // 2 - 250, HEIGHT // 2 - 180)
+game_complete_bg = AnimatedGameComplete(bg_tr, 16, 1, WIDTH // 2 - 265, HEIGHT // 2 - 180)
 
-repeat_btn = Button(WIDTH // 2 + 50, HEIGHT // 2 - 30, 94, 104, r"buttons\default-repeat-btn.png", r"buttons\hover-repeat-btn.png",
+repeat_btn = Button(WIDTH // 2 + 172, HEIGHT // 2 - 65, 94, 104, r"buttons\default-repeat-btn.png", r"buttons\hover-repeat-btn.png",
                 r"buttons\press-repeat-btn.png", r"data\sounds\menu-button-sound.mp3")
-to_lvlmenu_btn = Button(WIDTH // 2 - 150, HEIGHT // 2 - 30, 94, 104, r"buttons\default-tolvlmenu-btn.png",
+to_lvlmenu_btn = Button(WIDTH // 2 - 265, HEIGHT // 2 - 65, 94, 104, r"buttons\default-tolvlmenu-btn.png",
                  r"buttons\hover-tolvlmenu-btn.png",
                  r"buttons\press-tolvlmenu-btn.png", r"data\sounds\menu-button-sound.mp3")
 
+field = Object(WIDTH - 1016, HEIGHT - 696, 1008, 688, r"objects\windows-field-obj.png")
+
 
 def game_complete():
-    pygame.mixer.music.load(r"data\sounds\start-screen-sound.mp3")
-    pygame.mixer.music.play(-1)
+    pygame.mixer.music.load(r"data\sounds\game-complete-sound.mp3")
+    pygame.mixer.music.play(1)
 
     running = True
     fps = 60
     while running:
-
-        screen.fill("#ffffff")
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -83,6 +86,8 @@ def game_complete():
             for button in [repeat_btn, to_lvlmenu_btn]:
                 button.handle_event(event)
                 button.handle_event(event)
+
+        field.draw(screen)
 
         game_complete_bg.update()
         clock.tick(fps)
