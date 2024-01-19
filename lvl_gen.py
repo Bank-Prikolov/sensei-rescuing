@@ -13,9 +13,11 @@ characters = pygame.sprite.Group()
 untouches = pygame.sprite.Group()
 finale = pygame.sprite.Group()
 shadowgroup = pygame.sprite.Group()
+projectilesgroup = pygame.sprite.Group()
 all_sprites.append([toches, bgroup, platformgroup, untouches])
 
 heropic = wai
+
 if not windows.fullscreen:
     screen = pygame.display.set_mode(windows.size)
     windows.fullscreen = 0

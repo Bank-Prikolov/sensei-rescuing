@@ -6,23 +6,24 @@ from consts import *
 import windows
 from load_image import load_image
 
-
-runright, runleft, lookingup, sitting, shooting = False, False, False, False, False
+runright, runleft, lookingup, sitting = False, False, False, False
 jumping = False
 falling = False
 lookingright = 1
+shooting = 0
 xspeed = 0
 yspeed = 0
 
 
 class Hero(pygame.sprite.Sprite):
     pic = load_image(wai)
+    fiball = load_image(fireball)
 
     def __init__(self, x, y, koef, anim=0, movement=False, act='sr'):
         super().__init__(lvl_gen.characters)
-        self.health = 3
         self.sprites = pygame.transform.scale(
             Hero.pic, (Hero.pic.get_width() // 2 * koef, Hero.pic.get_height() // 2 * koef))
+        self.k = koef
         self.frames = []
         self.cut_sheet(self.sprites, koef, anim)
         self.anim = anim
@@ -49,10 +50,10 @@ class Hero(pygame.sprite.Sprite):
         self.image = self.frames[self.cur_frame]
         self.set_coords(*self.get_coords())
         if self.counter == 5:
-
             self.cur_frame = (self.cur_frame + 1) % 8
             self.counter = 0
         self.counter += 1
+
         yspeed -= self.ys
         self.rect = self.rect.move(0, yspeed * windows.k ** windows.fullscreen)
         if falling and self.act not in ['falll', 'fallr']:
@@ -60,13 +61,14 @@ class Hero(pygame.sprite.Sprite):
                 hero = self.change_hero('fallr', self.get_coords())
             else:
                 hero = self.change_hero('falll', self.get_coords())
-        elif not falling and yspeed > 1:
+        elif not falling and yspeed > 0.5:
             falling = True
 
         if (yspeed >= 0) and (yspeed + self.ys) < 0:
             jumping = False
             falling = True
         heropos = [self.get_coords()[0], self.get_coords()[1] + self.get_size()[1]]
+
         if jumping:
             touchable = False
         elif falling:
@@ -90,14 +92,19 @@ class Hero(pygame.sprite.Sprite):
                 touchable = True
         else:
             touchable = True
+
         if pygame.sprite.spritecollide(self, lvl_gen.toches, False) or (
                 pygame.sprite.spritecollide(self, lvl_gen.platformgroup, False) and touchable):
             if pygame.sprite.spritecollide(self, lvl_gen.toches, False):
-                self.rect = self.rect.move(0, pygame.sprite.spritecollide(
-                    self, lvl_gen.toches, False)[0].rect[1] - self.get_coords()[1] - self.get_size()[1])
+                if pygame.sprite.spritecollide(self, lvl_gen.toches, False)[0].rect[1] > hero.get_coords()[1] - yspeed:
+                    self.rect = self.rect.move(0, pygame.sprite.spritecollide(
+                        self, lvl_gen.toches, False)[0].rect[1] - self.get_coords()[1] - self.get_size()[1])
+                else:
+                    self.rect = self.rect.move(xspeed, -yspeed)
             else:
                 self.rect = self.rect.move(0, pygame.sprite.spritecollide(
                     self, lvl_gen.platformgroup, False)[0].rect[1] - hero.get_coords()[1] - hero.get_size()[1])
+
             yspeed = 0
             jumping = False
             falling = False
@@ -113,7 +120,6 @@ class Hero(pygame.sprite.Sprite):
                             hero = self.change_hero('r', self.get_coords())
                         if runleft:
                             hero = self.change_hero('l', self.get_coords())
-        # lvl_gen.characters.add(hero)
 
     def change_hero(self, act, coords):
         lvl_gen.characters.empty()
@@ -152,16 +158,12 @@ class Hero(pygame.sprite.Sprite):
     def get_size(self):
         return self.rect[2:4]
 
-    # def shoot(self, coords):
-    #     radius = 40
-    #     image = pygame.Surface((2 * radius, 2 * radius),
-    #                                 pygame.SRCALPHA, 32)
-    #     pygame.draw.circle(image, pygame.Color("red"),
-    #                        (radius, radius), radius)
-    #     rect = pygame.Rect(coords[0] + hero.get_size()[0] //
-    #     ]2, coords[1] + hero.get_size()[1] // 2, 2 * radius, 2 * radius)
-    #     vx = 2
-    #     vy = 2
+    def shoot(self):
+        lvl_gen.Pic(self.get_coords()[0] + self.get_size()[0] // 4,
+                    self.get_coords()[1] + self.get_size()[1] // 2,
+                    Hero.fiball.get_width() // 2.5 * windows.k ** windows.fullscreen,
+                    Hero.fiball.get_height() // 2.5 * windows.k ** windows.fullscreen, fireball,
+                    lvl_gen.projectilesgroup)
 
 
 def game_def(lvl):
@@ -172,7 +174,7 @@ def game_def(lvl):
     clock = pygame.time.Clock()
     pygame.display.set_caption('Sensei Rescuing')
     running = True
-    winning = False
+    projectile_speed = 8
     fps = 60
     lvl_gen.characters.draw(lvl_gen.screen)
     while running:
@@ -192,8 +194,6 @@ def game_def(lvl):
                     lookingright = 1
                     runright = True
                     runleft = False
-                elif event.key == pygame.K_w:
-                    lookingup = True
                 elif event.key == pygame.K_s:
                     sitting = True
                 elif event.key == pygame.K_a:
@@ -210,7 +210,6 @@ def game_def(lvl):
                     runright = False
                 elif event.key == pygame.K_SPACE:
                     if sitting:
-                        falling = True
                         yspeed = 7
                     else:
                         if not (jumping or falling or sitting):
@@ -226,7 +225,7 @@ def game_def(lvl):
                     if windows.fullscreen:
                         windows.fullscreen = 0
                         new = ((hero.get_coords()[0] - windows.otstupx) // windows.k,
-                               (hero.get_coords()[1] - windows.otstupy) // windows.k)
+                               (hero.get_coords()[1] - windows.otstupy + 6) // windows.k)
                     else:
                         windows.fullscreen = 1
                         new = (windows.otstupx + hero.get_coords()[0] * windows.k,
@@ -237,22 +236,25 @@ def game_def(lvl):
                         hero = hero.change_hero('sl', new)
                     lvl_gen.rescreen()
                     lvl_gen.updater()
-            elif event.type == pygame.MOUSEMOTION:
-                if pygame.sprite.spritecollide(hero, lvl_gen.finale, False):
-                    winning = True
-                else:
-                    winning = False
+                elif event.key == pygame.K_w:
+                    if pygame.sprite.spritecollide(hero, lvl_gen.finale, False):
+                        running = False
+                    elif not lvl_gen.projectilesgroup:
+                        if lookingright:
+                            shooting = projectile_speed * windows.k ** windows.fullscreen
+                        else:
+                            shooting = -projectile_speed * windows.k ** windows.fullscreen
+                        hero.shoot()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1 and lvl_gen.board.get_cell(event.pos) == end_coords and winning:
-                    running = False
-                elif event.button == 1:
+                if event.button == 1:
                     hero.set_coords(*event.pos)
-
-                    # yspeed = 0
-                    # if not shooting:
-                    #     shooting = True
-                    # hero.shoot(event.pos)
-
+            elif event.type == pygame.WINDOWEXPOSED:
+                if lookingright:
+                    hero = hero.change_hero('sr', hero.get_coords())
+                else:
+                    hero = hero.change_hero('sl', hero.get_coords())
+                lvl_gen.rescreen()
+                lvl_gen.updater()
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_d:
                     runright = False
@@ -262,6 +264,16 @@ def game_def(lvl):
                     sitting = False
                 elif event.key == pygame.K_a:
                     runleft = False
+        lvl_gen.get_shadow(*hero.get_coords(), *hero.get_size())
+        lvl_gen.shadowgroup.draw(lvl_gen.screen)
+
+        for sprite in range(len(lvl_gen.projectilesgroup)):
+            pygame.draw.rect(lvl_gen.screen, (36, 34, 52), list(lvl_gen.projectilesgroup)[sprite].rect)
+            list(lvl_gen.projectilesgroup)[sprite].rect = list(lvl_gen.projectilesgroup)[sprite].rect.move(shooting, 0)
+            if pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.toches, False):
+                list(lvl_gen.projectilesgroup)[sprite].kill()
+        lvl_gen.projectilesgroup.draw(lvl_gen.screen)
+
         if runright or runleft:
             if runright:
                 hero.move(xspeed * windows.k ** windows.fullscreen, 0)
@@ -270,8 +282,6 @@ def game_def(lvl):
         else:
             xspeed = 0
         hero.update()
-        lvl_gen.get_shadow(*hero.get_coords(), *hero.get_size())
-        lvl_gen.shadowgroup.draw(lvl_gen.screen)
         lvl_gen.characters.draw(lvl_gen.screen)
         lvl_gen.finale.draw(lvl_gen.screen)
         lvl_gen.untouches.draw(lvl_gen.screen)
@@ -281,4 +291,4 @@ def game_def(lvl):
     sys.exit()
 
 
-# game_def(1)
+game_def(1)

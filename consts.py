@@ -14,3 +14,4 @@ placeholder = r'textures\_invisiblethingcausethisthingissostupidijustdontgetit-t
 finish = r'textures\F-texture.png'
 bg1 = r'backgrounds\bg.png'
 shadow = r'characters\shadow.png'
+fireball = r'characters\fireball.png'
