@@ -330,9 +330,16 @@ def game_def(lvl):
                 lvl_gen.remover(lvl_gen.board.get_cell(hero.get_coords()))
                 lvl_gen.remover((11, 10))
 
-        if not lvl_gen.slonik:
-            lvl_gen.remover((2, 7), 'C')
-
+        if not lvl_gen.sloniks:
+            if lvl == 2 and thing == '':
+                lvl_gen.remover((2, 7), 'C')
+            elif lvl == 2 and thing == 1:
+                lvl_gen.remover((8, 4), 'F')
+            elif lvl == 3 and thing == 1:
+                lvl_gen.remover((7, 4), 'S')
+            elif lvl == 3 and thing == 2:
+                print('ура победа')
+                sys.exit()
         if runright or runleft:
             if runright:
                 hero.move(xspeed * windows.k ** windows.fullscreen, 0)
@@ -352,4 +359,4 @@ def game_def(lvl):
     sys.exit()
 
 
-game_def(2)
+game_def(3)

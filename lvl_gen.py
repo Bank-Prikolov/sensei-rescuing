@@ -288,5 +288,6 @@ def get_shadow(x, y, w, h):
 
 def remover(pos, block='.'):
     x, y = pos
-    board.board[int(y)] = board.board[int(y)][:int(x)] + block + board.board[int(y)][int(x) + 1:]
-    updater()
+    if board.board[int(y)][int(x)] != block:
+        board.board[int(y)] = board.board[int(y)][:int(x)] + block + board.board[int(y)][int(x) + 1:]
+        updater()
