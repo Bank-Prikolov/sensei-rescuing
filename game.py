@@ -1,5 +1,6 @@
 import sys
 
+import game_complete
 import lvl_gen
 import pygame
 
@@ -243,7 +244,7 @@ def game_def(lvl):
                     lvl_gen.updater()
                 elif event.key == pygame.K_w:
                     if pygame.sprite.spritecollide(hero, lvl_gen.finale, False):
-                        menu.levels_menu()
+                        game_complete.game_complete()
                     elif not lvl_gen.projectilesgroup:
                         if lookingright:
                             shooting = projectile_speed * windows.k ** windows.fullscreen
@@ -311,10 +312,9 @@ def game_def(lvl):
         lvl_gen.nmeprojectilesgroup.draw(lvl_gen.screen)
 
         if pygame.sprite.spritecollide(hero, lvl_gen.thorngroup, False):
-            menu.main_menu()
+            game_over.game_over()
         if pygame.sprite.spritecollide(hero, lvl_gen.sloniks, False):
-            running = False
-            menu.levels_menu()
+            game_over.game_over()
         if pygame.sprite.spritecollide(hero, lvl_gen.triggergroup, True):
             if lvl == 2 and thing == 1:
                 lvl_gen.remover(lvl_gen.board.get_cell(hero.get_coords()))
@@ -339,7 +339,7 @@ def game_def(lvl):
             elif lvl == 3 and thing == 1:
                 lvl_gen.remover((7, 4), 'S')
             elif lvl == 3 and thing == 2:
-                print('ура победа')
+                game_complete.game_complete()
         if runright or runleft:
             if runright:
                 hero.move(xspeed * windows.k ** windows.fullscreen, 0)

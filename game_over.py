@@ -5,8 +5,6 @@ from itemCreator import Button, Object
 import game
 import menu
 
-pygame.init()
-
 size = WIDTH, HEIGHT = 1024, 704
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
