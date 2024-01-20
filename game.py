@@ -4,6 +4,7 @@ import lvl_gen
 import pygame
 
 import game_over
+import game_complete
 import menu
 from consts import *
 import windows
@@ -304,11 +305,15 @@ def game_def(lvl):
                 list(lvl_gen.nmeprojectilesgroup)[sprite].kill()
         lvl_gen.nmeprojectilesgroup.draw(lvl_gen.screen)
 
-        if pygame.sprite.spritecollide(hero, lvl_gen.thorngroup, False):
-            menu.main_menu()
-        if pygame.sprite.spritecollide(hero, lvl_gen.sloniks, False):
-            running = False
-            menu.levels_menu()
+        if pygame.sprite.spritecollide(hero, lvl_gen.thorngroup, False) or pygame.sprite.spritecollide(hero, lvl_gen.sloniks, False):
+            runleft = False
+            runright = False
+            hero.kill()
+            thing = ''
+            lvl_gen.generate_level(lvl)
+            lvl_gen.updater()
+            hero.set_coords(*start_coords)
+            game_over.game_over()
         if pygame.sprite.spritecollide(hero, lvl_gen.triggergroup, True):
             if lvl == 2 and thing == 1:
                 lvl_gen.remover(lvl_gen.board.get_cell(hero.get_coords()))
@@ -333,7 +338,10 @@ def game_def(lvl):
             elif lvl == 3 and thing == 1:
                 lvl_gen.remover((7, 4), 'S')
             elif lvl == 3 and thing == 2:
-                menu.levels_menu()
+                runleft = False
+                runright = False
+                hero.kill()
+                game_complete.game_complete()
 
         if runright or runleft:
             if runright:
@@ -351,5 +359,4 @@ def game_def(lvl):
         clock.tick(fps)
         pygame.display.flip()
 
-
-game_def(1)
+# game_def(1)
