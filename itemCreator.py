@@ -98,7 +98,7 @@ class Button:
         self.is_hovered = self.rect.collidepoint(mouse_pos)
 
     def handle_event(self, event, volS=1):
-        if event.type == pygame.MOUSEBUTTONDOWN and self.is_hovered and not self.is_no_active:
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.is_hovered and not self.is_no_active:
             self.is_pushed = True
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and self.is_pushed:
             self.is_pushed = False
@@ -108,10 +108,10 @@ class Button:
             pygame.event.post(pygame.event.Event(pygame.USEREVENT, button=self))
 
     def handle_event_slider(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN and self.is_hovered and not self.is_no_active:
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.is_hovered and not self.is_no_active:
             self.is_pushed = True
             pygame.event.post(pygame.event.Event(pygame.MOUSEBUTTONDOWN, button=self))
-        if event.type == pygame.MOUSEBUTTONUP and self.is_pushed:
+        if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and self.is_pushed:
             self.is_pushed = False
             pygame.event.post(pygame.event.Event(pygame.MOUSEBUTTONUP, button=self))
 

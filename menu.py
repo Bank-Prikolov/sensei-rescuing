@@ -1,10 +1,12 @@
 import pygame
 import sys
 import webbrowser
-from load_image import load_image
-from itemCreator import Object, Button, Stars
+
 import windows
 import game
+
+from load_image import load_image
+from itemCreator import Object, Button, Stars
 
 pygame.init()
 
@@ -35,7 +37,7 @@ record3 = 0
 
 lvlNow = 1
 
-a = open(r"data\settings.txt", "r", encoding="utf-8")
+a = open(r"data/saving settings/volume-settings.txt", "r", encoding="utf-8")
 checkActDet = list(map(lambda x: float(x.rstrip('\n')), a))
 wM = checkActDet[0]
 wS = checkActDet[1]
@@ -324,7 +326,7 @@ def settings_menu():
 
             elif event.type == pygame.MOUSEMOTION:
                 if isSliderMusic or isSliderSound:
-                    checkActDet = open(r"data\settings.txt", "w")
+                    checkActDet = open(r"data/saving settings/volume-settings.txt", "w")
                     if isSliderMusic:
                         xM = music_slider_btn.rect[0]
                         # 553 853
