@@ -166,10 +166,13 @@ class Board:
                         self.cell_size, boss_door, changegroup, untouches)
                 elif self.board[y][x] == '%':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, wally, breakgroup)
+                        self.cell_size, invis, breakgroup)
                 elif self.board[y][x] == 't':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                         self.cell_size, trigger, triggergroup)
+                elif self.board[y][x] == '&':
+                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                        self.cell_size, horizon, toches)
                 elif self.board[y][x] == 'e':
                     for z in range(len(board.board)):
                         if '@' in board.board[z]:

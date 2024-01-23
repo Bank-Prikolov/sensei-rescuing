@@ -23,7 +23,7 @@ class Hero(pygame.sprite.Sprite):
     pic = load_image(wai)
     fiball = load_image(fireball)
 
-    def __init__(self, x, y, koef, anim=0, movement=False, act='sr'):
+    def __init__(self, x, y, koef, anim=0, movement=False, act='sr', sp=1):
         super().__init__(lvl_gen.characters)
         self.sprites = pygame.transform.scale(
             Hero.pic, (Hero.pic.get_width() // 2 * koef, Hero.pic.get_height() // 2 * koef))
@@ -79,9 +79,9 @@ class Hero(pygame.sprite.Sprite):
             if pygame.sprite.spritecollide(self, lvl_gen.platformgroup, False):
                 if windows.k == 1.5:
                     if windows.fullscreen:
-                        checklist = [-1, -13, -12, -15, -21]
+                        checklist = [-1, -13, -12, -15, -21, -47]
                     else:
-                        checklist = [-1, -9, -8, -4, -25, -16, -14, -6]
+                        checklist = [-1, -9, -8, -4, -25, -16, -14, -6, -31]
                 else:
                     checklist = list(
                         map(lambda x: int(x * windows.k ** windows.fullscreen),
@@ -170,7 +170,7 @@ class Hero(pygame.sprite.Sprite):
                     lvl_gen.projectilesgroup)
 
 
-def game_def(lvl):
+def game_def(lvl, charact=1):
     global runright, runleft, lookingup, sitting, shooting, jumping, falling, lookingright, xspeed, yspeed, hero
     start_coords = lvl_gen.generate_level(lvl)
     lvl_gen.updater()
@@ -252,9 +252,10 @@ def game_def(lvl):
                             shooting = -projectile_speed * windows.k ** windows.fullscreen
                         hero.shoot()
             # elif event.type == pygame.MOUSEBUTTONDOWN:
-            #     # if event.button == 1:
-            #     #     for x in lvl_gen.sloniks:
-            #     #         x.shoot()
+            #     hero.set_coords(*hero.get_coords())
+                # if event.button == 1:
+                #     for x in lvl_gen.sloniks:
+                #         x.shoot()
             elif event.type == pygame.WINDOWEXPOSED:
                 if lookingright:
                     hero = hero.change_hero('sr', hero.get_coords())
@@ -352,6 +353,7 @@ def game_def(lvl):
             xspeed = 0
         hero.update()
         lvl_gen.sloniks.update()
+        lvl_gen.breakgroup.draw(lvl_gen.screen)
         lvl_gen.characters.draw(lvl_gen.screen)
         lvl_gen.sloniks.draw(lvl_gen.screen)
         lvl_gen.finale.draw(lvl_gen.screen)
