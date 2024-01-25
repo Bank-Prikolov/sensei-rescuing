@@ -27,12 +27,12 @@ checkIsActiveBoss = True
 isSliderMusic = False
 isSliderSound = False
 
-checkIsPassing1 = False
+checkIsPassing1 = True
 checkIsPassing2 = False
 checkIsPassingBoss = False
 
-record1 = 3
-record2 = 2
+record1 = 0
+record2 = 0
 record3 = 0
 
 lvlNow = 1
@@ -54,12 +54,17 @@ def main_menu():
         ft = False
     pygame.mixer.music.set_volume(wM)
 
+    # 806, 246
     if not windows.fullscreen:
         all_w, all_h = WIDTH // 2 - 443, HEIGHT - 619
     else:
         all_w, all_h = WIDTH // 2 - 443, HEIGHT - 820
 
     title = Object(all_w, all_h, 886, 80, r"objects\menu-title-obj.png")
+
+    updates_field = Object(all_w, all_h + 102, 304, 416, r"objects\updates-field-obj.png")
+    buttons_field = Object(all_w + 315, all_h + 102, 256, 416, r"objects\menu-buttons-field-obj.png")
+    hero_field = Object(all_w + 582, all_h + 102, 304, 416, r"objects\hero-field-obj.png")
 
     start_btn = Button(all_w + 323, all_h + 110, 240, 100, r"buttons\default-start-btn.png",
                        r"buttons\hover-start-btn.png", r"buttons\press-start-btn.png",
@@ -72,6 +77,18 @@ def main_menu():
                       r"data\sounds\menu-button-sound.mp3")
     exit_btn = Button(all_w + 323, all_h + 410, 240, 100, r"buttons\default-exit-btn.png",
                       r"buttons\hover-exit-btn.png", r"buttons\press-exit-btn.png",
+                      r"data\sounds\menu-button-sound.mp3")
+
+    hero_choose = Object(all_w + 582 + 304 // 2 - 107 // 2, all_h + 102 + 95, 107, 204, r"objects\hero-wai-obj.png")
+
+    arrow_btn = Button(all_w + 582 + 304 // 2 - 173 // 2 + 180, all_h + 102 + 95 + 241 // 2 - 36 // 2, 36, 40,
+                       r"buttons\default-arrow-btn.png", r"buttons\hover-arrow-btn.png",
+                       r"buttons\press-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
+    r_arrow_btn = Button(all_w + 582 + 304 // 2 - 173 // 2 - 43, all_h + 102 + 95 + 241 // 2 - 36 // 2, 36, 40,
+                         r"buttons\default-r-arrow-btn.png", r"buttons\hover-r-arrow-btn.png",
+                         r"buttons\press-r-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
+    choose_btn = Button(all_w + 582 + 304 // 2 - 159 // 2, all_h + 410, 159, 48, r"buttons\default-choose-btn.png",
+                      r"buttons\hover-choose-btn.png", r"buttons\press-choose-btn.png",
                       r"data\sounds\menu-button-sound.mp3")
 
     running = True
@@ -106,14 +123,15 @@ def main_menu():
                     change_fullScreen(1920, 1080, pygame.FULLSCREEN)
                     main_menu()
 
-            for button in [start_btn, settings_btn, info_btn, exit_btn]:
+            for button in [start_btn, settings_btn, info_btn, exit_btn, arrow_btn, r_arrow_btn, choose_btn]:
                 button.handle_event(event, volS)
 
-        for button in [start_btn, settings_btn, info_btn, exit_btn]:
+        for obj in [title, updates_field, buttons_field, hero_field, hero_choose]:
+            obj.draw(screen)
+
+        for button in [start_btn, settings_btn, info_btn, exit_btn, arrow_btn, r_arrow_btn, choose_btn]:
             button.check_hover(pygame.mouse.get_pos())
             button.draw(screen)
-
-        title.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
         if not windows.fullscreen:
@@ -499,6 +517,3 @@ def change_fullScreen(width, height, fullScreen=1):
         bg = pygame.transform.scale(tmp_img, (tmp_img.get_width(), tmp_img.get_height()))
     else:
         bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
-
-
-

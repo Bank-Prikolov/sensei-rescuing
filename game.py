@@ -443,4 +443,4 @@ def game_def(lvl, charact=1):
         pygame.display.flip()
 
 
-game_def(3)
+# game_def(3)
