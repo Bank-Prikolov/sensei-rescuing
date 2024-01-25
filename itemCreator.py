@@ -3,7 +3,7 @@ from load_image import load_image
 
 
 class Object:
-    def __init__(self, x, y, width, height, image_path, no_active_image_path=None):
+    def __init__(self, x, y, width, height, image_path, no_active_image_path=None, image_path2=None):
         self.x = x
         self.y = y
         self.width = width
@@ -11,6 +11,12 @@ class Object:
 
         self.image = load_image(image_path)
         self.image = pygame.transform.scale(self.image, (width, height))
+
+        self.isHeroHere = False
+        if image_path2:
+            self.isHeroHere = True
+            self.image2 = load_image(image_path2)
+            self.image2 = pygame.transform.scale(self.image2, (width, height))
 
         self.no_active_image = self.image
         if no_active_image_path:
@@ -26,10 +32,15 @@ class Object:
         if isActive:
             self.is_no_active = False
 
-    def draw(self, screen):
+    def draw(self, screen, whatHero=1):
         current_image = self.image
         if self.is_no_active:
             current_image = self.no_active_image
+        if self.isHeroHere:
+            if whatHero == 1:
+                current_image = self.image
+            elif whatHero == 2:
+                current_image = self.image2
         screen.blit(current_image, self.rect.topleft)
 
 
@@ -40,6 +51,8 @@ class Button:
         self.y = y
         self.width = width
         self.height = height
+
+        self.tmp = False
 
         self.image = load_image(image_path)
         self.image = pygame.transform.scale(self.image, (width, height))
@@ -100,12 +113,29 @@ class Button:
     def handle_event(self, event, volS=1):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.is_hovered and not self.is_no_active:
             self.is_pushed = True
-        if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and self.is_pushed:
-            self.is_pushed = False
             if self.sound:
                 pygame.mixer.Sound.set_volume(self.sound, volS)
                 self.sound.play()
+        if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and self.is_pushed:
+            self.is_pushed = False
             pygame.event.post(pygame.event.Event(pygame.USEREVENT, button=self))
+
+    def handle_event_choosingHero(self, event, hero, hero1, hero2, volS=1):
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.is_hovered and not self.is_pushed:
+            self.is_pushed = True
+            self.tmp = True
+            if self.sound:
+                pygame.mixer.Sound.set_volume(self.sound, volS)
+                self.sound.play()
+        if self.tmp and hero1 and hero != 1:
+            self.is_pushed = False
+        elif self.tmp and hero1 and hero == 1:
+            self.is_pushed = True
+        elif self.tmp and hero2 and hero != 2:
+            self.is_pushed = True
+        elif self.tmp and hero2 and hero == 2:
+            self.is_pushed = False
+        pygame.event.post(pygame.event.Event(pygame.MOUSEBUTTONDOWN, button=self))
 
     def handle_event_slider(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.is_hovered and not self.is_no_active:

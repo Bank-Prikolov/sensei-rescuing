@@ -35,6 +35,10 @@ record1 = 0
 record2 = 0
 record3 = 0
 
+hero = 1
+hero1 = False
+hero2 = False
+
 lvlNow = 1
 
 a = open(r"data/savings/volume-settings.txt", "r", encoding="utf-8")
@@ -47,7 +51,7 @@ ft = True
 
 
 def main_menu():
-    global checkActDet, wM, wS, ft
+    global checkActDet, wM, wS, ft, hero, hero1, hero2
     if ft:
         pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
         pygame.mixer.music.play(-1)
@@ -79,7 +83,8 @@ def main_menu():
                       r"buttons\hover-exit-btn.png", r"buttons\press-exit-btn.png",
                       r"data\sounds\menu-button-sound.mp3")
 
-    hero_choose = Object(all_w + 582 + 304 // 2 - 107 // 2, all_h + 102 + 95, 107, 204, r"objects\hero-wai-obj.png")
+    hero_choose = Object(all_w + 582 + 304 // 2 - 107 // 2, all_h + 102 + 95, 107, 204,
+                         r"objects\hero-wai-obj.png", "", r"objects\hero-satorik-obj.png")
 
     arrow_btn = Button(all_w + 582 + 304 // 2 - 173 // 2 + 180, all_h + 102 + 95 + 241 // 2 - 36 // 2, 36, 40,
                        r"buttons\default-arrow-btn.png", r"buttons\hover-arrow-btn.png",
@@ -123,11 +128,28 @@ def main_menu():
                     change_fullScreen(1920, 1080, pygame.FULLSCREEN)
                     main_menu()
 
-            for button in [start_btn, settings_btn, info_btn, exit_btn, arrow_btn, r_arrow_btn, choose_btn]:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == choose_btn:
+                if hero == 1:
+                    hero1, hero2 = True, False
+                if hero == 2:
+                    hero1, hero2 = False, True
+
+            if event.type == pygame.USEREVENT and (event.button == arrow_btn or event.button == r_arrow_btn):
+                if hero == 1:
+                    hero = 2
+                elif hero == 2:
+                    hero = 1
+
+            for button in [start_btn, settings_btn, info_btn, exit_btn, arrow_btn, r_arrow_btn]:
                 button.handle_event(event, volS)
 
-        for obj in [title, updates_field, buttons_field, hero_field, hero_choose]:
+            print(hero, "---", hero1, hero2)
+            choose_btn.handle_event_choosingHero(event, hero, hero1, hero2, volS)
+
+        for obj in [title, updates_field, buttons_field, hero_field]:
             obj.draw(screen)
+
+        hero_choose.draw(screen, hero)
 
         for button in [start_btn, settings_btn, info_btn, exit_btn, arrow_btn, r_arrow_btn, choose_btn]:
             button.check_hover(pygame.mouse.get_pos())
