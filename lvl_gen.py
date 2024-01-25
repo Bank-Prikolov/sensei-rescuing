@@ -203,6 +203,13 @@ class Board:
         else:
             return None
 
+    def rev_get_cell(self, mouse_pos):
+        if 0 < mouse_pos[0] < len(board.board[0]) and \
+                0 < mouse_pos[1] < len(board.board):
+            return mouse_pos[0] * board.cell_size + board.left, mouse_pos[1] * board.cell_size + board.top
+        else:
+            return None
+
     def get_size(self):
         return self.cell_size
 
@@ -293,4 +300,61 @@ def remover(pos, block='.'):
     x, y = pos
     if board.board[int(y)][int(x)] != block:
         board.board[int(y)] = board.board[int(y)][:int(x)] + block + board.board[int(y)][int(x) + 1:]
-        updater()
+        if block == '0':
+            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                board.cell_size, floor, toches)
+            toches.draw(screen)
+        elif block == '#':
+            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                board.cell_size, wallx, toches)
+            toches.draw(screen)
+        elif block == '=':
+            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                board.cell_size, wally, toches)
+            toches.draw(screen)
+        elif block == '_':
+            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                board.cell_size, plat, untouches)
+            Pic(board.left + (board.cell_size * x) + board.cell_size // 4, board.top + (board.cell_size * y),
+                board.cell_size - board.cell_size // 2,
+                board.cell_size // 64, placeholder, platformgroup)
+            platformgroup.draw(screen)
+            untouches.draw(screen)
+        elif block == 'F':
+            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                board.cell_size, finish, finale)
+            finale.draw(screen)
+        elif block == 'C':
+            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                board.cell_size, change, changegroup, untouches)
+            untouches.draw(screen)
+        elif block == '^':
+            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                board.cell_size, thorn, thorngroup, anothertoches)
+            anothertoches.draw(screen)
+        elif block == 'S':
+            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                board.cell_size, boss_door, changegroup, untouches)
+            untouches.draw(screen)
+        elif block == '%':
+            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                board.cell_size, invis, breakgroup)
+            breakgroup.draw(screen)
+        elif block == 't':
+            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                board.cell_size, trigger, triggergroup)
+            triggergroup.draw(screen)
+        elif block == '&':
+            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                board.cell_size, horizon, toches)
+            toches.draw(screen)
+        elif block == '.':
+            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                board.cell_size, shadow, shadowgroup)
+            shadowgroup.draw(screen)
+
+
+def get_key(d, value):
+    for k, v in d.items():
+        if v == value:
+            return k
