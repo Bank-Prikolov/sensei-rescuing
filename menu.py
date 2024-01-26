@@ -35,7 +35,9 @@ record1 = 0
 record2 = 0
 record3 = 0
 
-hero = 2
+b = open(r"data/savings/hero-settings.txt", "r", encoding="utf-8")
+checkHero = list(map(lambda x: float(x.rstrip('\n')), b))
+hero = int(checkHero[0])
 heroNow = hero
 
 lvlNow = 1
@@ -136,10 +138,12 @@ def main_menu():
                 print('hero SATORIK is chosen')
 
             if event.type == pygame.USEREVENT and (event.button == arrow_btn or event.button == r_arrow_btn):
+                checkHeroRewrite = open(r"data/savings/hero-settings.txt", "w")
                 if hero == 1:
                     hero = 2
                 elif hero == 2:
                     hero = 1
+                checkHeroRewrite.writelines(str(hero))
 
             for button in [start_btn, settings_btn, info_btn, exit_btn, arrow_btn, r_arrow_btn, choose_btn]:
                 button.handle_event(event, volS)
