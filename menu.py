@@ -28,8 +28,8 @@ isSliderMusic = False
 isSliderSound = False
 
 checkIsPassing1 = True
-checkIsPassing2 = False
-checkIsPassingBoss = False
+checkIsPassing2 = True
+checkIsPassingBoss = True
 
 record1 = 0
 record2 = 0
@@ -84,7 +84,7 @@ def main_menu():
                       r"data\sounds\menu-button-sound.mp3")
 
     hero_choose = Object(all_w + 582 + 304 // 2 - 107 // 2, all_h + 102 + 95, 107, 204,
-                         r"objects\hero-wai-obj.png", "", r"objects\hero-satorik-obj.png")
+                         r"objects\hero-wai-obj.png", "", r"objects\hero-sato-obj.png")
 
     arrow_btn = Button(all_w + 582 + 304 // 2 - 173 // 2 + 180, all_h + 102 + 95 + 241 // 2 - 36 // 2, 36, 40,
                        r"buttons\default-arrow-btn.png", r"buttons\hover-arrow-btn.png",
@@ -135,7 +135,7 @@ def main_menu():
 
             if event.type == pygame.USEREVENT and event.button == choose_btn and hero == 2 and hero != heroNow:
                 heroNow = 2
-                print('hero SATORIK is chosen')
+                print('hero SATO is chosen')
 
             if event.type == pygame.USEREVENT and (event.button == arrow_btn or event.button == r_arrow_btn):
                 checkHeroRewrite = open(r"data/savings/hero-settings.txt", "w")
@@ -173,7 +173,7 @@ def main_menu():
 def levels_menu():
     global lvlNow
     if not windows.fullscreen:
-        all_w, all_h = WIDTH // 2 - 395, HEIGHT - 580
+        all_w, all_h = WIDTH // 2 - 395, HEIGHT - 582
     else:
         all_w, all_h = WIDTH // 2 - 395, HEIGHT - 770
 
@@ -194,7 +194,7 @@ def levels_menu():
     info_btn = Button(all_w + 858, all_h + 122.5, 18, 18, r"buttons\default-level-info-btn.png",
                       r"buttons\hover-level-info-btn.png")
 
-    field = Object(all_w - 100, all_h + 111, 987, 305, r"objects\level-menu-field-obj.png")
+    field = Object(all_w - 100, all_h + 111, 987, 252, r"objects\level-menu-field-obj.png")
     level1Field = Object(all_w - 79, all_h + 142, 186, 189, r"objects\start-level-field-obj.png")
     level2Field = Object(all_w + 121, all_h + 142, 360, 189, r"objects\level-field-obj.png",
                          r"objects\hover-level-field-obj.png")
@@ -203,10 +203,14 @@ def levels_menu():
 
     zeroStars, oneStar, twoStars, threeStars = (r"objects\stars-zero-obj.png", r"objects\stars-one-obj.png",
                                                 r"objects\stars-two-obj.png", r"objects\stars-three-obj.png")
-    level1Stars = Stars(all_w - 113, all_h + 340, 252, 44, zeroStars, oneStar, twoStars, threeStars)
-    level2Stars = Stars(all_w + 262, all_h + 340, 252, 44, zeroStars, oneStar, twoStars,
+    level1StarsField = Object(all_w - 79, all_h + 375, 186, 56, r"objects\stars-field-obj.png")
+    level1Stars = Stars(all_w - 79 + 186 // 2 - 152 // 2, all_h + 380, 152, 44, zeroStars, oneStar, twoStars,
                         threeStars)
-    levelBossStars = Stars(all_w + 639, all_h + 340, 252, 44, zeroStars, oneStar, twoStars,
+    level2StarsField = Object(all_w + 296, all_h + 375, 186, 56, r"objects\stars-field-obj.png")
+    level2Stars = Stars(all_w + 296 + 186 // 2 - 152 // 2, all_h + 380, 152, 44, zeroStars, oneStar, twoStars,
+                        threeStars)
+    levelBossStarsField = Object(all_w + 673, all_h + 375, 186, 56, r"objects\stars-field-obj.png")
+    levelBossStars = Stars(all_w + 673 + 186 // 2 - 152 // 2, all_h + 380, 152, 44, zeroStars, oneStar, twoStars,
                            threeStars)
 
     running = True
@@ -279,10 +283,13 @@ def levels_menu():
         levelBossButton.check_passing(checkIsActiveBoss)
 
         if checkIsPassing1:
+            level1StarsField.draw(screen)
             level1Stars.draw(screen, record1)
         if checkIsPassing2:
+            level2StarsField.draw(screen)
             level2Stars.draw(screen, record2)
         if checkIsPassingBoss:
+            levelBossStarsField.draw(screen)
             levelBossStars.draw(screen, record3)
 
         x_c, y_c = pygame.mouse.get_pos()
