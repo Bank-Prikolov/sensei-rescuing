@@ -35,9 +35,8 @@ record1 = 0
 record2 = 0
 record3 = 0
 
-hero = 1
-hero1 = False
-hero2 = False
+hero = 2
+heroNow = hero
 
 lvlNow = 1
 
@@ -51,14 +50,13 @@ ft = True
 
 
 def main_menu():
-    global checkActDet, wM, wS, ft, hero, hero1, hero2
+    global checkActDet, wM, wS, ft, hero, heroNow
     if ft:
         pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
         pygame.mixer.music.play(-1)
         ft = False
     pygame.mixer.music.set_volume(wM)
 
-    # 806, 246
     if not windows.fullscreen:
         all_w, all_h = WIDTH // 2 - 443, HEIGHT - 619
     else:
@@ -94,9 +92,10 @@ def main_menu():
                          r"buttons\press-r-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
     choose_btn = Button(all_w + 582 + 304 // 2 - 159 // 2, all_h + 410, 159, 48, r"buttons\default-choose-btn.png",
                       r"buttons\hover-choose-btn.png", r"buttons\press-choose-btn.png",
-                      r"data\sounds\menu-button-sound.mp3")
+                      r"data\sounds\menu-button-sound.mp3", "", hero)
 
     running = True
+    hero = heroNow
     while running:
         clock.tick(fps)
         screen.fill((0, 0, 0))
@@ -128,11 +127,13 @@ def main_menu():
                     change_fullScreen(1920, 1080, pygame.FULLSCREEN)
                     main_menu()
 
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == choose_btn:
-                if hero == 1:
-                    hero1, hero2 = True, False
-                if hero == 2:
-                    hero1, hero2 = False, True
+            if event.type == pygame.USEREVENT and event.button == choose_btn and hero == 1 and hero != heroNow:
+                heroNow = 1
+                print('hero WAI is chosen')
+
+            if event.type == pygame.USEREVENT and event.button == choose_btn and hero == 2 and hero != heroNow:
+                heroNow = 2
+                print('hero SATORIK is chosen')
 
             if event.type == pygame.USEREVENT and (event.button == arrow_btn or event.button == r_arrow_btn):
                 if hero == 1:
@@ -140,20 +141,20 @@ def main_menu():
                 elif hero == 2:
                     hero = 1
 
-            for button in [start_btn, settings_btn, info_btn, exit_btn, arrow_btn, r_arrow_btn]:
+            for button in [start_btn, settings_btn, info_btn, exit_btn, arrow_btn, r_arrow_btn, choose_btn]:
                 button.handle_event(event, volS)
-
-            print(hero, "---", hero1, hero2)
-            choose_btn.handle_event_choosingHero(event, hero, hero1, hero2, volS)
 
         for obj in [title, updates_field, buttons_field, hero_field]:
             obj.draw(screen)
 
         hero_choose.draw(screen, hero)
 
-        for button in [start_btn, settings_btn, info_btn, exit_btn, arrow_btn, r_arrow_btn, choose_btn]:
+        for button in [start_btn, settings_btn, info_btn, exit_btn, arrow_btn, r_arrow_btn]:
             button.check_hover(pygame.mouse.get_pos())
             button.draw(screen)
+
+        choose_btn.check_hover(pygame.mouse.get_pos())
+        choose_btn.draw_heroBtn(screen, hero, heroNow)
 
         x_c, y_c = pygame.mouse.get_pos()
         if not windows.fullscreen:
