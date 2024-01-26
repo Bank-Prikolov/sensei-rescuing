@@ -129,21 +129,21 @@ def main_menu():
                     change_fullScreen(1920, 1080, pygame.FULLSCREEN)
                     main_menu()
 
-            if event.type == pygame.USEREVENT and event.button == choose_btn and hero == 1 and hero != heroNow:
-                heroNow = 1
-                print('hero WAI is chosen')
-
-            if event.type == pygame.USEREVENT and event.button == choose_btn and hero == 2 and hero != heroNow:
-                heroNow = 2
-                print('hero SATO is chosen')
+            if event.type == pygame.USEREVENT and event.button == choose_btn:
+                checkHeroRewrite = open(r"data/savings/hero-settings.txt", "w")
+                if hero == 1 and hero != heroNow:
+                    heroNow = 1
+                    print('hero WAI is chosen')
+                elif hero == 2 and hero != heroNow:
+                    heroNow = 2
+                    print('hero SATO is chosen')
+                checkHeroRewrite.writelines(str(hero))
 
             if event.type == pygame.USEREVENT and (event.button == arrow_btn or event.button == r_arrow_btn):
-                checkHeroRewrite = open(r"data/savings/hero-settings.txt", "w")
                 if hero == 1:
                     hero = 2
                 elif hero == 2:
                     hero = 1
-                checkHeroRewrite.writelines(str(hero))
 
             for button in [start_btn, settings_btn, info_btn, exit_btn, arrow_btn, r_arrow_btn, choose_btn]:
                 button.handle_event(event, volS)
@@ -542,7 +542,7 @@ def transition():
         clock.tick(70)
 
 
-def change_fullScreen(width, height, fullScreen=1):
+def change_fullScreen(width, height, fullScreen=0):
     global WIDTH, HEIGHT, screen, img, bg
     WIDTH, HEIGHT = width, height
     screen = pygame.display.set_mode((WIDTH, HEIGHT), fullScreen)

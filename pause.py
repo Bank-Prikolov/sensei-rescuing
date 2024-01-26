@@ -72,7 +72,6 @@ def game_pause():
         clock.tick(fps)
 
         x_c, y_c = pygame.mouse.get_pos()
-        print(x_c, y_c)
         if not windows.fullscreen:
             if 8 <= x_c <= 992 and 7 <= y_c <= 667:
                 screen.blit(cursor, (x_c, y_c))
@@ -83,4 +82,4 @@ def game_pause():
         pygame.display.flip()
 
 
-game_pause()
+# game_pause()
