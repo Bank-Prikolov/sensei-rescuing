@@ -5,7 +5,8 @@ import pygame
 
 import game_over
 import game_complete
-import menu
+import pause
+
 from consts import *
 import windows
 from load_image import load_image
@@ -227,6 +228,15 @@ class Hero(pygame.sprite.Sprite):
                     lvl_gen.projectilesgroup)
         self.projectilespeed.append(spees)
 
+    def end(self):
+        global runright, runleft
+        runleft = False
+        runright = False
+        self.kill()
+        lvl_gen.characters.empty()
+        lvl_gen.projectilesgroup.empty()
+        self.projectilespeed = []
+
 
 def game_def(lvl, charact=1):
     global runright, runleft, lookingup, sitting, shooting, jumping, falling, lookingright, xspeed, yspeed, hero
@@ -305,8 +315,7 @@ def game_def(lvl, charact=1):
                     lvl_gen.updater()
                 elif event.key == pygame.K_w:
                     if pygame.sprite.spritecollide(hero, lvl_gen.finale, False):
-                        hero.kill()
-                        lvl_gen.characters.empty()
+
                         game_complete.game_complete()
                     else:
                         if lookingright:
@@ -314,6 +323,9 @@ def game_def(lvl, charact=1):
                         else:
                             shooting = -projectile_speed * windows.k ** windows.fullscreen
                         hero.shoot(shooting)
+                elif event.key == pygame.K_ESCAPE:
+                    pause.game_pause()
+
             # elif event.type == pygame.MOUSEBUTTONDOWN:
             #     hero.set_coords(*hero.get_coords())
             # if event.button == 1:
@@ -329,8 +341,6 @@ def game_def(lvl, charact=1):
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_d:
                     runright = False
-                elif event.key == pygame.K_w:
-                    lookingup = False
                 elif event.key == pygame.K_s:
                     sitting = False
                 elif event.key == pygame.K_a:
@@ -378,14 +388,9 @@ def game_def(lvl, charact=1):
         if pygame.sprite.spritecollide(hero, lvl_gen.thorngroup, False) or pygame.sprite.spritecollide(hero,
                                                                                                        lvl_gen.sloniks,
                                                                                                        False):
-            runleft = False
-            runright = False
-            hero.kill()
             thing = ''
-            start_coords = lvl_gen.generate_level(lvl)
+            hero.end()
             lvl_gen.updater()
-            lvl_gen.characters.empty()
-            hero = Hero(*start_coords, windows.k ** windows.fullscreen)
             game_over.game_over()
         if pygame.sprite.spritecollide(hero, lvl_gen.triggergroup, True):
             if lvl == 2 and thing == 1:
@@ -417,10 +422,7 @@ def game_def(lvl, charact=1):
             elif lvl == 3 and thing == 1:
                 lvl_gen.remover((7, 4), 'S')
             elif lvl == 3 and thing == 2:
-                runleft = False
-                runright = False
-                hero.kill()
-                lvl_gen.characters.empty()
+                hero.end()
                 game_complete.game_complete()
 
         if runright or runleft:
@@ -443,9 +445,7 @@ def game_def(lvl, charact=1):
         pygame.draw.rect(lvl_gen.screen, '#000000',
                          (windows.fullsize[0] - windows.otstupx, 0, windows.fullsize[0] ** windows.fullscreen,
                           windows.fullsize[1] ** windows.fullscreen))
-        # print(lvl_gen.characters)
         clock.tick(fps)
         pygame.display.flip()
 
-#
 # game_def(1)
