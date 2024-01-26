@@ -334,6 +334,7 @@ def game_def(lvl, charact=1):
                 elif event.key == pygame.K_a:
                     runleft = False
         if pygame.sprite.spritecollide(hero, lvl_gen.changegroup, False):
+            lvl_gen.projectilesgroup.empty()
             if thing == '':
                 thing = 1
             else:
@@ -443,4 +444,4 @@ def game_def(lvl, charact=1):
         pygame.display.flip()
 
 
-# game_def(3)
+game_def(3)
