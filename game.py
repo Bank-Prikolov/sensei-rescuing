@@ -10,6 +10,7 @@ import pause
 from consts import *
 import windows
 from load_image import load_image
+from itemCreator import Object
 
 runright, runleft, lookingup, sitting = False, False, False, False
 jumping = False
@@ -241,6 +242,8 @@ class Hero(pygame.sprite.Sprite):
 def game_def(lvl, charact=1):
     global runright, runleft, lookingup, sitting, shooting, jumping, falling, lookingright, xspeed, yspeed, hero
     start_coords = lvl_gen.generate_level(lvl)
+    pause_btn = Object(windows.width - windows.width + 8, windows.height - windows.height + 6, 108, 54,
+                       r"objects\pause-button-obj.png")
     lvl_gen.updater()
     hero = Hero(*start_coords, windows.k ** windows.fullscreen)
     clock = pygame.time.Clock()
@@ -315,7 +318,6 @@ def game_def(lvl, charact=1):
                     lvl_gen.updater()
                 elif event.key == pygame.K_w:
                     if pygame.sprite.spritecollide(hero, lvl_gen.finale, False):
-
                         game_complete.game_complete()
                     else:
                         if lookingright:
@@ -324,7 +326,24 @@ def game_def(lvl, charact=1):
                             shooting = -projectile_speed * windows.k ** windows.fullscreen
                         hero.shoot(shooting)
                 elif event.key == pygame.K_ESCAPE:
+                    tmp = windows.fullscreen
                     pause.game_pause()
+                    if tmp != windows.fullscreen:
+                        if windows.fullscreen:
+                            new = (windows.otstupx + hero.get_coords()[0] * windows.k,
+                                   (windows.otstupy // windows.k + hero.get_coords()[1]) * windows.k)
+                        else:
+                            new = ((hero.get_coords()[0] - windows.otstupx) // windows.k,
+                                   (hero.get_coords()[1] - windows.otstupy + 6) // windows.k)
+                        lvl_gen.characters.empty()
+                        hero.projectilespeed = []
+                        lvl_gen.projectilesgroup.empty()
+                        if lookingright:
+                            hero = Hero(*new, windows.k ** windows.fullscreen)
+                        else:
+                            hero = Hero(*new, windows.k ** windows.fullscreen)
+                        lvl_gen.rescreen()
+                    lvl_gen.updater()
 
             # elif event.type == pygame.MOUSEBUTTONDOWN:
             #     hero.set_coords(*hero.get_coords())
@@ -345,6 +364,7 @@ def game_def(lvl, charact=1):
                     sitting = False
                 elif event.key == pygame.K_a:
                     runleft = False
+        pause_btn.draw(windows.screen)
         if pygame.sprite.spritecollide(hero, lvl_gen.changegroup, False):
             lvl_gen.projectilesgroup.empty()
             if thing == '':
@@ -364,7 +384,8 @@ def game_def(lvl, charact=1):
                     hero.projectilespeed[sprite], 0)
                 if pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.sloniks, False):
                     lvl_gen.remover(lvl_gen.board.get_cell(list(
-                        pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.sloniks, True))[0].rect[:2]))
+                        pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.sloniks, True))[
+                                                               0].rect[:2]))
                     hero.projectilespeed.pop(sprite)
                     list(lvl_gen.projectilesgroup)[sprite].kill()
                     break

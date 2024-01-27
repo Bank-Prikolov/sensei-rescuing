@@ -1,7 +1,7 @@
 import pygame
 import sys
 from load_image import load_image
-from itemCreator import Button, Object
+from itemCreator import Button, Object, cursorChecker
 import menu
 import game
 import windows
@@ -47,19 +47,28 @@ def game_pause():
                 pygame.quit()
                 sys.exit()
 
-            if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
-                menu.levels_menu()
-
             if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
                 if windows.fullscreen:
+                    running = False
                     windows.fullscreen = 0
                     game_pause()
                 else:
+                    running = False
                     windows.fullscreen = 1
                     game_pause()
 
+            if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
+                running = False
+                menu.levels_menu()
+
+            if event.type == pygame.USEREVENT and event.button == repeat_btn:
+                running = False
+                game.game_def(menu.lvlNow)
+
+            if event.type == pygame.USEREVENT and event.button == play_btn:
+                running = False
+
             for button in [repeat_btn, to_lvlmenu_btn, play_btn]:
-                button.handle_event(event)
                 button.handle_event(event)
 
         for obj in [field, title]:
@@ -72,12 +81,7 @@ def game_pause():
         clock.tick(fps)
 
         x_c, y_c = pygame.mouse.get_pos()
-        if not windows.fullscreen:
-            if 8 <= x_c <= 992 and 7 <= y_c <= 667:
-                screen.blit(cursor, (x_c, y_c))
-        else:
-            if 8 <= x_c <= 1880 and 7 <= y_c <= 1040:
-                screen.blit(cursor, (x_c, y_c))
+        cursorChecker(x_c, y_c, cursor, screen)
 
         pygame.display.flip()
 

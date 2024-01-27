@@ -1,4 +1,5 @@
 import pygame
+import windows
 from load_image import load_image
 
 
@@ -170,3 +171,12 @@ class Stars:
         if record == 3:
             current_image = self.threeStar_image
         screen.blit(current_image, self.rect.topleft)
+
+
+def cursorChecker(x_c, y_c, cursor, screen):
+    if not windows.fullscreen:
+        if 11 <= x_c <= 987 and 11 <= y_c <= 664:
+            screen.blit(cursor, (x_c, y_c))
+    else:
+        if 11 <= x_c <= 1875 and 11 <= y_c <= 1036:
+            screen.blit(cursor, (x_c, y_c))

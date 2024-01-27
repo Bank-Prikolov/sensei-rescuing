@@ -173,8 +173,10 @@ def main_menu():
 def levels_menu():
     global lvlNow
     if not windows.fullscreen:
+        change_fullScreen(1024, 704)
         all_w, all_h = WIDTH // 2 - 395, HEIGHT - 582
     else:
+        change_fullScreen(1920, 1080, pygame.FULLSCREEN)
         all_w, all_h = WIDTH // 2 - 395, HEIGHT - 770
 
     title = Object(all_w, all_h, 700, 82, r"objects\level-menu-title-obj.png")
