@@ -68,9 +68,10 @@ def game_over():
                             r"buttons\press-tolvlmenu-btn.png", r"data\sounds\menu-button-sound.mp3")
 
     if not windows.fullscreen:
-        field = Object(WIDTH - 1016, HEIGHT - 696, 1008, 688, r"objects\windows-field-obj.png")
+        field = Object(WIDTH - WIDTH, HEIGHT - HEIGHT, 1024, 704, r"objects\windows-field-obj.png")
     else:
-        field = Object(WIDTH - 1916, HEIGHT - 1076, 1904, 1064, r"objects\windows-field-obj.png")
+        field = Object(windows.otstupx, HEIGHT - HEIGHT, WIDTH - 2 * windows.otstupx, 1080,
+                       r"objects\windows-field-obj.png")
 
     running = True
     fps = 60
@@ -103,7 +104,7 @@ def game_over():
                 game.game_def(menu.lvlNow)
 
             for button in [repeat_btn, to_lvlmenu_btn]:
-                button.handle_event(event)
+                button.handle_event(event, menu.volS)
 
         field.draw(screen)
 

@@ -24,9 +24,11 @@ def game_pause():
     title = Object(WIDTH // 2 - 150, HEIGHT // 2 - 145, 300, 100, r"objects\pause-title-obj.png")
 
     if not windows.fullscreen:
-        field = Object(WIDTH - 1016, HEIGHT - 696, 1008, 688, r"objects\windows-field-obj.png")
+        field = Object(WIDTH - WIDTH, HEIGHT - HEIGHT, 1024, 704, r"objects\windows-field-obj.png")
     else:
-        field = Object(WIDTH - 1916, HEIGHT - 1076, 1904, 1064, r"objects\windows-field-obj.png")
+        # 1535
+        field = Object(windows.otstupx, HEIGHT - HEIGHT, WIDTH - 2 * windows.otstupx, 1080,
+                       r"objects\windows-field-obj.png")
 
     repeat_btn = Button(WIDTH // 2 - 150 + 102, HEIGHT // 2 - 30, 94, 104, r"buttons\default-repeat-btn.png",
                         r"buttons\hover-repeat-btn.png",
@@ -69,7 +71,7 @@ def game_pause():
                 running = False
 
             for button in [repeat_btn, to_lvlmenu_btn, play_btn]:
-                button.handle_event(event)
+                button.handle_event(event, menu.volS)
 
         for obj in [field, title]:
             obj.draw(screen)
