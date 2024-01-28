@@ -290,6 +290,7 @@ def game_def(lvl, charact=1):
                         hero.change_hero('sl', new)
                     lvl_gen.rescreen()
                     lvl_gen.updater()
+                    lvl_gen.board.pereres_slon(lvl_gen.sloniks)
                 elif event.key == pygame.K_w:
                     if pygame.sprite.spritecollide(hero, lvl_gen.finale, False):
                         thing = ''
@@ -340,11 +341,6 @@ def game_def(lvl, charact=1):
                     lvl_gen.rescreen()
                     lvl_gen.updater()
 
-            # elif event.type == pygame.MOUSEBUTTONDOWN:
-            #     hero.set_coords(*hero.get_coords())
-            # if event.button == 1:
-            #     for x in lvl_gen.sloniks:
-            #         x.shoot()
             elif event.type == pygame.WINDOWEXPOSED:
                 if lookingright:
                     hero.change_hero('sr', hero.get_coords())
@@ -378,35 +374,49 @@ def game_def(lvl, charact=1):
                 list(lvl_gen.projectilesgroup)[sprite].rect = list(lvl_gen.projectilesgroup)[sprite].rect.move(
                     hero.projectilespeed[sprite], 0)
                 if pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.sloniks, False):
-                    lvl_gen.remover(lvl_gen.board.get_cell(list(
-                        pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.sloniks, True))[
-                                                               0].rect[:2]))
+                    if pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite],
+                                                   lvl_gen.sloniks, False)[0].get_hit(hero.get_coords()[0]) == 0:
+                        lvl_gen.remover(lvl_gen.board.get_cell(list(
+                            pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.sloniks, True))[
+                                                                   0].rect[:2]))
                     hero.projectilespeed.pop(sprite)
                     list(lvl_gen.projectilesgroup)[sprite].kill()
                     break
-                if lvl_gen.projectilesgroup:
-                    if (pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.toches, False)
-                            or pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite],
-                                                           lvl_gen.anothertoches, False)):
-                        hero.projectilespeed.pop(sprite)
-                        list(lvl_gen.projectilesgroup)[sprite].kill()
-                        break
+                if (pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.toches, False)
+                        or pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite],
+                                                       lvl_gen.anothertoches, False)):
+                    hero.projectilespeed.pop(sprite)
+                    list(lvl_gen.projectilesgroup)[sprite].kill()
+                    break
             lvl_gen.projectilesgroup.draw(lvl_gen.screen)
 
-        # for sprite in range(len(lvl_gen.nmeprojectilesgroup)):
-        #     pygame.draw.rect(lvl_gen.screen, (36, 34, 52), list(lvl_gen.nmeprojectilesgroup)[sprite].rect)
-        #     list(lvl_gen.nmeprojectilesgroup)[sprite].rect =
-        #     list(lvl_gen.nmeprojectilesgroup)[sprite].rect.move(shooting * 1.5, 0)
-        #
-        #     if pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite], lvl_gen.toches, False):
-        #         list(lvl_gen.nmeprojectilesgroup)[sprite].kill()
-        # lvl_gen.nmeprojectilesgroup.draw(lvl_gen.screen)
+        if lvl_gen.nmeprojectilesgroup:
+            for sprite in range(len(lvl_gen.nmeprojectilesgroup)):
+                pygame.draw.rect(lvl_gen.screen, (36, 34, 52), list(lvl_gen.nmeprojectilesgroup)[sprite].rect)
+                list(lvl_gen.nmeprojectilesgroup)[sprite].rect = list(lvl_gen.nmeprojectilesgroup)[sprite].rect.move(
+                    lvl_gen.projectilespeed[sprite][0], 0)
+                if pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite], lvl_gen.characters, False):
+                    thing = ''
+                    hero.end()
+                    lvl_gen.projectilespeed = []
+                    lvl_gen.nmeprojectilesgroup.empty()
+                    lvl_gen.updater()
+                    game_over.game_over()
+                if (pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite], lvl_gen.toches, False)
+                        or pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite],
+                                                       lvl_gen.anothertoches, False)):
+                    lvl_gen.projectilespeed.pop(sprite)
+                    list(lvl_gen.nmeprojectilesgroup)[sprite].kill()
+                    break
+            lvl_gen.nmeprojectilesgroup.draw(lvl_gen.screen)
 
         if pygame.sprite.spritecollide(hero, lvl_gen.thorngroup, False) or pygame.sprite.spritecollide(hero,
                                                                                                        lvl_gen.sloniks,
                                                                                                        False):
             thing = ''
             hero.end()
+            lvl_gen.projectilespeed = []
+            lvl_gen.nmeprojectilesgroup.empty()
             lvl_gen.updater()
             game_over.game_over()
         if pygame.sprite.spritecollide(hero, lvl_gen.triggergroup, True):
@@ -452,9 +462,9 @@ def game_def(lvl, charact=1):
         else:
             xspeed = 0
         hero.update()
-        lvl_gen.sloniks.update()
         lvl_gen.breakgroup.draw(lvl_gen.screen)
         lvl_gen.characters.draw(lvl_gen.screen)
+        lvl_gen.sloniks.update()
         lvl_gen.sloniks.draw(lvl_gen.screen)
         lvl_gen.triggergroup.draw(lvl_gen.screen)
         lvl_gen.finale.draw(lvl_gen.screen)
@@ -467,4 +477,4 @@ def game_def(lvl, charact=1):
         clock.tick(fps)
         pygame.display.flip()
 
-# game_def(2)
+# game_def(1)

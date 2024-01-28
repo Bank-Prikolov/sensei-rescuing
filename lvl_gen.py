@@ -22,6 +22,8 @@ sloniks = pygame.sprite.Group()
 nmeprojectilesgroup = pygame.sprite.Group()
 anothertoches = pygame.sprite.Group()
 
+projectilespeed = []
+
 heropic = wai
 
 if not windows.fullscreen:
@@ -35,31 +37,46 @@ else:
 class Slonik(pygame.sprite.Sprite):
     pic = load_image(slonik)
     php = load_image(php)
+    get_hit_event = pygame.USEREVENT + 1
 
-    def __init__(self, x, y, koef, flip=True):
+    def __init__(self, x, y, koef, act=0):
         super().__init__(sloniks)
         self.sprites = pygame.transform.scale(
             Slonik.pic, (Slonik.pic.get_width() // 2 * koef, Slonik.pic.get_height() // 2 * koef))
-        # if flip:
-        #     pygame.transform.flip(Slonik.pic, True, False)
         self.k = koef
         self.frames = []
-        self.cut_sheet(self.sprites, koef)
+        self.cut_sheet(self.sprites, koef, act)
         self.cur_frame = 0
         self.image = self.frames[self.cur_frame]
         self.rect = self.rect.move(x, y)
         self.counter = 0
+        self.xspeed = 4
+        self.moving = False
+        self.act = act
+        self.looking_right = True
+        self.hp = 3
+        self.bulletspeed = 16
+        self.acter = 0
 
-    def cut_sheet(self, sprites, koef):
+    def cut_sheet(self, sprites, koef, act):
         self.rect = pygame.Rect(0, 0, 64 * koef,
                                 64 * koef)
 
         for i in range(sprites.get_height() // int(64 * koef)):
-            frame_location = (0, self.rect.h * i)
+            frame_location = (self.rect.w * act, self.rect.h * i)
             self.frames.append(sprites.subsurface(pygame.Rect(
                 frame_location, self.rect.size)))
 
     def update(self):
+        if self.moving:
+            pass
+        else:
+            if self.looking_right:
+                if self.act != 0:
+                    self.change_act(0, self.get_coords())
+            else:
+                if self.act != 1:
+                    self.change_act(1, self.get_coords())
         self.image = self.frames[self.cur_frame]
         self.set_coords(*self.get_coords())
         if self.counter == 12:
@@ -82,11 +99,38 @@ class Slonik(pygame.sprite.Sprite):
             Slonik.php.get_width() // 2.5 * windows.k ** windows.fullscreen,
             Slonik.php.get_height() // 2.5 * windows.k ** windows.fullscreen, php,
             nmeprojectilesgroup)
+        if self.looking_right:
+            projectilespeed.append((self.bulletspeed, self))
+        else:
+            projectilespeed.append((-self.bulletspeed, self))
 
-    def set_angle(self, right=True):
-        if right:
-            for n in self.frames:
-                pygame.transform.flip(n, True, False)
+    def get_hit(self, herox):
+        self.hp -= 1
+        if self.get_coords()[0] - herox < 0:
+            if not self.looking_right:
+                self.looking_right = True
+                self.shoot()
+        else:
+            if self.looking_right:
+                self.looking_right = False
+                self.shoot()
+        return self.hp
+
+    def change_act(self, act, coords):
+        pos = coords
+        self.act = act
+        self.frames = []
+        self.cur_frame = 0
+        if act == 0:
+            self.moving = False
+            self.cut_sheet(self.sprites, self.k, self.act)
+        elif act == 1:
+            self.moving = False
+            self.cut_sheet(self.sprites, self.k, self.act)
+        else:
+            pass
+        self.image = self.frames[self.cur_frame]
+        self.rect = self.rect.move(*pos)
 
 
 class Pic(pygame.sprite.Sprite):
@@ -132,7 +176,6 @@ class Board:
         thorngroup.empty()
         breakgroup.empty()
         anothertoches.empty()
-        sloniks.empty()
         for x in range(len(self.board[0])):
             for y in range(len(self.board)):
                 if self.board[y][x] == '0':
@@ -173,15 +216,6 @@ class Board:
                 elif self.board[y][x] == '&':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                         self.cell_size, horizon, toches)
-                elif self.board[y][x] == 'e':
-                    for z in range(len(board.board)):
-                        if '@' in board.board[z]:
-                            if board.board[z].find('@') - x > 0:
-                                endth = True
-                            else:
-                                endth = False
-                    Slonik(self.left + (self.cell_size * x), self.top + (self.cell_size * y),
-                           windows.k ** windows.fullscreen, endth)
                 else:
                     pass
         triggergroup.draw(sc)
@@ -203,6 +237,22 @@ class Board:
         else:
             return None
 
+    def pereres_slon(self, spisokslonikoff):
+        global sloniks
+        sp = spisokslonikoff
+        for slon in sp:
+            if not windows.fullscreen:
+                new = ((slon.get_coords()[0] - windows.otstupx) // windows.k,
+                       (slon.get_coords()[1] - windows.otstupy + 16) // windows.k)
+            else:
+                new = (windows.otstupx + slon.get_coords()[0] * windows.k,
+                       (windows.otstupy + slon.get_coords()[1] - 16) * windows.k)
+            a = Slonik(*new, windows.k ** windows.fullscreen, slon.act)
+            a.hp = slon.hp
+            a.looking_right = slon.looking_right
+        sloniks = pygame.sprite.Group(list(sloniks)[len(sp) // 2:])
+        sloniks.draw(screen)
+
     def rev_get_cell(self, mouse_pos):
         if 0 < mouse_pos[0] < len(board.board[0]) and \
                 0 < mouse_pos[1] < len(board.board):
@@ -212,6 +262,15 @@ class Board:
 
     def get_size(self):
         return self.cell_size
+
+    def otris_slonik(self):
+        sloniks.empty()
+        for x in range(len(self.board[0])):
+            for y in range(len(self.board)):
+                if board.board[y][x] == 'e':
+                    Slonik(self.left + (self.cell_size * x), self.top + (self.cell_size * y),
+                           windows.k ** windows.fullscreen, 0)
+        sloniks.draw(screen)
 
     def get_start_end_pos(self):
         a = 0
@@ -268,6 +327,7 @@ def generate_level(lvlnum):
                    64 * windows.k ** windows.fullscreen)
     bgroup.update(*windows.size, windows.otstupx * windows.fullscreen, windows.otstupy * windows.fullscreen,
                   windows.k ** windows.fullscreen)
+    board.otris_slonik()
     return board.get_start_end_pos()
 
 
