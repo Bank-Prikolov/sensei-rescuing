@@ -130,82 +130,45 @@ class Hero(pygame.sprite.Sprite):
 
     def change_hero(self, act, coords):
         pos = coords
+        self.act = act
+        self.frames = []
+        self.cur_frame = 0
         if act == 'sr':
             self.movement = False
-            self.act = 'sr'
             self.anim = 0
-            self.frames = []
-            self.cur_frame = 0
             self.cut_sheet(self.sprites, self.k, self.anim)
-            self.image = self.frames[self.cur_frame]
-            self.rect = self.rect.move(*pos)
         elif act == 'sl':
             self.movement = False
-            self.act = 'sl'
             self.anim = 3
-            self.frames = []
-            self.cur_frame = 0
             self.cut_sheet(self.sprites, self.k, self.anim)
-            self.image = self.frames[self.cur_frame]
-            self.rect = self.rect.move(*pos)
         elif act == 'r':
             self.movement = True
-            self.act = 'r'
             self.anim = 1
-            self.frames = []
-            self.cur_frame = 0
             self.cut_sheet(self.sprites, self.k, self.anim)
-            self.image = self.frames[self.cur_frame]
-            self.rect = self.rect.move(*pos)
         elif act == 'l':
             self.movement = True
-            self.act = 'l'
             self.anim = 2
-            self.frames = []
-            self.cur_frame = 0
             self.cut_sheet(self.sprites, self.k, self.anim)
-            self.image = self.frames[self.cur_frame]
-            self.rect = self.rect.move(*pos)
-
         elif act == 'jumpr':
             self.movement = True
-            self.act = 'jumpr'
             self.anim = 4
-            self.frames = []
-            self.cur_frame = 0
             self.cut_sheet(self.sprites, self.k, self.anim)
-            self.image = self.frames[self.cur_frame]
-            self.rect = self.rect.move(*pos)
         elif act == 'fallr':
             self.movement = True
-            self.act = 'fallr'
             self.anim = 5
-            self.frames = []
-            self.cur_frame = 0
             self.cut_sheet(self.sprites, self.k, self.anim)
-            self.image = self.frames[self.cur_frame]
-            self.rect = self.rect.move(*pos)
         elif act == 'jumpl':
-            # hr = Hero(*pos, windows.k ** windows.fullscreen, 6, movement=True, act='jumpr')
             self.movement = True
-            self.act = 'jumpl'
             self.anim = 6
-            self.frames = []
-            self.cur_frame = 0
             self.cut_sheet(self.sprites, self.k, self.anim)
-            self.image = self.frames[self.cur_frame]
-            self.rect = self.rect.move(*pos)
         elif act == 'falll':
             self.movement = True
-            self.act = 'falll'
             self.anim = 7
-            self.frames = []
-            self.cur_frame = 0
             self.cut_sheet(self.sprites, self.k, self.anim)
-            self.image = self.frames[self.cur_frame]
-            self.rect = self.rect.move(*pos)
         else:
             pass
+        self.image = self.frames[self.cur_frame]
+        self.rect = self.rect.move(*pos)
 
     def move(self, x, y):
         self.rect = self.rect.move(x, y)
@@ -244,7 +207,7 @@ def game_def(lvl, charact=1):
     start_coords = lvl_gen.generate_level(lvl)
     if not windows.fullscreen:
         pause_btn = Object(windows.width - windows.width + 8, windows.height - windows.height + 6, 108, 54,
-                        r"objects\pause-button-obj.png")
+                           r"objects\pause-button-obj.png")
     else:
         pause_btn = Object(windows.otstupx + 8, windows.height - windows.height + 6, 144, 72,
                            r"objects\pause-button-obj.png")
@@ -319,10 +282,11 @@ def game_def(lvl, charact=1):
                     lvl_gen.characters.empty()
                     hero.projectilespeed = []
                     lvl_gen.projectilesgroup.empty()
+                    hero = Hero(*new, windows.k ** windows.fullscreen)
                     if lookingright:
-                        hero = Hero(*new, windows.k ** windows.fullscreen)
+                        hero.change_hero('sr', new)
                     else:
-                        hero = Hero(*new, windows.k ** windows.fullscreen)
+                        hero.change_hero('sl', new)
                     lvl_gen.rescreen()
                     lvl_gen.updater()
                 elif event.key == pygame.K_w:
@@ -340,7 +304,17 @@ def game_def(lvl, charact=1):
                         hero.shoot(shooting)
                 elif event.key == pygame.K_ESCAPE:
                     tmp = windows.fullscreen
+                    xspeed = 0
+                    predpause = hero.get_coords()
+                    hero.end()
+                    lvl_gen.triggergroup.empty()
                     pause.game_pause()
+                    lvl_gen.updater()
+                    hero = Hero(*predpause, windows.k ** windows.fullscreen)
+                    if lookingright:
+                        hero.change_hero('sr', predpause)
+                    else:
+                        hero.change_hero('sl', predpause)
                     if tmp != windows.fullscreen:
                         if windows.fullscreen:
                             pause_btn = Object(windows.otstupx + 8, windows.height - windows.height + 6, 144, 72,
@@ -357,10 +331,11 @@ def game_def(lvl, charact=1):
                         lvl_gen.characters.empty()
                         hero.projectilespeed = []
                         lvl_gen.projectilesgroup.empty()
+                        hero = Hero(*new, windows.k ** windows.fullscreen)
                         if lookingright:
-                            hero = Hero(*new, windows.k ** windows.fullscreen)
+                            hero.change_hero('sr', new)
                         else:
-                            hero = Hero(*new, windows.k ** windows.fullscreen)
+                            hero.change_hero('sl', new)
                     lvl_gen.rescreen()
                     lvl_gen.updater()
 
@@ -419,7 +394,8 @@ def game_def(lvl, charact=1):
 
         # for sprite in range(len(lvl_gen.nmeprojectilesgroup)):
         #     pygame.draw.rect(lvl_gen.screen, (36, 34, 52), list(lvl_gen.nmeprojectilesgroup)[sprite].rect)
-        #     list(lvl_gen.nmeprojectilesgroup)[sprite].rect = list(lvl_gen.nmeprojectilesgroup)[sprite].rect.move(shooting * 1.5, 0)
+        #     list(lvl_gen.nmeprojectilesgroup)[sprite].rect =
+        #     list(lvl_gen.nmeprojectilesgroup)[sprite].rect.move(shooting * 1.5, 0)
         #
         #     if pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite], lvl_gen.toches, False):
         #         list(lvl_gen.nmeprojectilesgroup)[sprite].kill()
@@ -490,4 +466,4 @@ def game_def(lvl, charact=1):
         clock.tick(fps)
         pygame.display.flip()
 
-# game_def(1)
+# game_def(2)
