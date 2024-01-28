@@ -79,10 +79,9 @@ def game_complete(whatFrame=0):
     pygame.mixer.music.load(r"data\sounds\game-complete-sound.mp3")
     pygame.mixer.music.play(1)
 
-    used = False
-
     running = True
     fps = 60
+    errorSound = pygame.mixer.Sound(r"data\sounds\error-sound.mp3")
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -91,16 +90,20 @@ def game_complete(whatFrame=0):
                 sys.exit()
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-                if windows.fullscreen:
-                    running = False
-                    bg_group_complete.empty()
-                    windows.fullscreen = 0
-                    game_complete(game_complete_bg.cur_frame)
+                if game_complete_bg.cur_frame >= 150:
+                    if windows.fullscreen:
+                        running = False
+                        bg_group_complete.empty()
+                        windows.fullscreen = 0
+                        game_complete(1)
+                    else:
+                        running = False
+                        bg_group_complete.empty()
+                        windows.fullscreen = 1
+                        game_complete(1)
                 else:
-                    running = False
-                    bg_group_complete.empty()
-                    windows.fullscreen = 1
-                    game_complete(game_complete_bg.cur_frame)
+                    pygame.mixer.Sound.set_volume(errorSound, menu.volS)
+                    errorSound.play()
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
                 running = False
@@ -117,9 +120,9 @@ def game_complete(whatFrame=0):
 
         field.draw(screen)
 
-        if whatFrame and not used:
-            used = True
-            game_complete_bg.cur_frame = whatFrame * 10
+        if whatFrame:
+            game_complete_bg.cur_frame = 149
+            pygame.mixer.music.stop()
         game_complete_bg.update(screen, record, stars, repeat_btn, to_lvlmenu_btn)
         clock.tick(fps)
         bg_group_complete.draw(screen)

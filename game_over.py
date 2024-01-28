@@ -45,7 +45,7 @@ class AnimatedGameOver(pygame.sprite.Sprite):
                 butt.draw(screen)
 
 
-def game_over():
+def game_over(whatFrame=0):
     if windows.fullscreen:
         size = WIDTH, HEIGHT = 1920, 1080
         screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
@@ -75,6 +75,7 @@ def game_over():
 
     running = True
     fps = 60
+    errorSound = pygame.mixer.Sound(r"data\sounds\error-sound.mp3")
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -83,16 +84,20 @@ def game_over():
                 sys.exit()
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-                if windows.fullscreen:
-                    running = False
-                    bg_group_over.empty()
-                    windows.fullscreen = 0
-                    game_over()
+                if game_over_bg.cur_frame >= 130:
+                    if windows.fullscreen:
+                        running = False
+                        bg_group_over.empty()
+                        windows.fullscreen = 0
+                        game_over(1)
+                    else:
+                        running = False
+                        bg_group_over.empty()
+                        windows.fullscreen = 1
+                        game_over(1)
                 else:
-                    running = False
-                    bg_group_over.empty()
-                    windows.fullscreen = 1
-                    game_over()
+                    pygame.mixer.Sound.set_volume(errorSound, menu.volS)
+                    errorSound.play()
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
                 running = False
@@ -108,7 +113,9 @@ def game_over():
                 button.handle_event(event, menu.volS)
 
         field.draw(screen)
-
+        if whatFrame:
+            game_over_bg.cur_frame = 129
+            pygame.mixer.music.stop()
         game_over_bg.update(screen, repeat_btn, to_lvlmenu_btn)
         clock.tick(fps)
         bg_group_over.draw(screen)

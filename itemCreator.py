@@ -178,7 +178,7 @@ def cursorChecker(x_c, y_c, cursor, screen):
         if 11 <= x_c <= 987 and 11 <= y_c <= 664:
             screen.blit(cursor, (x_c, y_c))
     else:
-        if 11 <= x_c <= 1875 and 11 <= y_c <= 1036:
+        if windows.otstupx <= x_c <= 1890 - windows.otstupx:
             screen.blit(cursor, (x_c, y_c))
 
 
