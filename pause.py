@@ -1,7 +1,7 @@
 import pygame
 import sys
 from load_image import load_image
-from itemCreator import Button, Object, cursorChecker
+from itemCreator import Button, Object, cursorChecker, checkFullscreen
 import menu
 import game
 import windows
@@ -46,6 +46,7 @@ def game_pause():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                checkFullscreen(windows.fullscreen)
                 pygame.quit()
                 sys.exit()
 

@@ -6,7 +6,7 @@ import windows
 import game
 
 from load_image import load_image
-from itemCreator import Object, Button, Stars
+from itemCreator import Object, Button, Stars, checkFullscreen
 
 pygame.init()
 
@@ -48,11 +48,22 @@ wM = checkActDet[0]
 wS = checkActDet[1]
 volS = wS
 
+c = open(r"data/savings/fullscreen-settings.txt", "r", encoding="utf-8")
+checkStateFullscreen = list(map(lambda x: float(x.rstrip('\n')), c))
+StateFullscreen = int(checkStateFullscreen[0])
+tmp = True
+
 ft = True
 
 
 def main_menu():
-    global checkActDet, wM, wS, ft, hero, heroNow
+    global checkActDet, wM, wS, ft, hero, heroNow, tmp
+
+    if StateFullscreen == 1 and tmp:
+        windows.fullscreen = 1
+        tmp = False
+        change_fullScreen(1920, 1080, pygame.FULLSCREEN)
+
     if ft:
         pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
         pygame.mixer.music.play(-1)
@@ -104,6 +115,7 @@ def main_menu():
         screen.blit(bg, (0, 0))
         for event in pygame.event.get():
             if (event.type == pygame.QUIT) or (event.type == pygame.USEREVENT and event.button == exit_btn):
+                checkFullscreen(windows.fullscreen)
                 pygame.quit()
                 sys.exit()
 
@@ -223,6 +235,7 @@ def levels_menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                checkFullscreen(windows.fullscreen)
                 pygame.quit()
                 sys.exit()
 
@@ -349,6 +362,7 @@ def settings_menu():
         screen.blit(bg, (0, 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                checkFullscreen(windows.fullscreen)
                 pygame.quit()
                 sys.exit()
 
@@ -473,6 +487,7 @@ def info_menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                checkFullscreen(windows.fullscreen)
                 pygame.quit()
                 sys.exit()
 

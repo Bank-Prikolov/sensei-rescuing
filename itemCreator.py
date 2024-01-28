@@ -180,3 +180,9 @@ def cursorChecker(x_c, y_c, cursor, screen):
     else:
         if 11 <= x_c <= 1875 and 11 <= y_c <= 1036:
             screen.blit(cursor, (x_c, y_c))
+
+
+def checkFullscreen(StateFullscreen):
+    checkStateFullscreenRewrite = open(r"data/savings/fullscreen-settings.txt", "w")
+    checkStateFullscreenRewrite.writelines(str(StateFullscreen))
+    checkStateFullscreenRewrite.close()
