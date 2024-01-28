@@ -46,7 +46,7 @@ class AnimatedGameComplete(pygame.sprite.Sprite):
                 butt.draw(screen)
 
 
-def game_complete():
+def game_complete(whatFrame=0):
     if windows.fullscreen:
         size = WIDTH, HEIGHT = 1920, 1080
         screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
@@ -79,6 +79,8 @@ def game_complete():
     pygame.mixer.music.load(r"data\sounds\game-complete-sound.mp3")
     pygame.mixer.music.play(1)
 
+    used = False
+
     running = True
     fps = 60
     while running:
@@ -92,12 +94,12 @@ def game_complete():
                     running = False
                     bg_group_complete.empty()
                     windows.fullscreen = 0
-                    game_complete()
+                    game_complete(game_complete_bg.cur_frame)
                 else:
                     running = False
                     bg_group_complete.empty()
                     windows.fullscreen = 1
-                    game_complete()
+                    game_complete(game_complete_bg.cur_frame)
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
                 running = False
@@ -114,6 +116,9 @@ def game_complete():
 
         field.draw(screen)
 
+        if whatFrame and not used:
+            used = True
+            game_complete_bg.cur_frame = whatFrame * 10
         game_complete_bg.update(screen, record, stars, repeat_btn, to_lvlmenu_btn)
         clock.tick(fps)
         bg_group_complete.draw(screen)
