@@ -5,8 +5,6 @@ from itemCreator import Button
 import menu
 from consts import *
 
-pygame.init()
-
 size = WIDTH, HEIGHT = 1024, 704
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
@@ -67,6 +65,8 @@ net_btn = Button(WIDTH // 2 + 40, HEIGHT // 2 - 10, 86, 58, r"buttons\default-ne
 
 
 def start_screen():
+    skalaSound = pygame.mixer.Sound(r"data\sounds\skala-sound.mp3")
+
     pygame.mixer.music.load(r"data\sounds\start-screen-sound.mp3")
     pygame.mixer.music.play(-1)
 
@@ -77,11 +77,8 @@ def start_screen():
         screen.fill((0, 0, 0))
 
         for event in pygame.event.get():
-            # if event.type == pygame.QUIT:
-            #    running = False
-            #    pygame.quit()
-            #    sys.exit()
-
+            if event.type == pygame.QUIT:
+                skalaSound.play()
             if event.type == pygame.USEREVENT and event.button == da_btn:
                 menu.main_menu()
 
