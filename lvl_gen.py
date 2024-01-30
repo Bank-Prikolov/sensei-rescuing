@@ -56,6 +56,11 @@ class Slonik(pygame.sprite.Sprite):
         self.hp = 3
         self.bulletspeed = 10
         self.acter = 0
+        self.step = 0
+        self.hitick = 0
+        self.shoot_counter = 35
+        self.turn_speed = 96
+        self.dontseeme = True
 
     def cut_sheet(self, sprites, koef, act):
         self.rect = pygame.Rect(0, 0, 64 * koef,
@@ -67,6 +72,27 @@ class Slonik(pygame.sprite.Sprite):
                 frame_location, self.rect.size)))
 
     def update(self):
+        if self.turn_speed == 0 and self.dontseeme:
+            if self.looking_right:
+                self.looking_right = False
+            else:
+                self.looking_right = True
+        self.turn_speed = (self.turn_speed + 1) % 97
+
+        if board.get_cell((
+                list(characters)[0].rect.x,
+                list(characters)[0].rect.bottom))[1] - 1 ** self.k - board.get_cell(self.rect[:2])[1] in [0]:
+            if ((list(characters)[0].rect.x < self.rect.x and not self.looking_right)
+                    or (list(characters)[0].rect.x > self.rect.x and self.looking_right)):
+                self.dontseeme = False
+                self.turn_speed = 1
+                if self.shoot_counter == 35:
+                    self.shoot()
+                self.shoot_counter = (self.shoot_counter + 1) % 36
+        else:
+            if self.turn_speed == 0 and not self.dontseeme:
+                self.shoot_counter = 35
+                self.dontseeme = True
         if self.moving:
             pass
         else:
@@ -78,10 +104,19 @@ class Slonik(pygame.sprite.Sprite):
                     self.change_act(1, self.get_coords())
         self.image = self.frames[self.cur_frame]
         self.set_coords(*self.get_coords())
-        if self.counter == 12:
-            self.cur_frame = (self.cur_frame + 1) % 2
-            self.counter = 0
-        self.counter += 1
+        if not self.step:
+            if self.counter == 12:
+                self.cur_frame = (self.cur_frame + 1) % 2
+        else:
+            if self.counter % (self.step * 3) in range(0, 3):
+                if self.hitick != 4:
+                    a = pygame.transform.scale(load_image(shadow), (self.rect.w, self.rect.h))
+                    self.image = a
+                    self.hitick += 1
+                else:
+                    self.hitick = 0
+                    self.step = 0
+        self.counter = (self.counter + 1) % 13
 
     def get_coords(self):
         return self.rect[0], self.rect[1]
@@ -93,10 +128,10 @@ class Slonik(pygame.sprite.Sprite):
         return self.rect[2:4]
 
     def shoot(self):
-        Pic(self.get_coords()[0] + self.get_size()[0] // 4,
-            self.get_coords()[1] + self.get_size()[1] // 2,
-            Slonik.php.get_width() // 2.5 * windows.k ** windows.fullscreen,
-            Slonik.php.get_height() // 2.5 * windows.k ** windows.fullscreen, php,
+        Pic(self.get_coords()[0] + self.get_size()[0] // 2,
+            self.get_coords()[1] + self.get_size()[1] // 2.5,
+            Slonik.php.get_width() // 2 * windows.k ** windows.fullscreen,
+            Slonik.php.get_height() // 2 * windows.k ** windows.fullscreen, php,
             nmeprojectilesgroup)
         if self.looking_right:
             projectilespeed.append((self.bulletspeed * self.k ** windows.fullscreen, self))
@@ -105,14 +140,14 @@ class Slonik(pygame.sprite.Sprite):
 
     def get_hit(self, herox):
         self.hp -= 1
+        self.step = 2
+        self.turn_speed = 1
         if self.get_coords()[0] - herox < 0:
             if not self.looking_right:
                 self.looking_right = True
-                self.shoot()
         else:
             if self.looking_right:
                 self.looking_right = False
-                self.shoot()
         return self.hp
 
     def change_act(self, act, coords):

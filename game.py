@@ -286,6 +286,8 @@ def game_def(lvl, charact=1):
                                (windows.otstupy // windows.k + hero.get_coords()[1]) * windows.k)
                     lvl_gen.characters.empty()
                     hero.projectilespeed = []
+                    lvl_gen.projectilespeed = []
+                    lvl_gen.nmeprojectilesgroup.empty()
                     lvl_gen.projectilesgroup.empty()
                     hero = Hero(*new, windows.k ** windows.fullscreen)
                     if lookingright:
@@ -481,4 +483,4 @@ def game_def(lvl, charact=1):
         clock.tick(fps)
         pygame.display.flip()
 
-# game_def(1)
+# game_def(3)
