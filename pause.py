@@ -2,7 +2,7 @@ import pygame
 import sys
 from load_image import load_image
 from itemCreator import Button, Object
-from itemChecker import fullscreenChecker, cursorGameChecker
+from itemChecker import fullscreenExportChecker, cursorGameChecker, languageImportChecker
 import menu
 import game
 import windows
@@ -10,8 +10,10 @@ import windows
 clock = pygame.time.Clock()
 pygame.display.set_caption('Sensei Rescuing')
 
-cursor = load_image(r'objects\cursor-obj.png')
+cursor = load_image(r'objects\without text\cursor-obj.png')
 pygame.mouse.set_visible(False)
+
+languageNow = languageImportChecker()
 
 
 def game_pause():
@@ -22,24 +24,24 @@ def game_pause():
         size = WIDTH, HEIGHT = 1024, 704
         screen = pygame.display.set_mode(size)
 
-    title = Object(WIDTH // 2 - 150, HEIGHT // 2 - 145, 300, 100, r"objects\pause-title-obj.png")
+    title = Object(WIDTH // 2 - 150, HEIGHT // 2 - 145, 300, 100, fr"objects\{languageNow}\pause-title-obj.png")
 
     if not windows.fullscreen:
-        field = Object(WIDTH - WIDTH, HEIGHT - HEIGHT, 1024, 704, r"objects\windows-field-obj.png")
+        field = Object(WIDTH - WIDTH, HEIGHT - HEIGHT, 1024, 704, r"objects\without text\windows-field-obj.png")
     else:
         # 1535
         field = Object(windows.otstupx, HEIGHT - HEIGHT, WIDTH - 2 * windows.otstupx, 1080,
-                       r"objects\windows-field-obj.png")
+                       r"objects\without text\windows-field-obj.png")
 
-    repeat_btn = Button(WIDTH // 2 - 150 + 102, HEIGHT // 2 - 30, 94, 104, r"buttons\default-repeat-btn.png",
-                        r"buttons\hover-repeat-btn.png",
-                        r"buttons\press-repeat-btn.png", r"data\sounds\menu-button-sound.mp3")
-    to_lvlmenu_btn = Button(WIDTH // 2 - 150 + 212, HEIGHT // 2 - 30, 94, 104, r"buttons\default-tolvlmenu-btn.png",
-                            r"buttons\hover-tolvlmenu-btn.png",
-                            r"buttons\press-tolvlmenu-btn.png", r"data\sounds\menu-button-sound.mp3")
-    play_btn = Button(WIDTH // 2 - 150 - 7, HEIGHT // 2 - 30, 94, 104, r"buttons\default-play-btn.png",
-                      r"buttons\hover-play-btn.png",
-                      r"buttons\press-play-btn.png", r"data\sounds\menu-button-sound.mp3")
+    repeat_btn = Button(WIDTH // 2 - 150 + 102, HEIGHT // 2 - 30, 94, 104, r"buttons\without text\default-repeat-btn.png",
+                        r"buttons\without text\hover-repeat-btn.png",
+                        r"buttons\without text\press-repeat-btn.png", r"data\sounds\menu-button-sound.mp3")
+    to_lvlmenu_btn = Button(WIDTH // 2 - 150 + 212, HEIGHT // 2 - 30, 94, 104, r"buttons\without text\default-tolvlmenu-btn.png",
+                            r"buttons\without text\hover-tolvlmenu-btn.png",
+                            r"buttons\without text\press-tolvlmenu-btn.png", r"data\sounds\menu-button-sound.mp3")
+    play_btn = Button(WIDTH // 2 - 150 - 7, HEIGHT // 2 - 30, 94, 104, r"buttons\without text\default-play-btn.png",
+                      r"buttons\without text\hover-play-btn.png",
+                      r"buttons\without text\press-play-btn.png", r"data\sounds\menu-button-sound.mp3")
 
     running = True
     fps = 60
@@ -47,7 +49,7 @@ def game_pause():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                fullscreenChecker(windows.fullscreen)
+                fullscreenExportChecker(windows.fullscreen)
                 pygame.quit()
                 sys.exit()
 

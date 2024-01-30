@@ -11,7 +11,7 @@ from consts import *
 import windows
 from load_image import load_image
 from itemCreator import Object
-from itemChecker import fullscreenChecker
+from itemChecker import fullscreenExportChecker
 
 runright, runleft, lookingup, sitting = False, False, False, False
 jumping = False
@@ -211,10 +211,10 @@ def game_def(lvl, charact=1):
     start_coords = lvl_gen.generate_level(lvl)
     if not windows.fullscreen:
         pause_btn = Object(windows.width - windows.width + 8, windows.height - windows.height + 6, 108, 54,
-                           r"objects\pause-button-obj.png")
+                           r"objects\without text\pause-button-obj.png")
     else:
         pause_btn = Object(windows.otstupx + 8, windows.height - windows.height + 6, 144, 72,
-                           r"objects\pause-button-obj.png")
+                           r"objects\without text\pause-button-obj.png")
     lvl_gen.updater()
     hero = Hero(*start_coords, windows.k ** windows.fullscreen)
     clock = pygame.time.Clock()
@@ -227,7 +227,7 @@ def game_def(lvl, charact=1):
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                fullscreenChecker(windows.fullscreen)
+                fullscreenExportChecker(windows.fullscreen)
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
@@ -275,13 +275,13 @@ def game_def(lvl, charact=1):
                         windows.fullscreen = 0
                         pause_btn = Object(windows.width - windows.width + 8, windows.height - windows.height + 6, 108,
                                            54,
-                                           r"objects\pause-button-obj.png")
+                                           r"objects\without text\pause-button-obj.png")
                         new = ((hero.get_coords()[0] - windows.otstupx) // windows.k,
                                (hero.get_coords()[1] - windows.otstupy + 6) // windows.k)
                     else:
                         windows.fullscreen = 1
                         pause_btn = Object(windows.otstupx + 8, windows.height - windows.height + 6, 144, 72,
-                                           r"objects\pause-button-obj.png")
+                                           r"objects\without text\pause-button-obj.png")
                         new = (windows.otstupx + hero.get_coords()[0] * windows.k,
                                (windows.otstupy // windows.k + hero.get_coords()[1]) * windows.k)
                     lvl_gen.characters.empty()
@@ -326,14 +326,14 @@ def game_def(lvl, charact=1):
                     if tmp != windows.fullscreen:
                         if windows.fullscreen:
                             pause_btn = Object(windows.otstupx + 8, windows.height - windows.height + 6, 144, 72,
-                                               r"objects\pause-button-obj.png")
+                                               r"objects\without text\pause-button-obj.png")
                             new = (windows.otstupx + hero.get_coords()[0] * windows.k,
                                    (windows.otstupy // windows.k + hero.get_coords()[1]) * windows.k)
                         else:
                             pause_btn = Object(windows.width - windows.width + 8, windows.height - windows.height + 6,
                                                108,
                                                54,
-                                               r"objects\pause-button-obj.png")
+                                               r"objects\without text\pause-button-obj.png")
                             new = ((hero.get_coords()[0] - windows.otstupx) // windows.k,
                                    (hero.get_coords()[1] - windows.otstupy + 6) // windows.k)
                         lvl_gen.characters.empty()

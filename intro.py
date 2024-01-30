@@ -11,7 +11,7 @@ pygame.display.set_caption('Sensei Rescuing')
 
 bg_group_intro = pygame.sprite.Group()
 
-cursor = load_image(r'objects\cursor-obj.png')
+cursor = load_image(r'objects\without text\cursor-obj.png')
 pygame.mouse.set_visible(False)
 
 fullscreenFile = open(r"data/savings/fullscreen-settings.txt", "r", encoding="utf-8")

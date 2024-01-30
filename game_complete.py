@@ -2,7 +2,7 @@ import pygame
 import sys
 from load_image import load_image
 from itemCreator import Button, Object, Stars
-from itemChecker import fullscreenChecker, cursorGameChecker
+from itemChecker import fullscreenExportChecker, cursorGameChecker
 import menu
 import game
 import windows
@@ -12,7 +12,7 @@ pygame.display.set_caption('Sensei Rescuing')
 
 bg_group_complete = pygame.sprite.Group()
 
-cursor = load_image(r'objects\cursor-obj.png')
+cursor = load_image(r'objects\without text\cursor-obj.png')
 pygame.mouse.set_visible(False)
 
 
@@ -60,22 +60,24 @@ def game_complete(whatFrame=0):
     game_complete_bg = AnimatedGameComplete(bg_tr, 16, 1, WIDTH // 2 - 265, HEIGHT // 2 - 180)
 
     record = 3
-    zeroStars, oneStar, twoStars, threeStars = (r"objects\stars-zero-obj.png", r"objects\stars-one-obj.png",
-                                                r"objects\stars-two-obj.png", r"objects\stars-three-obj.png")
+    zeroStars, oneStar, twoStars, threeStars = (
+        r"objects\without text\stars-zero-obj.png", r"objects\without text\stars-one-obj.png",
+        r"objects\without text\stars-two-obj.png", r"objects\without text\stars-three-obj.png")
     stars = Stars(WIDTH // 2 - 152, HEIGHT // 2 - 60, 304, 88, zeroStars, oneStar, twoStars, threeStars)
 
-    repeat_btn = Button(WIDTH // 2 + 172, HEIGHT // 2 - 65, 94, 104, r"buttons\default-repeat-btn.png",
-                        r"buttons\hover-repeat-btn.png",
-                        r"buttons\press-repeat-btn.png", r"data\sounds\menu-button-sound.mp3")
-    to_lvlmenu_btn = Button(WIDTH // 2 - 265, HEIGHT // 2 - 65, 94, 104, r"buttons\default-tolvlmenu-btn.png",
-                            r"buttons\hover-tolvlmenu-btn.png",
-                            r"buttons\press-tolvlmenu-btn.png", r"data\sounds\menu-button-sound.mp3")
+    repeat_btn = Button(WIDTH // 2 + 172, HEIGHT // 2 - 65, 94, 104, r"buttons\without text\default-repeat-btn.png",
+                        r"buttons\without text\hover-repeat-btn.png",
+                        r"buttons\without text\press-repeat-btn.png", r"data\sounds\menu-button-sound.mp3")
+    to_lvlmenu_btn = Button(WIDTH // 2 - 265, HEIGHT // 2 - 65, 94, 104,
+                            r"buttons\without text\default-tolvlmenu-btn.png",
+                            r"buttons\without text\hover-tolvlmenu-btn.png",
+                            r"buttons\without text\press-tolvlmenu-btn.png", r"data\sounds\menu-button-sound.mp3")
 
     if not windows.fullscreen:
-        field = Object(WIDTH - WIDTH, HEIGHT - HEIGHT, 1024, 704, r"objects\windows-field-obj.png")
+        field = Object(WIDTH - WIDTH, HEIGHT - HEIGHT, 1024, 704, r"objects\without text\windows-field-obj.png")
     else:
         field = Object(windows.otstupx, HEIGHT - HEIGHT, WIDTH - 2 * windows.otstupx, 1080,
-                       r"objects\windows-field-obj.png")
+                       r"objects\without text\windows-field-obj.png")
 
     pygame.mixer.music.load(r"data\sounds\game-complete-sound.mp3")
     pygame.mixer.music.play(1)
@@ -86,7 +88,7 @@ def game_complete(whatFrame=0):
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                fullscreenChecker(windows.fullscreen)
+                fullscreenExportChecker(windows.fullscreen)
                 pygame.quit()
                 sys.exit()
 

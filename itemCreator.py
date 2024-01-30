@@ -160,7 +160,7 @@ class Stars:
         self.rect = self.zeroStar_image.get_rect(topleft=(x, y))
 
     def draw(self, screen, record):
-        current_image = load_image(r"objects\stars-none-obj.png")
+        current_image = load_image(r"objects\without text\stars-none-obj.png")
         if record == 0:
             current_image = self.zeroStar_image
         if record == 1:

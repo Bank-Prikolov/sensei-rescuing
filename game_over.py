@@ -2,7 +2,7 @@ import pygame
 import sys
 from load_image import load_image
 from itemCreator import Button, Object
-from itemChecker import fullscreenChecker, cursorGameChecker
+from itemChecker import fullscreenExportChecker, cursorGameChecker
 import game
 import menu
 import windows
@@ -12,7 +12,7 @@ pygame.display.set_caption('Sensei Rescuing')
 
 bg_group_over = pygame.sprite.Group()
 
-cursor = load_image(r'objects\cursor-obj.png')
+cursor = load_image(r'objects\without text\cursor-obj.png')
 pygame.mouse.set_visible(False)
 
 
@@ -61,18 +61,19 @@ def game_over(whatFrame=0):
     bg_tr = pygame.transform.scale(bg_img, (bg_img.get_width() * 2.5, bg_img.get_height() * 2.5))
     game_over_bg = AnimatedGameOver(bg_tr, 14, 1, WIDTH // 2 - 640, HEIGHT // 2 - 180)
 
-    repeat_btn = Button(WIDTH // 2 + 57, HEIGHT // 2 - 55, 94, 104, r"buttons\default-repeat-btn.png",
-                        r"buttons\hover-repeat-btn.png",
-                        r"buttons\press-repeat-btn.png", r"data\sounds\menu-button-sound.mp3")
-    to_lvlmenu_btn = Button(WIDTH // 2 - 94 - 48, HEIGHT // 2 - 55, 94, 104, r"buttons\default-tolvlmenu-btn.png",
-                            r"buttons\hover-tolvlmenu-btn.png",
-                            r"buttons\press-tolvlmenu-btn.png", r"data\sounds\menu-button-sound.mp3")
+    repeat_btn = Button(WIDTH // 2 + 57, HEIGHT // 2 - 55, 94, 104, r"buttons\without text\default-repeat-btn.png",
+                        r"buttons\without text\hover-repeat-btn.png",
+                        r"buttons\without text\press-repeat-btn.png", r"data\sounds\menu-button-sound.mp3")
+    to_lvlmenu_btn = Button(WIDTH // 2 - 94 - 48, HEIGHT // 2 - 55, 94, 104,
+                            r"buttons\without text\default-tolvlmenu-btn.png",
+                            r"buttons\without text\hover-tolvlmenu-btn.png",
+                            r"buttons\without text\press-tolvlmenu-btn.png", r"data\sounds\menu-button-sound.mp3")
 
     if not windows.fullscreen:
-        field = Object(WIDTH - WIDTH, HEIGHT - HEIGHT, 1024, 704, r"objects\windows-field-obj.png")
+        field = Object(WIDTH - WIDTH, HEIGHT - HEIGHT, 1024, 704, r"objects\without text\windows-field-obj.png")
     else:
         field = Object(windows.otstupx, HEIGHT - HEIGHT, WIDTH - 2 * windows.otstupx, 1080,
-                       r"objects\windows-field-obj.png")
+                       r"objects\without text\windows-field-obj.png")
 
     running = True
     fps = 60
@@ -80,7 +81,7 @@ def game_over(whatFrame=0):
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                fullscreenChecker(windows.fullscreen)
+                fullscreenExportChecker(windows.fullscreen)
                 pygame.quit()
                 sys.exit()
 

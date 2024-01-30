@@ -1,7 +1,7 @@
 import pygame
 from load_image import load_image
 from itemCreator import Button
-from itemChecker import cursorMenuChecker
+from itemChecker import cursorMenuChecker, languageImportChecker
 import menu
 import windows
 
@@ -10,8 +10,10 @@ pygame.display.set_caption('Sensei Rescuing')
 
 bg_group = pygame.sprite.Group()
 
-cursor = load_image(r'objects\cursor-obj.png')
+cursor = load_image(r'objects\without text\cursor-obj.png')
 pygame.mouse.set_visible(False)
+
+languageNow = languageImportChecker()
 
 
 class AnimatedStartScreen(pygame.sprite.Sprite):
@@ -68,12 +70,12 @@ def start_screen():
     start_bg = AnimatedStartScreen(bg_img, 46, 1, WIDTH // 2 - 320,
                                    HEIGHT // 2 - 145)
 
-    da_btn = Button(WIDTH // 2 - 165, HEIGHT // 2 - 10, 67, 60, r"buttons\default-da-btn.png",
-                    r"buttons\hover-da-btn.png",
-                    r"buttons\hover-da-btn.png", r"data\sounds\da-sound.mp3")
-    net_btn = Button(WIDTH // 2 + 40, HEIGHT // 2 - 10, 86, 58, r"buttons\default-net-btn.png",
-                     r"buttons\hover-net-btn.png",
-                     r"buttons\hover-net-btn.png", r"data\sounds\hi-hi-hi-ha-sound.mp3")
+    da_btn = Button(WIDTH // 2 - 165, HEIGHT // 2 - 10, 67, 60, fr"buttons\{languageNow}\default-da-btn.png",
+                    fr"buttons\{languageNow}\hover-da-btn.png",
+                    fr"buttons\{languageNow}\hover-da-btn.png", r"data\sounds\da-sound.mp3")
+    net_btn = Button(WIDTH // 2 + 40, HEIGHT // 2 - 10, 86, 58, fr"buttons\{languageNow}\default-net-btn.png",
+                     fr"buttons\without text\hover-net-btn.png",
+                     fr"buttons\without text\hover-net-btn.png", r"data\sounds\hi-hi-hi-ha-sound.mp3")
 
     running = True
     fps = 60

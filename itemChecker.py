@@ -18,7 +18,14 @@ def cursorMenuChecker(x_c, y_c, cursor, screen):
         screen.blit(cursor, (x_c, y_c))
 
 
-def fullscreenChecker(StateFullscreen):
+def fullscreenExportChecker(StateFullscreen):
     checkStateFullscreenRewrite = open(r"data/savings/fullscreen-settings.txt", "w")
     checkStateFullscreenRewrite.writelines(str(StateFullscreen))
     checkStateFullscreenRewrite.close()
+
+
+def languageImportChecker():
+    checkWhatLanguage = open(r"data/savings/language-settings.txt", "r")
+    whatLanguage = list(map(lambda x: str(x.rstrip('\n')), checkWhatLanguage))
+    languageNow = whatLanguage[0]
+    return languageNow
