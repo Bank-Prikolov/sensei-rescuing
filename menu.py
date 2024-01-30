@@ -48,31 +48,23 @@ wM = checkActDet[0]
 wS = checkActDet[1]
 volS = wS
 
-c = open(r"data/savings/fullscreen-settings.txt", "r", encoding="utf-8")
-checkStateFullscreen = list(map(lambda x: float(x.rstrip('\n')), c))
-StateFullscreen = int(checkStateFullscreen[0])
-tmp = True
-
+pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
 ft = True
 
 
 def main_menu():
-    global checkActDet, wM, wS, ft, hero, heroNow, tmp
-
-    if StateFullscreen == 1 and tmp:
-        windows.fullscreen = 1
-        tmp = False
-        change_fullScreen(1920, 1080, pygame.FULLSCREEN)
+    global checkActDet, wM, wS, ft, hero, heroNow
 
     if ft:
-        pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
         pygame.mixer.music.play(-1)
         ft = False
     pygame.mixer.music.set_volume(wM)
 
     if not windows.fullscreen:
+        change_fullScreen(1024, 704)
         all_w, all_h = WIDTH // 2 - 443, HEIGHT - 619
     else:
+        change_fullScreen(1920, 1080, pygame.FULLSCREEN)
         all_w, all_h = WIDTH // 2 - 443, HEIGHT - 820
 
     title = Object(all_w, all_h, 886, 80, r"objects\menu-title-obj.png")
@@ -183,13 +175,18 @@ def main_menu():
 
 
 def levels_menu():
-    global lvlNow
+    global lvlNow, ft
     if not windows.fullscreen:
         change_fullScreen(1024, 704)
         all_w, all_h = WIDTH // 2 - 395, HEIGHT - 582
     else:
         change_fullScreen(1920, 1080, pygame.FULLSCREEN)
         all_w, all_h = WIDTH // 2 - 395, HEIGHT - 770
+
+    if ft:
+        pygame.mixer.music.play(-1)
+        ft = False
+    pygame.mixer.music.set_volume(wM)
 
     title = Object(all_w, all_h, 700, 82, r"objects\level-menu-title-obj.png")
 
@@ -250,16 +247,22 @@ def levels_menu():
 
             if event.type == pygame.USEREVENT and event.button == level1Button:
                 lvlNow = 1
+                pygame.mixer.music.stop()
+                ft = True
                 transition()
                 game.game_def(1)
 
             if event.type == pygame.USEREVENT and event.button == level2Button and checkIsActive2:
                 lvlNow = 2
+                pygame.mixer.music.stop()
+                ft = True
                 transition()
                 game.game_def(2)
 
             if event.type == pygame.USEREVENT and event.button == levelBossButton and checkIsActiveBoss:
                 lvlNow = 3
+                pygame.mixer.music.stop()
+                ft = True
                 transition()
                 game.game_def(3)
 
