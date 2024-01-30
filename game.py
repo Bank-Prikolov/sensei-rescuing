@@ -10,7 +10,8 @@ import pause
 from consts import *
 import windows
 from load_image import load_image
-from itemCreator import Object, checkFullscreen
+from itemCreator import Object
+from itemChecker import fullscreenChecker
 
 runright, runleft, lookingup, sitting = False, False, False, False
 jumping = False
@@ -223,7 +224,7 @@ def game_def(lvl, charact=1):
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                checkFullscreen(windows.fullscreen)
+                fullscreenChecker(windows.fullscreen)
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:

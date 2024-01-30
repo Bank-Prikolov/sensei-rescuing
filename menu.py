@@ -6,7 +6,8 @@ import windows
 import game
 
 from load_image import load_image
-from itemCreator import Object, Button, Stars, checkFullscreen
+from itemCreator import Object, Button, Stars
+from itemChecker import fullscreenChecker, cursorMenuChecker
 
 pygame.init()
 
@@ -61,10 +62,10 @@ def main_menu():
     pygame.mixer.music.set_volume(wM)
 
     if not windows.fullscreen:
-        change_fullScreen(1024, 704)
+        change_menu_fullScreen(1024, 704)
         all_w, all_h = WIDTH // 2 - 443, HEIGHT - 619
     else:
-        change_fullScreen(1920, 1080, pygame.FULLSCREEN)
+        change_menu_fullScreen(1920, 1080, pygame.FULLSCREEN)
         all_w, all_h = WIDTH // 2 - 443, HEIGHT - 820
 
     title = Object(all_w, all_h, 886, 80, r"objects\menu-title-obj.png")
@@ -107,7 +108,7 @@ def main_menu():
         screen.blit(bg, (0, 0))
         for event in pygame.event.get():
             if (event.type == pygame.QUIT) or (event.type == pygame.USEREVENT and event.button == exit_btn):
-                checkFullscreen(windows.fullscreen)
+                fullscreenChecker(windows.fullscreen)
                 pygame.quit()
                 sys.exit()
 
@@ -126,11 +127,11 @@ def main_menu():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
                 if windows.fullscreen:
                     windows.fullscreen = 0
-                    change_fullScreen(1024, 704)
+                    change_menu_fullScreen(1024, 704)
                     main_menu()
                 else:
                     windows.fullscreen = 1
-                    change_fullScreen(1920, 1080, pygame.FULLSCREEN)
+                    change_menu_fullScreen(1920, 1080, pygame.FULLSCREEN)
                     main_menu()
 
             if event.type == pygame.USEREVENT and event.button == choose_btn:
@@ -165,11 +166,7 @@ def main_menu():
         choose_btn.draw_heroBtn(screen, hero, heroNow)
 
         x_c, y_c = pygame.mouse.get_pos()
-        if not windows.fullscreen:
-            if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
-                screen.blit(cursor, (x_c, y_c))
-        else:
-            screen.blit(cursor, (x_c, y_c))
+        cursorMenuChecker(x_c, y_c, cursor, screen)
 
         pygame.display.flip()
 
@@ -177,10 +174,10 @@ def main_menu():
 def levels_menu():
     global lvlNow, ft
     if not windows.fullscreen:
-        change_fullScreen(1024, 704)
+        change_menu_fullScreen(1024, 704)
         all_w, all_h = WIDTH // 2 - 395, HEIGHT - 582
     else:
-        change_fullScreen(1920, 1080, pygame.FULLSCREEN)
+        change_menu_fullScreen(1920, 1080, pygame.FULLSCREEN)
         all_w, all_h = WIDTH // 2 - 395, HEIGHT - 770
 
     if ft:
@@ -232,7 +229,7 @@ def levels_menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                checkFullscreen(windows.fullscreen)
+                fullscreenChecker(windows.fullscreen)
                 pygame.quit()
                 sys.exit()
 
@@ -269,11 +266,11 @@ def levels_menu():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
                 if windows.fullscreen:
                     windows.fullscreen = 0
-                    change_fullScreen(1024, 704)
+                    change_menu_fullScreen(1024, 704)
                     levels_menu()
                 else:
                     windows.fullscreen = 1
-                    change_fullScreen(1920, 1080, pygame.FULLSCREEN)
+                    change_menu_fullScreen(1920, 1080, pygame.FULLSCREEN)
                     levels_menu()
 
             for button in [cross_btn, level1Button, level2Button, levelBossButton]:
@@ -311,11 +308,7 @@ def levels_menu():
             levelBossStars.draw(screen, record3)
 
         x_c, y_c = pygame.mouse.get_pos()
-        if not windows.fullscreen:
-            if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
-                screen.blit(cursor, (x_c, y_c))
-        else:
-            screen.blit(cursor, (x_c, y_c))
+        cursorMenuChecker(x_c, y_c, cursor, screen)
 
         pygame.display.flip()
 
@@ -365,7 +358,7 @@ def settings_menu():
         screen.blit(bg, (0, 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                checkFullscreen(windows.fullscreen)
+                fullscreenChecker(windows.fullscreen)
                 pygame.quit()
                 sys.exit()
 
@@ -382,11 +375,11 @@ def settings_menu():
                     (event.type == pygame.KEYDOWN and event.key == pygame.K_F11)):
                 if windows.fullscreen:
                     windows.fullscreen = 0
-                    change_fullScreen(1024, 704)
+                    change_menu_fullScreen(1024, 704)
                     settings_menu()
                 else:
                     windows.fullscreen = 1
-                    change_fullScreen(1920, 1080, pygame.FULLSCREEN)
+                    change_menu_fullScreen(1920, 1080, pygame.FULLSCREEN)
                     settings_menu()
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == music_slider_btn:
@@ -451,11 +444,7 @@ def settings_menu():
         fs_btn.draw_f11(screen, windows.fullscreen)
 
         x_c, y_c = pygame.mouse.get_pos()
-        if not windows.fullscreen:
-            if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
-                screen.blit(cursor, (x_c, y_c))
-        else:
-            screen.blit(cursor, (x_c, y_c))
+        cursorMenuChecker(x_c, y_c, cursor, screen)
 
         pygame.display.flip()
 
@@ -490,7 +479,7 @@ def info_menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                checkFullscreen(windows.fullscreen)
+                fullscreenChecker(windows.fullscreen)
                 pygame.quit()
                 sys.exit()
 
@@ -512,11 +501,11 @@ def info_menu():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
                 if windows.fullscreen:
                     windows.fullscreen = 0
-                    change_fullScreen(1024, 704)
+                    change_menu_fullScreen(1024, 704)
                     info_menu()
                 else:
                     windows.fullscreen = 1
-                    change_fullScreen(1920, 1080, pygame.FULLSCREEN)
+                    change_menu_fullScreen(1920, 1080, pygame.FULLSCREEN)
                     info_menu()
 
             for button in [github_left_btn, github_right_btn, cross_btn]:
@@ -530,11 +519,7 @@ def info_menu():
             button.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
-        if not windows.fullscreen:
-            if 1 <= x_c <= 1022 and 1 <= y_c <= 702:
-                screen.blit(cursor, (x_c, y_c))
-        else:
-            screen.blit(cursor, (x_c, y_c))
+        cursorMenuChecker(x_c, y_c, cursor, screen)
 
         pygame.display.flip()
 
@@ -562,7 +547,7 @@ def transition():
         clock.tick(70)
 
 
-def change_fullScreen(width, height, fullScreen=0):
+def change_menu_fullScreen(width, height, fullScreen=0):
     global WIDTH, HEIGHT, screen, img, bg
     WIDTH, HEIGHT = width, height
     screen = pygame.display.set_mode((WIDTH, HEIGHT), fullScreen)

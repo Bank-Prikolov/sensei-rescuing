@@ -1,7 +1,7 @@
 import pygame
 import start_screen
 from load_image import load_image
-from itemCreator import cursorChecker
+from itemChecker import cursorChecker
 import windows
 
 pygame.init()

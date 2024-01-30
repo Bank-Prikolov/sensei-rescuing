@@ -1,10 +1,9 @@
 import pygame
-import sys
 from load_image import load_image
-from itemCreator import Button, cursorChecker
+from itemCreator import Button
+from itemChecker import cursorChecker
 import menu
 import windows
-from consts import *
 
 clock = pygame.time.Clock()
 pygame.display.set_caption('Sensei Rescuing')

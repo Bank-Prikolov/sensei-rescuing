@@ -1,7 +1,8 @@
 import pygame
 import sys
 from load_image import load_image
-from itemCreator import Button, Object, cursorChecker, checkFullscreen
+from itemCreator import Button, Object
+from itemChecker import fullscreenChecker, cursorChecker
 import game
 import menu
 import windows
@@ -79,7 +80,7 @@ def game_over(whatFrame=0):
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                checkFullscreen(windows.fullscreen)
+                fullscreenChecker(windows.fullscreen)
                 pygame.quit()
                 sys.exit()
 
