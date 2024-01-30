@@ -36,29 +36,29 @@ record1 = 0
 record2 = 0
 record3 = 0
 
-b = open(r"data/savings/hero-settings.txt", "r", encoding="utf-8")
-checkHero = list(map(lambda x: float(x.rstrip('\n')), b))
+heroFile = open(r"data/savings/hero-settings.txt", "r", encoding="utf-8")
+checkHero = list(map(lambda x: float(x.rstrip('\n')), heroFile))
 hero = int(checkHero[0])
 heroNow = hero
 
 lvlNow = 1
 
-a = open(r"data/savings/volume-settings.txt", "r", encoding="utf-8")
-checkActDet = list(map(lambda x: float(x.rstrip('\n')), a))
+volumeFile = open(r"data/savings/volume-settings.txt", "r", encoding="utf-8")
+checkActDet = list(map(lambda x: float(x.rstrip('\n')), volumeFile))
 wM = checkActDet[0]
 wS = checkActDet[1]
 volS = wS
 
-ft = True
+firstTime = True
 
 
 def main_menu():
-    global checkActDet, wM, wS, ft, hero, heroNow
+    global checkActDet, wM, wS, firstTime, hero, heroNow
 
-    if ft:
+    if firstTime:
         pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
         pygame.mixer.music.play(-1)
-        ft = False
+        firstTime = False
     pygame.mixer.music.set_volume(wM)
 
     if not windows.fullscreen:
@@ -172,7 +172,7 @@ def main_menu():
 
 
 def levels_menu():
-    global lvlNow, ft
+    global lvlNow, firstTime
     if not windows.fullscreen:
         change_menu_fullScreen(1024, 704)
         all_w, all_h = WIDTH // 2 - 395, HEIGHT - 582
@@ -180,9 +180,10 @@ def levels_menu():
         change_menu_fullScreen(1920, 1080, pygame.FULLSCREEN)
         all_w, all_h = WIDTH // 2 - 395, HEIGHT - 770
 
-    if ft:
+    if firstTime:
+        pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
         pygame.mixer.music.play(-1)
-        ft = False
+        firstTime = False
     pygame.mixer.music.set_volume(wM)
 
     title = Object(all_w, all_h, 700, 82, r"objects\level-menu-title-obj.png")
@@ -245,21 +246,21 @@ def levels_menu():
             if event.type == pygame.USEREVENT and event.button == level1Button:
                 lvlNow = 1
                 pygame.mixer.music.stop()
-                ft = True
+                firstTime = True
                 transition()
                 game.game_def(1)
 
             if event.type == pygame.USEREVENT and event.button == level2Button and checkIsActive2:
                 lvlNow = 2
                 pygame.mixer.music.stop()
-                ft = True
+                firstTime = True
                 transition()
                 game.game_def(2)
 
             if event.type == pygame.USEREVENT and event.button == levelBossButton and checkIsActiveBoss:
                 lvlNow = 3
                 pygame.mixer.music.stop()
-                ft = True
+                firstTime = True
                 transition()
                 game.game_def(3)
 

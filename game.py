@@ -194,9 +194,12 @@ class Hero(pygame.sprite.Sprite):
         self.projectilespeed.append(spees)
 
     def end(self):
-        global runright, runleft
+        global runright, runleft, jumping, falling, sitting
+        sitting = False
         runleft = False
         runright = False
+        jumping = False
+        falling = False
         self.kill()
         lvl_gen.characters.empty()
         lvl_gen.projectilesgroup.empty()

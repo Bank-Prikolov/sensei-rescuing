@@ -37,7 +37,6 @@ else:
 class Slonik(pygame.sprite.Sprite):
     pic = load_image(slonik)
     php = load_image(php)
-    get_hit_event = pygame.USEREVENT + 1
 
     def __init__(self, x, y, koef, act=0):
         super().__init__(sloniks)
@@ -55,7 +54,7 @@ class Slonik(pygame.sprite.Sprite):
         self.act = act
         self.looking_right = True
         self.hp = 3
-        self.bulletspeed = 16
+        self.bulletspeed = 10
         self.acter = 0
 
     def cut_sheet(self, sprites, koef, act):
@@ -100,9 +99,9 @@ class Slonik(pygame.sprite.Sprite):
             Slonik.php.get_height() // 2.5 * windows.k ** windows.fullscreen, php,
             nmeprojectilesgroup)
         if self.looking_right:
-            projectilespeed.append((self.bulletspeed, self))
+            projectilespeed.append((self.bulletspeed * self.k ** windows.fullscreen, self))
         else:
-            projectilespeed.append((-self.bulletspeed, self))
+            projectilespeed.append((-self.bulletspeed * self.k ** windows.fullscreen, self))
 
     def get_hit(self, herox):
         self.hp -= 1

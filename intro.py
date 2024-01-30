@@ -14,10 +14,9 @@ bg_group_intro = pygame.sprite.Group()
 cursor = load_image(r'objects\cursor-obj.png')
 pygame.mouse.set_visible(False)
 
-c = open(r"data/savings/fullscreen-settings.txt", "r", encoding="utf-8")
-checkStateFullscreen = list(map(lambda x: float(x.rstrip('\n')), c))
+fullscreenFile = open(r"data/savings/fullscreen-settings.txt", "r", encoding="utf-8")
+checkStateFullscreen = list(map(lambda x: float(x.rstrip('\n')), fullscreenFile))
 StateFullscreen = int(checkStateFullscreen[0])
-tmp = True
 
 
 class AnimatedIntro(pygame.sprite.Sprite):
@@ -46,10 +45,8 @@ class AnimatedIntro(pygame.sprite.Sprite):
 
 
 def intro():
-    global tmp
-    if StateFullscreen == 1 and tmp:
+    if StateFullscreen == 1:
         windows.fullscreen = 1
-        tmp = False
 
     if windows.fullscreen:
         size = WIDTH, HEIGHT = 1920, 1080
