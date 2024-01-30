@@ -1,7 +1,7 @@
 import pygame
 from load_image import load_image
 from itemCreator import Button
-from itemChecker import cursorChecker
+from itemChecker import cursorMenuChecker
 import menu
 import windows
 
@@ -99,7 +99,7 @@ def start_screen():
         bg_group.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
-        cursorChecker(x_c, y_c, cursor, screen)
+        cursorMenuChecker(x_c, y_c, cursor, screen)
 
         pygame.display.flip()
 

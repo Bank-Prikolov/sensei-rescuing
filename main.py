@@ -6,4 +6,4 @@ import pygame
 pygame.display.set_icon(load_image(r"objects\ico-obj.png"))
 
 if __name__ == '__main__':
-    main_menu()
+    intro()

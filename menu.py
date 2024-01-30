@@ -49,7 +49,6 @@ wM = checkActDet[0]
 wS = checkActDet[1]
 volS = wS
 
-pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
 ft = True
 
 
@@ -57,6 +56,7 @@ def main_menu():
     global checkActDet, wM, wS, ft, hero, heroNow
 
     if ft:
+        pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
         pygame.mixer.music.play(-1)
         ft = False
     pygame.mixer.music.set_volume(wM)

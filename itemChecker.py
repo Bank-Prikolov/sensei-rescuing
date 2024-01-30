@@ -1,7 +1,7 @@
 import windows
 
 
-def cursorChecker(x_c, y_c, cursor, screen):
+def cursorGameChecker(x_c, y_c, cursor, screen):
     if not windows.fullscreen:
         if 11 <= x_c <= 987 and 11 <= y_c <= 664:
             screen.blit(cursor, (x_c, y_c))

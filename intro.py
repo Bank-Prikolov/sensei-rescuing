@@ -1,7 +1,7 @@
 import pygame
 import start_screen
 from load_image import load_image
-from itemChecker import cursorChecker
+from itemChecker import cursorMenuChecker
 import windows
 
 pygame.init()
@@ -86,7 +86,7 @@ def intro():
         bg_group_intro.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
-        cursorChecker(x_c, y_c, cursor, screen)
+        cursorMenuChecker(x_c, y_c, cursor, screen)
 
         pygame.display.flip()
 

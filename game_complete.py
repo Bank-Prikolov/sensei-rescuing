@@ -2,7 +2,7 @@ import pygame
 import sys
 from load_image import load_image
 from itemCreator import Button, Object, Stars
-from itemChecker import fullscreenChecker, cursorChecker
+from itemChecker import fullscreenChecker, cursorGameChecker
 import menu
 import game
 import windows
@@ -129,7 +129,7 @@ def game_complete(whatFrame=0):
         bg_group_complete.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
-        cursorChecker(x_c, y_c, cursor, screen)
+        cursorGameChecker(x_c, y_c, cursor, screen)
 
         pygame.display.flip()
 
