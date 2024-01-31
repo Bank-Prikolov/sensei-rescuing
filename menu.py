@@ -40,6 +40,7 @@ heroFile = open(r"data/savings/hero-settings.txt", "r", encoding="utf-8")
 checkHero = list(map(lambda x: float(x.rstrip('\n')), heroFile))
 hero = int(checkHero[0])
 heroNow = hero
+isGetHero2 = checkHero[1]
 
 lvlNow = 1
 
@@ -55,7 +56,7 @@ languageNow = languageImportChecker()
 
 
 def main_menu():
-    global checkActDet, wM, wS, firstTime, hero, heroNow
+    global checkActDet, wM, wS, firstTime, hero, heroNow, isGetHero2
 
     if firstTime:
         pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
@@ -102,7 +103,10 @@ def main_menu():
     choose_btn = Button(all_w + 582 + 304 // 2 - 159 // 2, all_h + 410, 159, 48,
                         fr"buttons\{languageNow}\default-choose-btn.png",
                         fr"buttons\{languageNow}\hover-choose-btn.png", fr"buttons\{languageNow}\press-choose-btn.png",
-                        r"data\sounds\menu-button-sound.mp3", "", hero)
+                        r"data\sounds\menu-button-sound.mp3", "", hero,
+                        fr"buttons\{languageNow}\default-get-btn.png",
+                        fr"buttons\{languageNow}\hover-get-btn.png",
+                        fr"buttons\{languageNow}\press-get-btn.png")
 
     running = True
     hero = heroNow
@@ -143,8 +147,12 @@ def main_menu():
                 if hero == 1 and hero != heroNow:
                     heroNow = 1
                 elif hero == 2 and hero != heroNow:
-                    heroNow = 2
-                checkHeroRewrite.writelines(str(hero))
+                    if isGetHero2:
+                        heroNow = 2
+                    else:
+                        webbrowser.open('https://t.me/smoladventurebot')
+                        isGetHero2 = 1
+                checkHeroRewrite.writelines([str(hero) + '\n', str(int(isGetHero2))])
 
             if event.type == pygame.USEREVENT and (event.button == arrow_btn or event.button == r_arrow_btn):
                 if hero == 1:
@@ -165,7 +173,10 @@ def main_menu():
             button.draw(screen)
 
         choose_btn.check_hover(pygame.mouse.get_pos())
-        choose_btn.draw_heroBtn(screen, hero, heroNow)
+        choose_btn.draw_heroBtn(screen, hero, heroNow, isGetHero2)
+        if choose_btn.rect.collidepoint(pygame.mouse.get_pos()) and hero == 2 and not isGetHero2:
+            field_get = Object(all_w + 582 + 304 // 2 - 159 // 2 - 42, all_h + 302, 243, 105, fr"objects\{languageNow}\how-to-get-obj.png")
+            field_get.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
         cursorMenuChecker(x_c, y_c, cursor, screen)
@@ -361,7 +372,7 @@ def settings_menu():
     sound_slider_obj = Object(all_w - 31, all_h + 444, 302, 16, r"objects\without text\slider-obj.png")
 
     langauge_obj = Object(all_w + 436 + 57.5, all_h + 420, 215, 52,
-                         r"objects\rus\language-rus-obj.png", "", r"objects\eng\language-eng-obj.png")
+                          r"objects\rus\language-rus-obj.png", "", r"objects\eng\language-eng-obj.png")
     arrow_btn = Button(all_w + 732, all_h + 432, 36, 40,
                        r"buttons\without text\default-arrow-btn.png", r"buttons\without text\hover-arrow-btn.png",
                        r"buttons\without text\press-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
@@ -407,6 +418,7 @@ def settings_menu():
                 elif languageNow == 'rus':
                     languageNow = 'eng'
                 checkLanguageRewrite.writelines(str(languageNow))
+                settings_menu()
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == music_slider_btn:
                 isSliderMusic = True

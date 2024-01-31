@@ -54,7 +54,8 @@ class Object:
 
 class Button:
     def __init__(self, x, y, width, height, image_path, hover_image_path=None, press_image_path=None, sound_path=None,
-                 no_active_image_path=None, hero=None):
+                 no_active_image_path=None, hero=None, image_get_path=None, hover_image_get_path=None,
+                 press_image_get_path=None):
         self.x = x
         self.y = y
         self.width = width
@@ -80,6 +81,16 @@ class Button:
             self.no_active_image = pygame.transform.scale(self.no_active_image, (width, height))
         else:
             self.is_no_active = False
+
+        if image_get_path:
+            self.get_image = load_image(image_get_path)
+            self.get_image = pygame.transform.scale(self.get_image, (width, height))
+
+            self.hover_get_image = load_image(hover_image_get_path)
+            self.hover_get_image = pygame.transform.scale(self.hover_get_image, (width, height))
+
+            self.press_get_image = load_image(press_image_get_path)
+            self.press_get_image = pygame.transform.scale(self.press_get_image, (width, height))
 
         self.rect = self.image.get_rect(topleft=(x, y))
 
@@ -107,13 +118,20 @@ class Button:
             current_image = self.image
         screen.blit(current_image, self.rect.topleft)
 
-    def draw_heroBtn(self, screen, hero, heroNow):
+    def draw_heroBtn(self, screen, hero, heroNow, isGetHero2):
         if heroNow == hero:
             current_image = self.press_image
         else:
-            current_image = self.image
-            if self.is_hovered:
-                current_image = self.hover_image
+            if isGetHero2:
+                current_image = self.image
+                if self.is_hovered:
+                    current_image = self.hover_image
+            else:
+                current_image = self.get_image
+                if self.is_hovered:
+                    current_image = self.hover_get_image
+                if self.is_pressed:
+                    current_image = self.press_get_image
         screen.blit(current_image, self.rect.topleft)
 
     def draw(self, screen):
