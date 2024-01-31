@@ -142,10 +142,8 @@ def main_menu():
                 checkHeroRewrite = open(r"data/savings/hero-settings.txt", "w")
                 if hero == 1 and hero != heroNow:
                     heroNow = 1
-                    print('hero WAI is chosen')
                 elif hero == 2 and hero != heroNow:
                     heroNow = 2
-                    print('hero SATO is chosen')
                 checkHeroRewrite.writelines(str(hero))
 
             if event.type == pygame.USEREVENT and (event.button == arrow_btn or event.button == r_arrow_btn):
@@ -321,7 +319,7 @@ def levels_menu():
 
 
 def settings_menu():
-    global isSliderMusic, isSliderSound, volS, wM, wS, checkActDet
+    global isSliderMusic, isSliderSound, volS, wM, wS, checkActDet, languageNow
     if not windows.fullscreen:
         all_w, all_h = WIDTH // 2 - 363, HEIGHT - 619
     else:
@@ -331,14 +329,14 @@ def settings_menu():
 
     field_audio = Object(all_w - 87, all_h + 115, 420, 430, fr"objects\{languageNow}\audio-field-obj.png")
     field_video = Object(all_w + 393, all_h + 115, 420, 430, fr"objects\{languageNow}\video-field-obj.png")
-    fs_name = Object(all_w + 436, all_h + 245, 332, 75, fr"objects\{languageNow}\fullscreen-obj.png")
+    fs_name = Object(all_w + 436, all_h + 235, 332, 75, fr"objects\{languageNow}\fullscreen-obj.png")
     sound_name = Object(all_w - 46, all_h + 385, 332, 35, fr"objects\{languageNow}\sound-obj.png")
     music_name = Object(all_w - 46, all_h + 249, 332, 35, fr"objects\{languageNow}\music-obj.png")
 
     cross_btn = Button(all_w + 646, all_h + 8, 67, 72, r"buttons\without text\default-cross-btn.png",
                        r"buttons\without text\hover-cross-btn.png",
                        r"buttons\without text\press-cross-btn.png", r"data\sounds\menu-button-sound.mp3")
-    fs_btn = Button(all_w + 534, all_h + 335, 136, 62, fr"buttons\{languageNow}\fullscreen-off-btn.png", "",
+    fs_btn = Button(all_w + 534, all_h + 325, 136, 62, fr"buttons\{languageNow}\fullscreen-off-btn.png", "",
                     fr"buttons\{languageNow}\fullscreen-on-btn.png", r"data\sounds\menu-button-sound.mp3")
 
     if not windows.fullscreen:
@@ -361,6 +359,16 @@ def settings_menu():
 
     music_slider_obj = Object(all_w - 31, all_h + 308, 302, 16, r"objects\without text\slider-obj.png")
     sound_slider_obj = Object(all_w - 31, all_h + 444, 302, 16, r"objects\without text\slider-obj.png")
+
+    langauge_obj = Object(all_w + 436 + 57.5, all_h + 420, 215, 52,
+                         r"objects\rus\language-rus-obj.png", "", r"objects\eng\language-eng-obj.png")
+    arrow_btn = Button(all_w + 732, all_h + 432, 36, 40,
+                       r"buttons\without text\default-arrow-btn.png", r"buttons\without text\hover-arrow-btn.png",
+                       r"buttons\without text\press-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
+    r_arrow_btn = Button(all_w + 436, all_h + 432, 36, 40,
+                         r"buttons\without text\default-r-arrow-btn.png", r"buttons\without text\hover-r-arrow-btn.png",
+                         r"buttons\without text\press-r-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
+
     running = True
     while running:
         clock.tick(fps)
@@ -391,6 +399,14 @@ def settings_menu():
                     windows.fullscreen = 1
                     change_menu_fullScreen(1920, 1080, pygame.FULLSCREEN)
                     settings_menu()
+
+            if event.type == pygame.USEREVENT and (event.button == arrow_btn or event.button == r_arrow_btn):
+                checkLanguageRewrite = open(r"data/savings/language-settings.txt", "w")
+                if languageNow == 'eng':
+                    languageNow = 'rus'
+                elif languageNow == 'rus':
+                    languageNow = 'eng'
+                checkLanguageRewrite.writelines(str(languageNow))
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == music_slider_btn:
                 isSliderMusic = True
@@ -436,7 +452,7 @@ def settings_menu():
             elif event.type == pygame.MOUSEBUTTONUP and event.button == sound_slider_btn:
                 isSliderSound = False
 
-            for button in [cross_btn, fs_btn]:
+            for button in [cross_btn, fs_btn, arrow_btn, r_arrow_btn]:
                 button.handle_event(event, volS)
 
             for slider_button in [music_slider_btn, sound_slider_btn]:
@@ -446,9 +462,11 @@ def settings_menu():
                     sound_slider_obj]:
             obj.draw(screen)
 
-        for slider_button in [cross_btn, music_slider_btn, sound_slider_btn]:
-            slider_button.check_hover(pygame.mouse.get_pos())
-            slider_button.draw(screen)
+        langauge_obj.drawLanguage(screen, languageNow)
+
+        for button in [cross_btn, music_slider_btn, sound_slider_btn, arrow_btn, r_arrow_btn]:
+            button.check_hover(pygame.mouse.get_pos())
+            button.draw(screen)
 
         fs_btn.check_hover(pygame.mouse.get_pos())
         fs_btn.draw_f11(screen, windows.fullscreen)

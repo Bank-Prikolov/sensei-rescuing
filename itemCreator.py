@@ -43,6 +43,14 @@ class Object:
                 current_image = self.image2
         screen.blit(current_image, self.rect.topleft)
 
+    def drawLanguage(self, screen, languageNow):
+        current_image = self.image
+        if languageNow == 'rus':
+            current_image = self.image
+        elif languageNow == 'eng':
+            current_image = self.image2
+        screen.blit(current_image, self.rect.topleft)
+
 
 class Button:
     def __init__(self, x, y, width, height, image_path, hover_image_path=None, press_image_path=None, sound_path=None,
