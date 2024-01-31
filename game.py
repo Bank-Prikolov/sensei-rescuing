@@ -483,4 +483,4 @@ def game_def(lvl, charact=1):
         clock.tick(fps)
         pygame.display.flip()
 
-# game_def(3)
+game_def(3)
