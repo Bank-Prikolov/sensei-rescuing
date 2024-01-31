@@ -9,9 +9,10 @@ import pause
 
 from consts import *
 import windows
+import starsRecorder
 from load_image import load_image
 from itemCreator import Object
-from itemChecker import fullscreenExportChecker
+from itemChecker import fullscreenExportChecker, starsCountChecker
 
 runright, runleft, lookingup, sitting = False, False, False, False
 jumping = False
@@ -217,19 +218,24 @@ def game_def(lvl, charact=1):
                            r"objects\without text\pause-button-obj.png")
     lvl_gen.updater()
     hero = Hero(*start_coords, windows.k ** windows.fullscreen)
-    clock = pygame.time.Clock()
     pygame.display.set_caption('Sensei Rescuing')
     running = True
     projectile_speed = 8
-    fps = 60
     lvl_gen.characters.draw(lvl_gen.screen)
     thing = ''
+    timer_event = pygame.USEREVENT + 1
+    pygame.time.set_timer(timer_event, 1000)
+    started = True
+    current_seconds = 0
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 fullscreenExportChecker(windows.fullscreen)
                 pygame.quit()
                 sys.exit()
+            elif event.type == timer_event and started:
+                current_seconds += 1
+                print(current_seconds)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
                     xspeed = hero.xs
@@ -302,8 +308,11 @@ def game_def(lvl, charact=1):
                         thing = ''
                         hero.end()
                         lvl_gen.updater()
+                        started = False
+                        if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
+                            record = starsCountChecker(lvl, current_seconds)
+                            starsRecorder.push_record(lvl, 1, record, current_seconds)
                         game_complete.game_complete()
-
                     else:
                         if lookingright:
                             shooting = projectile_speed * windows.k ** windows.fullscreen
@@ -311,12 +320,14 @@ def game_def(lvl, charact=1):
                             shooting = -projectile_speed * windows.k ** windows.fullscreen
                         hero.shoot(shooting)
                 elif event.key == pygame.K_ESCAPE:
+                    started = False
                     tmp = windows.fullscreen
                     xspeed = 0
                     predpause = hero.get_coords()
                     hero.end()
                     lvl_gen.triggergroup.empty()
                     pause.game_pause()
+                    started = True
                     lvl_gen.updater()
                     hero = Hero(*predpause, windows.k ** windows.fullscreen)
                     if lookingright:
@@ -424,6 +435,7 @@ def game_def(lvl, charact=1):
             lvl_gen.projectilespeed = []
             lvl_gen.nmeprojectilesgroup.empty()
             lvl_gen.updater()
+            started = False
             game_over.game_over()
         if pygame.sprite.spritecollide(hero, lvl_gen.triggergroup, True):
             if lvl == 2 and thing == 1:
@@ -458,6 +470,10 @@ def game_def(lvl, charact=1):
                 hero.end()
                 thing = ''
                 lvl_gen.updater()
+                started = False
+                if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
+                    record = starsCountChecker(lvl, current_seconds)
+                    starsRecorder.push_record(lvl, 1, record, current_seconds)
                 game_complete.game_complete()
 
         if runright or runleft:

@@ -4,6 +4,7 @@ import webbrowser
 import windows
 import game
 import consts
+import starsRecorder
 from load_image import load_image
 from itemCreator import Object, Button, Stars
 from itemChecker import fullscreenExportChecker, cursorMenuChecker, languageImportChecker
@@ -18,16 +19,12 @@ bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 
 checkIsActive2 = True
 checkIsActiveBoss = True
+checkIsPassing1 = False
+checkIsPassing2 = False
+checkIsPassingBoss = False
+
 isSliderMusic = False
 isSliderSound = False
-
-checkIsPassing1 = True
-checkIsPassing2 = True
-checkIsPassingBoss = True
-
-record1 = 0
-record2 = 0
-record3 = 0
 
 heroFile = open(r"data/savings/hero-settings.txt", "r", encoding="utf-8")
 checkHero = list(map(lambda x: float(x.rstrip('\n')), heroFile))
@@ -306,15 +303,15 @@ def levels_menu():
         level2Button.check_passing(checkIsActive2)
         levelBossButton.check_passing(checkIsActiveBoss)
 
-        if checkIsPassing1:
+        if starsRecorder.check_passing(1):
             level1StarsField.draw(screen)
-            level1Stars.draw(screen, record1)
-        if checkIsPassing2:
+            level1Stars.draw(screen, starsRecorder.get_record(1))
+        if starsRecorder.check_passing(2):
             level2StarsField.draw(screen)
-            level2Stars.draw(screen, record2)
-        if checkIsPassingBoss:
+            level2Stars.draw(screen, starsRecorder.get_record(2))
+        if starsRecorder.check_passing(3):
             levelBossStarsField.draw(screen)
-            levelBossStars.draw(screen, record3)
+            levelBossStars.draw(screen, starsRecorder.get_record(3))
 
         x_c, y_c = pygame.mouse.get_pos()
         cursorMenuChecker(x_c, y_c, consts.cursor, screen)
