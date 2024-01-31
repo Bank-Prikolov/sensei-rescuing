@@ -78,10 +78,11 @@ class Slonik(pygame.sprite.Sprite):
             else:
                 self.looking_right = True
         self.turn_speed = (self.turn_speed + 1) % 97
-
-        if board.get_cell((
-                list(characters)[0].rect.x,
-                list(characters)[0].rect.bottom))[1] - 1 ** self.k - board.get_cell(self.rect[:2])[1] in [0]:
+        hrop = board.get_cell(list(characters)[0].get_coords())
+        enep = board.get_cell(self.get_coords())
+        if ((board.get_cell((list(characters)[0].rect.x,
+                             list(characters)[0].rect.centery))[1] - board.get_cell(self.rect[:2])[1] in [0])
+                and ('=' not in board.board[enep[1]][min(enep[0], hrop[0]) + 1: max(enep[0], hrop[0])])):
             if ((list(characters)[0].rect.x < self.rect.x and not self.looking_right)
                     or (list(characters)[0].rect.x > self.rect.x and self.looking_right)):
                 self.dontseeme = False
@@ -267,7 +268,8 @@ class Board:
                 board.cell_size * len(self.board[0])) and \
                 board.top < mouse_pos[1] < board.top + (
                 board.cell_size * len(self.board)):
-            return (mouse_pos[0] - board.left) // board.cell_size, (mouse_pos[1] - board.top) // board.cell_size
+            return int((mouse_pos[0] - board.left) // board.cell_size), int(
+                (mouse_pos[1] - board.top) // board.cell_size)
         else:
             return None
 
@@ -280,7 +282,7 @@ class Board:
                        (slon.get_coords()[1] - windows.otstupy + 16) // windows.k)
             else:
                 new = (windows.otstupx + slon.get_coords()[0] * windows.k,
-                       (windows.otstupy + slon.get_coords()[1] - 16) * windows.k)
+                       (windows.otstupy + slon.get_coords()[1] - 18) * windows.k)
             a = Slonik(*new, windows.k ** windows.fullscreen, slon.act)
             a.hp = slon.hp
             a.looking_right = slon.looking_right
