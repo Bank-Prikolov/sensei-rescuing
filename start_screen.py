@@ -15,11 +15,11 @@ def start_screen():
 
     skalaSound = pygame.mixer.Sound(r"data\sounds\skala-sound.mp3")
 
-    bg_img_start = load_image(r"backgrounds\start-screen-bg.png")
+    bg_img_start = load_image(r"objects\animated\start-screen-obj.png")
     start_bg = AnimatedStartScreen(bg_img_start, 46, 1, WIDTH // 2 - 320,
                                    HEIGHT // 2 - 145)
 
-    bg_img_intro = load_image(r"backgrounds\intro-bg.png")
+    bg_img_intro = load_image(r"objects\animated\intro-obj.png")
     bg_tr = pygame.transform.scale(bg_img_intro, (bg_img_intro.get_width() * 2, bg_img_intro.get_height() * 2))
     intro_bg = AnimatedIntro(bg_tr, 112, 1, WIDTH // 2 - 512,
                              HEIGHT // 2 - 145)

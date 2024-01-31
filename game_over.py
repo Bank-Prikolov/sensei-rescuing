@@ -23,17 +23,18 @@ def game_over(whatFrame=0):
         field = Object(windows.otstupx, HEIGHT - HEIGHT, WIDTH - 2 * windows.otstupx, 1080,
                        r"objects\without text\windows-field-obj.png")
 
-    bg_img_game_over = load_image(r"backgrounds\game-over-bg.png")
-    bg_tr_game_over = pygame.transform.scale(bg_img_game_over, (bg_img_game_over.get_width() * 2.5, bg_img_game_over.get_height() * 2.5))
-    game_over_bg = AnimatedGameOver(bg_tr_game_over, 14, 1, WIDTH // 2 - 640, HEIGHT // 2 - 180)
+    bg_img_game_over = load_image(r"objects\animated\game-over-obj.png")
+    bg_tr_game_over = pygame.transform.scale(bg_img_game_over,
+                                             (bg_img_game_over.get_width() * 3, bg_img_game_over.get_height() * 3))
+    game_over_bg = AnimatedGameOver(bg_tr_game_over, 14, 1, WIDTH // 2 - 3388 * 3 // 14 // 2, HEIGHT // 2 - 180)
 
-    repeat_btn = Button(WIDTH // 2 + 57, HEIGHT // 2 - 55, 94, 104, r"buttons\without text\default-repeat-btn.png",
-                        r"buttons\without text\hover-repeat-btn.png",
-                        r"buttons\without text\press-repeat-btn.png", r"data\sounds\menu-button-sound.mp3")
-    to_lvlmenu_btn = Button(WIDTH // 2 - 94 - 48, HEIGHT // 2 - 55, 94, 104,
-                            r"buttons\without text\default-tolvlmenu-btn.png",
-                            r"buttons\without text\hover-tolvlmenu-btn.png",
-                            r"buttons\without text\press-tolvlmenu-btn.png", r"data\sounds\menu-button-sound.mp3")
+    repeat_btn = Button(WIDTH // 2 - 94 // 2 + 120, HEIGHT // 2 - 45, 94, 104, r"buttons\without text\default-repeat-over-btn.png",
+                        r"buttons\without text\hover-repeat-over-btn.png",
+                        r"buttons\without text\press-repeat-over-btn.png", r"data\sounds\menu-button-sound.mp3")
+    to_lvlmenu_btn = Button(WIDTH // 2 - 94 // 2 - 120, HEIGHT // 2 - 45, 94, 104,
+                            r"buttons\without text\default-tolvlmenu-over-btn.png",
+                            r"buttons\without text\hover-tolvlmenu-over-btn.png",
+                            r"buttons\without text\press-tolvlmenu-over-btn.png", r"data\sounds\menu-button-sound.mp3")
 
     running = True
     while running:
@@ -85,5 +86,3 @@ def game_over(whatFrame=0):
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()
-
-# game_over()

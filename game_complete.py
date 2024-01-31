@@ -23,24 +23,24 @@ def game_complete(whatFrame=0):
         field = Object(windows.otstupx, HEIGHT - HEIGHT, WIDTH - 2 * windows.otstupx, 1080,
                        r"objects\without text\windows-field-obj.png")
 
-    bg_img_game_complete = load_image(r"backgrounds\game-complete-bg.png")
+    bg_img_game_complete = load_image(r"objects\animated\game-complete-obj.png")
     bg_tr = pygame.transform.scale(bg_img_game_complete,
-                                   (bg_img_game_complete.get_width() * 2.5, bg_img_game_complete.get_height() * 2.5))
-    game_complete_bg = AnimatedGameComplete(bg_tr, 16, 1, WIDTH // 2 - 265, HEIGHT // 2 - 180)
+                                   (bg_img_game_complete.get_width() * 3, bg_img_game_complete.get_height() * 3))
+    game_complete_bg = AnimatedGameComplete(bg_tr, 16, 1, WIDTH // 2 - 4752 * 3 // 16 // 2, HEIGHT // 2 - 180 - 15 * 3)
 
     record = 3
     zeroStars, oneStar, twoStars, threeStars = (
         r"objects\without text\stars-zero-obj.png", r"objects\without text\stars-one-obj.png",
         r"objects\without text\stars-two-obj.png", r"objects\without text\stars-three-obj.png")
-    stars = Stars(WIDTH // 2 - 152, HEIGHT // 2 - 60, 304, 88, zeroStars, oneStar, twoStars, threeStars)
+    stars = Stars(WIDTH // 2 - 152, HEIGHT // 2 - 40, 304, 88, zeroStars, oneStar, twoStars, threeStars)
 
-    repeat_btn = Button(WIDTH // 2 + 172, HEIGHT // 2 - 65, 94, 104, r"buttons\without text\default-repeat-btn.png",
-                        r"buttons\without text\hover-repeat-btn.png",
-                        r"buttons\without text\press-repeat-btn.png", r"data\sounds\menu-button-sound.mp3")
-    to_lvlmenu_btn = Button(WIDTH // 2 - 265, HEIGHT // 2 - 65, 94, 104,
-                            r"buttons\without text\default-tolvlmenu-btn.png",
-                            r"buttons\without text\hover-tolvlmenu-btn.png",
-                            r"buttons\without text\press-tolvlmenu-btn.png", r"data\sounds\menu-button-sound.mp3")
+    repeat_btn = Button(WIDTH // 2 + 172, HEIGHT // 2 - 45, 94, 104, r"buttons\without text\default-repeat-comp-btn.png",
+                        r"buttons\without text\hover-repeat-comp-btn.png",
+                        r"buttons\without text\press-repeat-comp-btn.png", r"data\sounds\menu-button-sound.mp3")
+    to_lvlmenu_btn = Button(WIDTH // 2 - 266, HEIGHT // 2 - 45, 94, 104,
+                            r"buttons\without text\default-tolvlmenu-comp-btn.png",
+                            r"buttons\without text\hover-tolvlmenu-comp-btn.png",
+                            r"buttons\without text\press-tolvlmenu-comp-btn.png", r"data\sounds\menu-button-sound.mp3")
 
     running = True
     while running:
