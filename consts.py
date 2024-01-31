@@ -1,3 +1,7 @@
+import pygame
+from load_image import load_image
+
+# game consts
 test = r'test2.txt'
 wai = r'characters\hero.png'
 floor = r'textures\0-texture.png'
@@ -23,3 +27,14 @@ slonik = r'characters\slonik_php.png'
 php = r'characters\php.png'
 invis = r'textures\%-texture.png'
 horizon = r'textures\&-texture.png'
+
+# menu consts
+cursor = load_image(r'objects\without text\cursor-obj.png')
+clock = pygame.time.Clock()
+fps = 60
+
+# menu animated sprite groups
+bg_group_start_screen = pygame.sprite.Group()
+bg_group_intro = pygame.sprite.Group()
+bg_group_over = pygame.sprite.Group()
+bg_group_complete = pygame.sprite.Group()

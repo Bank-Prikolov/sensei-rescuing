@@ -1,3 +1,4 @@
+import pygame
 import windows
 
 
@@ -22,6 +23,16 @@ def fullscreenExportChecker(StateFullscreen):
     checkStateFullscreenRewrite = open(r"data/savings/fullscreen-settings.txt", "w")
     checkStateFullscreenRewrite.writelines(str(StateFullscreen))
     checkStateFullscreenRewrite.close()
+
+
+def fullscreenWindowsChecker(fullscreen):
+    if fullscreen:
+        size = WIDTH, HEIGHT = 1920, 1080
+        screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
+    else:
+        size = WIDTH, HEIGHT = 1024, 704
+        screen = pygame.display.set_mode(size)
+    return screen, WIDTH, HEIGHT
 
 
 def languageImportChecker():

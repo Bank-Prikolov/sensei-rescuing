@@ -1,24 +1,17 @@
 import pygame
 import sys
 import webbrowser
-
 import windows
 import game
-
+import consts
 from load_image import load_image
 from itemCreator import Object, Button, Stars
 from itemChecker import fullscreenExportChecker, cursorMenuChecker, languageImportChecker
 
-pygame.init()
 
 size = WIDTH, HEIGHT = 1024, 704
 screen = pygame.display.set_mode(size)
-pygame.display.set_caption('Sensei Rescuing')
-clock = pygame.time.Clock()
-fps = 60
 
-cursor = load_image(r'objects\without text\cursor-obj.png')
-pygame.mouse.set_visible(False)
 
 img = load_image(r'backgrounds\main-menu-bg.png')
 bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
@@ -114,8 +107,6 @@ def main_menu():
     running = True
     hero = heroNow
     while running:
-        clock.tick(fps)
-        screen.fill((0, 0, 0))
         screen.blit(bg, (0, 0))
         for event in pygame.event.get():
             if (event.type == pygame.QUIT) or (event.type == pygame.USEREVENT and event.button == exit_btn):
@@ -181,8 +172,9 @@ def main_menu():
             field_get.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
-        cursorMenuChecker(x_c, y_c, cursor, screen)
+        cursorMenuChecker(x_c, y_c, consts.cursor, screen)
 
+        consts.clock.tick(consts.fps)
         pygame.display.flip()
 
 
@@ -243,8 +235,6 @@ def levels_menu():
 
     running = True
     while running:
-        clock.tick(fps)
-        screen.fill((0, 0, 0))
         screen.blit(bg, (0, 0))
 
         for event in pygame.event.get():
@@ -327,8 +317,9 @@ def levels_menu():
             levelBossStars.draw(screen, record3)
 
         x_c, y_c = pygame.mouse.get_pos()
-        cursorMenuChecker(x_c, y_c, cursor, screen)
+        cursorMenuChecker(x_c, y_c, consts.cursor, screen)
 
+        consts.clock.tick(consts.fps)
         pygame.display.flip()
 
 
@@ -346,13 +337,22 @@ def settings_menu():
     fs_name = Object(all_w + 436, all_h + 235, 332, 75, fr"objects\{languageNow}\fullscreen-obj.png")
     sound_name = Object(all_w - 46, all_h + 385, 332, 35, fr"objects\{languageNow}\sound-obj.png")
     music_name = Object(all_w - 46, all_h + 249, 332, 35, fr"objects\{languageNow}\music-obj.png")
+    music_slider_obj = Object(all_w - 31, all_h + 308, 302, 16, r"objects\without text\slider-obj.png")
+    sound_slider_obj = Object(all_w - 31, all_h + 444, 302, 16, r"objects\without text\slider-obj.png")
+    langauge_obj = Object(all_w + 436 + 57.5, all_h + 420, 215, 52,
+                          r"objects\rus\language-rus-obj.png", "", r"objects\eng\language-eng-obj.png")
 
     cross_btn = Button(all_w + 646, all_h + 8, 67, 72, r"buttons\without text\default-cross-btn.png",
                        r"buttons\without text\hover-cross-btn.png",
                        r"buttons\without text\press-cross-btn.png", r"data\sounds\menu-button-sound.mp3")
     fs_btn = Button(all_w + 534, all_h + 325, 136, 62, fr"buttons\{languageNow}\fullscreen-off-btn.png", "",
                     fr"buttons\{languageNow}\fullscreen-on-btn.png", r"data\sounds\menu-button-sound.mp3")
-
+    arrow_btn = Button(all_w + 732, all_h + 432, 36, 40,
+                       r"buttons\without text\default-arrow-btn.png", r"buttons\without text\hover-arrow-btn.png",
+                       r"buttons\without text\press-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
+    r_arrow_btn = Button(all_w + 436, all_h + 432, 36, 40,
+                         r"buttons\without text\default-r-arrow-btn.png", r"buttons\without text\hover-r-arrow-btn.png",
+                         r"buttons\without text\press-r-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
     if not windows.fullscreen:
         sl = 106 + 300 * wM
     else:
@@ -361,7 +361,6 @@ def settings_menu():
                               r"buttons\without text\default-slider-btn.png",
                               r"buttons\without text\hover-slider-btn.png",
                               r"buttons\without text\press-slider-btn.png")
-
     if not windows.fullscreen:
         sd = 106 + 300 * wS
     else:
@@ -371,23 +370,8 @@ def settings_menu():
                               r"buttons\without text\hover-slider-btn.png",
                               r"buttons\without text\press-slider-btn.png")
 
-    music_slider_obj = Object(all_w - 31, all_h + 308, 302, 16, r"objects\without text\slider-obj.png")
-    sound_slider_obj = Object(all_w - 31, all_h + 444, 302, 16, r"objects\without text\slider-obj.png")
-
-    langauge_obj = Object(all_w + 436 + 57.5, all_h + 420, 215, 52,
-                          r"objects\rus\language-rus-obj.png", "", r"objects\eng\language-eng-obj.png")
-    arrow_btn = Button(all_w + 732, all_h + 432, 36, 40,
-                       r"buttons\without text\default-arrow-btn.png", r"buttons\without text\hover-arrow-btn.png",
-                       r"buttons\without text\press-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
-    r_arrow_btn = Button(all_w + 436, all_h + 432, 36, 40,
-                         r"buttons\without text\default-r-arrow-btn.png", r"buttons\without text\hover-r-arrow-btn.png",
-                         r"buttons\without text\press-r-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
-
     running = True
     while running:
-        clock.tick(fps)
-        screen.fill((0, 0, 0))
-        screen.blit(bg, (0, 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 fullscreenExportChecker(windows.fullscreen)
@@ -473,6 +457,8 @@ def settings_menu():
             for slider_button in [music_slider_btn, sound_slider_btn]:
                 slider_button.handle_event_slider(event)
 
+        screen.blit(bg, (0, 0))
+
         for obj in [title, field_audio, field_video, fs_name, sound_name, music_name, music_slider_obj,
                     sound_slider_obj]:
             obj.draw(screen)
@@ -487,8 +473,9 @@ def settings_menu():
         fs_btn.draw_f11(screen, windows.fullscreen)
 
         x_c, y_c = pygame.mouse.get_pos()
-        cursorMenuChecker(x_c, y_c, cursor, screen)
+        cursorMenuChecker(x_c, y_c, consts.cursor, screen)
 
+        consts.clock.tick(consts.fps)
         pygame.display.flip()
 
 
@@ -517,10 +504,6 @@ def info_menu():
 
     running = True
     while running:
-        clock.tick(fps)
-        screen.fill((0, 0, 0))
-        screen.blit(bg, (0, 0))
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 fullscreenExportChecker(windows.fullscreen)
@@ -555,6 +538,8 @@ def info_menu():
             for button in [github_left_btn, github_right_btn, cross_btn]:
                 button.handle_event(event, volS)
 
+        screen.blit(bg, (0, 0))
+
         for obj in [title, field, alexandr, igor]:
             obj.draw(screen)
 
@@ -563,14 +548,15 @@ def info_menu():
             button.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
-        cursorMenuChecker(x_c, y_c, cursor, screen)
+        cursorMenuChecker(x_c, y_c, consts.cursor, screen)
 
+        consts.clock.tick(consts.fps)
         pygame.display.flip()
 
 
 def transition():
-    running = True
     transition_level = 0
+    running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -587,8 +573,8 @@ def transition():
             transition_level = 255
             running = False
 
+        consts.clock.tick(70)
         pygame.display.flip()
-        clock.tick(70)
 
 
 def change_menu_fullScreen(width, height, fullScreen=0):
@@ -600,5 +586,3 @@ def change_menu_fullScreen(width, height, fullScreen=0):
         bg = pygame.transform.scale(tmp_img, (tmp_img.get_width(), tmp_img.get_height()))
     else:
         bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
-
-# main_menu()
