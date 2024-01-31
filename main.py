@@ -1,5 +1,5 @@
 from menu import main_menu
-from intro import intro
+from start_screen import start_screen
 from load_image import load_image
 import pygame
 

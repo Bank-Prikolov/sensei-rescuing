@@ -1,6 +1,14 @@
 import screeninfo
 import pygame
 
+
+def fullscreenImportChecker():
+    fullscreenFile = open(r"data/savings/fullscreen-settings.txt", "r", encoding="utf-8")
+    checkStateFullscreen = list(map(lambda x: float(x.rstrip('\n')), fullscreenFile))
+    StateFullscreen = int(checkStateFullscreen[0])
+    return StateFullscreen
+
+
 size = width, height = 1024, 704
 screen = pygame.display.set_mode(size)
 fullsize = tuple(map(int, '='.join(
@@ -13,4 +21,4 @@ fullsize = (1920, 1080)
 k = 1.5
 otstupx = (fullsize[0] - size[0] * k) // 2
 otstupy = (fullsize[1] - size[1] * k) * k // 2
-fullscreen = 0
+fullscreen = fullscreenImportChecker()

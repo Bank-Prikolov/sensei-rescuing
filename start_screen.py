@@ -34,12 +34,12 @@ class AnimatedIntro(pygame.sprite.Sprite):
         for j in range(rows):
             for i in range(columns):
                 frame_location = (self.rect.w * i, self.rect.h * j)
-                for _ in range(8):
+                for _ in range(3):
                     self.frames.append(sheet.subsurface(pygame.Rect(
                         frame_location, self.rect.size)))
 
     def update(self):
-        if self.cur_frame < 30 * 8:
+        if self.cur_frame < 111 * 3:
             self.cur_frame = (self.cur_frame + 1) % len(self.frames)
             self.image = self.frames[self.cur_frame]
 
@@ -88,10 +88,11 @@ class AnimatedStartScreen(pygame.sprite.Sprite):
 def start_screen():
     if windows.fullscreen:
         size = WIDTH, HEIGHT = 1920, 1080
-        screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
+        tmp = pygame.FULLSCREEN
     else:
         size = WIDTH, HEIGHT = 1024, 704
-        screen = pygame.display.set_mode(size)
+        tmp = 0
+    screen = pygame.display.set_mode(size, tmp)
 
     skalaSound = pygame.mixer.Sound(r"data\sounds\skala-sound.mp3")
 
@@ -101,7 +102,7 @@ def start_screen():
 
     bg_img_intro = load_image(r"backgrounds\intro-bg.png")
     bg_tr = pygame.transform.scale(bg_img_intro, (bg_img_intro.get_width() * 2, bg_img_intro.get_height() * 2))
-    intro_bg = AnimatedIntro(bg_tr, 31, 1, WIDTH // 2 - 512,
+    intro_bg = AnimatedIntro(bg_tr, 112, 1, WIDTH // 2 - 512,
                              HEIGHT // 2 - 145)
 
     da_btn = Button(WIDTH // 2 - 165, HEIGHT // 2 - 10, 67, 60, fr"buttons\{languageNow}\default-da-btn.png",
@@ -133,7 +134,7 @@ def start_screen():
 
         intro_bg.update()
         bg_group_intro.draw(screen)
-        if intro_bg.cur_frame >= 30 * 8:
+        if intro_bg.cur_frame >= 111 * 3:
             bg_group_intro.empty()
             intro_finish = True
 
@@ -148,4 +149,4 @@ def start_screen():
         pygame.display.flip()
 
 
-start_screen()
+# start_screen()

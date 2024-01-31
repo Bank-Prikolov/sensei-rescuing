@@ -108,6 +108,9 @@ def main_menu():
                         fr"buttons\{languageNow}\hover-get-btn.png",
                         fr"buttons\{languageNow}\press-get-btn.png")
 
+    field_get = Object(all_w + 582 + 304 // 2 - 159 // 2 - 42, all_h + 302, 243, 105,
+                       fr"objects\{languageNow}\how-to-get-obj.png")
+
     running = True
     hero = heroNow
     while running:
@@ -175,7 +178,6 @@ def main_menu():
         choose_btn.check_hover(pygame.mouse.get_pos())
         choose_btn.draw_heroBtn(screen, hero, heroNow, isGetHero2)
         if choose_btn.rect.collidepoint(pygame.mouse.get_pos()) and hero == 2 and not isGetHero2:
-            field_get = Object(all_w + 582 + 304 // 2 - 159 // 2 - 42, all_h + 302, 243, 105, fr"objects\{languageNow}\how-to-get-obj.png")
             field_get.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()
@@ -215,6 +217,8 @@ def levels_menu():
                              r"data\sounds\menu-button-sound.mp3", r"buttons\without text\no-active-boss-btn.png")
     info_btn = Button(all_w + 858, all_h + 122.5, 18, 18, r"buttons\without text\default-level-info-btn.png",
                       r"buttons\without text\hover-level-info-btn.png")
+
+    field_d = Object(all_w + 358.5, all_h - 95.5, 498, 218, fr"objects\{languageNow}\level-info-field-obj.png")
 
     field = Object(all_w - 100, all_h + 111, 987, 252, r"objects\without text\level-menu-field-obj.png")
     level1Field = Object(all_w - 79, all_h + 142, 186, 189, r"objects\without text\start-level-field-obj.png")
@@ -306,7 +310,6 @@ def levels_menu():
 
         info_btn.check_hover(pygame.mouse.get_pos())
         if info_btn.rect.collidepoint(pygame.mouse.get_pos()):
-            field_d = Object(all_w + 358.5, all_h - 95.5, 498, 218, fr"objects\{languageNow}\level-info-field-obj.png")
             field_d.draw(screen)
         info_btn.draw(screen)
 
