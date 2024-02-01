@@ -5,9 +5,12 @@ cur = con.cursor()
 
 
 def firstTime():
-    cur.execute("""CREATE TABLE IF NOT EXISTS stars(levelID INT, isPassing INT, record INT, time INT)""")
+    cur.execute("""CREATE TABLE IF NOT EXISTS stars(levelID INT PRIMARY KEY, isPassing INT, record INT, time INT)""")
     for i in range(1, 4):
-        cur.execute(f"""INSERT INTO stars (levelID, isPassing, record, time) VALUES ({i}, 0, 0, 0)""")
+        cur.execute(f"""
+            INSERT INTO stars (levelID, isPassing, record, time) VALUES ({i}, 0, 0, 0) 
+            ON CONFLICT (levelID) DO NOTHING
+        """)
     con.commit()
 
 

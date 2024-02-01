@@ -2,6 +2,7 @@ import pygame
 import menu
 import windows
 import consts
+import starsRecorder
 from load_image import load_image
 from itemCreator import Button
 from itemAnimator import AnimatedIntro, AnimatedStartScreen
@@ -11,6 +12,8 @@ languageNow = languageImportChecker()
 
 
 def start_screen():
+    starsRecorder.firstTime()
+
     screen, WIDTH, HEIGHT = fullscreenWindowsChecker(windows.fullscreen)
 
     skalaSound = pygame.mixer.Sound(r"data\sounds\skala-sound.mp3")

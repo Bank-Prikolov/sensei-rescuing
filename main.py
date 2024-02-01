@@ -9,5 +9,4 @@ pygame.display.set_icon(load_image(r"objects\without text\ico-obj.png"))
 pygame.mouse.set_visible(False)
 
 if __name__ == '__main__':
-    main_menu()
-    # start_screen()
+    start_screen()

@@ -17,11 +17,8 @@ screen = pygame.display.set_mode(size)
 img = load_image(r'backgrounds\main-menu-bg.png')
 bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 
-checkIsActive2 = True
-checkIsActiveBoss = True
-checkIsPassing1 = False
-checkIsPassing2 = False
-checkIsPassingBoss = False
+checkIsActive2 = False
+checkIsActiveBoss = False
 
 isSliderMusic = False
 isSliderSound = False
@@ -32,7 +29,7 @@ hero = int(checkHero[0])
 heroNow = hero
 isGetHero2 = checkHero[1]
 
-lvlNow = 1
+lvlNow = None
 
 volumeFile = open(r"data/savings/volume-settings.txt", "r", encoding="utf-8")
 checkActDet = list(map(lambda x: float(x.rstrip('\n')), volumeFile))
@@ -176,7 +173,7 @@ def main_menu():
 
 
 def levels_menu():
-    global lvlNow, firstTime
+    global lvlNow, firstTime, checkIsActive2, checkIsActiveBoss
     if not windows.fullscreen:
         change_menu_fullScreen(1024, 704)
         all_w, all_h = WIDTH // 2 - 395, HEIGHT - 582
@@ -256,14 +253,14 @@ def levels_menu():
                 transition()
                 game.game_def(1)
 
-            if event.type == pygame.USEREVENT and event.button == level2Button and checkIsActive2:
+            if event.type == pygame.USEREVENT and event.button == level2Button:
                 lvlNow = 2
                 pygame.mixer.music.stop()
                 firstTime = True
                 transition()
                 game.game_def(2)
 
-            if event.type == pygame.USEREVENT and event.button == levelBossButton and checkIsActiveBoss:
+            if event.type == pygame.USEREVENT and event.button == levelBossButton:
                 lvlNow = 3
                 pygame.mixer.music.stop()
                 firstTime = True
@@ -283,13 +280,8 @@ def levels_menu():
             for button in [cross_btn, level1Button, level2Button, levelBossButton]:
                 button.handle_event(event, volS)
 
-        for obj in [title, field, level1Field]:
+        for obj in [title, field, level1Field, level2Field, levelBossField]:
             obj.draw(screen)
-
-        level2Field.check_passing(checkIsActive2)
-        level2Field.draw(screen)
-        levelBossField.check_passing(checkIsActiveBoss)
-        levelBossField.draw(screen)
 
         for button in [cross_btn, level1Button, level2Button, levelBossButton]:
             button.check_hover(pygame.mouse.get_pos())
@@ -299,16 +291,16 @@ def levels_menu():
         if info_btn.rect.collidepoint(pygame.mouse.get_pos()):
             field_d.draw(screen)
         info_btn.draw(screen)
-
-        level2Button.check_passing(checkIsActive2)
-        levelBossButton.check_passing(checkIsActiveBoss)
-
         if starsRecorder.check_passing(1):
             level1StarsField.draw(screen)
             level1Stars.draw(screen, starsRecorder.get_record(1))
+            level2Field.check_passing(True)
+            level2Button.check_passing(True)
         if starsRecorder.check_passing(2):
             level2StarsField.draw(screen)
             level2Stars.draw(screen, starsRecorder.get_record(2))
+            levelBossField.check_passing(True)
+            levelBossButton.check_passing(True)
         if starsRecorder.check_passing(3):
             levelBossStarsField.draw(screen)
             levelBossStars.draw(screen, starsRecorder.get_record(3))

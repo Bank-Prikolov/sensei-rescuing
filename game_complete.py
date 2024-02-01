@@ -4,6 +4,7 @@ import menu
 import game
 import windows
 import consts
+import starsRecorder
 from load_image import load_image
 from itemCreator import Button, Object, Stars
 from itemAnimator import AnimatedGameComplete
@@ -28,7 +29,7 @@ def game_complete(whatFrame=0):
                                    (bg_img_game_complete.get_width() * 3, bg_img_game_complete.get_height() * 3))
     game_complete_bg = AnimatedGameComplete(bg_tr, 16, 1, WIDTH // 2 - 4752 * 3 // 16 // 2, HEIGHT // 2 - 180 - 15 * 3)
 
-    record = 3
+    record = starsRecorder.get_record(menu.lvlNow)
     zeroStars, oneStar, twoStars, threeStars = (
         r"objects\without text\stars-zero-obj.png", r"objects\without text\stars-one-obj.png",
         r"objects\without text\stars-two-obj.png", r"objects\without text\stars-three-obj.png")
