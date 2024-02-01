@@ -1,7 +1,7 @@
 import pygame
 import os
 import sys
-from load_image import load_image
+from processHelper import load_image
 from consts import *
 import windows
 

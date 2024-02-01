@@ -1,5 +1,6 @@
 import pygame
 import windows
+import starsRecorder
 
 
 def cursorGameChecker(x_c, y_c, cursor, screen):
@@ -70,3 +71,20 @@ def starsCountChecker(whatLevel, time):
             return 1
         elif time > 150:
             return 0
+
+
+def timeChecker(whatLevel, ButtonsFont, all_w, all_h, screen):
+    time = starsRecorder.get_seconds(whatLevel)
+    time_sorted = f"{time // 60:02}:{time % 60:02}"
+    if whatLevel == 1:
+        levelTime = ButtonsFont.render(time_sorted, True, "#ffffff")
+        levelTimeRect = levelTime.get_rect(center=(all_w - 79 + 186 // 2, all_h + 455))
+        return screen.blit(levelTime, levelTimeRect)
+    if whatLevel == 2:
+        levelTime = ButtonsFont.render(time_sorted, True, "#ffffff")
+        levelTimeRect = levelTime.get_rect(center=(all_w + 296 + 186 // 2, all_h + 455))
+        return screen.blit(levelTime, levelTimeRect)
+    if whatLevel == 3:
+        levelTime = ButtonsFont.render(time_sorted, True, "#ffffff")
+        levelTimeRect = levelTime.get_rect(center=(all_w + 673 + 186 // 2, all_h + 455))
+        return screen.blit(levelTime, levelTimeRect)

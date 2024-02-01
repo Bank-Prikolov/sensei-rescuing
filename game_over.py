@@ -4,7 +4,7 @@ import game
 import menu
 import windows
 import consts
-from load_image import load_image
+from processHelper import load_image, terminate
 from itemCreator import Button, Object
 from itemAnimator import AnimatedGameOver
 from itemChecker import fullscreenExportChecker, cursorGameChecker, fullscreenWindowsChecker
@@ -41,8 +41,7 @@ def game_over(whatFrame=0):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 fullscreenExportChecker(windows.fullscreen)
-                pygame.quit()
-                sys.exit()
+                terminate()
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
                 if game_over_bg.cur_frame >= 130:

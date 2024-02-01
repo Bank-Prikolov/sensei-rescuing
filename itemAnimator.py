@@ -117,13 +117,14 @@ class AnimatedGameComplete(pygame.sprite.Sprite):
                     self.frames.append(sheet.subsurface(pygame.Rect(
                         frame_location, self.rect.size)))
 
-    def update(self, screen, record, stars, repeat_btn, to_lvlmenu_btn):
+    def update(self, screen, record, stars, repeat_btn, to_lvlmenu_btn, levelTime, levelTimeRect):
         if self.cur_frame < 15 * 10:
             self.cur_frame = (self.cur_frame + 1) % len(self.frames)
             self.image = self.frames[self.cur_frame]
 
         if self.cur_frame >= 15 * 10:
             stars.draw(screen, record)
+            screen.blit(levelTime, levelTimeRect)
             for butt in [repeat_btn, to_lvlmenu_btn]:
                 butt.check_hover(pygame.mouse.get_pos())
                 butt.draw(screen)

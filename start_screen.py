@@ -3,7 +3,7 @@ import menu
 import windows
 import consts
 import starsRecorder
-from load_image import load_image
+from processHelper import load_image
 from itemCreator import Button
 from itemAnimator import AnimatedIntro, AnimatedStartScreen
 from itemChecker import cursorMenuChecker, languageImportChecker, fullscreenWindowsChecker

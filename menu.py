@@ -5,9 +5,9 @@ import windows
 import game
 import consts
 import starsRecorder
-from load_image import load_image
+from processHelper import load_image, terminate
 from itemCreator import Object, Button, Stars
-from itemChecker import fullscreenExportChecker, cursorMenuChecker, languageImportChecker
+from itemChecker import fullscreenExportChecker, cursorMenuChecker, languageImportChecker, timeChecker
 
 
 size = WIDTH, HEIGHT = 1024, 704
@@ -105,8 +105,7 @@ def main_menu():
         for event in pygame.event.get():
             if (event.type == pygame.QUIT) or (event.type == pygame.USEREVENT and event.button == exit_btn):
                 fullscreenExportChecker(windows.fullscreen)
-                pygame.quit()
-                sys.exit()
+                terminate()
 
             if event.type == pygame.USEREVENT and event.button == start_btn:
                 transition()
@@ -176,7 +175,7 @@ def levels_menu():
     global lvlNow, firstTime, checkIsActive2, checkIsActiveBoss
     if not windows.fullscreen:
         change_menu_fullScreen(1024, 704)
-        all_w, all_h = WIDTH // 2 - 395, HEIGHT - 582
+        all_w, all_h = WIDTH // 2 - 395, HEIGHT - 595
     else:
         change_menu_fullScreen(1920, 1080, pygame.FULLSCREEN)
         all_w, all_h = WIDTH // 2 - 395, HEIGHT - 770
@@ -217,15 +216,17 @@ def levels_menu():
     zeroStars, oneStar, twoStars, threeStars = (
         r"objects\without text\stars-zero-obj.png", r"objects\without text\stars-one-obj.png",
         r"objects\without text\stars-two-obj.png", r"objects\without text\stars-three-obj.png")
-    level1StarsField = Object(all_w - 79, all_h + 375, 186, 56, r"objects\without text\stars-field-obj.png")
-    level1Stars = Stars(all_w - 79 + 186 // 2 - 152 // 2, all_h + 380, 152, 44, zeroStars, oneStar, twoStars,
+    level1StarsField = Object(all_w - 79, all_h + 375, 186, 100, r"objects\without text\stars-field-obj.png")
+    level1Stars = Stars(all_w - 79 + 186 // 2 - 152 // 2, all_h + 381, 152, 44, zeroStars, oneStar, twoStars,
                         threeStars)
-    level2StarsField = Object(all_w + 296, all_h + 375, 186, 56, r"objects\without text\stars-field-obj.png")
-    level2Stars = Stars(all_w + 296 + 186 // 2 - 152 // 2, all_h + 380, 152, 44, zeroStars, oneStar, twoStars,
+    level2StarsField = Object(all_w + 296, all_h + 375, 186, 100, r"objects\without text\stars-field-obj.png")
+    level2Stars = Stars(all_w + 296 + 186 // 2 - 152 // 2, all_h + 381, 152, 44, zeroStars, oneStar, twoStars,
                         threeStars)
-    levelBossStarsField = Object(all_w + 673, all_h + 375, 186, 56, r"objects\without text\stars-field-obj.png")
-    levelBossStars = Stars(all_w + 673 + 186 // 2 - 152 // 2, all_h + 380, 152, 44, zeroStars, oneStar, twoStars,
+    levelBossStarsField = Object(all_w + 673, all_h + 375, 186, 100, r"objects\without text\stars-field-obj.png")
+    levelBossStars = Stars(all_w + 673 + 186 // 2 - 152 // 2, all_h + 381, 152, 44, zeroStars, oneStar, twoStars,
                            threeStars)
+
+    ButtonsFont = pygame.font.Font(r"data\fonts\PixelNumbers.ttf", 35)
 
     running = True
     while running:
@@ -291,19 +292,25 @@ def levels_menu():
         if info_btn.rect.collidepoint(pygame.mouse.get_pos()):
             field_d.draw(screen)
         info_btn.draw(screen)
+
         if starsRecorder.check_passing(1):
             level1StarsField.draw(screen)
             level1Stars.draw(screen, starsRecorder.get_record(1))
             level2Field.check_passing(True)
             level2Button.check_passing(True)
+            timeChecker(1, ButtonsFont, all_w, all_h, screen)
+
         if starsRecorder.check_passing(2):
             level2StarsField.draw(screen)
             level2Stars.draw(screen, starsRecorder.get_record(2))
             levelBossField.check_passing(True)
             levelBossButton.check_passing(True)
+            timeChecker(2, ButtonsFont, all_w, all_h, screen)
+
         if starsRecorder.check_passing(3):
             levelBossStarsField.draw(screen)
             levelBossStars.draw(screen, starsRecorder.get_record(3))
+            timeChecker(3, ButtonsFont, all_w, all_h, screen)
 
         x_c, y_c = pygame.mouse.get_pos()
         cursorMenuChecker(x_c, y_c, consts.cursor, screen)

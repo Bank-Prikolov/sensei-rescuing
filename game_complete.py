@@ -5,7 +5,7 @@ import game
 import windows
 import consts
 import starsRecorder
-from load_image import load_image
+from processHelper import load_image, terminate
 from itemCreator import Button, Object, Stars
 from itemAnimator import AnimatedGameComplete
 from itemChecker import fullscreenExportChecker, cursorGameChecker, fullscreenWindowsChecker
@@ -29,16 +29,22 @@ def game_complete(whatFrame=0):
                                    (bg_img_game_complete.get_width() * 3, bg_img_game_complete.get_height() * 3))
     game_complete_bg = AnimatedGameComplete(bg_tr, 16, 1, WIDTH // 2 - 4752 * 3 // 16 // 2, HEIGHT // 2 - 180 - 15 * 3)
 
-    record = starsRecorder.get_record(menu.lvlNow)
+    record = starsRecorder.get_lastRecord(menu.lvlNow)
     zeroStars, oneStar, twoStars, threeStars = (
         r"objects\without text\stars-zero-obj.png", r"objects\without text\stars-one-obj.png",
         r"objects\without text\stars-two-obj.png", r"objects\without text\stars-three-obj.png")
     stars = Stars(WIDTH // 2 - 152, HEIGHT // 2 - 40, 304, 88, zeroStars, oneStar, twoStars, threeStars)
 
-    repeat_btn = Button(WIDTH // 2 + 172, HEIGHT // 2 - 45, 94, 104, r"buttons\without text\default-repeat-comp-btn.png",
+    ButtonsFont = pygame.font.Font(r"data\fonts\PixelNumbers.ttf", 70)
+    time = starsRecorder.get_lastSeconds(menu.lvlNow)
+    time_sorted = f"{time // 60:02}:{time % 60:02}"
+    levelTime = ButtonsFont.render(time_sorted, True, "#ffffff")
+    levelTimeRect = levelTime.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 110))
+
+    repeat_btn = Button(WIDTH // 2 + 172, HEIGHT // 2 - 20, 94, 104, r"buttons\without text\default-repeat-comp-btn.png",
                         r"buttons\without text\hover-repeat-comp-btn.png",
                         r"buttons\without text\press-repeat-comp-btn.png", r"data\sounds\menu-button-sound.mp3")
-    to_lvlmenu_btn = Button(WIDTH // 2 - 266, HEIGHT // 2 - 45, 94, 104,
+    to_lvlmenu_btn = Button(WIDTH // 2 - 266, HEIGHT // 2 - 20, 94, 104,
                             r"buttons\without text\default-tolvlmenu-comp-btn.png",
                             r"buttons\without text\hover-tolvlmenu-comp-btn.png",
                             r"buttons\without text\press-tolvlmenu-comp-btn.png", r"data\sounds\menu-button-sound.mp3")
@@ -48,8 +54,7 @@ def game_complete(whatFrame=0):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 fullscreenExportChecker(windows.fullscreen)
-                pygame.quit()
-                sys.exit()
+                terminate()
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
                 if game_complete_bg.cur_frame >= 150:
@@ -85,7 +90,7 @@ def game_complete(whatFrame=0):
         if whatFrame:
             game_complete_bg.cur_frame = 149
             pygame.mixer.music.stop()
-        game_complete_bg.update(screen, record, stars, repeat_btn, to_lvlmenu_btn)
+        game_complete_bg.update(screen, record, stars, repeat_btn, to_lvlmenu_btn, levelTime, levelTimeRect)
         consts.bg_group_complete.draw(screen)
 
         x_c, y_c = pygame.mouse.get_pos()

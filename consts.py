@@ -1,5 +1,5 @@
 import pygame
-from load_image import load_image
+from processHelper import load_image
 
 # game consts
 test = r'test2.txt'

@@ -10,7 +10,7 @@ import pause
 from consts import *
 import windows
 import starsRecorder
-from load_image import load_image
+from processHelper import load_image, terminate
 from itemCreator import Object
 from itemChecker import fullscreenExportChecker, starsCountChecker
 
@@ -231,8 +231,7 @@ def game_def(lvl, charact=1):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 fullscreenExportChecker(windows.fullscreen)
-                pygame.quit()
-                sys.exit()
+                terminate()
             elif event.type == timer_event and started:
                 current_seconds += 1
                 print(current_seconds)
@@ -309,9 +308,10 @@ def game_def(lvl, charact=1):
                         hero.end()
                         lvl_gen.updater()
                         started = False
+                        record = starsCountChecker(lvl, current_seconds)
                         if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
-                            record = starsCountChecker(lvl, current_seconds)
                             starsRecorder.push_record(lvl, 1, record, current_seconds)
+                        starsRecorder.push_lastRecord(lvl, record, current_seconds)
                         game_complete.game_complete()
                     else:
                         if lookingright:
@@ -418,6 +418,7 @@ def game_def(lvl, charact=1):
                     lvl_gen.projectilespeed = []
                     lvl_gen.nmeprojectilesgroup.empty()
                     lvl_gen.updater()
+                    started = False
                     game_over.game_over()
                 if (pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite], lvl_gen.toches, False)
                         or pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite],
@@ -471,9 +472,10 @@ def game_def(lvl, charact=1):
                 thing = ''
                 lvl_gen.updater()
                 started = False
+                record = starsCountChecker(lvl, current_seconds)
                 if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
-                    record = starsCountChecker(lvl, current_seconds)
                     starsRecorder.push_record(lvl, 1, record, current_seconds)
+                starsRecorder.push_lastRecord(lvl, record, current_seconds)
                 game_complete.game_complete()
 
         if runright or runleft:

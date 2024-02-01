@@ -6,6 +6,7 @@ import game
 import windows
 from itemCreator import Button, Object
 from itemChecker import fullscreenExportChecker, cursorGameChecker, languageImportChecker, fullscreenWindowsChecker
+from processHelper import terminate
 
 languageNow = languageImportChecker()
 
@@ -44,8 +45,7 @@ def game_pause():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 fullscreenExportChecker(windows.fullscreen)
-                pygame.quit()
-                sys.exit()
+                terminate()
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
                 if windows.fullscreen:
