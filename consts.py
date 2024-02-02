@@ -28,7 +28,7 @@ php = r'characters\php.png'
 invis = r'textures\%-texture.png'
 horizon = r'textures\&-texture.png'
 
-# menu consts
+# menu and game consts
 cursor = load_image(r'objects\without text\cursor-obj.png')
 clock = pygame.time.Clock()
 fps = 60

@@ -12,7 +12,7 @@ import windows
 import starsRecorder
 from processHelper import load_image, terminate
 from itemCreator import Object
-from itemChecker import fullscreenExportChecker, starsCountChecker
+from itemChecker import starsCountChecker
 
 runright, runleft, lookingup, sitting = False, False, False, False
 jumping = False
@@ -230,8 +230,7 @@ def game_def(lvl, charact=1):
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                fullscreenExportChecker(windows.fullscreen)
-                terminate()
+                terminate(windows.fullscreen)
             elif event.type == timer_event and started:
                 current_seconds += 1
                 print(current_seconds)

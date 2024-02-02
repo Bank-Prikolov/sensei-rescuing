@@ -1,6 +1,7 @@
 import pygame
 import sys
 import os
+import fileManager
 import starsRecorder
 
 
@@ -20,7 +21,8 @@ def load_image(name, colorkey=None):
     return image
 
 
-def terminate():
+def terminate(fullscreen):
+    fileManager.fullscreenExport(fullscreen)
     starsRecorder.con.close()
     pygame.quit()
     sys.exit()

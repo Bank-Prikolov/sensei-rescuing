@@ -2,13 +2,14 @@ import pygame
 import menu
 import windows
 import consts
+import fileManager
 import starsRecorder
 from processHelper import load_image
 from itemCreator import Button
 from itemAnimator import AnimatedIntro, AnimatedStartScreen
-from itemChecker import cursorMenuChecker, languageImportChecker, fullscreenWindowsChecker
+from itemChecker import cursorMenuChecker, fullscreenWindowsChecker
 
-languageNow = languageImportChecker()
+languageNow = fileManager.languageImport()
 
 
 def start_screen():

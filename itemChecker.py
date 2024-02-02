@@ -20,12 +20,6 @@ def cursorMenuChecker(x_c, y_c, cursor, screen):
         screen.blit(cursor, (x_c, y_c))
 
 
-def fullscreenExportChecker(StateFullscreen):
-    checkStateFullscreenRewrite = open(r"data/savings/fullscreen-settings.txt", "w")
-    checkStateFullscreenRewrite.writelines(str(StateFullscreen))
-    checkStateFullscreenRewrite.close()
-
-
 def fullscreenWindowsChecker(fullscreen):
     if fullscreen:
         size = WIDTH, HEIGHT = 1920, 1080
@@ -34,13 +28,6 @@ def fullscreenWindowsChecker(fullscreen):
         size = WIDTH, HEIGHT = 1024, 704
         screen = pygame.display.set_mode(size)
     return screen, WIDTH, HEIGHT
-
-
-def languageImportChecker():
-    checkWhatLanguage = open(r"data/savings/language-settings.txt", "r")
-    whatLanguage = list(map(lambda x: str(x.rstrip('\n')), checkWhatLanguage))
-    languageNow = whatLanguage[0]
-    return languageNow
 
 
 def starsCountChecker(whatLevel, time):

@@ -1,5 +1,4 @@
 import pygame
-import sys
 import menu
 import game
 import windows
@@ -8,7 +7,7 @@ import starsRecorder
 from processHelper import load_image, terminate
 from itemCreator import Button, Object, Stars
 from itemAnimator import AnimatedGameComplete
-from itemChecker import fullscreenExportChecker, cursorGameChecker, fullscreenWindowsChecker
+from itemChecker import cursorGameChecker, fullscreenWindowsChecker
 
 
 def game_complete(whatFrame=0):
@@ -53,8 +52,7 @@ def game_complete(whatFrame=0):
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                fullscreenExportChecker(windows.fullscreen)
-                terminate()
+                terminate(windows.fullscreen)
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
                 if game_complete_bg.cur_frame >= 150:

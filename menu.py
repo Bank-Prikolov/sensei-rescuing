@@ -4,46 +4,34 @@ import webbrowser
 import windows
 import game
 import consts
+import fileManager
 import starsRecorder
 from processHelper import load_image, terminate
 from itemCreator import Object, Button, Stars
-from itemChecker import fullscreenExportChecker, cursorMenuChecker, languageImportChecker, timeChecker
-
+from itemChecker import cursorMenuChecker, timeChecker
 
 size = WIDTH, HEIGHT = 1024, 704
 screen = pygame.display.set_mode(size)
 
-
 img = load_image(r'backgrounds\main-menu-bg.png')
 bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
-
-checkIsActive2 = False
-checkIsActiveBoss = False
 
 isSliderMusic = False
 isSliderSound = False
 
-heroFile = open(r"data/savings/hero-settings.txt", "r", encoding="utf-8")
-checkHero = list(map(lambda x: float(x.rstrip('\n')), heroFile))
-hero = int(checkHero[0])
-heroNow = hero
-isGetHero2 = checkHero[1]
+hero, heroNow, isGetHero2 = fileManager.heroImport()
 
 lvlNow = None
 
-volumeFile = open(r"data/savings/volume-settings.txt", "r", encoding="utf-8")
-checkActDet = list(map(lambda x: float(x.rstrip('\n')), volumeFile))
-wM = checkActDet[0]
-wS = checkActDet[1]
-volS = wS
+wM, wS, volS = fileManager.volumeImport()
 
 firstTime = True
 
-languageNow = languageImportChecker()
+languageNow = fileManager.languageImport()
 
 
 def main_menu():
-    global checkActDet, wM, wS, firstTime, hero, heroNow, isGetHero2
+    global wM, wS, firstTime, hero, heroNow, isGetHero2
 
     if firstTime:
         pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
@@ -104,8 +92,7 @@ def main_menu():
         screen.blit(bg, (0, 0))
         for event in pygame.event.get():
             if (event.type == pygame.QUIT) or (event.type == pygame.USEREVENT and event.button == exit_btn):
-                fullscreenExportChecker(windows.fullscreen)
-                terminate()
+                terminate(windows.fullscreen)
 
             if event.type == pygame.USEREVENT and event.button == start_btn:
                 transition()
@@ -130,7 +117,6 @@ def main_menu():
                     main_menu()
 
             if event.type == pygame.USEREVENT and event.button == choose_btn:
-                checkHeroRewrite = open(r"data/savings/hero-settings.txt", "w")
                 if hero == 1 and hero != heroNow:
                     heroNow = 1
                 elif hero == 2 and hero != heroNow:
@@ -139,7 +125,7 @@ def main_menu():
                     else:
                         webbrowser.open('https://t.me/smoladventurebot')
                         isGetHero2 = 1
-                checkHeroRewrite.writelines([str(hero) + '\n', str(int(isGetHero2))])
+                fileManager.heroExport(heroNow, isGetHero2)
 
             if event.type == pygame.USEREVENT and (event.button == arrow_btn or event.button == r_arrow_btn):
                 if hero == 1:
@@ -172,7 +158,7 @@ def main_menu():
 
 
 def levels_menu():
-    global lvlNow, firstTime, checkIsActive2, checkIsActiveBoss
+    global lvlNow, firstTime
     if not windows.fullscreen:
         change_menu_fullScreen(1024, 704)
         all_w, all_h = WIDTH // 2 - 395, HEIGHT - 595
@@ -234,9 +220,7 @@ def levels_menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                fullscreenExportChecker(windows.fullscreen)
-                pygame.quit()
-                sys.exit()
+                terminate(windows.fullscreen)
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
@@ -320,7 +304,7 @@ def levels_menu():
 
 
 def settings_menu():
-    global isSliderMusic, isSliderSound, volS, wM, wS, checkActDet, languageNow
+    global isSliderMusic, isSliderSound, volS, wM, wS, languageNow
     if not windows.fullscreen:
         all_w, all_h = WIDTH // 2 - 363, HEIGHT - 619
     else:
@@ -370,9 +354,7 @@ def settings_menu():
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                fullscreenExportChecker(windows.fullscreen)
-                pygame.quit()
-                sys.exit()
+                terminate(windows.fullscreen)
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
@@ -395,12 +377,11 @@ def settings_menu():
                     settings_menu()
 
             if event.type == pygame.USEREVENT and (event.button == arrow_btn or event.button == r_arrow_btn):
-                checkLanguageRewrite = open(r"data/savings/language-settings.txt", "w")
                 if languageNow == 'eng':
                     languageNow = 'rus'
                 elif languageNow == 'rus':
                     languageNow = 'eng'
-                checkLanguageRewrite.writelines(str(languageNow))
+                fileManager.languageExport(languageNow)
                 settings_menu()
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == music_slider_btn:
@@ -411,7 +392,6 @@ def settings_menu():
 
             elif event.type == pygame.MOUSEMOTION:
                 if isSliderMusic or isSliderSound:
-                    checkActDet = open(r"data/savings/volume-settings.txt", "w")
                     if isSliderMusic:
                         xM = music_slider_btn.rect[0]
                         # 553 853
@@ -439,7 +419,7 @@ def settings_menu():
                         else:
                             wS = (sound_slider_btn.rect[0] - 553) / 300
                             volS = wS
-                    checkActDet.writelines([str(wM) + '\n', str(wS)])
+                    fileManager.volumeExport(wM, wS)
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == sound_slider_btn:
                 isSliderSound = True
@@ -502,9 +482,7 @@ def info_menu():
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                fullscreenExportChecker(windows.fullscreen)
-                pygame.quit()
-                sys.exit()
+                terminate(windows.fullscreen)
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
