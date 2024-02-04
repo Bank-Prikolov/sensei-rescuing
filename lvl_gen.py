@@ -53,13 +53,13 @@ class Slonik(pygame.sprite.Sprite):
         self.moving = False
         self.act = act
         self.looking_right = True
-        self.hp = 3
+        self.hp = 6
         self.bulletspeed = 10
         self.acter = 0
         self.step = 0
         self.hitick = 0
         self.shoot_counter = 35
-        self.turn_speed = 96
+        self.turn_speed = 0
         self.dontseeme = True
 
     def cut_sheet(self, sprites, koef, act):
@@ -72,12 +72,12 @@ class Slonik(pygame.sprite.Sprite):
                 frame_location, self.rect.size)))
 
     def update(self):
-        if self.turn_speed == 0 and self.dontseeme:
+        if self.turn_speed == 95 and self.dontseeme:
             if self.looking_right:
                 self.looking_right = False
             else:
                 self.looking_right = True
-        self.turn_speed = (self.turn_speed + 1) % 97
+        self.turn_speed = (self.turn_speed + 1) % 96
         hrop = board.get_cell(list(characters)[0].get_coords())
         enep = board.get_cell(self.get_coords())
         if ((board.get_cell((list(characters)[0].rect.x,
@@ -108,7 +108,7 @@ class Slonik(pygame.sprite.Sprite):
         self.image = self.frames[self.cur_frame]
         self.set_coords(*self.get_coords())
         if not self.step:
-            if self.counter == 12:
+            if self.counter == 11:
                 self.cur_frame = (self.cur_frame + 1) % 2
         else:
             if self.counter % (self.step * 3) in range(0, 3):
@@ -119,7 +119,7 @@ class Slonik(pygame.sprite.Sprite):
                 else:
                     self.hitick = 0
                     self.step = 0
-        self.counter = (self.counter + 1) % 13
+        self.counter = (self.counter + 1) % 12
 
     def get_coords(self):
         return self.rect[0], self.rect[1]
