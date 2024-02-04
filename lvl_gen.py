@@ -82,7 +82,9 @@ class Slonik(pygame.sprite.Sprite):
         enep = board.get_cell(self.get_coords())
         if ((board.get_cell((list(characters)[0].rect.x,
                              list(characters)[0].rect.centery))[1] - board.get_cell(self.rect[:2])[1] in [0])
-                and ('=' not in board.board[enep[1]][min(enep[0], hrop[0]) + 1: max(enep[0], hrop[0])])):
+                and (('=' not in board.board[enep[1]][min(enep[0], hrop[0]) + 1: max(enep[0], hrop[0])])
+                     and ('#' not in board.board[enep[1]][min(enep[0], hrop[0]) + 1: max(enep[0], hrop[0])])
+                     and ('&' not in board.board[enep[1]][min(enep[0], hrop[0]) + 1: max(enep[0], hrop[0])]))):
             if ((list(characters)[0].rect.x < self.rect.x and not self.looking_right)
                     or (list(characters)[0].rect.x > self.rect.x and self.looking_right)):
                 self.dontseeme = False
