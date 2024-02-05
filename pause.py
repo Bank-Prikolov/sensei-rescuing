@@ -12,7 +12,7 @@ languageNow = fileManager.languageImport()
 
 def pause(super_pause):
     field = Object(8, 8, 1008, 688, rf"objects\without text\pause-window-obj.png")
-    title = Object(windows.width // 2 - 150, windows.height // 2 - 224, 300, 100,
+    title = Object(windows.width // 2 - 176, windows.height // 2 - 185, 352, 116,
                    fr"objects\{languageNow}\pause-title-obj.png")
 
     sound_name = Object(windows.width // 2 + 28, windows.height // 2 + 124, 434, 50,
@@ -36,22 +36,22 @@ def pause(super_pause):
                               r"buttons\without text\hover-slider-btn.png",
                               r"buttons\without text\press-slider-btn.png")
 
-    repeat_btn = Button(windows.width // 2 - 150 + 102, windows.height // 2 - 112, 94, 104,
+    repeat_btn = Button(title.x + title.width // 2 - 94 // 2, title.y + title.height + 10, 94, 104,
                         r"buttons\without text\default-repeat-btn.png",
                         r"buttons\without text\hover-repeat-btn.png",
                         r"buttons\without text\press-repeat-btn.png", r"data\sounds\menu-button-sound.mp3")
-    to_lvlmenu_btn = Button(windows.width // 2 - 150 + 212, windows.height // 2 - 112, 94, 104,
+    to_lvlmenu_btn = Button(title.x + title.width - 94 - 15, title.y + title.height + 10, 94, 104,
                             r"buttons\without text\default-tolvlmenu-btn.png",
                             r"buttons\without text\hover-tolvlmenu-btn.png",
                             r"buttons\without text\press-tolvlmenu-btn.png", r"data\sounds\menu-button-sound.mp3")
-    play_btn = Button(windows.width // 2 - 150 - 7, windows.height // 2 - 112, 94, 104,
+    play_btn = Button(title.x + 15, title.y + title.height + 10, 94, 104,
                       r"buttons\without text\default-play-btn.png",
                       r"buttons\without text\hover-play-btn.png",
                       r"buttons\without text\press-play-btn.png", r"data\sounds\menu-button-sound.mp3")
 
-    control_btn = Button(windows.width // 2 - 150, windows.height // 2 + 2, 300, 80,
-                         fr"buttons\{languageNow}\default-controls-btn.png",
-                         fr"buttons\{languageNow}\hover-controls-btn.png")  # 266
+    # control_btn = Button(title.x + title.width - 300, windows.height // 2 + 2, 300, 80,
+    #                      fr"buttons\{languageNow}\default-controls-btn.png",
+    #                      fr"buttons\{languageNow}\hover-controls-btn.png")  # 266
     pause_field = Object(windows.width // 2 - 430 // 2, windows.height // 2 - 246, 430, 342,
                          fr"objects\without text\pause-field-obj.png")
     left_field = Object(music_name.x + 434 // 2 - 470 // 2, windows.height // 2 - 246, 252, 342,
@@ -89,7 +89,7 @@ def pause(super_pause):
                     music_slider_obj, music_slider_btn, sound_slider_btn, sound_name, music_name]:
             obj.draw(lvl_gen.screen)
 
-        for button in [repeat_btn, to_lvlmenu_btn, play_btn, control_btn]:
+        for button in [repeat_btn, to_lvlmenu_btn, play_btn]:
             button.check_hover(pygame.mouse.get_pos())
             button.draw(lvl_gen.screen)
 

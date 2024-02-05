@@ -235,6 +235,7 @@ def game_def(lvl, charact=wai):
                 terminate(windows.fullscreen)
             elif event.type == timer_event and started:
                 current_seconds += 1
+                print(current_seconds)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
                     xspeed = hero.xs
