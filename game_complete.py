@@ -7,7 +7,7 @@ import starsRecorder
 from processHelper import load_image, terminate
 from itemCreator import Button, Object, Stars
 from itemAnimator import AnimatedGameComplete
-from itemChecker import cursorGameChecker, fullscreenWindowsChecker
+from itemChecker import fullscreenWindowsChecker
 
 
 def game_complete(whatFrame=0):
@@ -90,9 +90,6 @@ def game_complete(whatFrame=0):
             pygame.mixer.music.stop()
         game_complete_bg.update(screen, record, stars, repeat_btn, to_lvlmenu_btn, levelTime, levelTimeRect)
         consts.bg_group_complete.draw(screen)
-
-        x_c, y_c = pygame.mouse.get_pos()
-        cursorGameChecker(x_c, y_c, consts.cursor, screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()

@@ -1,17 +1,13 @@
-import sys
-
 import lvl_gen
-import pygame
-
 import game_over
 import game_complete
 import pause
-
 from consts import *
 import windows
 import starsRecorder
+import fileManager
 from processHelper import load_image, terminate
-from itemCreator import Object
+from itemCreator import Object, Button
 from itemChecker import starsCountChecker
 
 runright, runleft, lookingup, sitting = False, False, False, False
@@ -21,6 +17,8 @@ lookingright = 1
 shooting = 0
 xspeed = 0
 yspeed = 0
+
+languageNow = fileManager.languageImport()
 
 
 class Hero(pygame.sprite.Sprite):
@@ -327,7 +325,33 @@ def game_def(lvl, charact=wai):
                     xspeed = 0
                     predpause = hero.get_coords()
                     hero.end()
-                    pause.game_pause()
+                    super_pause = True
+                    field = Object(8, 8, 1008, 688, rf"objects\without text\pause-window-obj.png")
+                    title = Object(windows.width // 2 - 150, windows.height // 2 - 145, 300, 100,
+                                   fr"objects\{languageNow}\pause-title-obj.png")
+
+                    repeat_btn = Button(windows.width // 2 - 150 + 102, windows.height // 2 - 30, 94, 104,
+                                        r"buttons\without text\default-repeat-btn.png",
+                                        r"buttons\without text\hover-repeat-btn.png",
+                                        r"buttons\without text\press-repeat-btn.png",
+                                        r"data\sounds\menu-button-sound.mp3")
+                    to_lvlmenu_btn = Button(windows.width // 2 - 150 + 212, windows.height // 2 - 30, 94, 104,
+                                            r"buttons\without text\default-tolvlmenu-btn.png",
+                                            r"buttons\without text\hover-tolvlmenu-btn.png",
+                                            r"buttons\without text\press-tolvlmenu-btn.png",
+                                            r"data\sounds\menu-button-sound.mp3")
+                    play_btn = Button(windows.width // 2 - 150 - 7, windows.height // 2 - 30, 94, 104,
+                                      r"buttons\without text\default-play-btn.png",
+                                      r"buttons\without text\hover-play-btn.png",
+                                      r"buttons\without text\press-play-btn.png", r"data\sounds\menu-button-sound.mp3")
+
+                    control_btn = Button(windows.width // 2 - 150, windows.height // 2 + 85, 300, 80,
+                                         fr"buttons\{languageNow}\default-controls-btn.png",
+                                         fr"buttons\{languageNow}\hover-controls-btn.png")
+                    control_field = Object(windows.width // 2 - 250, windows.height // 2 - 170, 504, 252,
+                                           fr"objects\{languageNow}\controls-field-obj.png")
+
+                    pause.pause(super_pause)
                     started = True
                     hero = Hero(*predpause, windows.k ** windows.fullscreen)
                     if lookingright:

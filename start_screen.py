@@ -7,7 +7,7 @@ import starsRecorder
 from processHelper import load_image
 from itemCreator import Button
 from itemAnimator import AnimatedIntro, AnimatedStartScreen
-from itemChecker import cursorMenuChecker, fullscreenWindowsChecker
+from itemChecker import fullscreenWindowsChecker
 
 languageNow = fileManager.languageImport()
 

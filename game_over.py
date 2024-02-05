@@ -6,7 +6,7 @@ import consts
 from processHelper import load_image, terminate
 from itemCreator import Button, Object
 from itemAnimator import AnimatedGameOver
-from itemChecker import cursorGameChecker, fullscreenWindowsChecker
+from itemChecker import fullscreenWindowsChecker
 
 
 def game_over(whatFrame=0):
@@ -77,9 +77,6 @@ def game_over(whatFrame=0):
             pygame.mixer.music.stop()
         game_over_bg.update(screen, repeat_btn, to_lvlmenu_btn)
         consts.bg_group_over.draw(screen)
-
-        x_c, y_c = pygame.mouse.get_pos()
-        cursorGameChecker(x_c, y_c, consts.cursor, screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()

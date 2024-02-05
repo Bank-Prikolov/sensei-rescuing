@@ -8,7 +8,7 @@ import fileManager
 import starsRecorder
 from processHelper import load_image, terminate
 from itemCreator import Object, Button, Stars
-from itemChecker import cursorMenuChecker, timeChecker
+from itemChecker import timeChecker
 
 size = WIDTH, HEIGHT = 1024, 704
 screen = pygame.display.set_mode(size)
@@ -149,9 +149,6 @@ def main_menu():
         choose_btn.draw_heroBtn(screen, hero, heroNow, isGetHero2)
         if choose_btn.rect.collidepoint(pygame.mouse.get_pos()) and hero == 2 and not isGetHero2:
             field_get.draw(screen)
-
-        x_c, y_c = pygame.mouse.get_pos()
-        cursorMenuChecker(x_c, y_c, consts.cursor, screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()
@@ -295,9 +292,6 @@ def levels_menu():
             levelBossStarsField.draw(screen)
             levelBossStars.draw(screen, starsRecorder.get_record(3))
             timeChecker(3, ButtonsFont, all_w, all_h, screen)
-
-        x_c, y_c = pygame.mouse.get_pos()
-        cursorMenuChecker(x_c, y_c, consts.cursor, screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()
@@ -448,9 +442,6 @@ def settings_menu():
         fs_btn.check_hover(pygame.mouse.get_pos())
         fs_btn.draw_f11(screen, windows.fullscreen)
 
-        x_c, y_c = pygame.mouse.get_pos()
-        cursorMenuChecker(x_c, y_c, consts.cursor, screen)
-
         consts.clock.tick(consts.fps)
         pygame.display.flip()
 
@@ -520,9 +511,6 @@ def info_menu():
         for button in [github_left_btn, github_right_btn, cross_btn]:
             button.check_hover(pygame.mouse.get_pos())
             button.draw(screen)
-
-        x_c, y_c = pygame.mouse.get_pos()
-        cursorMenuChecker(x_c, y_c, consts.cursor, screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()
