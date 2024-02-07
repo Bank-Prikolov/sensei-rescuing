@@ -352,7 +352,7 @@ def game_def(lvl, charact=wai):
                     control_field = Object(windows.width // 2 - 250, windows.height // 2 - 170, 504, 252,
                                            fr"objects\{languageNow}\controls-field-obj.png")
 
-                    pause.pause(super_pause)
+                    pause.pause(super_pause, current_seconds, str(lvl_gen.sloniks)[7], lvl_gen.screen)
                     started = True
                     hero = Hero(*predpause, windows.k ** windows.fullscreen)
                     if lookingright:

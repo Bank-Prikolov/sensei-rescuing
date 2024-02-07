@@ -10,7 +10,7 @@ from itemCreator import Object, Button
 languageNow = fileManager.languageImport()
 
 
-def pause(super_pause):
+def pause(super_pause, time, sloniks, screen):
     field = Object(8, 8, 1008, 688, rf"objects\without text\pause-window-obj.png")
     title = Object(windows.width // 2 - 176, windows.height // 2 - 185, 352, 116,
                    fr"objects\{languageNow}\pause-title-obj.png")
@@ -55,11 +55,20 @@ def pause(super_pause):
     pause_field = Object(windows.width // 2 - 430 // 2, windows.height // 2 - 246, 430, 342,
                          fr"objects\without text\pause-field-obj.png")
     left_field = Object(music_name.x + 434 // 2 - 470 // 2, windows.height // 2 - 246, 252, 342,
-                        fr"objects\without text\left-field-obj.png")
-    right_field = Object(sound_name.x + 434 // 2 - 470 // 2 + 470 - 252, windows.height // 2 - 246, 252, 342,
                         fr"objects\without text\right-field-obj.png")
+    right_field = Object(sound_name.x + 434 // 2 - 470 // 2 + 470 - 252, windows.height // 2 - 246, 252, 342,
+                        fr"objects\without text\left-field-obj.png")
     control_field = Object(windows.width // 2 - 250, windows.height // 2 - 170, 504, 252,
                            fr"objects\{languageNow}\controls-field-obj.png")
+
+    TimeFont = pygame.font.Font(r"data\fonts\PixelNumbers.ttf", 50)
+    time_sorted = f"{time // 60:02}:{time % 60:02}"
+    levelTime = TimeFont.render(time_sorted, True, "#ffffff")
+    levelTimeRect = levelTime.get_rect(center=(music_name.x + 434 // 2 - 470 // 2 + 252 // 2, 243))
+
+    SloniksFont = pygame.font.Font(r"data\fonts\PixelNumbers.ttf", 55)
+    levelSloniks = SloniksFont.render(sloniks, True, "#ffffff")
+    levelSloniksRect = levelSloniks.get_rect(center=(music_name.x + 434 // 2 - 470 // 2 + 252 // 2, 380))
 
     while super_pause:
         for event in pygame.event.get():
@@ -93,7 +102,7 @@ def pause(super_pause):
             button.check_hover(pygame.mouse.get_pos())
             button.draw(lvl_gen.screen)
 
-        # if control_btn.rect.collidepoint(pygame.mouse.get_pos()):
-        #     control_field.draw(lvl_gen.screen)
+        screen.blit(levelTime, levelTimeRect)
+        screen.blit(levelSloniks, levelSloniksRect)
 
         pygame.display.flip()
