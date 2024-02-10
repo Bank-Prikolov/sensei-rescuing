@@ -1,5 +1,6 @@
 import pygame
 import consts
+import lvl_gen
 import windows
 from processHelper import load_image
 
@@ -17,6 +18,7 @@ class Pic(pygame.sprite.Sprite):
 
 boss_group = pygame.sprite.Group()
 boss_projectile_group = pygame.sprite.Group()
+b_projectile_speed = []
 
 
 class Boss(pygame.sprite.Sprite):
@@ -40,31 +42,31 @@ class Boss(pygame.sprite.Sprite):
         self.bulletspeed = 6
         self.step = 0
         self.hitick = 0
-        self.projectile_speed = []
+
 
     def cut_sheet(self, sprites, koef, act):
         self.rect = pygame.Rect(0, 0, 64 * koef,
-                                64 * koef)
+                                108 * koef)
 
-        for i in range(sprites.get_height() // int(64 * koef)):
+        for i in range(sprites.get_height() // int(108 * koef)):
             frame_location = (self.rect.w * act, self.rect.h * i)
             self.frames.append(sprites.subsurface(pygame.Rect(
                 frame_location, self.rect.size)))
 
     def update(self):
+        lvl_gen.get_shadow(*self.rect)
+        lvl_gen.shadowgroup.draw(lvl_gen.screen)
         self.image = self.frames[self.cur_frame]
-        self.set_coords(*self.get_coords())
-        if self.counter == 11:
-            self.cur_frame = (self.cur_frame + 1) % 2
-
-    def get_coords(self):
-        return self.rect[0], self.rect[1]
+        if self.counter == 7:
+            self.cur_frame = (self.cur_frame + 1) % 8
+            self.counter = -1
+        self.counter += 1
 
     def set_coords(self, x, y):
         self.rect[:2] = [x, y]
 
-    def get_size(self):
-        return self.rect[2:4]
+    def get_coords(self):
+        return self.rect[0], self.rect[1]
 
     def shoot(self):
         Pic(self.get_coords()[0] + self.get_size()[0] // 2,

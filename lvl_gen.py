@@ -2,7 +2,7 @@ import os
 import sys
 from consts import *
 import windows
-from B055 import Boss, Pic
+import B055
 
 all_sprites = list()
 toches = pygame.sprite.Group()
@@ -130,11 +130,11 @@ class Slonik(pygame.sprite.Sprite):
         return self.rect[2:4]
 
     def shoot(self):
-        Pic(self.get_coords()[0] + self.get_size()[0] // 2,
-            self.get_coords()[1] + self.get_size()[1] // 2.5,
-            Slonik.php.get_width() // 2 * windows.k ** windows.fullscreen,
-            Slonik.php.get_height() // 2 * windows.k ** windows.fullscreen, php,
-            nmeprojectilesgroup)
+        B055.Pic(self.get_coords()[0] + self.get_size()[0] // 2,
+                 self.get_coords()[1] + self.get_size()[1] // 2.5,
+                 Slonik.php.get_width() // 2 * windows.k ** windows.fullscreen,
+                 Slonik.php.get_height() // 2 * windows.k ** windows.fullscreen, php,
+                 nmeprojectilesgroup)
         if self.looking_right:
             projectilespeed.append((self.bulletspeed * self.k ** windows.fullscreen, self))
         else:
@@ -204,45 +204,43 @@ class Board:
         for x in range(len(self.board[0])):
             for y in range(len(self.board)):
                 if self.board[y][x] == '0':
-                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, floor, toches)
+                    B055.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                             self.cell_size, floor, toches)
                 elif self.board[y][x] == '#':
-                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, wallx, toches)
+                    B055.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                             self.cell_size, wallx, toches)
                 elif self.board[y][x] == '=':
-                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, wally, toches)
+                    B055.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                             self.cell_size, wally, toches)
                 elif self.board[y][x] == '@':
                     pass
                 elif self.board[y][x] == '_':
-                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, plat, untouches)
-                    Pic(self.left + (self.cell_size * x) + self.cell_size // 4, self.top + (self.cell_size * y),
-                        self.cell_size - self.cell_size // 2,
-                        self.cell_size // 64, placeholder, platformgroup)
+                    B055.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                             self.cell_size, plat, untouches)
+                    B055.Pic(self.left + (self.cell_size * x) + self.cell_size // 4, self.top + (self.cell_size * y),
+                             self.cell_size - self.cell_size // 2,
+                             self.cell_size // 64, placeholder, platformgroup)
                 elif self.board[y][x] == 'F':
-                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, finish, finale)
+                    B055.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                             self.cell_size, finish, finale)
                 elif self.board[y][x] == 'C':
-                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, change, changegroup, untouches)
+                    B055.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                             self.cell_size, change, changegroup, untouches)
                 elif self.board[y][x] == '^':
-                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, thorn, thorngroup, anothertoches)
+                    B055.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                             self.cell_size, thorn, thorngroup, anothertoches)
                 elif self.board[y][x] == 'S':
-                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, boss_door, changegroup, untouches)
+                    B055.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                             self.cell_size, boss_door, changegroup, untouches)
                 elif self.board[y][x] == '%':
-                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, invis, breakgroup)
+                    B055.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                             self.cell_size, invis, breakgroup)
                 elif self.board[y][x] == 't':
-                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, trigger, triggergroup)
+                    B055.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                             self.cell_size, trigger, triggergroup)
                 elif self.board[y][x] == '&':
-                    Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                        self.cell_size, horizon, toches)
-                elif self.board[y][x] == 'B':
-                    Boss(self.left + (self.cell_size * x), self.top + (self.cell_size * y), windows.k ** windows.fullscreen)
+                    B055.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                             self.cell_size, horizon, toches)
                 else:
                     pass
         triggergroup.draw(sc)
@@ -281,6 +279,19 @@ class Board:
         sloniks = pygame.sprite.Group(list(sloniks)[len(sp) // 2:])
         sloniks.draw(screen)
 
+    def pereres_boss(self, spisokslonikoff):
+        sp = spisokslonikoff
+        for boss in sp:
+            if not windows.fullscreen:
+                new = ((boss.get_coords()[0] - windows.otstupx) // windows.k,
+                       (boss.get_coords()[1] - windows.otstupy) // windows.k)
+            else:
+                new = (windows.otstupx + boss.get_coords()[0] * windows.k,
+                       (windows.otstupy + boss.get_coords()[1] - 18) * windows.k)
+            a = B055.Boss(*new, windows.k ** windows.fullscreen, boss.act)
+            a.hp = boss.hp
+        B055.boss_group = pygame.sprite.Group(list(B055.boss_group)[len(sp) // 2:])
+
     def rev_get_cell(self, mouse_pos):
         if 0 < mouse_pos[0] < len(board.board[0]) and \
                 0 < mouse_pos[1] < len(board.board):
@@ -298,7 +309,15 @@ class Board:
                 if board.board[y][x] == 'e':
                     Slonik(self.left + (self.cell_size * x), self.top + (self.cell_size * y),
                            windows.k ** windows.fullscreen, 0)
-        sloniks.draw(screen)
+
+    def otris_boss(self):
+        B055.boss_group.empty()
+        for x in range(len(self.board[0])):
+            for y in range(len(self.board)):
+                if self.board[y][x] == 'B':
+                    B055.Boss(self.left + (self.cell_size * x),
+                              self.top + (self.cell_size * y) - 44 * windows.k ** windows.fullscreen,
+                              windows.k ** windows.fullscreen)
 
     def get_start_end_pos(self):
         a = 0
@@ -356,6 +375,7 @@ def generate_level(lvlnum):
     bgroup.update(*windows.size, windows.otstupx * windows.fullscreen, windows.otstupy * windows.fullscreen,
                   windows.k ** windows.fullscreen)
     board.otris_slonik()
+    board.otris_boss()
     return board.get_start_end_pos()
 
 
@@ -381,7 +401,7 @@ def updater():
 def get_shadow(x, y, w, h):
     shadowgroup.empty()
     sp = shadow
-    Pic(x, y, w, h, sp, shadowgroup)
+    B055.Pic(x, y, w, h, sp, shadowgroup)
 
 
 def remover(pos, block='.'):
@@ -389,56 +409,56 @@ def remover(pos, block='.'):
     if board.board[int(y)][int(x)] != block:
         board.board[int(y)] = board.board[int(y)][:int(x)] + block + board.board[int(y)][int(x) + 1:]
         if block == '0':
-            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
-                board.cell_size, floor, toches)
+            B055.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                     board.cell_size, floor, toches)
             toches.draw(screen)
         elif block == '#':
-            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
-                board.cell_size, wallx, toches)
+            B055.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                     board.cell_size, wallx, toches)
             toches.draw(screen)
         elif block == '=':
-            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
-                board.cell_size, wally, toches)
+            B055.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                     board.cell_size, wally, toches)
             toches.draw(screen)
         elif block == '_':
-            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
-                board.cell_size, plat, untouches)
-            Pic(board.left + (board.cell_size * x) + board.cell_size // 4, board.top + (board.cell_size * y),
-                board.cell_size - board.cell_size // 2,
-                board.cell_size // 64, placeholder, platformgroup)
+            B055.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                     board.cell_size, plat, untouches)
+            B055.Pic(board.left + (board.cell_size * x) + board.cell_size // 4, board.top + (board.cell_size * y),
+                     board.cell_size - board.cell_size // 2,
+                     board.cell_size // 64, placeholder, platformgroup)
             platformgroup.draw(screen)
             untouches.draw(screen)
         elif block == 'F':
-            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
-                board.cell_size, finish, finale)
+            B055.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                     board.cell_size, finish, finale)
             finale.draw(screen)
         elif block == 'C':
-            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
-                board.cell_size, change, changegroup, untouches)
+            B055.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                     board.cell_size, change, changegroup, untouches)
             untouches.draw(screen)
         elif block == '^':
-            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
-                board.cell_size, thorn, thorngroup, anothertoches)
+            B055.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                     board.cell_size, thorn, thorngroup, anothertoches)
             anothertoches.draw(screen)
         elif block == 'S':
-            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
-                board.cell_size, boss_door, changegroup, untouches)
+            B055.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                     board.cell_size, boss_door, changegroup, untouches)
             untouches.draw(screen)
         elif block == '%':
-            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
-                board.cell_size, invis, breakgroup)
+            B055.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                     board.cell_size, invis, breakgroup)
             breakgroup.draw(screen)
         elif block == 't':
-            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
-                board.cell_size, trigger, triggergroup)
+            B055.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                     board.cell_size, trigger, triggergroup)
             triggergroup.draw(screen)
         elif block == '&':
-            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
-                board.cell_size, horizon, toches)
+            B055.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                     board.cell_size, horizon, toches)
             toches.draw(screen)
         elif block == '.':
-            Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
-                board.cell_size, shadow, shadowgroup)
+            B055.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                     board.cell_size, shadow, shadowgroup)
             shadowgroup.draw(screen)
 
 

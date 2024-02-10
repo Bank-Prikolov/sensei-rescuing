@@ -1,3 +1,4 @@
+import B055
 import lvl_gen
 import game_over
 import game_complete
@@ -7,7 +8,7 @@ import windows
 import starsRecorder
 import fileManager
 from processHelper import load_image, terminate
-from itemCreator import Object, Button
+from itemCreator import Object
 from itemChecker import starsCountChecker
 
 runright, runleft, lookingup, sitting = False, False, False, False
@@ -189,11 +190,11 @@ class Hero(pygame.sprite.Sprite):
         return self.rect[2:4]
 
     def shoot(self, spees):
-        lvl_gen.Pic(self.get_coords()[0] + self.get_size()[0] // 4,
-                    self.get_coords()[1] + self.get_size()[1] // 2,
-                    self.fireball.get_width() // 2.5 * windows.k ** windows.fullscreen,
-                    self.fireball.get_height() // 2.5 * windows.k ** windows.fullscreen, fireball,
-                    lvl_gen.projectilesgroup)
+        B055.Pic(self.get_coords()[0] + self.get_size()[0] // 4,
+                 self.get_coords()[1] + self.get_size()[1] // 2,
+                 self.fireball.get_width() // 2.5 * windows.k ** windows.fullscreen,
+                 self.fireball.get_height() // 2.5 * windows.k ** windows.fullscreen, fireball,
+                 lvl_gen.projectilesgroup)
         self.projectilespeed.append(spees)
 
     def end(self):
@@ -293,6 +294,7 @@ def game_def(lvl, charact=wai):
                     lvl_gen.characters.empty()
                     hero.projectilespeed = []
                     lvl_gen.projectilespeed = []
+
                     lvl_gen.nmeprojectilesgroup.empty()
                     lvl_gen.projectilesgroup.empty()
                     hero = Hero(*new, windows.k ** windows.fullscreen)
@@ -303,6 +305,7 @@ def game_def(lvl, charact=wai):
                     lvl_gen.rescreen()
                     lvl_gen.updater()
                     lvl_gen.board.pereres_slon(lvl_gen.sloniks)
+                    lvl_gen.board.pereres_boss(B055.boss_group)
                 elif event.key == pygame.K_w:
                     if pygame.sprite.spritecollide(hero, lvl_gen.finale, False):
                         thing = ''
@@ -357,6 +360,7 @@ def game_def(lvl, charact=wai):
                         else:
                             hero.change_hero('sl', new)
                         lvl_gen.board.pereres_slon(lvl_gen.sloniks)
+                        lvl_gen.board.pereres_boss(B055.boss_group)
                     lvl_gen.rescreen()
                     lvl_gen.updater()
 
@@ -430,9 +434,11 @@ def game_def(lvl, charact=wai):
                     break
             lvl_gen.nmeprojectilesgroup.draw(lvl_gen.screen)
 
-        if pygame.sprite.spritecollide(hero, lvl_gen.thorngroup, False) or pygame.sprite.spritecollide(hero,
-                                                                                                       lvl_gen.sloniks,
-                                                                                                       False):
+        if (pygame.sprite.spritecollide(hero, lvl_gen.thorngroup, False)
+                or pygame.sprite.spritecollide(hero, lvl_gen.sloniks, False)
+                or pygame.sprite.spritecollide(hero,
+                                               B055.boss_group,
+                                               False)):
             thing = ''
             hero.end()
             lvl_gen.projectilespeed = []
@@ -492,10 +498,12 @@ def game_def(lvl, charact=wai):
         lvl_gen.breakgroup.draw(lvl_gen.screen)
         lvl_gen.characters.draw(lvl_gen.screen)
         lvl_gen.sloniks.update()
+        B055.boss_group.update()
         lvl_gen.sloniks.draw(lvl_gen.screen)
         lvl_gen.triggergroup.draw(lvl_gen.screen)
         lvl_gen.finale.draw(lvl_gen.screen)
         lvl_gen.untouches.draw(lvl_gen.screen)
+        B055.boss_group.draw(lvl_gen.screen)
         pygame.draw.rect(lvl_gen.screen, '#000000',
                          (0, 0, windows.otstupx ** windows.fullscreen, windows.fullsize[1] ** windows.fullscreen))
         pygame.draw.rect(lvl_gen.screen, '#000000',
