@@ -45,6 +45,7 @@ class Hero(pygame.sprite.Sprite):
         self.act = act
         self.counter = 0
         self.projectilespeed = []
+        self.projectile_speed = 8
 
     def cut_sheet(self, sprites, koef, anim):
         self.rect = pygame.Rect(0, 0, 40 * koef,
@@ -220,9 +221,9 @@ def game_def(lvl, charact=1):
     lvl_gen.updater()
     hero = Hero(*start_coords, windows.k ** windows.fullscreen, hr=charact)
     running = True
-    projectile_speed = 8
     lvl_gen.characters.draw(lvl_gen.screen)
     thing = ''
+    cheatpannel = False  # <== чит панель, не нажимайте 5ую кнопку мыши
     timer_event = pygame.USEREVENT + 1
     pygame.time.set_timer(timer_event, 1000)
     started = True
@@ -265,9 +266,9 @@ def game_def(lvl, charact=1):
                     if sitting:
                         yspeed = 7
                     else:
-                        if not (jumping or falling or sitting):
+                        if (not (jumping or falling or sitting)) or cheatpannel:
                             jumping = True
-                            yspeed = -9
+                            yspeed = -9 * 2 ** cheatpannel
                             if lookingright:
                                 hero.change_hero('jumpr', hero.get_coords())
                                 pass
@@ -318,9 +319,9 @@ def game_def(lvl, charact=1):
                         game_complete.game_complete()
                     else:
                         if lookingright:
-                            shooting = projectile_speed * windows.k ** windows.fullscreen
+                            shooting = hero.projectile_speed * windows.k ** windows.fullscreen
                         else:
-                            shooting = -projectile_speed * windows.k ** windows.fullscreen
+                            shooting = -hero.projectile_speed * windows.k ** windows.fullscreen
                         hero.shoot(shooting)
                 elif event.key == pygame.K_ESCAPE:
                     started = False
@@ -362,7 +363,6 @@ def game_def(lvl, charact=1):
                         lvl_gen.board.pereres_boss(B055.boss_group)
                     lvl_gen.rescreen()
                     lvl_gen.updater()
-
             elif event.type == pygame.WINDOWEXPOSED:
                 if lookingright:
                     hero.change_hero('sr', hero.get_coords())
@@ -378,9 +378,11 @@ def game_def(lvl, charact=1):
                 elif event.key == pygame.K_a:
                     runleft = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    # hero.set_coords(*event.pos) # чит офф
-                    pass
+                if event.button == 5:  # чити
+                    cheatpannel = not cheatpannel
+                    hero.xs = 3 * 5 ** cheatpannel
+                    hero.projectile_speed = 8 * 2 ** cheatpannel
+
         pause_btn.draw(windows.screen)
         if pygame.sprite.spritecollide(hero, lvl_gen.changegroup, False):
             lvl_gen.projectilesgroup.empty()
@@ -400,8 +402,9 @@ def game_def(lvl, charact=1):
                 list(lvl_gen.projectilesgroup)[sprite].rect = list(lvl_gen.projectilesgroup)[sprite].rect.move(
                     hero.projectilespeed[sprite], 0)
                 if pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.sloniks, False):
-                    if pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite],
-                                                   lvl_gen.sloniks, False)[0].get_hit(hero.get_coords()[0]) == 0:
+                    if (pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite],
+                                                    lvl_gen.sloniks, False)[0].get_hit(hero.get_coords()[0]) == 0
+                            or cheatpannel):
                         lvl_gen.remover(lvl_gen.board.get_cell(list(
                             pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.sloniks, True))[
                                                                    0].rect[:2]))
@@ -421,7 +424,8 @@ def game_def(lvl, charact=1):
                 pygame.draw.rect(lvl_gen.screen, (36, 34, 52), list(lvl_gen.nmeprojectilesgroup)[sprite].rect)
                 list(lvl_gen.nmeprojectilesgroup)[sprite].rect = list(lvl_gen.nmeprojectilesgroup)[sprite].rect.move(
                     lvl_gen.projectilespeed[sprite][0], 0)
-                if pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite], lvl_gen.characters, False):
+                if pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite], lvl_gen.characters,
+                                               False) and not cheatpannel:
                     thing = ''
                     hero.end()
                     lvl_gen.projectilespeed = []
@@ -436,19 +440,19 @@ def game_def(lvl, charact=1):
                     list(lvl_gen.nmeprojectilesgroup)[sprite].kill()
                     break
             lvl_gen.nmeprojectilesgroup.draw(lvl_gen.screen)
-
-        if (pygame.sprite.spritecollide(hero, lvl_gen.thorngroup, False)
-                or pygame.sprite.spritecollide(hero, lvl_gen.sloniks, False)
-                or pygame.sprite.spritecollide(hero,
-                                               B055.boss_group,
-                                               False)):
-            thing = ''
-            hero.end()
-            lvl_gen.projectilespeed = []
-            lvl_gen.nmeprojectilesgroup.empty()
-            lvl_gen.updater()
-            started = False
-            game_over.game_over()
+        if not cheatpannel:
+            if (pygame.sprite.spritecollide(hero, lvl_gen.thorngroup, False)
+                    or pygame.sprite.spritecollide(hero, lvl_gen.sloniks, False)
+                    or pygame.sprite.spritecollide(hero,
+                                                   B055.boss_group,
+                                                   False)):
+                thing = ''
+                hero.end()
+                lvl_gen.projectilespeed = []
+                lvl_gen.nmeprojectilesgroup.empty()
+                lvl_gen.updater()
+                started = False
+                game_over.game_over()
         if pygame.sprite.spritecollide(hero, lvl_gen.triggergroup, False):
             if lvl == 2 and thing == 1:
                 # lvl_gen.remover(lvl_gen.board.get_cell(hero.get_coords()))
