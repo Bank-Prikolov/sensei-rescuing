@@ -421,8 +421,7 @@ def game_def(lvl, charact=wai):
                     lvl_gen.nmeprojectilesgroup.empty()
                     lvl_gen.updater()
                     started = False
-                    over = True
-                    game_over.game_over(over)
+                    game_over.game_over()
                 if (pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite], lvl_gen.toches, False)
                         or pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite],
                                                        lvl_gen.anothertoches, False)):
@@ -440,8 +439,7 @@ def game_def(lvl, charact=wai):
             lvl_gen.nmeprojectilesgroup.empty()
             lvl_gen.updater()
             started = False
-            over = True
-            game_over.game_over(over)
+            game_over.game_over()
         if pygame.sprite.spritecollide(hero, lvl_gen.triggergroup, False):
             if lvl == 2 and thing == 1:
                 # lvl_gen.remover(lvl_gen.board.get_cell(hero.get_coords()))
