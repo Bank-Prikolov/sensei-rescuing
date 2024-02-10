@@ -6,10 +6,9 @@ import pause
 from consts import *
 import windows
 import starsRecorder
-import fileManager
 from processHelper import load_image, terminate
 from itemCreator import Object
-from itemChecker import starsCountChecker
+from itemChecker import starsCountChecker, fullscreenWindowsChanger
 
 runright, runleft, lookingup, sitting = False, False, False, False
 jumping = False
@@ -18,8 +17,6 @@ lookingright = 1
 shooting = 0
 xspeed = 0
 yspeed = 0
-
-languageNow = fileManager.languageImport()
 
 
 class Hero(pygame.sprite.Sprite):
@@ -280,6 +277,7 @@ def game_def(lvl, charact=wai):
                 elif event.key == pygame.K_F11:
                     if windows.fullscreen:
                         windows.fullscreen = 0
+                        fullscreenWindowsChanger(windows.fullscreen)
                         pause_btn = Object(windows.width - windows.width + 8, windows.height - windows.height + 6, 108,
                                            54,
                                            r"objects\without text\pause-button-obj.png")
@@ -287,6 +285,7 @@ def game_def(lvl, charact=wai):
                                (hero.get_coords()[1] - windows.otstupy + 6) // windows.k)
                     else:
                         windows.fullscreen = 1
+                        fullscreenWindowsChanger(windows.fullscreen)
                         pause_btn = Object(windows.otstupx + 8, windows.height - windows.height + 6, 144, 72,
                                            r"objects\without text\pause-button-obj.png")
                         new = (windows.otstupx + hero.get_coords()[0] * windows.k,
