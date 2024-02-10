@@ -27,6 +27,7 @@ slonik = r'characters\slonik_php.png'
 php = r'characters\php.png'
 invis = r'textures\%-texture.png'
 horizon = r'textures\&-texture.png'
+boss = r'characters\VLAD.png'
 
 # menu and game consts
 cursor = load_image(r'objects\without text\cursor-obj.png')

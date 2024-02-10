@@ -1,9 +1,8 @@
-import pygame
 import os
 import sys
-from processHelper import load_image
 from consts import *
 import windows
+from B055 import Boss, Pic
 
 all_sprites = list()
 toches = pygame.sprite.Group()
@@ -170,17 +169,6 @@ class Slonik(pygame.sprite.Sprite):
         self.rect = self.rect.move(*pos)
 
 
-class Pic(pygame.sprite.Sprite):
-    def __init__(self, x, y, w, h, sprite, *group):
-        sprite = load_image(sprite)
-        group = group
-        super().__init__(*group)
-        self.image = pygame.transform.scale(sprite, (w, h))
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-
-
 class Board:
     def __init__(self, txt=None):
         if txt:
@@ -253,6 +241,8 @@ class Board:
                 elif self.board[y][x] == '&':
                     Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                         self.cell_size, horizon, toches)
+                elif self.board[y][x] == 'B':
+                    Boss(self.left + (self.cell_size * x), self.top + (self.cell_size * y), windows.k ** windows.fullscreen)
                 else:
                     pass
         triggergroup.draw(sc)
