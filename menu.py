@@ -1,73 +1,55 @@
 import pygame
-import sys
 import webbrowser
 import windows
 import game
 import consts
 import fileManager
 import starsRecorder
-from processHelper import load_image, terminate
+from processHelper import terminate, transition
 from itemCreator import Object, Button, Stars
 from itemChecker import timeChecker
 
-size = WIDTH, HEIGHT = 1024, 704
-screen = pygame.display.set_mode(size)
-
-img = load_image(r'backgrounds\main-menu-bg.png')
-bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
-
-isSliderMusic = False
-isSliderSound = False
-
-hero, heroNow, isGetHero2 = fileManager.heroImport()
-
-lvlNow = None
-
-wM, wS, volS = fileManager.volumeImport()
-
-firstTime = True
-
-languageNow = fileManager.languageImport()
-
 
 def main_menu():
-    global wM, wS, firstTime, hero, heroNow, isGetHero2
-
-    if firstTime:
+    if consts.firstTime:
         pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
         pygame.mixer.music.play(-1)
-        firstTime = False
-    pygame.mixer.music.set_volume(wM)
+        consts.firstTime = False
+    pygame.mixer.music.set_volume(consts.wM)
 
     if not windows.fullscreen:
         change_menu_fullScreen(1024, 704)
-        all_w, all_h = WIDTH // 2 - 443, HEIGHT - 619
+        all_w, all_h = windows.width // 2 - 443, windows.height - 619
     else:
         change_menu_fullScreen(1920, 1080, pygame.FULLSCREEN)
-        all_w, all_h = WIDTH // 2 - 443, HEIGHT - 820
+        all_w, all_h = windows.width // 2 - 443, windows.height - 820
 
-    title = Object(all_w, all_h, 886, 80, fr"objects\{languageNow}\menu-title-obj.png")
+    title = Object(all_w, all_h, 886, 80, fr"objects\{consts.languageNow}\menu-title-obj.png")
 
-    updates_field = Object(all_w, all_h + 102, 304, 416, fr"objects\{languageNow}\updates-field-obj.png")
+    updates_field = Object(all_w, all_h + 102, 304, 416, fr"objects\{consts.languageNow}\updates-field-obj.png")
     buttons_field = Object(all_w + 315, all_h + 102, 256, 416, r"objects\without text\menu-buttons-field-obj.png")
-    hero_field = Object(all_w + 582, all_h + 102, 304, 416, fr"objects\{languageNow}\hero-field-obj.png")
+    hero_field = Object(all_w + 582, all_h + 102, 304, 416, fr"objects\{consts.languageNow}\hero-field-obj.png")
 
-    start_btn = Button(all_w + 323, all_h + 110, 240, 100, fr"buttons\{languageNow}\default-start-btn.png",
-                       fr"buttons\{languageNow}\hover-start-btn.png", fr"buttons\{languageNow}\press-start-btn.png",
+    start_btn = Button(all_w + 323, all_h + 110, 240, 100, fr"buttons\{consts.languageNow}\default-start-btn.png",
+                       fr"buttons\{consts.languageNow}\hover-start-btn.png",
+                       fr"buttons\{consts.languageNow}\press-start-btn.png",
                        r"data\sounds\menu-button-sound.mp3")
-    settings_btn = Button(all_w + 323, all_h + 210, 240, 100, fr"buttons\{languageNow}\default-settings-btn.png",
-                          fr"buttons\{languageNow}\hover-settings-btn.png",
-                          fr"buttons\{languageNow}\press-settings-btn.png",
+    settings_btn = Button(all_w + 323, all_h + 210, 240, 100, fr"buttons\{consts.languageNow}\default-settings-btn.png",
+                          fr"buttons\{consts.languageNow}\hover-settings-btn.png",
+                          fr"buttons\{consts.languageNow}\press-settings-btn.png",
                           r"data\sounds\menu-button-sound.mp3")
-    info_btn = Button(all_w + 323, all_h + 310, 240, 100, fr"buttons\{languageNow}\default-info-btn.png",
-                      fr"buttons\{languageNow}\hover-info-btn.png", fr"buttons\{languageNow}\press-info-btn.png",
+    info_btn = Button(all_w + 323, all_h + 310, 240, 100, fr"buttons\{consts.languageNow}\default-info-btn.png",
+                      fr"buttons\{consts.languageNow}\hover-info-btn.png",
+                      fr"buttons\{consts.languageNow}\press-info-btn.png",
                       r"data\sounds\menu-button-sound.mp3")
-    exit_btn = Button(all_w + 323, all_h + 410, 240, 100, fr"buttons\{languageNow}\default-exit-btn.png",
-                      fr"buttons\{languageNow}\hover-exit-btn.png", fr"buttons\{languageNow}\press-exit-btn.png",
+    exit_btn = Button(all_w + 323, all_h + 410, 240, 100, fr"buttons\{consts.languageNow}\default-exit-btn.png",
+                      fr"buttons\{consts.languageNow}\hover-exit-btn.png",
+                      fr"buttons\{consts.languageNow}\press-exit-btn.png",
                       r"data\sounds\menu-button-sound.mp3")
 
     hero_choose = Object(all_w + 582 + 304 // 2 - 107 // 2, all_h + 102 + 95, 107, 204,
-                         r"objects\without text\hero-wai-obj.png", "", r"objects\without text\hero-sato-obj.png")
+                         r"objects\without text\hero-wai-obj.png", "",
+                         r"objects\without text\hero-the-strongest-wai-obj.png")
 
     arrow_btn = Button(all_w + 582 + 304 // 2 - 173 // 2 + 180, all_h + 102 + 95 + 241 // 2 - 36 // 2, 36, 40,
                        r"buttons\without text\default-arrow-btn.png", r"buttons\without text\hover-arrow-btn.png",
@@ -76,20 +58,21 @@ def main_menu():
                          r"buttons\without text\default-r-arrow-btn.png", r"buttons\without text\hover-r-arrow-btn.png",
                          r"buttons\without text\press-r-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
     choose_btn = Button(all_w + 582 + 304 // 2 - 159 // 2, all_h + 410, 159, 48,
-                        fr"buttons\{languageNow}\default-choose-btn.png",
-                        fr"buttons\{languageNow}\hover-choose-btn.png", fr"buttons\{languageNow}\press-choose-btn.png",
-                        r"data\sounds\menu-button-sound.mp3", "", hero,
-                        fr"buttons\{languageNow}\default-get-btn.png",
-                        fr"buttons\{languageNow}\hover-get-btn.png",
-                        fr"buttons\{languageNow}\press-get-btn.png")
+                        fr"buttons\{consts.languageNow}\default-choose-btn.png",
+                        fr"buttons\{consts.languageNow}\hover-choose-btn.png",
+                        fr"buttons\{consts.languageNow}\press-choose-btn.png",
+                        r"data\sounds\menu-button-sound.mp3", "", consts.heroNow,
+                        fr"buttons\{consts.languageNow}\default-get-btn.png",
+                        fr"buttons\{consts.languageNow}\hover-get-btn.png",
+                        fr"buttons\{consts.languageNow}\press-get-btn.png")
 
     field_get = Object(all_w + 582 + 304 // 2 - 159 // 2 - 42, all_h + 302, 243, 105,
-                       fr"objects\{languageNow}\how-to-get-obj.png")
+                       fr"objects\{consts.languageNow}\how-to-get-obj.png")
 
     running = True
-    hero = heroNow
+    hero = consts.heroNow
     while running:
-        screen.blit(bg, (0, 0))
+        windows.screen.blit(consts.menu_bg, (0, 0))
         for event in pygame.event.get():
             if (event.type == pygame.QUIT) or (event.type == pygame.USEREVENT and event.button == exit_btn):
                 terminate(windows.fullscreen)
@@ -117,15 +100,15 @@ def main_menu():
                     main_menu()
 
             if event.type == pygame.USEREVENT and event.button == choose_btn:
-                if hero == 1 and hero != heroNow:
-                    heroNow = 1
-                elif hero == 2 and hero != heroNow:
-                    if isGetHero2:
-                        heroNow = 2
+                if hero == 1 and hero != consts.heroNow:
+                    consts.heroNow = 1
+                elif hero == 2 and hero != consts.heroNow:
+                    if consts.isGetHero2:
+                        consts.heroNow = 2
                     else:
                         webbrowser.open('https://t.me/smoladventurebot')
-                        isGetHero2 = 1
-                fileManager.heroExport(heroNow, isGetHero2)
+                        consts.isGetHero2 = 1
+                fileManager.heroExport(consts.heroNow, consts.isGetHero2)
 
             if event.type == pygame.USEREVENT and (event.button == arrow_btn or event.button == r_arrow_btn):
                 if hero == 1:
@@ -134,42 +117,41 @@ def main_menu():
                     hero = 1
 
             for button in [start_btn, settings_btn, info_btn, exit_btn, arrow_btn, r_arrow_btn, choose_btn]:
-                button.handle_event(event, volS)
+                button.handle_event(event, consts.volS)
 
         for obj in [title, updates_field, buttons_field, hero_field]:
-            obj.draw(screen)
+            obj.draw(windows.screen)
 
-        hero_choose.draw(screen, hero)
+        hero_choose.draw(windows.screen, hero)
 
         for button in [start_btn, settings_btn, info_btn, exit_btn, arrow_btn, r_arrow_btn]:
             button.check_hover(pygame.mouse.get_pos())
-            button.draw(screen)
+            button.draw(windows.screen)
 
         choose_btn.check_hover(pygame.mouse.get_pos())
-        choose_btn.draw_heroBtn(screen, hero, heroNow, isGetHero2)
-        if choose_btn.rect.collidepoint(pygame.mouse.get_pos()) and hero == 2 and not isGetHero2:
-            field_get.draw(screen)
+        choose_btn.draw_heroBtn(windows.screen, hero, consts.heroNow, consts.isGetHero2)
+        if choose_btn.rect.collidepoint(pygame.mouse.get_pos()) and hero == 2 and not consts.isGetHero2:
+            field_get.draw(windows.screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()
 
 
 def levels_menu():
-    global lvlNow, firstTime
     if not windows.fullscreen:
         change_menu_fullScreen(1024, 704)
-        all_w, all_h = WIDTH // 2 - 395, HEIGHT - 595
+        all_w, all_h = windows.width // 2 - 395, windows.height - 595
     else:
         change_menu_fullScreen(1920, 1080, pygame.FULLSCREEN)
-        all_w, all_h = WIDTH // 2 - 395, HEIGHT - 770
+        all_w, all_h = windows.width // 2 - 395, windows.height - 770
 
-    if firstTime:
+    if consts.firstTime:
         pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
         pygame.mixer.music.play(-1)
-        firstTime = False
-    pygame.mixer.music.set_volume(wM)
+        consts.firstTime = False
+    pygame.mixer.music.set_volume(consts.wM)
 
-    title = Object(all_w, all_h, 700, 82, fr"objects\{languageNow}\level-menu-title-obj.png")
+    title = Object(all_w, all_h, 700, 82, fr"objects\{consts.languageNow}\level-menu-title-obj.png")
 
     cross_btn = Button(all_w + title.width + 18, all_h + 8, 67, 72, r"buttons\without text\default-cross-btn.png",
                        r"buttons\without text\hover-cross-btn.png", r"buttons\without text\press-cross-btn.png",
@@ -186,7 +168,7 @@ def levels_menu():
     info_btn = Button(all_w + 858, all_h + 122.5, 18, 18, r"buttons\without text\default-level-info-btn.png",
                       r"buttons\without text\hover-level-info-btn.png")
 
-    field_d = Object(all_w + 358.5, all_h - 95.5, 498, 218, fr"objects\{languageNow}\level-info-field-obj.png")
+    field_d = Object(all_w + 358.5, all_h - 95.5, 498, 218, fr"objects\{consts.languageNow}\level-info-field-obj.png")
 
     field = Object(all_w - 100, all_h + 111, 987, 252, r"objects\without text\level-menu-field-obj.png")
     level1Field = Object(all_w - 79, all_h + 142, 186, 189, r"objects\without text\start-level-field-obj.png")
@@ -213,7 +195,7 @@ def levels_menu():
 
     running = True
     while running:
-        screen.blit(bg, (0, 0))
+        windows.screen.blit(consts.menu_bg, (0, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -229,23 +211,23 @@ def levels_menu():
                 main_menu()
 
             if event.type == pygame.USEREVENT and event.button == level1Button:
-                lvlNow = 1
+                consts.lvlNow = 1
                 pygame.mixer.music.stop()
-                firstTime = True
+                consts.firstTime = True
                 transition()
                 game.game_def(1)
 
             if event.type == pygame.USEREVENT and event.button == level2Button:
-                lvlNow = 2
+                consts.lvlNow = 2
                 pygame.mixer.music.stop()
-                firstTime = True
+                consts.firstTime = True
                 transition()
                 game.game_def(2)
 
             if event.type == pygame.USEREVENT and event.button == levelBossButton:
-                lvlNow = 3
+                consts.lvlNow = 3
                 pygame.mixer.music.stop()
-                firstTime = True
+                consts.firstTime = True
                 transition()
                 game.game_def(3)
 
@@ -260,57 +242,62 @@ def levels_menu():
                     levels_menu()
 
             for button in [cross_btn, level1Button, level2Button, levelBossButton]:
-                button.handle_event(event, volS)
+                button.handle_event(event, consts.volS)
 
         for obj in [title, field, level1Field, level2Field, levelBossField]:
-            obj.draw(screen)
+            obj.draw(windows.screen)
 
         for button in [cross_btn, level1Button, level2Button, levelBossButton]:
             button.check_hover(pygame.mouse.get_pos())
-            button.draw(screen)
+            button.draw(windows.screen)
 
         info_btn.check_hover(pygame.mouse.get_pos())
         if info_btn.rect.collidepoint(pygame.mouse.get_pos()):
-            field_d.draw(screen)
-        info_btn.draw(screen)
+            field_d.draw(windows.screen)
+        info_btn.draw(windows.screen)
 
         if starsRecorder.check_passing(1):
-            level1StarsField.draw(screen)
-            level1Stars.draw(screen, starsRecorder.get_record(1))
+            level1StarsField.draw(windows.screen)
+            level1Stars.draw(windows.screen, starsRecorder.get_record(1))
             level2Field.check_passing(True)
             level2Button.check_passing(True)
-            timeChecker(1, ButtonsFont, all_w, all_h, screen)
+            timeChecker(1, ButtonsFont, all_w, all_h, windows.screen)
 
         if starsRecorder.check_passing(2):
-            level2StarsField.draw(screen)
-            level2Stars.draw(screen, starsRecorder.get_record(2))
+            level2StarsField.draw(windows.screen)
+            level2Stars.draw(windows.screen, starsRecorder.get_record(2))
             levelBossField.check_passing(True)
             levelBossButton.check_passing(True)
-            timeChecker(2, ButtonsFont, all_w, all_h, screen)
+            timeChecker(2, ButtonsFont, all_w, all_h, windows.screen)
 
         if starsRecorder.check_passing(3):
-            levelBossStarsField.draw(screen)
-            levelBossStars.draw(screen, starsRecorder.get_record(3))
-            timeChecker(3, ButtonsFont, all_w, all_h, screen)
+            levelBossStarsField.draw(windows.screen)
+            levelBossStars.draw(windows.screen, starsRecorder.get_record(3))
+            timeChecker(3, ButtonsFont, all_w, all_h, windows.screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()
 
 
 def settings_menu():
-    global isSliderMusic, isSliderSound, volS, wM, wS, languageNow
     if not windows.fullscreen:
-        all_w, all_h = WIDTH // 2 - 363, HEIGHT - 619
+        all_w, all_h = windows.width // 2 - 363, windows.height - 619
     else:
-        all_w, all_h = WIDTH // 2 - 363, HEIGHT - 820
+        all_w, all_h = windows.width // 2 - 363, windows.height - 820
 
-    title = Object(all_w, all_h, 626, 82, fr"objects\{languageNow}\settings-title-obj.png")
+    title = Object(all_w, all_h, 626, 82, fr"objects\{consts.languageNow}\settings-title-obj.png")
 
-    field_audio = Object(all_w - 87, all_h + 115, 420, 430, fr"objects\{languageNow}\audio-field-obj.png")
-    field_video = Object(all_w + 393, all_h + 115, 420, 430, fr"objects\{languageNow}\video-field-obj.png")
-    fs_name = Object(all_w + 436, all_h + 235, 332, 75, fr"objects\{languageNow}\fullscreen-obj.png")
-    sound_name = Object(all_w - 46, all_h + 385, 332, 35, fr"objects\{languageNow}\sound-obj.png")
-    music_name = Object(all_w - 46, all_h + 249, 332, 35, fr"objects\{languageNow}\music-obj.png")
+    field_audio = Object(all_w - 87, all_h + 115, 420, 430, fr"objects\{consts.languageNow}\audio-field-obj.png")
+    field_video = Object(all_w + 393, all_h + 115, 420, 430, fr"objects\{consts.languageNow}\video-field-obj.png")
+    fs_name = Object(all_w + 436, all_h + 235 if consts.languageNow == 'rus' else all_h + 215, 332, 75,
+                     fr"objects\{consts.languageNow}\fullscreen-obj.png")
+    sound_name = Object(field_audio.x + field_audio.width // 2 - 332 // 2 if consts.languageNow == 'rus'
+                        else field_audio.x + field_audio.width // 2 - 359 // 2, all_h + 385,
+                        332 if consts.languageNow == 'rus' else 359, 35, fr"objects\{consts.languageNow}\sound-obj.png")
+    music_name = Object(
+        field_audio.x + field_audio.width // 2 - 332 // 2 if consts.languageNow == 'rus'
+        else field_audio.x + field_audio.width // 2 - 359 // 2,
+        all_h + 249, 332 if consts.languageNow == 'rus' else 359, 35, fr"objects\{consts.languageNow}\music-obj.png")
     music_slider_obj = Object(all_w - 31, all_h + 308, 302, 16, r"objects\without text\slider-obj.png")
     sound_slider_obj = Object(all_w - 31, all_h + 444, 302, 16, r"objects\without text\slider-obj.png")
     langauge_obj = Object(all_w + 436 + 57.5, all_h + 420, 215, 52,
@@ -319,8 +306,9 @@ def settings_menu():
     cross_btn = Button(all_w + 646, all_h + 8, 67, 72, r"buttons\without text\default-cross-btn.png",
                        r"buttons\without text\hover-cross-btn.png",
                        r"buttons\without text\press-cross-btn.png", r"data\sounds\menu-button-sound.mp3")
-    fs_btn = Button(all_w + 534, all_h + 325, 136, 62, fr"buttons\{languageNow}\fullscreen-off-btn.png", "",
-                    fr"buttons\{languageNow}\fullscreen-on-btn.png", r"data\sounds\menu-button-sound.mp3")
+    fs_btn = Button(fs_name.x + fs_name.width // 2 - 136 // 2, fs_name.y + fs_name.height + 15, 136, 62,
+                    fr"buttons\{consts.languageNow}\fullscreen-off-btn.png", "",
+                    fr"buttons\{consts.languageNow}\fullscreen-on-btn.png", r"data\sounds\menu-button-sound.mp3")
     arrow_btn = Button(all_w + 732, all_h + 432, 36, 40,
                        r"buttons\without text\default-arrow-btn.png", r"buttons\without text\hover-arrow-btn.png",
                        r"buttons\without text\press-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
@@ -328,17 +316,17 @@ def settings_menu():
                          r"buttons\without text\default-r-arrow-btn.png", r"buttons\without text\hover-r-arrow-btn.png",
                          r"buttons\without text\press-r-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
     if not windows.fullscreen:
-        sl = 106 + 300 * wM
+        sl = 106 + 300 * consts.wM
     else:
-        sl = 553 + 300 * wM
+        sl = 553 + 300 * consts.wM
     music_slider_btn = Button(sl, all_h + 302, 26, 28,
                               r"buttons\without text\default-slider-btn.png",
                               r"buttons\without text\hover-slider-btn.png",
                               r"buttons\without text\press-slider-btn.png")
     if not windows.fullscreen:
-        sd = 106 + 300 * wS
+        sd = 106 + 300 * consts.wS
     else:
-        sd = 553 + 300 * wS
+        sd = 553 + 300 * consts.wS
     sound_slider_btn = Button(sd, all_h + 438, 26, 28,
                               r"buttons\without text\default-slider-btn.png",
                               r"buttons\without text\hover-slider-btn.png",
@@ -371,22 +359,22 @@ def settings_menu():
                     settings_menu()
 
             if event.type == pygame.USEREVENT and (event.button == arrow_btn or event.button == r_arrow_btn):
-                if languageNow == 'eng':
-                    languageNow = 'rus'
-                elif languageNow == 'rus':
-                    languageNow = 'eng'
-                fileManager.languageExport(languageNow)
+                if consts.languageNow == 'eng':
+                    consts.languageNow = 'rus'
+                elif consts.languageNow == 'rus':
+                    consts.languageNow = 'eng'
+                fileManager.languageExport(consts.languageNow)
                 settings_menu()
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == music_slider_btn:
-                isSliderMusic = True
+                consts.isSliderMusic = True
 
             elif event.type == pygame.MOUSEBUTTONUP and event.button == music_slider_btn:
-                isSliderMusic = False
+                consts.isSliderMusic = False
 
             elif event.type == pygame.MOUSEMOTION:
-                if isSliderMusic or isSliderSound:
-                    if isSliderMusic:
+                if consts.isSliderMusic or consts.isSliderSound:
+                    if consts.isSliderMusic:
                         xM = music_slider_btn.rect[0]
                         # 553 853
                         if all_w - 32 < event.pos[0] < all_w + 270:
@@ -395,12 +383,12 @@ def settings_menu():
                             x_cube_M = 13
                         music_slider_btn.rect = music_slider_btn.rect.move(x_cube_M - 13, 0)
                         if not windows.fullscreen:
-                            wM = (music_slider_btn.rect[0] - 106) / 300
+                            consts.wM = (music_slider_btn.rect[0] - 106) / 300
                         else:
-                            wM = (music_slider_btn.rect[0] - 553) / 300
-                        pygame.mixer.music.set_volume(wM)
+                            consts.wM = (music_slider_btn.rect[0] - 553) / 300
+                        pygame.mixer.music.set_volume(consts.wM)
 
-                    elif isSliderSound:
+                    elif consts.isSliderSound:
                         xS = sound_slider_btn.rect[0]
                         if all_w - 32 < event.pos[0] < all_w + 270:
                             x_cube_S = event.pos[0] - xS
@@ -408,39 +396,39 @@ def settings_menu():
                             x_cube_S = 13
                         sound_slider_btn.rect = sound_slider_btn.rect.move(x_cube_S - 13, 0)
                         if not windows.fullscreen:
-                            wS = (sound_slider_btn.rect[0] - 106) / 300
-                            volS = wS
+                            consts.wS = (sound_slider_btn.rect[0] - 106) / 300
+                            consts.volS = consts.wS
                         else:
-                            wS = (sound_slider_btn.rect[0] - 553) / 300
-                            volS = wS
-                    fileManager.volumeExport(wM, wS)
+                            consts.wS = (sound_slider_btn.rect[0] - 553) / 300
+                            consts.volS = consts.wS
+                    fileManager.volumeExport(consts.wM, consts.wS)
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == sound_slider_btn:
-                isSliderSound = True
+                consts.isSliderSound = True
 
             elif event.type == pygame.MOUSEBUTTONUP and event.button == sound_slider_btn:
-                isSliderSound = False
+                consts.isSliderSound = False
 
             for button in [cross_btn, fs_btn, arrow_btn, r_arrow_btn]:
-                button.handle_event(event, volS)
+                button.handle_event(event, consts.volS)
 
             for slider_button in [music_slider_btn, sound_slider_btn]:
                 slider_button.handle_event_slider(event)
 
-        screen.blit(bg, (0, 0))
+        windows.screen.blit(consts.menu_bg, (0, 0))
 
         for obj in [title, field_audio, field_video, fs_name, sound_name, music_name, music_slider_obj,
                     sound_slider_obj]:
-            obj.draw(screen)
+            obj.draw(windows.screen)
 
-        langauge_obj.drawLanguage(screen, languageNow)
+        langauge_obj.drawLanguage(windows.screen, consts.languageNow)
 
         for button in [cross_btn, music_slider_btn, sound_slider_btn, arrow_btn, r_arrow_btn]:
             button.check_hover(pygame.mouse.get_pos())
-            button.draw(screen)
+            button.draw(windows.screen)
 
         fs_btn.check_hover(pygame.mouse.get_pos())
-        fs_btn.draw_f11(screen, windows.fullscreen)
+        fs_btn.draw_f11(windows.screen, windows.fullscreen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()
@@ -448,11 +436,11 @@ def settings_menu():
 
 def info_menu():
     if not windows.fullscreen:
-        all_w, all_h = WIDTH // 2 - 364, HEIGHT - 619
+        all_w, all_h = windows.width // 2 - 364, windows.height - 619
     else:
-        all_w, all_h = WIDTH // 2 - 364, HEIGHT - 820
+        all_w, all_h = windows.width // 2 - 364, windows.height - 820
 
-    title = Object(all_w, all_h, 640, 82, fr"objects\{languageNow}\info-title-obj.png")
+    title = Object(all_w, all_h, 640, 82, fr"objects\{consts.languageNow}\info-title-obj.png")
 
     cross_btn = Button(all_w + 660, all_h + 8, 67, 72, r"buttons\without text\default-cross-btn.png",
                        r"buttons\without text\hover-cross-btn.png", r"buttons\without text\press-cross-btn.png",
@@ -465,9 +453,9 @@ def info_menu():
                               r"buttons\without text\press-github-btn.png",
                               r"data\sounds\menu-button-sound.mp3")
 
-    field = Object(all_w - 86, all_h + 115, 900, 430, fr"objects\{languageNow}\info-field-obj.png")
-    alexandr = Object(all_w + 99, all_h + 462, 269, 46, fr"objects\{languageNow}\alexandr-obj.png")
-    igor = Object(all_w + 544, all_h + 462, 142, 45, fr"objects\{languageNow}\igor-obj.png")
+    field = Object(all_w - 86, all_h + 115, 900, 430, fr"objects\{consts.languageNow}\info-field-obj.png")
+    alexandr = Object(all_w + 99, all_h + 462, 269, 46, fr"objects\{consts.languageNow}\alexandr-obj.png")
+    igor = Object(all_w + 544, all_h + 462, 142, 45, fr"objects\{consts.languageNow}\igor-obj.png")
 
     running = True
     while running:
@@ -501,50 +489,25 @@ def info_menu():
                     info_menu()
 
             for button in [github_left_btn, github_right_btn, cross_btn]:
-                button.handle_event(event, volS)
+                button.handle_event(event, consts.volS)
 
-        screen.blit(bg, (0, 0))
+        windows.screen.blit(consts.menu_bg, (0, 0))
 
         for obj in [title, field, alexandr, igor]:
-            obj.draw(screen)
+            obj.draw(windows.screen)
 
         for button in [github_left_btn, github_right_btn, cross_btn]:
             button.check_hover(pygame.mouse.get_pos())
-            button.draw(screen)
+            button.draw(windows.screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()
 
 
-def transition():
-    transition_level = 0
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-        transition_surface = pygame.Surface((WIDTH, HEIGHT))
-        transition_surface.fill((0, 0, 0))
-        transition_surface.set_alpha(transition_level)
-        screen.blit(transition_surface, (0, 0))
-
-        transition_level += 5
-        if transition_level >= 105:
-            transition_level = 255
-            running = False
-
-        consts.clock.tick(70)
-        pygame.display.flip()
-
-
 def change_menu_fullScreen(width, height, fullScreen=0):
-    global WIDTH, HEIGHT, screen, img, bg
-    WIDTH, HEIGHT = width, height
-    screen = pygame.display.set_mode((WIDTH, HEIGHT), fullScreen)
+    windows.width, windows.height = width, height
+    windows.screen = pygame.display.set_mode((windows.width, windows.height), fullScreen)
     if windows.fullscreen:
-        tmp_img = load_image(r"backgrounds\main-menu-fullScreen-bg.png")
-        bg = pygame.transform.scale(tmp_img, (tmp_img.get_width(), tmp_img.get_height()))
+        consts.menu_bg = pygame.transform.scale(consts.img_fs, (consts.img_fs.get_width(), consts.img_fs.get_height()))
     else:
-        bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
+        consts.menu_bg = pygame.transform.scale(consts.img, (consts.img.get_width() * 2, consts.img.get_height() * 2))

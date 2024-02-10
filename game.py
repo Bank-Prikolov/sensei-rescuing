@@ -1,11 +1,12 @@
 import pygame.surface
 
-import B055
+import boss
+import fileManager
 import lvl_gen
 import game_over
 import game_complete
 import pause
-from consts import *
+import consts
 import windows
 import starsRecorder
 from processHelper import load_image, terminate
@@ -24,12 +25,12 @@ yspeed = 0
 class Hero(pygame.sprite.Sprite):
     def __init__(self, x, y, koef, anim=0, movement=False, act='sr', hr=0):
         super().__init__(lvl_gen.characters)
-        if hr == 0:
-            self.pic = load_image(wai)
-            self.fireball = fireball
-        else:
-            self.pic = load_image(gojo)
-            self.fireball = hollow_purple
+        if hr == 1:
+            self.pic = load_image(consts.wai)
+            self.fireball = consts.fireball
+        elif hr == 2:
+            self.pic = load_image(consts.the_strongest)
+            self.fireball = consts.hollow_purple
         self.sprites = pygame.transform.scale(
             self.pic, (self.pic.get_width() // 2 * koef, self.pic.get_height() // 2 * koef))
         self.k = koef
@@ -189,7 +190,7 @@ class Hero(pygame.sprite.Sprite):
         return self.rect[2:4]
 
     def shoot(self, spees):
-        B055.Pic(self.get_coords()[0] + self.get_size()[0] // 4,
+        boss.Pic(self.get_coords()[0] + self.get_size()[0] // 4,
                  self.get_coords()[1] + self.get_size()[1] // 2,
                  40 // 2.5 * windows.k ** windows.fullscreen,
                  40 // 2.5 * windows.k ** windows.fullscreen, self.fireball,
@@ -209,9 +210,10 @@ class Hero(pygame.sprite.Sprite):
         self.projectilespeed = []
 
 
-def game_def(lvl, charact=1):
+def game_def(lvl):
     global runright, runleft, lookingup, sitting, shooting, jumping, falling, lookingright, xspeed, yspeed, hero
     start_coords = lvl_gen.generate_level(lvl)
+    character = fileManager.heroImport()[0]
     if not windows.fullscreen:
         pause_btn = Object(windows.width - windows.width + 8, windows.height - windows.height + 6, 108, 54,
                            r"objects\without text\pause-button-obj.png")
@@ -219,11 +221,11 @@ def game_def(lvl, charact=1):
         pause_btn = Object(windows.otstupx + 8, windows.height - windows.height + 6, 144, 72,
                            r"objects\without text\pause-button-obj.png")
     lvl_gen.updater()
-    hero = Hero(*start_coords, windows.k ** windows.fullscreen, hr=charact)
+    hero = Hero(*start_coords, windows.k ** windows.fullscreen, hr=character)
     running = True
     lvl_gen.characters.draw(lvl_gen.screen)
     thing = ''
-    cheatpannel = False  # <== чит панель, не нажимайте 5ую кнопку мыши
+    cheatPanel = False  # cheats
     timer_event = pygame.USEREVENT + 1
     pygame.time.set_timer(timer_event, 1000)
     started = True
@@ -266,9 +268,9 @@ def game_def(lvl, charact=1):
                     if sitting:
                         yspeed = 7
                     else:
-                        if (not (jumping or falling or sitting)) or cheatpannel:
+                        if (not (jumping or falling or sitting)) or cheatPanel:
                             jumping = True
-                            yspeed = -9 * 2 ** cheatpannel
+                            yspeed = -9 * 2 ** cheatPanel
                             if lookingright:
                                 hero.change_hero('jumpr', hero.get_coords())
                                 pass
@@ -305,7 +307,7 @@ def game_def(lvl, charact=1):
                     lvl_gen.rescreen()
                     lvl_gen.updater()
                     lvl_gen.board.pereres_slon(lvl_gen.sloniks)
-                    lvl_gen.board.pereres_boss(B055.boss_group)
+                    lvl_gen.board.pereres_boss(boss.boss_group)
                 elif event.key == pygame.K_w:
                     if pygame.sprite.spritecollide(hero, lvl_gen.finale, False):
                         thing = ''
@@ -360,7 +362,7 @@ def game_def(lvl, charact=1):
                         else:
                             hero.change_hero('sl', new)
                         lvl_gen.board.pereres_slon(lvl_gen.sloniks)
-                        lvl_gen.board.pereres_boss(B055.boss_group)
+                        lvl_gen.board.pereres_boss(boss.boss_group)
                     lvl_gen.rescreen()
                     lvl_gen.updater()
             elif event.type == pygame.WINDOWEXPOSED:
@@ -379,9 +381,9 @@ def game_def(lvl, charact=1):
                     runleft = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 5:  # чити
-                    cheatpannel = not cheatpannel
-                    hero.xs = 3 * 5 ** cheatpannel
-                    hero.projectile_speed = 8 * 2 ** cheatpannel
+                    cheatPanel = not cheatPanel
+                    hero.xs = 3 * 5 ** cheatPanel
+                    hero.projectile_speed = 8 * 2 ** cheatPanel
 
         pause_btn.draw(windows.screen)
         if pygame.sprite.spritecollide(hero, lvl_gen.changegroup, False):
@@ -404,7 +406,7 @@ def game_def(lvl, charact=1):
                 if pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.sloniks, False):
                     if (pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite],
                                                     lvl_gen.sloniks, False)[0].get_hit(hero.get_coords()[0]) == 0
-                            or cheatpannel):
+                            or cheatPanel):
                         lvl_gen.remover(lvl_gen.board.get_cell(list(
                             pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.sloniks, True))[
                                                                    0].rect[:2]))
@@ -425,7 +427,7 @@ def game_def(lvl, charact=1):
                 list(lvl_gen.nmeprojectilesgroup)[sprite].rect = list(lvl_gen.nmeprojectilesgroup)[sprite].rect.move(
                     lvl_gen.projectilespeed[sprite][0], 0)
                 if pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite], lvl_gen.characters,
-                                               False) and not cheatpannel:
+                                               False) and not cheatPanel:
                     thing = ''
                     hero.end()
                     lvl_gen.projectilespeed = []
@@ -440,12 +442,10 @@ def game_def(lvl, charact=1):
                     list(lvl_gen.nmeprojectilesgroup)[sprite].kill()
                     break
             lvl_gen.nmeprojectilesgroup.draw(lvl_gen.screen)
-        if not cheatpannel:
+        if not cheatPanel:
             if (pygame.sprite.spritecollide(hero, lvl_gen.thorngroup, False)
                     or pygame.sprite.spritecollide(hero, lvl_gen.sloniks, False)
-                    or pygame.sprite.spritecollide(hero,
-                                                   B055.boss_group,
-                                                   False)):
+                    or pygame.sprite.spritecollide(hero, boss.boss_group, False)):
                 thing = ''
                 hero.end()
                 lvl_gen.projectilespeed = []
@@ -505,18 +505,18 @@ def game_def(lvl, charact=1):
         lvl_gen.breakgroup.draw(lvl_gen.screen)
         lvl_gen.characters.draw(lvl_gen.screen)
         lvl_gen.sloniks.update()
-        B055.boss_group.update()
+        boss.boss_group.update()
         lvl_gen.sloniks.draw(lvl_gen.screen)
         lvl_gen.triggergroup.draw(lvl_gen.screen)
         lvl_gen.finale.draw(lvl_gen.screen)
         lvl_gen.untouches.draw(lvl_gen.screen)
-        B055.boss_group.draw(lvl_gen.screen)
+        boss.boss_group.draw(lvl_gen.screen)
         pygame.draw.rect(lvl_gen.screen, '#000000',
                          (0, 0, windows.otstupx ** windows.fullscreen, windows.fullsize[1] ** windows.fullscreen))
         pygame.draw.rect(lvl_gen.screen, '#000000',
                          (windows.fullsize[0] - windows.otstupx, 0, windows.fullsize[0] ** windows.fullscreen,
                           windows.fullsize[1] ** windows.fullscreen))
-        clock.tick(fps)
+        consts.clock.tick(consts.fps)
         pygame.display.flip()
 
 # game_def(1)

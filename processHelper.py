@@ -1,6 +1,8 @@
 import pygame
 import sys
 import os
+import windows
+import consts
 import fileManager
 import starsRecorder
 
@@ -19,6 +21,29 @@ def load_image(name, colorkey=None):
     else:
         image = image.convert_alpha()
     return image
+
+
+def transition():
+    transition_level = 0
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        transition_surface = pygame.Surface((windows.width, windows.height))
+        transition_surface.fill((0, 0, 0))
+        transition_surface.set_alpha(transition_level)
+        windows.screen.blit(transition_surface, (0, 0))
+
+        transition_level += 5
+        if transition_level >= 105:
+            transition_level = 255
+            running = False
+
+        consts.clock.tick(70)
+        pygame.display.flip()
 
 
 def terminate(fullscreen):

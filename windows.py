@@ -2,7 +2,8 @@ import screeninfo
 import pygame
 import fileManager
 
-size = width, height = 1024, 704
+width, height = 1024, 704
+size = (1024, 704)
 screen = pygame.display.set_mode(size)
 fullsize = tuple(map(int, '='.join(
     (str(screeninfo.get_monitors()).lstrip('[Monitor(').rstrip(')]').split(', '))[2: 4]).split('=')[1::2]))

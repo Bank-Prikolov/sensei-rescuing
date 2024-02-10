@@ -28,11 +28,10 @@ def languageExport(languageNow):
 def heroImport():
     heroFile = open(r"data/savings/hero-settings.txt", "r", encoding="utf-8")
     checkHero = list(map(lambda x: float(x.rstrip('\n')), heroFile))
-    hero = int(checkHero[0])
-    heroNow = hero
+    heroNow = int(checkHero[0])
     isGetHero2 = checkHero[1]
     heroFile.close()
-    return hero, heroNow, isGetHero2
+    return heroNow, isGetHero2
 
 
 def heroExport(hero, isGetHero2):

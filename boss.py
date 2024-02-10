@@ -1,7 +1,6 @@
 import pygame
 import consts
 import lvl_gen
-import windows
 from processHelper import load_image
 
 
@@ -22,7 +21,7 @@ b_projectile_speed = []
 
 
 class Boss(pygame.sprite.Sprite):
-    pic = load_image(consts.boss)
+    pic = load_image(consts.kowlad)
     # php = load_image('пуля')
 
     def __init__(self, x, y, koef, act=0):
@@ -39,10 +38,9 @@ class Boss(pygame.sprite.Sprite):
         self.act = act
         self.looking_right = False
         self.hp = 100
-        self.bulletspeed = 6
+        self.bullet_speed = 6
         self.step = 0
         self.hitick = 0
-
 
     def cut_sheet(self, sprites, koef, act):
         self.rect = pygame.Rect(0, 0, 64 * koef,
@@ -68,16 +66,16 @@ class Boss(pygame.sprite.Sprite):
     def get_coords(self):
         return self.rect[0], self.rect[1]
 
-    def shoot(self):
-        Pic(self.get_coords()[0] + self.get_size()[0] // 2,
-            self.get_coords()[1] + self.get_size()[1] // 2.5,
-            Boss.php.get_width() // 2 * windows.k ** windows.fullscreen,
-            Boss.php.get_height() // 2 * windows.k ** windows.fullscreen, marker,
-            boss_projectile_group)
-        if self.looking_right:
-            self.projectile_speed.append((self.bulletspeed * self.k ** windows.fullscreen, self))
-        else:
-            self.projectile_speed.append((-self.bulletspeed * self.k ** windows.fullscreen, self))
+    # def shoot(self):
+    #     Pic(self.get_coords()[0] + self.get_size()[0] // 2,
+    #         self.get_coords()[1] + self.get_size()[1] // 2.5,
+    #         Boss.php.get_width() // 2 * windows.k ** windows.fullscreen,
+    #         Boss.php.get_height() // 2 * windows.k ** windows.fullscreen, marker,
+    #         boss_projectile_group)
+    #     if self.looking_right:
+    #         self.projectile_speed.append((self.bullet_speed * self.k ** windows.fullscreen, self))
+    #     else:
+    #         self.projectile_speed.append((-self.bullet_speed * self.k ** windows.fullscreen, self))
 
     def get_hit(self):
         self.hp -= 1
