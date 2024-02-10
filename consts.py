@@ -4,6 +4,7 @@ from processHelper import load_image
 # game consts
 test = r'test2.txt'
 wai = r'characters\hero.png'
+gojo = r'characters\The honored one.png'
 floor = r'textures\0-texture.png'
 wallx = r'textures\#-texture.png'
 wally = r'textures\=-texture.png'
@@ -18,7 +19,6 @@ placeholder = r'textures\_invisiblethingcausethisthingissostupidijustdontgetit-t
 finish = r'textures\F-texture.png'
 bg1 = r'backgrounds\game-bg.png'
 shadow = r'characters\shadow.png'
-fireball = r'characters\fireball.png'
 change = r'textures\C-texture.png'
 thorn = r'textures\^-texture.png'
 boss_door = r'textures\S-texture.png'
@@ -28,9 +28,10 @@ php = r'characters\php.png'
 invis = r'textures\%-texture.png'
 horizon = r'textures\&-texture.png'
 boss = r'characters\VLAD.png'
+fireball = r'characters\fb.png'
+hollow_purple = r'characters\holpur.png'
 
 # menu and game consts
-cursor = load_image(r'objects\without text\cursor-obj.png')
 clock = pygame.time.Clock()
 fps = 60
 

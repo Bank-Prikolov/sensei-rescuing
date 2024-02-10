@@ -1,3 +1,5 @@
+import pygame.surface
+
 import B055
 import lvl_gen
 import game_over
@@ -20,9 +22,14 @@ yspeed = 0
 
 
 class Hero(pygame.sprite.Sprite):
-    def __init__(self, x, y, koef, anim=0, movement=False, act='sr', hr=wai):
+    def __init__(self, x, y, koef, anim=0, movement=False, act='sr', hr=0):
         super().__init__(lvl_gen.characters)
-        self.pic = load_image(hr)
+        if hr == 0:
+            self.pic = load_image(wai)
+            self.fireball = fireball
+        else:
+            self.pic = load_image(gojo)
+            self.fireball = hollow_purple
         self.sprites = pygame.transform.scale(
             self.pic, (self.pic.get_width() // 2 * koef, self.pic.get_height() // 2 * koef))
         self.k = koef
@@ -31,7 +38,6 @@ class Hero(pygame.sprite.Sprite):
         self.anim = anim
         self.cur_frame = 0
         self.image = self.frames[self.cur_frame]
-        self.fireball = self.get_fireball(self.sprites)
         self.rect = self.rect.move(x, y)
         self.xs = 3
         self.ys = -0.5
@@ -48,11 +54,6 @@ class Hero(pygame.sprite.Sprite):
             frame_location = (self.rect.w * anim, self.rect.h * i)
             self.frames.append(sprites.subsurface(pygame.Rect(
                 frame_location, self.rect.size)))
-
-    def get_fireball(self, sprites):
-        frame_location = (320, 0)
-        return sprites.subsurface(pygame.Rect(
-            frame_location, (40, 40)))
 
     def update(self):
         global yspeed, falling, lookingright, hero, jumping, thing
@@ -189,8 +190,8 @@ class Hero(pygame.sprite.Sprite):
     def shoot(self, spees):
         B055.Pic(self.get_coords()[0] + self.get_size()[0] // 4,
                  self.get_coords()[1] + self.get_size()[1] // 2,
-                 self.fireball.get_width() // 2.5 * windows.k ** windows.fullscreen,
-                 self.fireball.get_height() // 2.5 * windows.k ** windows.fullscreen, fireball,
+                 40 // 2.5 * windows.k ** windows.fullscreen,
+                 40 // 2.5 * windows.k ** windows.fullscreen, self.fireball,
                  lvl_gen.projectilesgroup)
         self.projectilespeed.append(spees)
 
@@ -207,7 +208,7 @@ class Hero(pygame.sprite.Sprite):
         self.projectilespeed = []
 
 
-def game_def(lvl, charact=wai):
+def game_def(lvl, charact=1):
     global runright, runleft, lookingup, sitting, shooting, jumping, falling, lookingright, xspeed, yspeed, hero
     start_coords = lvl_gen.generate_level(lvl)
     if not windows.fullscreen:
@@ -218,7 +219,6 @@ def game_def(lvl, charact=wai):
                            r"objects\without text\pause-button-obj.png")
     lvl_gen.updater()
     hero = Hero(*start_coords, windows.k ** windows.fullscreen, hr=charact)
-    pygame.display.set_caption('Sensei Rescuing')
     running = True
     projectile_speed = 8
     lvl_gen.characters.draw(lvl_gen.screen)
@@ -377,6 +377,10 @@ def game_def(lvl, charact=wai):
                     sitting = False
                 elif event.key == pygame.K_a:
                     runleft = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    # hero.set_coords(*event.pos) # чит офф
+                    pass
         pause_btn.draw(windows.screen)
         if pygame.sprite.spritecollide(hero, lvl_gen.changegroup, False):
             lvl_gen.projectilesgroup.empty()

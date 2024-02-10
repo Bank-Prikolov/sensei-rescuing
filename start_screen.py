@@ -64,8 +64,6 @@ def start_screen():
             start_bg.update(screen, da_btn, net_btn)
             consts.bg_group_start_screen.draw(screen)
 
-        x_c, y_c = pygame.mouse.get_pos()
-        cursorMenuChecker(x_c, y_c, consts.cursor, screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()
