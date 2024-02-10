@@ -13,6 +13,15 @@ def fullscreenWindowsChecker(fullscreen):
     return screen, WIDTH, HEIGHT
 
 
+def fullscreenWindowsChanger(fullscreen):
+    if fullscreen:
+        windows.width, windows.height = windows.fullsize
+        windows.screen = pygame.display.set_mode(windows.fullsize, pygame.FULLSCREEN)
+    else:
+        windows.width, windows.height = windows.size
+        windows.screen = pygame.display.set_mode(windows.size)
+
+
 def starsCountChecker(whatLevel, time):
     if whatLevel == 1:
         if 0 < time <= 35:
