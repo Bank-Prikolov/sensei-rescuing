@@ -235,7 +235,7 @@ def game_def(lvl, charact=wai):
                 terminate(windows.fullscreen)
             elif event.type == timer_event and started:
                 current_seconds += 1
-                print(current_seconds)
+                # print(current_seconds)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
                     xspeed = hero.xs
@@ -327,31 +327,6 @@ def game_def(lvl, charact=wai):
                     predpause = hero.get_coords()
                     hero.end()
                     super_pause = True
-                    field = Object(8, 8, 1008, 688, rf"objects\without text\pause-window-obj.png")
-                    title = Object(windows.width // 2 - 150, windows.height // 2 - 145, 300, 100,
-                                   fr"objects\{languageNow}\pause-title-obj.png")
-
-                    repeat_btn = Button(windows.width // 2 - 150 + 102, windows.height // 2 - 30, 94, 104,
-                                        r"buttons\without text\default-repeat-btn.png",
-                                        r"buttons\without text\hover-repeat-btn.png",
-                                        r"buttons\without text\press-repeat-btn.png",
-                                        r"data\sounds\menu-button-sound.mp3")
-                    to_lvlmenu_btn = Button(windows.width // 2 - 150 + 212, windows.height // 2 - 30, 94, 104,
-                                            r"buttons\without text\default-tolvlmenu-btn.png",
-                                            r"buttons\without text\hover-tolvlmenu-btn.png",
-                                            r"buttons\without text\press-tolvlmenu-btn.png",
-                                            r"data\sounds\menu-button-sound.mp3")
-                    play_btn = Button(windows.width // 2 - 150 - 7, windows.height // 2 - 30, 94, 104,
-                                      r"buttons\without text\default-play-btn.png",
-                                      r"buttons\without text\hover-play-btn.png",
-                                      r"buttons\without text\press-play-btn.png", r"data\sounds\menu-button-sound.mp3")
-
-                    control_btn = Button(windows.width // 2 - 150, windows.height // 2 + 85, 300, 80,
-                                         fr"buttons\{languageNow}\default-controls-btn.png",
-                                         fr"buttons\{languageNow}\hover-controls-btn.png")
-                    control_field = Object(windows.width // 2 - 250, windows.height // 2 - 170, 504, 252,
-                                           fr"objects\{languageNow}\controls-field-obj.png")
-
                     pause.pause(super_pause, current_seconds, str(lvl_gen.sloniks)[7], lvl_gen.screen)
                     started = True
                     hero = Hero(*predpause, windows.k ** windows.fullscreen)
@@ -446,7 +421,8 @@ def game_def(lvl, charact=wai):
                     lvl_gen.nmeprojectilesgroup.empty()
                     lvl_gen.updater()
                     started = False
-                    game_over.game_over()
+                    over = True
+                    game_over.game_over(over)
                 if (pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite], lvl_gen.toches, False)
                         or pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite],
                                                        lvl_gen.anothertoches, False)):
@@ -464,7 +440,8 @@ def game_def(lvl, charact=wai):
             lvl_gen.nmeprojectilesgroup.empty()
             lvl_gen.updater()
             started = False
-            game_over.game_over()
+            over = True
+            game_over.game_over(over)
         if pygame.sprite.spritecollide(hero, lvl_gen.triggergroup, False):
             if lvl == 2 and thing == 1:
                 # lvl_gen.remover(lvl_gen.board.get_cell(hero.get_coords()))
