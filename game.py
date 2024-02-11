@@ -270,7 +270,7 @@ def game_def(lvl):
                     else:
                         if (not (jumping or falling or sitting)) or cheatPanel:
                             jumping = True
-                            yspeed = -9 * 2 ** cheatPanel
+                            yspeed = -9 - 5 ** cheatPanel
                             if lookingright:
                                 hero.change_hero('jumpr', hero.get_coords())
                                 pass
