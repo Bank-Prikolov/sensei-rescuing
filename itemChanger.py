@@ -1,28 +1,21 @@
 import pygame
 import windows
+import consts
 import starsRecorder
 
 
-def fullscreenWindowsChecker(fullscreen):
-    if fullscreen:
-        size = WIDTH, HEIGHT = 1920, 1080
-        screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
-    else:
-        size = WIDTH, HEIGHT = 1024, 704
-        screen = pygame.display.set_mode(size)
-    return screen, WIDTH, HEIGHT
-
-
-def fullscreenWindowsChanger(fullscreen):
+def windowsFullscreenChanger(fullscreen):
     if fullscreen:
         windows.width, windows.height = windows.fullsize
         windows.screen = pygame.display.set_mode(windows.fullsize, pygame.FULLSCREEN)
+        consts.menu_bg = pygame.transform.scale(consts.img_fs, (consts.img_fs.get_width(), consts.img_fs.get_height()))
     else:
         windows.width, windows.height = windows.size
         windows.screen = pygame.display.set_mode(windows.size)
+        consts.menu_bg = pygame.transform.scale(consts.img, (consts.img.get_width() * 2, consts.img.get_height() * 2))
 
 
-def starsCountChecker(whatLevel, time):
+def starsChanger(whatLevel, time):
     if whatLevel == 1:
         if 0 < time <= 35:
             return 3
@@ -52,7 +45,7 @@ def starsCountChecker(whatLevel, time):
             return 0
 
 
-def timeChecker(whatLevel, ButtonsFont, all_w, all_h, screen):
+def timeChanger(whatLevel, ButtonsFont, all_w, all_h, screen):
     time = starsRecorder.get_seconds(whatLevel)
     time_sorted = f"{time // 60:02}:{time % 60:02}"
     if whatLevel == 1:

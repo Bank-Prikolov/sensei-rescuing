@@ -1,6 +1,6 @@
 import pygame
 import consts
-import menu
+import levels_menu
 import game
 import windows
 import lvl_gen
@@ -84,7 +84,7 @@ def pause(super_pause, time, sloniks, screen):
                     windows.fullscreen = 1
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
-                menu.levels_menu()
+                levels_menu.levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == repeat_btn:
                 game.game_def(consts.lvlNow)

@@ -11,7 +11,7 @@ import windows
 import starsRecorder
 from processHelper import load_image, terminate
 from itemCreator import Object
-from itemChecker import starsCountChecker, fullscreenWindowsChanger
+from itemChanger import starsChanger, windowsFullscreenChanger
 
 runright, runleft, lookingup, sitting = False, False, False, False
 jumping = False
@@ -23,12 +23,12 @@ yspeed = 0
 
 
 class Hero(pygame.sprite.Sprite):
-    def __init__(self, x, y, koef, anim=0, movement=False, act='sr', hr=0):
+    def __init__(self, x, y, koef, hr, anim=0, movement=False, act='sr'):
         super().__init__(lvl_gen.characters)
         if hr == 1:
             self.pic = load_image(consts.wai)
             self.fireball = consts.fireball
-        elif hr == 2:
+        if hr == 2:
             self.pic = load_image(consts.the_strongest)
             self.fireball = consts.hollow_purple
         self.sprites = pygame.transform.scale(
@@ -58,7 +58,7 @@ class Hero(pygame.sprite.Sprite):
                 frame_location, self.rect.size)))
 
     def update(self):
-        global yspeed, falling, lookingright, hero, jumping, thing
+        global yspeed, falling, lookingright, jumping, thing, hero
         self.image = self.frames[self.cur_frame]
         self.set_coords(*self.get_coords())
         if self.counter == 5:
@@ -221,7 +221,7 @@ def game_def(lvl):
         pause_btn = Object(windows.otstupx + 8, windows.height - windows.height + 6, 144, 72,
                            r"objects\without text\pause-button-obj.png")
     lvl_gen.updater()
-    hero = Hero(*start_coords, windows.k ** windows.fullscreen, hr=character)
+    hero = Hero(*start_coords, windows.k ** windows.fullscreen, character)
     running = True
     lvl_gen.characters.draw(lvl_gen.screen)
     thing = ''
@@ -280,7 +280,7 @@ def game_def(lvl):
                 elif event.key == pygame.K_F11:
                     if windows.fullscreen:
                         windows.fullscreen = 0
-                        fullscreenWindowsChanger(windows.fullscreen)
+                        windowsFullscreenChanger(windows.fullscreen)
                         pause_btn = Object(windows.width - windows.width + 8, windows.height - windows.height + 6, 108,
                                            54,
                                            r"objects\without text\pause-button-obj.png")
@@ -288,7 +288,7 @@ def game_def(lvl):
                                (hero.get_coords()[1] - windows.otstupy + 6) // windows.k)
                     else:
                         windows.fullscreen = 1
-                        fullscreenWindowsChanger(windows.fullscreen)
+                        windowsFullscreenChanger(windows.fullscreen)
                         pause_btn = Object(windows.otstupx + 8, windows.height - windows.height + 6, 144, 72,
                                            r"objects\without text\pause-button-obj.png")
                         new = (windows.otstupx + hero.get_coords()[0] * windows.k,
@@ -299,7 +299,7 @@ def game_def(lvl):
 
                     lvl_gen.nmeprojectilesgroup.empty()
                     lvl_gen.projectilesgroup.empty()
-                    hero = Hero(*new, windows.k ** windows.fullscreen)
+                    hero = Hero(*new, windows.k ** windows.fullscreen, character)
                     if lookingright:
                         hero.change_hero('sr', new)
                     else:
@@ -314,7 +314,7 @@ def game_def(lvl):
                         hero.end()
                         lvl_gen.updater()
                         started = False
-                        record = starsCountChecker(lvl, current_seconds)
+                        record = starsChanger(lvl, current_seconds)
                         if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
                             starsRecorder.push_record(lvl, 1, record, current_seconds)
                         starsRecorder.push_lastRecord(lvl, record, current_seconds)
@@ -326,15 +326,15 @@ def game_def(lvl):
                             shooting = -hero.projectile_speed * windows.k ** windows.fullscreen
                         hero.shoot(shooting)
                 elif event.key == pygame.K_ESCAPE:
-                    started = False
                     tmp = windows.fullscreen
                     xspeed = 0
                     predpause = hero.get_coords()
                     hero.end()
                     super_pause = True
+                    started = False
                     pause.pause(super_pause, current_seconds, str(lvl_gen.sloniks)[7], lvl_gen.screen)
                     started = True
-                    hero = Hero(*predpause, windows.k ** windows.fullscreen)
+                    hero = Hero(*predpause, windows.k ** windows.fullscreen, character)
                     if lookingright:
                         hero.change_hero('sr', predpause)
                     else:
@@ -356,7 +356,7 @@ def game_def(lvl):
                         hero.projectilespeed = []
                         lvl_gen.projectilesgroup.empty()
                         lvl_gen.projectilespeed = []
-                        hero = Hero(*new, windows.k ** windows.fullscreen)
+                        hero = Hero(*new, windows.k ** windows.fullscreen, character)
                         if lookingright:
                             hero.change_hero('sr', new)
                         else:
@@ -380,7 +380,7 @@ def game_def(lvl):
                 elif event.key == pygame.K_a:
                     runleft = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 5:  # чити
+                if event.button == 5:  # cheats
                     cheatPanel = not cheatPanel
                     hero.xs = 3 * 5 ** cheatPanel
                     hero.projectile_speed = 8 * 2 ** cheatPanel
@@ -488,7 +488,7 @@ def game_def(lvl):
                 thing = ''
                 lvl_gen.updater()
                 started = False
-                record = starsCountChecker(lvl, current_seconds)
+                record = starsChanger(lvl, current_seconds)
                 if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
                     starsRecorder.push_record(lvl, 1, record, current_seconds)
                 starsRecorder.push_lastRecord(lvl, record, current_seconds)
@@ -518,5 +518,3 @@ def game_def(lvl):
                           windows.fullsize[1] ** windows.fullscreen))
         consts.clock.tick(consts.fps)
         pygame.display.flip()
-
-# game_def(1)

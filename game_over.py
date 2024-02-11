@@ -1,12 +1,12 @@
 import pygame
 import game
-import menu
+import levels_menu
 import windows
 import consts
 from processHelper import load_image, terminate
 from itemCreator import Button, Object
 from itemAnimator import AnimatedGameOver
-from itemChecker import fullscreenWindowsChanger
+from itemChanger import windowsFullscreenChanger
 
 
 def game_over(whatFrame=0):
@@ -47,13 +47,13 @@ def game_over(whatFrame=0):
                         running = False
                         consts.bg_group_over.empty()
                         windows.fullscreen = 0
-                        fullscreenWindowsChanger(windows.fullscreen)
+                        windowsFullscreenChanger(windows.fullscreen)
                         game_over(1)
                     else:
                         running = False
                         consts.bg_group_over.empty()
                         windows.fullscreen = 1
-                        fullscreenWindowsChanger(windows.fullscreen)
+                        windowsFullscreenChanger(windows.fullscreen)
                         game_over(1)
                 else:
                     pygame.mixer.Sound.set_volume(errorSound, consts.volS)
@@ -62,7 +62,7 @@ def game_over(whatFrame=0):
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
                 running = False
                 consts.bg_group_over.empty()
-                menu.levels_menu()
+                levels_menu.levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == repeat_btn:
                 running = False

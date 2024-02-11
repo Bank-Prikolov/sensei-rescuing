@@ -18,10 +18,10 @@ img_fs = load_image(r"backgrounds\main-menu-fullScreen-bg.png")
 menu_bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
 isSliderMusic = False
 isSliderSound = False
-heroNow, isGetHero2 = fileManager.heroImport()
 lvlNow = None
-wM, wS, volS = fileManager.volumeImport()
 firstTime = True
+heroNow, isGetHero2 = fileManager.heroImport()
+wM, wS, volS = fileManager.volumeImport()
 languageNow = fileManager.languageImport()
 
 # characters

@@ -1,5 +1,5 @@
 import pygame
-import menu
+import levels_menu
 import game
 import windows
 import consts
@@ -74,7 +74,7 @@ def game_complete(whatFrame=0):
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
                 running = False
                 consts.bg_group_complete.empty()
-                menu.levels_menu()
+                levels_menu.levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == repeat_btn:
                 running = False
@@ -94,5 +94,3 @@ def game_complete(whatFrame=0):
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()
-
-# game_complete()
