@@ -4,7 +4,6 @@ import consts
 import menu
 import webbrowser
 from itemCreator import Object, Button
-from itemChanger import windowsFullscreenChanger
 from processHelper import terminate, transition
 
 
@@ -38,7 +37,7 @@ def info_menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                terminate(windows.fullscreen)
+                terminate()
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
@@ -54,16 +53,6 @@ def info_menu():
 
             if event.type == pygame.USEREVENT and event.button == github_right_btn:
                 webbrowser.open('https://github.com/WaizorSote')
-
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-                if windows.fullscreen:
-                    windows.fullscreen = 0
-                    windowsFullscreenChanger(windows.fullscreen)
-                    info_menu()
-                else:
-                    windows.fullscreen = 1
-                    windowsFullscreenChanger(windows.fullscreen)
-                    info_menu()
 
             for button in [github_left_btn, github_right_btn, cross_btn]:
                 button.handle_event(event, consts.volS)

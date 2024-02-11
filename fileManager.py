@@ -2,6 +2,7 @@ def fullscreenImport():
     fullscreenFile = open(r"data/savings/fullscreen-settings.txt", "r", encoding="utf-8")
     checkStateFullscreen = list(map(lambda x: float(x.rstrip('\n')), fullscreenFile))
     StateFullscreen = int(checkStateFullscreen[0])
+    fullscreenFile.close()
     return StateFullscreen
 
 

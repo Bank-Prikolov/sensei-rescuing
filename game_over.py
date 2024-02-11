@@ -6,13 +6,11 @@ import consts
 from processHelper import load_image, terminate, transition
 from itemCreator import Button
 from itemAnimator import AnimatedGameOver
-from itemChanger import windowsFullscreenChanger
 
 
 def game_over(whatFrame=0):
     pygame.mixer.music.load(r"data\sounds\game-over-sound.mp3")
     pygame.mixer.music.play(1)
-    errorSound = pygame.mixer.Sound(r"data\sounds\error-sound.mp3")
 
     bg_img_game_over = load_image(r"objects\animated\game-over-obj.png")
     bg_tr_game_over = pygame.transform.scale(bg_img_game_over,
@@ -33,25 +31,7 @@ def game_over(whatFrame=0):
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                terminate(windows.fullscreen)
-
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-                if game_over_bg.cur_frame >= 130:
-                    if windows.fullscreen:
-                        running = False
-                        consts.bg_group_over.empty()
-                        windows.fullscreen = 0
-                        windowsFullscreenChanger(windows.fullscreen)
-                        game_over(1)
-                    else:
-                        running = False
-                        consts.bg_group_over.empty()
-                        windows.fullscreen = 1
-                        windowsFullscreenChanger(windows.fullscreen)
-                        game_over(1)
-                else:
-                    pygame.mixer.Sound.set_volume(errorSound, consts.volS)
-                    errorSound.play()
+                terminate()
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
                 running = False
@@ -62,6 +42,7 @@ def game_over(whatFrame=0):
             if event.type == pygame.USEREVENT and event.button == repeat_btn:
                 running = False
                 consts.bg_group_over.empty()
+                transition()
                 game.game_def(consts.lvlNow)
 
             for button in [repeat_btn, to_lvlmenu_btn]:

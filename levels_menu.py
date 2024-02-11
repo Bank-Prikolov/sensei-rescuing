@@ -4,7 +4,7 @@ import consts
 import menu
 import game
 import starsRecorder
-from itemChanger import timeChanger, windowsFullscreenChanger
+from itemChanger import timeChanger
 from itemCreator import Object, Button, Stars
 from processHelper import terminate, transition
 
@@ -70,7 +70,7 @@ def levels_menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                terminate(windows.fullscreen)
+                terminate()
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
@@ -101,16 +101,6 @@ def levels_menu():
                 consts.firstTime = True
                 transition()
                 game.game_def(3)
-
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-                if windows.fullscreen:
-                    windows.fullscreen = 0
-                    windowsFullscreenChanger(windows.fullscreen)
-                    levels_menu()
-                else:
-                    windows.fullscreen = 1
-                    windowsFullscreenChanger(windows.fullscreen)
-                    levels_menu()
 
             for button in [cross_btn, level1Button, level2Button, levelBossButton]:
                 button.handle_event(event, consts.volS)

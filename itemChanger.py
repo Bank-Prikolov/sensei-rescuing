@@ -2,10 +2,12 @@ import pygame
 import windows
 import consts
 import starsRecorder
+import fileManager
 from itemCreator import Object
 
 
 def windowsFullscreenChanger(fullscreen):
+    fileManager.fullscreenExport(windows.fullscreen)
     if fullscreen:
         windows.width, windows.height = windows.fullsize
         windows.screen = pygame.display.set_mode(windows.fullsize, pygame.FULLSCREEN)

@@ -68,7 +68,7 @@ def settings_menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                terminate(windows.fullscreen)
+                terminate()
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
@@ -79,8 +79,7 @@ def settings_menu():
                 transition()
                 menu.main_menu()
 
-            if ((event.type == pygame.USEREVENT and event.button == fs_btn) or
-                    (event.type == pygame.KEYDOWN and event.key == pygame.K_F11)):
+            if event.type == pygame.USEREVENT and event.button == fs_btn:
                 if windows.fullscreen:
                     windows.fullscreen = 0
                     windowsFullscreenChanger(windows.fullscreen)

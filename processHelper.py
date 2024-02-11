@@ -46,8 +46,7 @@ def transition():
         pygame.display.flip()
 
 
-def terminate(fullscreen):
-    fileManager.fullscreenExport(fullscreen)
+def terminate():
     starsRecorder.con.close()
     pygame.quit()
     sys.exit()

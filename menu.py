@@ -78,7 +78,7 @@ def main_menu():
 
         for event in pygame.event.get():
             if (event.type == pygame.QUIT) or (event.type == pygame.USEREVENT and event.button == exit_btn):
-                terminate(windows.fullscreen)
+                terminate()
 
             if event.type == pygame.USEREVENT and event.button == start_btn:
                 transition()
@@ -91,16 +91,6 @@ def main_menu():
             if event.type == pygame.USEREVENT and event.button == info_btn:
                 transition()
                 info.info_menu()
-
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-                if windows.fullscreen:
-                    windows.fullscreen = 0
-                    windowsFullscreenChanger(windows.fullscreen)
-                    main_menu()
-                else:
-                    windows.fullscreen = 1
-                    windowsFullscreenChanger(windows.fullscreen)
-                    main_menu()
 
             if event.type == pygame.USEREVENT and event.button == choose_btn:
                 if hero == 1 and hero != consts.heroNow:

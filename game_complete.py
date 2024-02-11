@@ -4,16 +4,14 @@ import game
 import windows
 import consts
 import starsRecorder
-from processHelper import load_image, terminate
+from processHelper import load_image, terminate, transition
 from itemCreator import Button, Stars
 from itemAnimator import AnimatedGameComplete
-from itemChanger import windowsFullscreenChanger
 
 
 def game_complete(whatFrame=0):
     pygame.mixer.music.load(r"data\sounds\game-complete-sound.mp3")
     pygame.mixer.music.play(1)
-    errorSound = pygame.mixer.Sound(r"data\sounds\error-sound.mp3")
 
     bg_img_game_complete = load_image(r"objects\animated\game-complete-obj.png")
     bg_tr = pygame.transform.scale(bg_img_game_complete,
@@ -46,34 +44,18 @@ def game_complete(whatFrame=0):
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                terminate(windows.fullscreen)
-
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-                if game_complete_bg.cur_frame >= 150:
-                    if windows.fullscreen:
-                        running = False
-                        consts.bg_group_complete.empty()
-                        windows.fullscreen = 0
-                        windowsFullscreenChanger(windows.fullscreen)
-                        game_complete(1)
-                    else:
-                        running = False
-                        consts.bg_group_complete.empty()
-                        windows.fullscreen = 1
-                        windowsFullscreenChanger(windows.fullscreen)
-                        game_complete(1)
-                else:
-                    pygame.mixer.Sound.set_volume(errorSound, consts.volS)
-                    errorSound.play()
+                terminate()
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
                 running = False
                 consts.bg_group_complete.empty()
+                transition()
                 levels_menu.levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == repeat_btn:
                 running = False
                 consts.bg_group_complete.empty()
+                transition()
                 game.game_def(consts.lvlNow)
 
             for button in [repeat_btn, to_lvlmenu_btn]:

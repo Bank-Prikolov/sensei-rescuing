@@ -41,9 +41,6 @@ def start_screen():
             if event.type == pygame.QUIT:
                 skalaSound.play()
 
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-                skalaSound.play()
-
             if event.type == pygame.USEREVENT and event.button == da_btn:
                 menu.main_menu()
 

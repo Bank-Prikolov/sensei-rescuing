@@ -3,8 +3,7 @@ import consts
 import levels_menu
 import game
 import windows
-from itemChanger import windowsFullscreenChanger
-from processHelper import terminate
+from processHelper import terminate, transition
 from itemCreator import Object, Button
 
 
@@ -72,24 +71,14 @@ def pause(time, sloniks):
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                terminate(windows.fullscreen)
-
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-                if windows.fullscreen:
-                    running = False
-                    windows.fullscreen = 0
-                    windowsFullscreenChanger(windows.fullscreen)
-                    pause(time, sloniks)
-                else:
-                    running = False
-                    windows.fullscreen = 1
-                    windowsFullscreenChanger(windows.fullscreen)
-                    pause(time, sloniks)
+                terminate()
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
+                transition()
                 levels_menu.levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == repeat_btn:
+                transition()
                 game.game_def(consts.lvlNow)
 
             if event.type == pygame.USEREVENT and event.button == play_btn:
