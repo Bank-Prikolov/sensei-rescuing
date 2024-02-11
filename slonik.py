@@ -22,7 +22,6 @@ class Slonik(pygame.sprite.Sprite):
         self.rect = self.rect.move(x, y)
         self.counter = 0
         self.xspeed = 4
-        self.moving = False
         self.act = act
         self.looking_right = True
         self.hp = 6
@@ -68,15 +67,12 @@ class Slonik(pygame.sprite.Sprite):
             if self.turn_speed == 0 and not self.dontseeme:
                 self.shoot_counter = 35
                 self.dontseeme = True
-        if self.moving:
-            pass
+        if self.looking_right:
+            if self.act != 0:
+                self.change_act(0, self.get_coords())
         else:
-            if self.looking_right:
-                if self.act != 0:
-                    self.change_act(0, self.get_coords())
-            else:
-                if self.act != 1:
-                    self.change_act(1, self.get_coords())
+            if self.act != 1:
+                self.change_act(1, self.get_coords())
         self.image = self.frames[self.cur_frame]
         self.set_coords(*self.get_coords())
         if not self.step:
@@ -131,10 +127,8 @@ class Slonik(pygame.sprite.Sprite):
         self.frames = []
         self.cur_frame = 0
         if act == 0:
-            self.moving = False
             self.cut_sheet(self.sprites, self.k, self.act)
         elif act == 1:
-            self.moving = False
             self.cut_sheet(self.sprites, self.k, self.act)
         else:
             pass

@@ -270,7 +270,7 @@ def game_def(lvl):
                     else:
                         if (not (jumping or falling or sitting)) or cheatPanel:
                             jumping = True
-                            yspeed = -9 - 5 * cheatPanel
+                            yspeed = -9 - 2 * cheatPanel
                             if lookingright:
                                 hero.change_hero('jumpr', hero.get_coords())
                             else:
@@ -329,6 +329,8 @@ def game_def(lvl):
         pause_btn.draw(windows.screen)
         if pygame.sprite.spritecollide(hero, lvl_gen.changegroup, False):
             lvl_gen.projectilesgroup.empty()
+            lvl_gen.nmeprojectilesgroup.empty()
+            lvl_gen.projectilespeed = []
             if thing == '':
                 thing = 1
             else:
@@ -354,6 +356,15 @@ def game_def(lvl):
                     hero.projectilespeed.pop(sprite)
                     list(lvl_gen.projectilesgroup)[sprite].kill()
                     break
+
+                if pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], boss.boss_group, False):
+                    if (pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite],
+                                                    boss.boss_group, False)[0].get_hit() == 0):
+                        boss.boss_group.empty()
+                    hero.projectilespeed.pop(sprite)
+                    list(lvl_gen.projectilesgroup)[sprite].kill()
+                    break
+
                 if (pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.toches, False)
                         or pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite],
                                                        lvl_gen.anothertoches, False)):

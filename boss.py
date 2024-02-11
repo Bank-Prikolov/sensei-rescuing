@@ -3,6 +3,7 @@ import consts
 import windows
 import lvl_gen
 from processHelper import load_image
+import random
 
 
 class Pic(pygame.sprite.Sprite):
@@ -38,10 +39,11 @@ class Boss(pygame.sprite.Sprite):
         self.counter = 0
         self.act = act
         self.looking_right = False
-        self.hp = 100
+        self.hp = 20
         self.bullet_speed = 6
         self.step = 0
         self.hitick = 0
+        self.pospoint = 0
 
     def cut_sheet(self, sprites, koef, act):
         self.rect = pygame.Rect(0, 0, 64 * koef,
@@ -56,10 +58,20 @@ class Boss(pygame.sprite.Sprite):
         lvl_gen.get_shadow(*self.rect)
         lvl_gen.shadowgroup.draw(windows.screen)
         self.image = self.frames[self.cur_frame]
-        if self.counter == 7:
-            self.cur_frame = (self.cur_frame + 1) % 8
-            self.counter = -1
-        self.counter += 1
+
+        if not self.step:
+            if self.counter == 7:
+                self.cur_frame = (self.cur_frame + 1) % 8
+        else:
+            if self.counter % (self.step * 3) in range(0, 3):
+                if self.hitick != 4:
+                    a = pygame.transform.scale(load_image(consts.shadow), (self.rect.w, self.rect.h))
+                    self.image = a
+                    self.hitick += 1
+                else:
+                    self.hitick = 0
+                    self.step = 0
+        self.counter = (self.counter + 1) % 8
 
     def set_coords(self, x, y):
         self.rect[:2] = [x, y]
@@ -81,6 +93,8 @@ class Boss(pygame.sprite.Sprite):
     def get_hit(self):
         self.hp -= 1
         self.step = 2
+        self.make_move()
+        print(self.hp)
         return self.hp
 
     def change_act(self, act, coords):
@@ -96,3 +110,21 @@ class Boss(pygame.sprite.Sprite):
             pass
         self.image = self.frames[self.cur_frame]
         self.rect = self.rect.move(*pos)
+
+    def shoot(self):
+        pass
+
+    def make_move(self):
+        cordi = [[896, 322], [64, 322], [64, 66], [896, 66], [480, 66]]
+        a = random.randint(0, 4)
+        lvl_gen.get_shadow(*self.rect)
+        lvl_gen.shadowgroup.draw(windows.screen)
+        while a == self.pospoint:
+            a = random.randint(0, 4)
+        self.set_coords(windows.otstupx * windows.fullscreen + cordi[a][0] * self.k, cordi[a][1] * self.k)
+        print(a)
+        if a in [0, 3]:
+            self.change_act(0, self.get_coords())
+        elif a in [1, 2]:
+            self.change_act(1, self.get_coords())
+        self.pospoint = a
