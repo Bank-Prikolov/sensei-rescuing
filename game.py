@@ -233,7 +233,7 @@ def game_def(lvl):
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                terminate(windows.fullscreen)
+                terminate()
             elif event.type == timer_event and started:
                 current_seconds += 1
                 # print(current_seconds)
