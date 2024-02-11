@@ -3,23 +3,19 @@ import consts
 import levels_menu
 import game
 import windows
-import lvl_gen
-import fileManager
+from itemChanger import windowsFullscreenChanger
 from processHelper import terminate
 from itemCreator import Object, Button
 
 
-def pause(super_pause, time, sloniks, screen):
-    languageNow = fileManager.languageImport()
-
-    field = Object(8, 8, 1008, 688, rf"objects\without text\pause-window-obj.png")
+def pause(time, sloniks):
     title = Object(windows.width // 2 - 176, windows.height // 2 - 190, 352, 116,
-                   fr"objects\{languageNow}\pause-title-obj.png")
+                   fr"objects\{consts.languageNow}\pause-title-obj.png")
 
     sound_name = Object(windows.width // 2 + 28, windows.height // 2 + 124, 434, 50,
-                        fr"objects\{languageNow}\sound-obj.png")
+                        fr"objects\{consts.languageNow}\sound-obj.png")
     music_name = Object(windows.width // 2 - 28 - 434, windows.height // 2 + 124, 434, 50,
-                        fr"objects\{languageNow}\music-obj.png")
+                        fr"objects\{consts.languageNow}\music-obj.png")
     music_slider_obj = Object(music_name.x + 434 // 2 - 422 // 2, windows.height // 2 + 200, 422, 16,
                               r"objects\without text\slider-obj.png")
     sound_slider_obj = Object(sound_name.x + 434 // 2 - 422 // 2, windows.height // 2 + 200, 422, 16,
@@ -55,11 +51,11 @@ def pause(super_pause, time, sloniks, screen):
     left_field = Object(music_name.x + 434 // 2 - 470 // 2, windows.height // 2 - 246, 252, 342,
                         fr"objects\without text\left-field-obj.png")
     time_title = Object(left_field.x + left_field.width // 2 - 196 // 2, windows.height // 2 - 185, 196, 34,
-                        fr"objects\{languageNow}\pause-time-obj.png")
+                        fr"objects\{consts.languageNow}\pause-time-obj.png")
     sloniks_title = Object(left_field.x + left_field.width // 2 - 234 // 2, windows.height // 2 - 50, 234, 37,
-                           fr"objects\{languageNow}\pause-sloniks-obj.png")
+                           fr"objects\{consts.languageNow}\pause-sloniks-obj.png")
     right_field = Object(sound_name.x + 434 // 2 - 470 // 2 + 470 - 252, windows.height // 2 - 246, 252, 342,
-                         fr"objects\{languageNow}\right-field-obj.png")
+                         fr"objects\{consts.languageNow}\right-field-obj.png")
 
     TimeFont = pygame.font.Font(r"data\fonts\PixelNumbers.ttf", 50)
     time_sorted = f"{time // 60:02}:{time % 60:02}"
@@ -72,16 +68,23 @@ def pause(super_pause, time, sloniks, screen):
     levelSloniksRect = levelSloniks.get_rect(
         center=(sloniks_title.x + sloniks_title.width // 2, sloniks_title.y + sloniks_title.height + 40))
 
-    while super_pause:
+    running = True
+    while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate(windows.fullscreen)
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
                 if windows.fullscreen:
+                    running = False
                     windows.fullscreen = 0
+                    windowsFullscreenChanger(windows.fullscreen)
+                    pause(time, sloniks)
                 else:
+                    running = False
                     windows.fullscreen = 1
+                    windowsFullscreenChanger(windows.fullscreen)
+                    pause(time, sloniks)
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
                 levels_menu.levels_menu()
@@ -90,21 +93,22 @@ def pause(super_pause, time, sloniks, screen):
                 game.game_def(consts.lvlNow)
 
             if event.type == pygame.USEREVENT and event.button == play_btn:
-                super_pause = False
+                running = False
 
             for button in [repeat_btn, to_lvlmenu_btn, play_btn]:
                 button.handle_event(event, consts.volS)
 
-        for obj in [field, left_field, time_title, sloniks_title, pause_field, right_field, sound_field, music_field,
+        for obj in [consts.pause_field, left_field, time_title, sloniks_title, pause_field, right_field, sound_field,
+                    music_field,
                     title, sound_slider_obj, music_slider_obj, music_slider_btn, sound_slider_btn, sound_name,
                     music_name]:
-            obj.draw(lvl_gen.screen)
+            obj.draw(windows.screen)
 
         for button in [repeat_btn, to_lvlmenu_btn, play_btn]:
             button.check_hover(pygame.mouse.get_pos())
-            button.draw(lvl_gen.screen)
+            button.draw(windows.screen)
 
-        screen.blit(levelTime, levelTimeRect)
-        screen.blit(levelSloniks, levelSloniksRect)
+        windows.screen.blit(levelTime, levelTimeRect)
+        windows.screen.blit(levelSloniks, levelSloniksRect)
 
         pygame.display.flip()

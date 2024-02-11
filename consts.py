@@ -15,7 +15,9 @@ bg_group_complete = pygame.sprite.Group()
 # menu consts
 img = load_image(r'backgrounds\main-menu-bg.png')
 img_fs = load_image(r"backgrounds\main-menu-fullScreen-bg.png")
-menu_bg = pygame.transform.scale(img, (img.get_width() * 2, img.get_height() * 2))
+menu_bg = None
+pause_field = None
+game_state_filed = None
 isSliderMusic = False
 isSliderSound = False
 lvlNow = None

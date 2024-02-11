@@ -104,6 +104,12 @@ def settings_menu():
             elif event.type == pygame.MOUSEBUTTONUP and event.button == music_slider_btn:
                 consts.isSliderMusic = False
 
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == sound_slider_btn:
+                consts.isSliderSound = True
+
+            elif event.type == pygame.MOUSEBUTTONUP and event.button == sound_slider_btn:
+                consts.isSliderSound = False
+
             elif event.type == pygame.MOUSEMOTION:
                 if consts.isSliderMusic or consts.isSliderSound:
                     if consts.isSliderMusic:
@@ -134,12 +140,6 @@ def settings_menu():
                             consts.wS = (sound_slider_btn.rect[0] - 553) / 300
                             consts.volS = consts.wS
                     fileManager.volumeExport(consts.wM, consts.wS)
-
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == sound_slider_btn:
-                consts.isSliderSound = True
-
-            elif event.type == pygame.MOUSEBUTTONUP and event.button == sound_slider_btn:
-                consts.isSliderSound = False
 
             for button in [cross_btn, fs_btn, arrow_btn, r_arrow_btn]:
                 button.handle_event(event, consts.volS)

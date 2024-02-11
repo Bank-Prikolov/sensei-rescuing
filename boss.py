@@ -1,5 +1,6 @@
 import pygame
 import consts
+import windows
 import lvl_gen
 from processHelper import load_image
 
@@ -53,7 +54,7 @@ class Boss(pygame.sprite.Sprite):
 
     def update(self):
         lvl_gen.get_shadow(*self.rect)
-        lvl_gen.shadowgroup.draw(lvl_gen.screen)
+        lvl_gen.shadowgroup.draw(windows.screen)
         self.image = self.frames[self.cur_frame]
         if self.counter == 7:
             self.cur_frame = (self.cur_frame + 1) % 8

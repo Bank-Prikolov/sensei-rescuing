@@ -28,13 +28,6 @@ projectilespeed = []
 
 heropic = consts.wai
 
-if not windows.fullscreen:
-    screen = pygame.display.set_mode(windows.size)
-    windows.fullscreen = 0
-else:
-    screen = pygame.display.set_mode(windows.fullsize, pygame.FULLSCREEN)
-    windows.fullscreen = 1
-
 
 class Board:
     def __init__(self, txt=None):
@@ -145,7 +138,7 @@ class Board:
             a.hp = slon.hp
             a.looking_right = slon.looking_right
         sloniks = pygame.sprite.Group(list(sloniks)[len(sp) // 2:])
-        sloniks.draw(screen)
+        sloniks.draw(windows.screen)
 
     @staticmethod
     def pereres_boss(spisokslonikoff):
@@ -222,7 +215,7 @@ board = Board()
 
 
 def generate_level(lvlnum):
-    global screen, board
+    global board
     if lvlnum == 1:
         level = consts.lvl1
     elif lvlnum == 2:
@@ -250,11 +243,11 @@ def generate_level(lvlnum):
 
 
 def rescreen():
-    global screen, bgroup
+    global bgroup
     if windows.fullscreen:
-        screen = pygame.display.set_mode(windows.fullsize, pygame.FULLSCREEN)
+        windows.screen = pygame.display.set_mode(windows.fullsize, pygame.FULLSCREEN)
     else:
-        screen = pygame.display.set_mode(windows.size)
+        windows.screen = pygame.display.set_mode(windows.size)
     board.set_view(windows.otstupx * windows.fullscreen,
                    -windows.otstupy * windows.k ** windows.fullscreen,
                    64 * windows.k ** windows.fullscreen)
@@ -263,9 +256,9 @@ def rescreen():
 
 
 def updater():
-    global bgroup, screen, board
-    bgroup.draw(screen)
-    board.render(screen)
+    global bgroup, board
+    bgroup.draw(windows.screen)
+    board.render(windows.screen)
 
 
 def get_shadow(x, y, w, h):
@@ -281,55 +274,55 @@ def remover(pos, block='.'):
         if block == '0':
             boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
                      board.cell_size, consts.floor, toches)
-            toches.draw(screen)
+            toches.draw(windows.screen)
         elif block == '#':
             boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
                      board.cell_size, consts.wallx, toches)
-            toches.draw(screen)
+            toches.draw(windows.screen)
         elif block == '=':
             boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
                      board.cell_size, consts.wally, toches)
-            toches.draw(screen)
+            toches.draw(windows.screen)
         elif block == '_':
             boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
                      board.cell_size, consts.plat, untouches)
             boss.Pic(board.left + (board.cell_size * x) + board.cell_size // 4, board.top + (board.cell_size * y),
                      board.cell_size - board.cell_size // 2,
                      board.cell_size // 64, consts.placeholder, platformgroup)
-            platformgroup.draw(screen)
-            untouches.draw(screen)
+            platformgroup.draw(windows.screen)
+            untouches.draw(windows.screen)
         elif block == 'F':
             boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
                      board.cell_size, consts.finish, finale)
-            finale.draw(screen)
+            finale.draw(windows.screen)
         elif block == 'C':
             boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
                      board.cell_size, consts.change, changegroup, untouches)
-            untouches.draw(screen)
+            untouches.draw(windows.screen)
         elif block == '^':
             boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
                      board.cell_size, consts.thorn, thorngroup, anothertoches)
-            anothertoches.draw(screen)
+            anothertoches.draw(windows.screen)
         elif block == 'S':
             boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
                      board.cell_size, consts.boss_door, changegroup, untouches)
-            untouches.draw(screen)
+            untouches.draw(windows.screen)
         elif block == '%':
             boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
                      board.cell_size, consts.invis, breakgroup)
-            breakgroup.draw(screen)
+            breakgroup.draw(windows.screen)
         elif block == 't':
             boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
                      board.cell_size, consts.trigger, triggergroup)
-            triggergroup.draw(screen)
+            triggergroup.draw(windows.screen)
         elif block == '&':
             boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
                      board.cell_size, consts.horizon, toches)
-            toches.draw(screen)
+            toches.draw(windows.screen)
         elif block == '.':
             boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
                      board.cell_size, consts.shadow, shadowgroup)
-            shadowgroup.draw(screen)
+            shadowgroup.draw(windows.screen)
 
 
 def get_key(d, value):

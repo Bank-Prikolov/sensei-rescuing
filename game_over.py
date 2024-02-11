@@ -3,28 +3,22 @@ import game
 import levels_menu
 import windows
 import consts
-from processHelper import load_image, terminate
-from itemCreator import Button, Object
+from processHelper import load_image, terminate, transition
+from itemCreator import Button
 from itemAnimator import AnimatedGameOver
 from itemChanger import windowsFullscreenChanger
 
 
 def game_over(whatFrame=0):
-
     pygame.mixer.music.load(r"data\sounds\game-over-sound.mp3")
     pygame.mixer.music.play(1)
     errorSound = pygame.mixer.Sound(r"data\sounds\error-sound.mp3")
 
-    if not windows.fullscreen:
-        field = Object(windows.width - 1016, windows.height - 696, 1008, 688, rf"objects\without text\games-window-obj.png")
-    else:
-        field = Object(windows.otstupx, 0, windows.width - 2 * windows.otstupx, 1080,
-                       r"objects\without text\windows-field-obj.png")
-
     bg_img_game_over = load_image(r"objects\animated\game-over-obj.png")
     bg_tr_game_over = pygame.transform.scale(bg_img_game_over,
                                              (bg_img_game_over.get_width() * 3, bg_img_game_over.get_height() * 3))
-    game_over_bg = AnimatedGameOver(bg_tr_game_over, 14, 1, windows.width // 2 - 3388 * 3 // 14 // 2, windows.height // 2 - 180)
+    game_over_bg = AnimatedGameOver(bg_tr_game_over, 14, 1, windows.width // 2 - 3388 * 3 // 14 // 2,
+                                    windows.height // 2 - 180)
 
     repeat_btn = Button(windows.width // 2 - 94 // 2 + 120, windows.height // 2 - 45, 94, 104,
                         r"buttons\without text\default-repeat-over-btn.png",
@@ -62,6 +56,7 @@ def game_over(whatFrame=0):
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
                 running = False
                 consts.bg_group_over.empty()
+                transition()
                 levels_menu.levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == repeat_btn:
@@ -72,7 +67,7 @@ def game_over(whatFrame=0):
             for button in [repeat_btn, to_lvlmenu_btn]:
                 button.handle_event(event, consts.volS)
 
-        field.draw(windows.screen)
+        consts.game_state_filed.draw(windows.screen)
 
         if whatFrame:
             game_over_bg.cur_frame = 129

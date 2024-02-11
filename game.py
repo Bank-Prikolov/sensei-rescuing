@@ -223,7 +223,7 @@ def game_def(lvl):
     lvl_gen.updater()
     hero = Hero(*start_coords, windows.k ** windows.fullscreen, character)
     running = True
-    lvl_gen.characters.draw(lvl_gen.screen)
+    lvl_gen.characters.draw(windows.screen)
     thing = ''
     cheatPanel = False  # cheats
     timer_event = pygame.USEREVENT + 1
@@ -330,9 +330,8 @@ def game_def(lvl):
                     xspeed = 0
                     predpause = hero.get_coords()
                     hero.end()
-                    super_pause = True
                     started = False
-                    pause.pause(super_pause, current_seconds, str(lvl_gen.sloniks)[7], lvl_gen.screen)
+                    pause.pause(current_seconds, len(list(lvl_gen.sloniks)))
                     started = True
                     hero = Hero(*predpause, windows.k ** windows.fullscreen, character)
                     if lookingright:
@@ -393,14 +392,14 @@ def game_def(lvl):
             else:
                 thing += 1
             hero.set_coords(*lvl_gen.generate_level(lvl + thing / 10))
-            lvl_gen.screen.fill('#000000')
+            windows.screen.fill('#000000')
             lvl_gen.updater()
         lvl_gen.get_shadow(*hero.get_coords(), *hero.get_size())
-        lvl_gen.shadowgroup.draw(lvl_gen.screen)
+        lvl_gen.shadowgroup.draw(windows.screen)
 
         if lvl_gen.projectilesgroup:
             for sprite in range(len(lvl_gen.projectilesgroup)):
-                pygame.draw.rect(lvl_gen.screen, (36, 34, 52), list(lvl_gen.projectilesgroup)[sprite].rect)
+                pygame.draw.rect(windows.screen, (36, 34, 52), list(lvl_gen.projectilesgroup)[sprite].rect)
                 list(lvl_gen.projectilesgroup)[sprite].rect = list(lvl_gen.projectilesgroup)[sprite].rect.move(
                     hero.projectilespeed[sprite], 0)
                 if pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], lvl_gen.sloniks, False):
@@ -419,11 +418,11 @@ def game_def(lvl):
                     hero.projectilespeed.pop(sprite)
                     list(lvl_gen.projectilesgroup)[sprite].kill()
                     break
-            lvl_gen.projectilesgroup.draw(lvl_gen.screen)
+            lvl_gen.projectilesgroup.draw(windows.screen)
 
         if lvl_gen.nmeprojectilesgroup:
             for sprite in range(len(lvl_gen.nmeprojectilesgroup)):
-                pygame.draw.rect(lvl_gen.screen, (36, 34, 52), list(lvl_gen.nmeprojectilesgroup)[sprite].rect)
+                pygame.draw.rect(windows.screen, (36, 34, 52), list(lvl_gen.nmeprojectilesgroup)[sprite].rect)
                 list(lvl_gen.nmeprojectilesgroup)[sprite].rect = list(lvl_gen.nmeprojectilesgroup)[sprite].rect.move(
                     lvl_gen.projectilespeed[sprite][0], 0)
                 if pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite], lvl_gen.characters,
@@ -441,7 +440,7 @@ def game_def(lvl):
                     lvl_gen.projectilespeed.pop(sprite)
                     list(lvl_gen.nmeprojectilesgroup)[sprite].kill()
                     break
-            lvl_gen.nmeprojectilesgroup.draw(lvl_gen.screen)
+            lvl_gen.nmeprojectilesgroup.draw(windows.screen)
         if not cheatPanel:
             if (pygame.sprite.spritecollide(hero, lvl_gen.thorngroup, False)
                     or pygame.sprite.spritecollide(hero, lvl_gen.sloniks, False)
@@ -502,18 +501,18 @@ def game_def(lvl):
         else:
             xspeed = 0
         hero.update()
-        lvl_gen.breakgroup.draw(lvl_gen.screen)
-        lvl_gen.characters.draw(lvl_gen.screen)
+        lvl_gen.breakgroup.draw(windows.screen)
+        lvl_gen.characters.draw(windows.screen)
         lvl_gen.sloniks.update()
         boss.boss_group.update()
-        lvl_gen.sloniks.draw(lvl_gen.screen)
-        lvl_gen.triggergroup.draw(lvl_gen.screen)
-        lvl_gen.finale.draw(lvl_gen.screen)
-        lvl_gen.untouches.draw(lvl_gen.screen)
-        boss.boss_group.draw(lvl_gen.screen)
-        pygame.draw.rect(lvl_gen.screen, '#000000',
+        lvl_gen.sloniks.draw(windows.screen)
+        lvl_gen.triggergroup.draw(windows.screen)
+        lvl_gen.finale.draw(windows.screen)
+        lvl_gen.untouches.draw(windows.screen)
+        boss.boss_group.draw(windows.screen)
+        pygame.draw.rect(windows.screen, '#000000',
                          (0, 0, windows.otstupx ** windows.fullscreen, windows.fullsize[1] ** windows.fullscreen))
-        pygame.draw.rect(lvl_gen.screen, '#000000',
+        pygame.draw.rect(windows.screen, '#000000',
                          (windows.fullsize[0] - windows.otstupx, 0, windows.fullsize[0] ** windows.fullscreen,
                           windows.fullsize[1] ** windows.fullscreen))
         consts.clock.tick(consts.fps)

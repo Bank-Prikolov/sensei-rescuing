@@ -5,22 +5,15 @@ import windows
 import consts
 import starsRecorder
 from processHelper import load_image, terminate
-from itemCreator import Button, Object, Stars
+from itemCreator import Button, Stars
 from itemAnimator import AnimatedGameComplete
+from itemChanger import windowsFullscreenChanger
 
 
 def game_complete(whatFrame=0):
     pygame.mixer.music.load(r"data\sounds\game-complete-sound.mp3")
     pygame.mixer.music.play(1)
     errorSound = pygame.mixer.Sound(r"data\sounds\error-sound.mp3")
-
-    # if not windows.fullscreen:
-    #     field = Object(WIDTH - WIDTH, HEIGHT - HEIGHT, 1024, 704, r"objects\without text\windows-field-obj.png")
-    # else:
-    #     field = Object(windows.otstupx, HEIGHT - HEIGHT, WIDTH - 2 * windows.otstupx, 1080,
-    #                    r"objects\without text\windows-field-obj.png")
-
-    field = Object(8, 8, 1008, 688, rf"objects\without text\games-window-obj.png")
 
     bg_img_game_complete = load_image(r"objects\animated\game-complete-obj.png")
     bg_tr = pygame.transform.scale(bg_img_game_complete,
@@ -61,11 +54,13 @@ def game_complete(whatFrame=0):
                         running = False
                         consts.bg_group_complete.empty()
                         windows.fullscreen = 0
+                        windowsFullscreenChanger(windows.fullscreen)
                         game_complete(1)
                     else:
                         running = False
                         consts.bg_group_complete.empty()
                         windows.fullscreen = 1
+                        windowsFullscreenChanger(windows.fullscreen)
                         game_complete(1)
                 else:
                     pygame.mixer.Sound.set_volume(errorSound, consts.volS)
@@ -84,7 +79,7 @@ def game_complete(whatFrame=0):
             for button in [repeat_btn, to_lvlmenu_btn]:
                 button.handle_event(event, consts.volS)
 
-        field.draw(windows.screen)
+        consts.game_state_filed.draw(windows.screen)
 
         if whatFrame:
             game_complete_bg.cur_frame = 149
