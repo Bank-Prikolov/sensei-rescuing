@@ -11,7 +11,7 @@ import windows
 import starsRecorder
 from processHelper import load_image, terminate
 from itemCreator import Object
-from itemChanger import starsChanger, windowsFullscreenChanger
+from itemChanger import starsChanger
 
 runright, runleft, lookingup, sitting = False, False, False, False
 jumping = False
@@ -270,44 +270,11 @@ def game_def(lvl):
                     else:
                         if (not (jumping or falling or sitting)) or cheatPanel:
                             jumping = True
-                            yspeed = -9 - 5 ** cheatPanel
+                            yspeed = -9 - 5 * cheatPanel
                             if lookingright:
                                 hero.change_hero('jumpr', hero.get_coords())
-                                pass
                             else:
                                 hero.change_hero('jumpl', hero.get_coords())
-                                pass
-                elif event.key == pygame.K_F11:
-                    if windows.fullscreen:
-                        windows.fullscreen = 0
-                        windowsFullscreenChanger(windows.fullscreen)
-                        pause_btn = Object(windows.width - windows.width + 8, windows.height - windows.height + 6, 108,
-                                           54,
-                                           r"objects\without text\pause-button-obj.png")
-                        new = ((hero.get_coords()[0] - windows.otstupx) // windows.k,
-                               (hero.get_coords()[1] - windows.otstupy + 6) // windows.k)
-                    else:
-                        windows.fullscreen = 1
-                        windowsFullscreenChanger(windows.fullscreen)
-                        pause_btn = Object(windows.otstupx + 8, windows.height - windows.height + 6, 144, 72,
-                                           r"objects\without text\pause-button-obj.png")
-                        new = (windows.otstupx + hero.get_coords()[0] * windows.k,
-                               (windows.otstupy // windows.k + hero.get_coords()[1]) * windows.k)
-                    lvl_gen.characters.empty()
-                    hero.projectilespeed = []
-                    lvl_gen.projectilespeed = []
-
-                    lvl_gen.nmeprojectilesgroup.empty()
-                    lvl_gen.projectilesgroup.empty()
-                    hero = Hero(*new, windows.k ** windows.fullscreen, character)
-                    if lookingright:
-                        hero.change_hero('sr', new)
-                    else:
-                        hero.change_hero('sl', new)
-                    lvl_gen.rescreen()
-                    lvl_gen.updater()
-                    lvl_gen.board.pereres_slon(lvl_gen.sloniks)
-                    lvl_gen.board.pereres_boss(boss.boss_group)
                 elif event.key == pygame.K_w:
                     if pygame.sprite.spritecollide(hero, lvl_gen.finale, False):
                         thing = ''
@@ -326,7 +293,6 @@ def game_def(lvl):
                             shooting = -hero.projectile_speed * windows.k ** windows.fullscreen
                         hero.shoot(shooting)
                 elif event.key == pygame.K_ESCAPE:
-                    tmp = windows.fullscreen
                     xspeed = 0
                     predpause = hero.get_coords()
                     hero.end()
@@ -338,30 +304,6 @@ def game_def(lvl):
                         hero.change_hero('sr', predpause)
                     else:
                         hero.change_hero('sl', predpause)
-                    if tmp != windows.fullscreen:
-                        if windows.fullscreen:
-                            pause_btn = Object(windows.otstupx + 8, windows.height - windows.height + 6, 144, 72,
-                                               r"objects\without text\pause-button-obj.png")
-                            new = (windows.otstupx + hero.get_coords()[0] * windows.k,
-                                   (windows.otstupy // windows.k + hero.get_coords()[1]) * windows.k)
-                        else:
-                            pause_btn = Object(windows.width - windows.width + 8, windows.height - windows.height + 6,
-                                               108,
-                                               54,
-                                               r"objects\without text\pause-button-obj.png")
-                            new = ((hero.get_coords()[0] - windows.otstupx) // windows.k,
-                                   (hero.get_coords()[1] - windows.otstupy + 6) // windows.k)
-                        lvl_gen.characters.empty()
-                        hero.projectilespeed = []
-                        lvl_gen.projectilesgroup.empty()
-                        lvl_gen.projectilespeed = []
-                        hero = Hero(*new, windows.k ** windows.fullscreen, character)
-                        if lookingright:
-                            hero.change_hero('sr', new)
-                        else:
-                            hero.change_hero('sl', new)
-                        lvl_gen.board.pereres_slon(lvl_gen.sloniks)
-                        lvl_gen.board.pereres_boss(boss.boss_group)
                     lvl_gen.rescreen()
                     lvl_gen.updater()
             elif event.type == pygame.WINDOWEXPOSED:
