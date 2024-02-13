@@ -212,6 +212,9 @@ class Hero(pygame.sprite.Sprite):
 
 def game_def(lvl):
     global runright, runleft, lookingup, sitting, shooting, jumping, falling, lookingright, xspeed, yspeed, hero
+    pygame.mixer.music.load(r"data\sounds\game-theme-sound.mp3")
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(consts.wM)
     start_coords = lvl_gen.generate_level(lvl)
     character = fileManager.heroImport()[0]
     if not windows.fullscreen:
