@@ -339,6 +339,7 @@ def game_def(lvl):
             else:
                 thing += 1
             hero.set_coords(*lvl_gen.generate_level(lvl + thing / 10))
+            hero.projectilespeed = []
             windows.screen.fill('#000000')
             lvl_gen.updater()
         lvl_gen.get_shadow(*hero.get_coords(), *hero.get_size())
