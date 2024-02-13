@@ -4,7 +4,7 @@ import consts
 import menu
 import fileManager
 from itemCreator import Object, Button
-from itemChanger import windowsFullscreenChanger
+from itemChanger import fullscreenChanger, volumeChanger
 from processHelper import terminate, transition
 
 
@@ -75,11 +75,11 @@ def settings_menu():
             if event.type == pygame.USEREVENT and event.button == fs_btn:
                 if windows.fullscreen:
                     windows.fullscreen = 0
-                    windowsFullscreenChanger(windows.fullscreen)
+                    fullscreenChanger(windows.fullscreen)
                     settings_menu()
                 else:
                     windows.fullscreen = 1
-                    windowsFullscreenChanger(windows.fullscreen)
+                    fullscreenChanger(windows.fullscreen)
                     settings_menu()
 
             if event.type == pygame.USEREVENT and (event.button == arrow_btn or event.button == r_arrow_btn):
@@ -104,25 +104,7 @@ def settings_menu():
 
             elif event.type == pygame.MOUSEMOTION:
                 if consts.isSliderMusic or consts.isSliderSound:
-                    if consts.isSliderMusic:
-                        xM = music_slider_btn.rect[0]
-                        if music_slider_obj.x < event.pos[0] < music_slider_obj.x + music_slider_obj.width:
-                            x_cube_M = event.pos[0] - xM
-                        else:
-                            x_cube_M = 13
-                        music_slider_btn.rect = music_slider_btn.rect.move(x_cube_M - 13, 0)
-                        consts.wM = round((music_slider_btn.rect[0] - music_slider_obj.x) / music_slider_obj.width, 3)
-                        pygame.mixer.music.set_volume(consts.wM)
-                    elif consts.isSliderSound:
-                        xS = sound_slider_btn.rect[0]
-                        if sound_slider_obj.x < event.pos[0] < sound_slider_obj.x + sound_slider_obj.width:
-                            x_cube_S = event.pos[0] - xS
-                        else:
-                            x_cube_S = 13
-                        sound_slider_btn.rect = sound_slider_btn.rect.move(x_cube_S - 13, 0)
-                        consts.wS = round((sound_slider_btn.rect[0] - sound_slider_obj.x) / sound_slider_obj.width, 3)
-                        consts.volS = consts.wS
-                    fileManager.volumeExport(consts.wM, consts.wS)
+                    volumeChanger(event, music_slider_btn, music_slider_obj, sound_slider_btn, sound_slider_obj)
 
             for button in [cross_btn, fs_btn, arrow_btn, r_arrow_btn]:
                 button.handle_event(event, consts.volS)
