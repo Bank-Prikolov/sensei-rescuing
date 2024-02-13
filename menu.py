@@ -12,9 +12,8 @@ from itemChanger import windowsFullscreenChanger
 
 
 def main_menu():
-    windowsFullscreenChanger(windows.fullscreen)
-
     if consts.firstTime:
+        windowsFullscreenChanger(windows.fullscreen, True)
         pygame.mixer.music.load(r"data\sounds\menu-sound.wav")
         pygame.mixer.music.play(-1)
         consts.firstTime = False

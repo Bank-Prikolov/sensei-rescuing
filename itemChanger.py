@@ -6,11 +6,12 @@ import fileManager
 from itemCreator import Object
 
 
-def windowsFullscreenChanger(fullscreen):
+def windowsFullscreenChanger(fullscreen, ft=False):
     fileManager.fullscreenExport(windows.fullscreen)
     if fullscreen:
-        windows.width, windows.height = windows.fullsize
-        windows.screen = pygame.display.set_mode(windows.fullsize, pygame.FULLSCREEN)
+        if not ft:
+            windows.width, windows.height = windows.fullsize
+            windows.screen = pygame.display.set_mode(windows.fullsize, pygame.FULLSCREEN)
         consts.menu_bg = pygame.transform.scale(consts.img_fs, (consts.img_fs.get_width(), consts.img_fs.get_height()))
         consts.pause_field = Object(windows.otstupx + 8, 8, windows.width - windows.otstupx * 2 - 16, 1064,
                                     r"objects\without text\pause-window-obj.png")
@@ -18,8 +19,9 @@ def windowsFullscreenChanger(fullscreen):
                                          windows.width - windows.otstupx * 2 - 16, 1064,
                                          r"objects\without text\games-window-obj.png")
     else:
-        windows.width, windows.height = windows.size
-        windows.screen = pygame.display.set_mode(windows.size)
+        if not ft:
+            windows.width, windows.height = windows.size
+            windows.screen = pygame.display.set_mode(windows.size)
         consts.menu_bg = pygame.transform.scale(consts.img, (consts.img.get_width() * 2, consts.img.get_height() * 2))
         consts.pause_field = Object(windows.width - 1016, windows.height - 696, 1008, 688,
                                     r"objects\without text\pause-window-obj.png")

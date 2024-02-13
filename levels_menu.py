@@ -83,21 +83,21 @@ def levels_menu():
 
             if event.type == pygame.USEREVENT and event.button == level1Button:
                 consts.lvlNow = 1
-                pygame.mixer.music.stop()
+                # pygame.mixer.music.stop()
                 consts.firstTime = True
                 transition()
                 game.game_def(1)
 
             if event.type == pygame.USEREVENT and event.button == level2Button:
                 consts.lvlNow = 2
-                pygame.mixer.music.stop()
+                # pygame.mixer.music.stop()
                 consts.firstTime = True
                 transition()
                 game.game_def(2)
 
             if event.type == pygame.USEREVENT and event.button == levelBossButton:
                 consts.lvlNow = 3
-                pygame.mixer.music.stop()
+                # pygame.mixer.music.stop()
                 consts.firstTime = True
                 transition()
                 game.game_def(3)
