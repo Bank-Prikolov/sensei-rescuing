@@ -44,19 +44,12 @@ def settings_menu():
     r_arrow_btn = Button(all_w + 436, all_h + 432, 36, 40,
                          r"buttons\without text\default-r-arrow-btn.png", r"buttons\without text\hover-r-arrow-btn.png",
                          r"buttons\without text\press-r-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
-    if not windows.fullscreen:
-        sl = music_slider_obj.x + music_slider_obj.width * consts.wM
-    else:
-        sl = (music_slider_obj.x + music_slider_obj.width) + music_slider_obj.width * consts.wM
-    music_slider_btn = Button(sl, all_h + 302, 26, 28,
+
+    music_slider_btn = Button(music_slider_obj.x + music_slider_obj.width * consts.wM, all_h + 302, 26, 28,
                               r"buttons\without text\default-slider-btn.png",
                               r"buttons\without text\hover-slider-btn.png",
                               r"buttons\without text\press-slider-btn.png")
-    if not windows.fullscreen:
-        sd = sound_slider_obj.x + sound_slider_obj.width * consts.wS
-    else:
-        sd = (sound_slider_obj.x + sound_slider_obj.width) + sound_slider_obj.width * consts.wS
-    sound_slider_btn = Button(sd, all_h + 438, 26, 28,
+    sound_slider_btn = Button(sound_slider_obj.x + sound_slider_obj.width * consts.wS, all_h + 438, 26, 28,
                               r"buttons\without text\default-slider-btn.png",
                               r"buttons\without text\hover-slider-btn.png",
                               r"buttons\without text\press-slider-btn.png")
@@ -118,21 +111,8 @@ def settings_menu():
                         else:
                             x_cube_M = 13
                         music_slider_btn.rect = music_slider_btn.rect.move(x_cube_M - 13, 0)
-                        if not windows.fullscreen:
-                            consts.wM = (music_slider_btn.rect[0] - music_slider_obj.x) / music_slider_obj.width
-                            if consts.wM < 0:
-                                consts.wM = 0
-                            if consts.wM > 1:
-                                consts.wM = 1
-                        else:
-                            consts.wM = ((music_slider_btn.rect[0] - (music_slider_obj.x + music_slider_obj.width))
-                                         / music_slider_obj.width)
-                            if consts.wM < 0:
-                                consts.wM = 0
-                            if consts.wM > 1:
-                                consts.wM = 1
+                        consts.wM = (music_slider_btn.rect[0] - music_slider_obj.x) / music_slider_obj.width
                         pygame.mixer.music.set_volume(consts.wM)
-
                     elif consts.isSliderSound:
                         xS = sound_slider_btn.rect[0]
                         if sound_slider_obj.x < event.pos[0] < sound_slider_obj.x + sound_slider_obj.width:
@@ -140,21 +120,8 @@ def settings_menu():
                         else:
                             x_cube_S = 13
                         sound_slider_btn.rect = sound_slider_btn.rect.move(x_cube_S - 13, 0)
-                        if not windows.fullscreen:
-                            consts.wS = (sound_slider_btn.rect[0] - sound_slider_obj.x) / sound_slider_obj.width
-                            if consts.wS < 0:
-                                consts.wS = 0
-                            if consts.wS > 1:
-                                consts.wS = 1
-                            consts.volS = consts.wS
-                        else:
-                            consts.wS = ((sound_slider_btn.rect[0] - (sound_slider_obj.x + sound_slider_obj.width))
-                                         / sound_slider_obj.width)
-                            if consts.wS < 0:
-                                consts.wS = 0
-                            if consts.wS > 1:
-                                consts.wS = 1
-                            consts.volS = consts.wS
+                        consts.wS = (sound_slider_btn.rect[0] - sound_slider_obj.x) / sound_slider_obj.width
+                        consts.volS = consts.wS
                     fileManager.volumeExport(consts.wM, consts.wS)
 
             for button in [cross_btn, fs_btn, arrow_btn, r_arrow_btn]:
