@@ -111,7 +111,7 @@ def settings_menu():
                         else:
                             x_cube_M = 13
                         music_slider_btn.rect = music_slider_btn.rect.move(x_cube_M - 13, 0)
-                        consts.wM = (music_slider_btn.rect[0] - music_slider_obj.x) / music_slider_obj.width
+                        consts.wM = round((music_slider_btn.rect[0] - music_slider_obj.x) / music_slider_obj.width, 3)
                         pygame.mixer.music.set_volume(consts.wM)
                     elif consts.isSliderSound:
                         xS = sound_slider_btn.rect[0]
@@ -120,7 +120,7 @@ def settings_menu():
                         else:
                             x_cube_S = 13
                         sound_slider_btn.rect = sound_slider_btn.rect.move(x_cube_S - 13, 0)
-                        consts.wS = (sound_slider_btn.rect[0] - sound_slider_obj.x) / sound_slider_obj.width
+                        consts.wS = round((sound_slider_btn.rect[0] - sound_slider_obj.x) / sound_slider_obj.width, 3)
                         consts.volS = consts.wS
                     fileManager.volumeExport(consts.wM, consts.wS)
 
