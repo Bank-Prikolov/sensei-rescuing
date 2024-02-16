@@ -1,4 +1,5 @@
 import os
+import random
 import sys
 import pygame
 import consts
@@ -53,6 +54,7 @@ class Board:
         self.top = top
 
     def render(self, sc):
+        triggergroup.empty()
         toches.empty()
         platformgroup.empty()
         untouches.empty()
@@ -171,7 +173,8 @@ class Board:
             for y in range(len(self.board)):
                 if board.board[y][x] == 'e':
                     slonik.Slonik(self.left + (self.cell_size * x), self.top + (self.cell_size * y),
-                           windows.k ** windows.fullscreen, 0)
+                                  windows.k ** windows.fullscreen, 0, lknrght=random.randint(0, 2),
+                                  trtspd=12 * random.randint(0, 8))
 
     def otris_boss(self):
         boss.boss_group.empty()

@@ -5,12 +5,11 @@ import consts
 import lvl_gen
 from processHelper import load_image
 
-
 class Slonik(pygame.sprite.Sprite):
     pic = load_image(consts.slonik)
     php = load_image(consts.php)
 
-    def __init__(self, x, y, koef, act=0):
+    def __init__(self, x, y, koef, act=0, lknrght=True, trtspd=0):
         super().__init__(lvl_gen.sloniks)
         self.sprites = pygame.transform.scale(
             Slonik.pic, (Slonik.pic.get_width() // 2 * koef, Slonik.pic.get_height() // 2 * koef))
@@ -23,14 +22,14 @@ class Slonik(pygame.sprite.Sprite):
         self.counter = 0
         self.xspeed = 4
         self.act = act
-        self.looking_right = True
-        self.hp = 6
+        self.looking_right = lknrght
+        self.hp = 3
         self.bulletspeed = 10
         self.acter = 0
         self.step = 0
         self.hitick = 0
         self.shoot_counter = 35
-        self.turn_speed = 0
+        self.turn_speed = trtspd
         self.dontseeme = True
 
     def cut_sheet(self, sprites, koef, act):
