@@ -22,7 +22,7 @@ isSliderMusic = False
 isSliderSound = False
 lvlNow = None
 firstTime = True
-heroNow, isGetHero2 = fileManager.heroImport()
+heroNow, isGetHero2, getHero = fileManager.heroImport()
 wM, wS, volS = fileManager.volumeImport()
 languageNow = fileManager.languageImport()
 
@@ -37,7 +37,7 @@ kowlad = r'characters\enemy-kowlad.png'
 php = r'characters\projectile-php.png'
 fireball = r'characters\projectile-fireball.png'
 hollow_purple = r'characters\projectile-hollow-purple.png'
-boos_prjct = r'characters\php_marker.png'
+boos_prjct = r'characters\projectile-php-marker.png'
 
 # textures
 floor = r'textures\0-texture.png'

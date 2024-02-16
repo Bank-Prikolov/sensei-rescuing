@@ -36,8 +36,10 @@ def settings_menu():
                        r"buttons\without text\hover-cross-btn.png",
                        r"buttons\without text\press-cross-btn.png", r"data\sounds\menu-button-sound.mp3")
     fs_btn = Button(fs_name.x + fs_name.width // 2 - 136 // 2, fs_name.y + fs_name.height + 15, 136, 62,
-                    fr"buttons\{consts.languageNow}\fullscreen-off-btn.png", "",
-                    fr"buttons\{consts.languageNow}\fullscreen-on-btn.png", r"data\sounds\menu-button-sound.mp3")
+                    fr"buttons\{consts.languageNow}\fullscreen-off-btn.png",
+                    rf"buttons\{consts.languageNow}\hover-fullscreen-off-btn.png",
+                    fr"buttons\{consts.languageNow}\fullscreen-on-btn.png", r"data\sounds\menu-button-sound.mp3", "",
+                    "", "", "", "", rf"buttons\{consts.languageNow}\hover-fullscreen-on-btn.png")
     arrow_btn = Button(all_w + 732, all_h + 432, 36, 40,
                        r"buttons\without text\default-arrow-btn.png", r"buttons\without text\hover-arrow-btn.png",
                        r"buttons\without text\press-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")

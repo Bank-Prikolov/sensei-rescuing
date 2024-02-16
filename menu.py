@@ -69,6 +69,14 @@ def main_menu():
     field_get = Object(all_w + 582 + 304 // 2 - 159 // 2 - 42, all_h + 302, 243, 105,
                        fr"objects\{consts.languageNow}\how-to-get-obj.png")
 
+    field_ura = Object(all_w + 582, all_h + 102, 304, 416,
+                       fr"objects\{consts.languageNow}\hero-field-new-character-obj.png")
+    ura_btn = Button(field_ura.x + field_ura.width // 2 - 200 // 2, all_h + 340, 200, 90,
+                     fr"buttons\{consts.languageNow}\default-ura-btn.png",
+                     fr"buttons\{consts.languageNow}\hover-ura-btn.png",
+                     fr"buttons\{consts.languageNow}\press-ura-btn.png",
+                     r"data\sounds\menu-button-sound.mp3")
+
     running = True
     hero = consts.heroNow
     while running:
@@ -100,7 +108,12 @@ def main_menu():
                     else:
                         webbrowser.open('https://t.me/smoladventurebot')
                         consts.isGetHero2 = 1
-                fileManager.heroExport(consts.heroNow, consts.isGetHero2)
+                        consts.getHero = 1
+                fileManager.heroExport(consts.heroNow, consts.isGetHero2, consts.getHero)
+
+            if event.type == pygame.USEREVENT and event.button == ura_btn:
+                consts.getHero = 0
+                fileManager.heroExport(consts.heroNow, consts.isGetHero2, consts.getHero)
 
             if event.type == pygame.USEREVENT and (event.button == arrow_btn or event.button == r_arrow_btn):
                 if hero == 1:
@@ -108,8 +121,15 @@ def main_menu():
                 elif hero == 2:
                     hero = 1
 
-            for button in [start_btn, settings_btn, info_btn, exit_btn, arrow_btn, r_arrow_btn, choose_btn]:
+            for button in [start_btn, settings_btn, info_btn, exit_btn]:
                 button.handle_event(event, consts.volS)
+
+            if not consts.getHero:
+                for hero_button in [arrow_btn, r_arrow_btn, choose_btn]:
+                    hero_button.handle_event(event, consts.volS)
+
+            if consts.getHero:
+                ura_btn.handle_event(event, consts.volS)
 
         for obj in [title, updates_field, buttons_field, hero_field]:
             obj.draw(windows.screen)
@@ -120,10 +140,16 @@ def main_menu():
             button.check_hover(pygame.mouse.get_pos())
             button.draw(windows.screen)
 
-        choose_btn.check_hover(pygame.mouse.get_pos())
-        choose_btn.draw_heroBtn(windows.screen, hero, consts.heroNow, consts.isGetHero2)
-        if choose_btn.rect.collidepoint(pygame.mouse.get_pos()) and hero == 2 and not consts.isGetHero2:
-            field_get.draw(windows.screen)
+        if not consts.getHero:
+            choose_btn.check_hover(pygame.mouse.get_pos())
+            choose_btn.draw_heroBtn(windows.screen, hero, consts.heroNow, consts.isGetHero2)
+            if choose_btn.rect.collidepoint(pygame.mouse.get_pos()) and hero == 2 and not consts.isGetHero2:
+                field_get.draw(windows.screen)
+
+        if consts.getHero:
+            field_ura.draw(windows.screen)
+            ura_btn.check_hover(pygame.mouse.get_pos())
+            ura_btn.draw(windows.screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()

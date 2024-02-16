@@ -31,13 +31,14 @@ def heroImport():
     checkHero = list(map(lambda x: float(x.rstrip('\n')), heroFile))
     heroNow = int(checkHero[0])
     isGetHero2 = checkHero[1]
+    getHero = checkHero[2]
     heroFile.close()
-    return heroNow, isGetHero2
+    return heroNow, isGetHero2, getHero
 
 
-def heroExport(hero, isGetHero2):
+def heroExport(hero, isGetHero2, getHero):
     checkHeroRewrite = open(r"data/savings/hero-settings.txt", "w")
-    checkHeroRewrite.writelines([str(hero) + '\n', str(int(isGetHero2))])
+    checkHeroRewrite.writelines([str(hero) + '\n', str(int(isGetHero2)) + '\n', str(int(getHero))])
     checkHeroRewrite.close()
 
 

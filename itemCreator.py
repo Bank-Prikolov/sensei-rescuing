@@ -55,7 +55,7 @@ class Object:
 class Button:
     def __init__(self, x, y, width, height, image_path, hover_image_path=None, press_image_path=None, sound_path=None,
                  no_active_image_path=None, hero=None, image_get_path=None, hover_image_get_path=None,
-                 press_image_get_path=None):
+                 press_image_get_path=None, hover_2_image_path = None):
         self.x = x
         self.y = y
         self.width = width
@@ -68,6 +68,11 @@ class Button:
         if hover_image_path:
             self.hover_image = load_image(hover_image_path)
             self.hover_image = pygame.transform.scale(self.hover_image, (width, height))
+
+        self.hover_image_2 = self.image
+        if hover_2_image_path:
+            self.hover_image_2 = load_image(hover_2_image_path)
+            self.hover_image_2 = pygame.transform.scale(self.hover_image_2, (width, height))
 
         self.press_image = self.image
         if press_image_path:
@@ -113,9 +118,15 @@ class Button:
 
     def draw_f11(self, screen, fs=None):
         if fs:
-            current_image = self.press_image
+            if self.is_hovered:
+                current_image = self.hover_image_2
+            else:
+                current_image = self.press_image
         else:
-            current_image = self.image
+            if self.is_hovered:
+                current_image = self.hover_image
+            else:
+                current_image = self.image
         screen.blit(current_image, self.rect.topleft)
 
     def draw_heroBtn(self, screen, hero, heroNow, isGetHero2):
