@@ -3,9 +3,9 @@ import consts
 import levels_menu
 import game
 import windows
-import fileManager
 from processHelper import terminate, transition
 from itemCreator import Object, Button
+from itemChanger import volumeChanger
 
 
 def pause(time, sloniks):
@@ -16,9 +16,9 @@ def pause(time, sloniks):
                         fr"objects\{consts.languageNow}\sound-obj.png")
     music_name = Object(windows.width // 2 - 28 - 434, windows.height // 2 + 124, 434, 50,
                         fr"objects\{consts.languageNow}\music-obj.png")
-    music_slider_obj = Object(music_name.x + 434 // 2 - 422 // 2, windows.height // 2 + 200, 422, 16,
+    music_slider_obj = Object(music_name.x + 434 // 2 - 302 // 2, windows.height // 2 + 200, 302, 16,
                               r"objects\without text\slider-obj.png")
-    sound_slider_obj = Object(sound_name.x + 434 // 2 - 422 // 2, windows.height // 2 + 200, 422, 16,
+    sound_slider_obj = Object(sound_name.x + 434 // 2 - 302 // 2, windows.height // 2 + 200, 302, 16,
                               r"objects\without text\slider-obj.png")
     sound_field = Object(sound_name.x + 434 // 2 - 470 // 2, windows.height // 2 + 110, 470, 128,
                          fr"objects\without text\volume-field-obj.png")
@@ -86,38 +86,21 @@ def pause(time, sloniks):
                 running = False
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == music_slider_btn:
-                consts.isPauseSliderMusic = True
+                consts.isSliderMusic = True
 
             elif event.type == pygame.MOUSEBUTTONUP and event.button == music_slider_btn:
-                consts.isPauseSliderMusic = False
+                consts.isSliderMusic = False
 
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == sound_slider_btn:
-                consts.isPauseSliderSound = True
+                consts.isSliderSound = True
 
             elif event.type == pygame.MOUSEBUTTONUP and event.button == sound_slider_btn:
-                consts.isPauseSliderSound = False
+                consts.isSliderSound = False
 
             elif event.type == pygame.MOUSEMOTION:
-                if consts.isPauseSliderMusic or consts.isPauseSliderSound:
-                    if consts.isPauseSliderMusic:
-                        xM = music_slider_btn.rect[0]
-                        if music_slider_obj.x < event.pos[0] < music_slider_obj.x + music_slider_obj.width:
-                            x_cube_M = event.pos[0] - xM
-                        else:
-                            x_cube_M = 13
-                        music_slider_btn.rect = music_slider_btn.rect.move(x_cube_M - 13, 0)
-                        consts.wM = round((music_slider_btn.rect[0] - music_slider_obj.x) / music_slider_obj.width, 3)
-                        pygame.mixer.music.set_volume(consts.wM)
-                    elif consts.isPauseSliderSound:
-                        xS = sound_slider_btn.rect[0]
-                        if sound_slider_obj.x < event.pos[0] < sound_slider_obj.x + sound_slider_obj.width:
-                            x_cube_S = event.pos[0] - xS
-                        else:
-                            x_cube_S = 13
-                        sound_slider_btn.rect = sound_slider_btn.rect.move(x_cube_S - 13, 0)
-                        consts.wS = round((sound_slider_btn.rect[0] - sound_slider_obj.x) / sound_slider_obj.width, 3)
-                        consts.volS = consts.wS
-                    fileManager.volumeExport(consts.wM, consts.wS)
+                if consts.isSliderMusic or consts.isSliderSound:
+                    if consts.isSliderMusic or consts.isSliderSound:
+                        volumeChanger(event, music_slider_btn, music_slider_obj, sound_slider_btn, sound_slider_obj)
 
             for button in [repeat_btn, to_lvlmenu_btn, play_btn]:
                 button.handle_event(event, consts.volS)

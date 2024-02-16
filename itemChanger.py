@@ -6,7 +6,7 @@ import fileManager
 from itemCreator import Object
 
 
-def windowsFullscreenChanger(fullscreen, ft=False):
+def fullscreenChanger(fullscreen, ft=False):
     fileManager.fullscreenExport(windows.fullscreen)
     if fullscreen:
         if not ft:
@@ -27,6 +27,34 @@ def windowsFullscreenChanger(fullscreen, ft=False):
                                     r"objects\without text\pause-window-obj.png")
         consts.game_state_filed = Object(windows.width - 1016, windows.height - 696, 1008, 688,
                                     r"objects\without text\games-window-obj.png")
+
+
+def volumeChanger(event, music_slider_btn, music_slider_obj, sound_slider_btn, sound_slider_obj):
+    if consts.isSliderMusic:
+        xM = music_slider_btn.rect[0]
+        if (music_slider_obj.x + music_slider_obj.width / 30.2 < event.pos[0] < music_slider_obj.x +
+                music_slider_obj.width - (music_slider_obj.width / 30.2)):
+            x_cube_M = event.pos[0] - xM
+        else:
+            x_cube_M = music_slider_btn.width // 2
+        music_slider_btn.rect = music_slider_btn.rect.move(x_cube_M - music_slider_btn.width // 2, 0)
+        consts.wM = round((music_slider_btn.rect[0] - music_slider_obj.x) / music_slider_obj.width, 3)
+        if consts.wM < 0.0:
+            consts.wM = 0.0
+        pygame.mixer.music.set_volume(consts.wM)
+    elif consts.isSliderSound:
+        xS = sound_slider_btn.rect[0]
+        if (sound_slider_obj.x + sound_slider_obj.width / 30.2 < event.pos[0] < sound_slider_obj.x
+                + sound_slider_obj.width - (sound_slider_obj.width / 30.2)):
+            x_cube_S = event.pos[0] - xS
+        else:
+            x_cube_S = sound_slider_btn.width // 2
+        sound_slider_btn.rect = sound_slider_btn.rect.move(x_cube_S - sound_slider_btn.width // 2, 0)
+        consts.wS = round((sound_slider_btn.rect[0] - sound_slider_obj.x) / sound_slider_obj.width, 3)
+        if consts.wS < 0.0:
+            consts.wS = 0.0
+        consts.volS = consts.wS
+    fileManager.volumeExport(consts.wM, consts.wS)
 
 
 def starsChanger(whatLevel, time):

@@ -8,12 +8,12 @@ import settings
 import levels_menu
 from processHelper import terminate, transition
 from itemCreator import Object, Button
-from itemChanger import windowsFullscreenChanger
+from itemChanger import fullscreenChanger
 
 
 def main_menu():
     if consts.firstTime:
-        windowsFullscreenChanger(windows.fullscreen, True)
+        fullscreenChanger(windows.fullscreen, True)
         pygame.mixer.music.load(r"data\sounds\menu-theme-sound.mp3")
         pygame.mixer.music.play(-1)
         consts.firstTime = False
