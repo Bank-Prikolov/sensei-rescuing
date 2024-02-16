@@ -3,6 +3,7 @@ import windows
 import consts
 import menu
 import game
+import cutscenes
 import starsRecorder
 from itemChanger import timeChanger
 from itemCreator import Object, Button, Stars
@@ -86,7 +87,7 @@ def levels_menu():
                 # pygame.mixer.music.stop()
                 consts.firstTime = True
                 transition()
-                game.game_def(1)
+                cutscenes.start_cutscene()
 
             if event.type == pygame.USEREVENT and event.button == level2Button:
                 consts.lvlNow = 2
