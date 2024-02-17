@@ -118,7 +118,6 @@ class Boss(pygame.sprite.Sprite):
         self.counter = (self.counter + 1) % 8
         if self.attack_counter == 0:
             self.attack = self.make_attack()
-            print(self.attack)
         elif self.attack_counter == 239:
             self.attack = 0
             self.make_move()
@@ -165,15 +164,15 @@ class Boss(pygame.sprite.Sprite):
                                     int(yz * bys * self.k ** windows.fullscreen)), 0))
 
     def shoot_circle(self):
-        if self.pospoint == 0:
+        if self.pospoint == 0: # [896, 66], [480, 66]]
             xrange = [-1]
-            yrange = [-1, 1]
+            yrange = [-1]
         elif self.pospoint == 1:
             xrange = [1]
-            yrange = [-1, 1]
+            yrange = [-1]
         elif self.pospoint == 2:
             xrange = [1]
-            yrange = [-1]
+            yrange = [1]
         elif self.pospoint == 3:
             xrange = [-1]
             yrange = [1]
@@ -184,13 +183,14 @@ class Boss(pygame.sprite.Sprite):
             for ycoef in yrange:
                 for xb in range(9):
                     yb = self.bullet_speed - xb
-                    Animpic(self.get_coords()[0] + self.get_size()[0] // 2,
-                            self.get_coords()[1] + self.get_size()[1] // 2,
-                            Boss.php.get_width() * 3 // 8 * windows.k ** windows.fullscreen,
-                            Boss.php.get_height() * 3 // 8 * windows.k ** windows.fullscreen, Boss.php,
-                            boss_projectile_group, koef=self.k)
-                    b_projectile_speed.append(((int(xcoef * xb * self.k ** windows.fullscreen),
-                                                int(ycoef * yb * self.k ** windows.fullscreen)), 0))
+                    if yb != 0 and xb != 0:
+                        Animpic(self.get_coords()[0] + self.get_size()[0] // 2,
+                                self.get_coords()[1] + self.get_size()[1] // 2,
+                                Boss.php.get_width() * 3 // 8 * windows.k ** windows.fullscreen,
+                                Boss.php.get_height() * 3 // 8 * windows.k ** windows.fullscreen, Boss.php,
+                                boss_projectile_group, koef=self.k)
+                        b_projectile_speed.append(((int(xcoef * xb * self.k ** windows.fullscreen),
+                                                    int(ycoef * yb * self.k ** windows.fullscreen)), 1))
 
     def get_hit(self):
         self.hp -= 2

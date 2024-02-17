@@ -75,8 +75,11 @@ def game_def(lvl):
                         consts.yspeed = 7
                     else:
                         if (not (consts.jumping or consts.falling or consts.sitting)) or cheatPanel:
-                            consts.jumping = True
-                            consts.yspeed = -9 - 2 * normalize
+                            if normalize:
+                                consts.yspeed = -9
+                                consts.jumping = True
+                            else:
+                                consts.yspeed = -9 - 2
                             if consts.lookingright:
                                 consts.hero.change_hero('jumpr', consts.hero.get_coords())
                             else:
@@ -120,10 +123,15 @@ def game_def(lvl):
                     cheatPanel = not cheatPanel
                     consts.hero.xs = 3 * 5 ** cheatPanel
                     consts.hero.projectile_speed = 8 * 2 ** cheatPanel
+                    normalize = False
                 if cheatPanel and event.button == 4:
                     normalize = not normalize
-                    consts.hero.xs = 3
-                    consts.hero.projectile_speed = 8
+                    if normalize:
+                        consts.hero.xs = 3
+                        consts.hero.projectile_speed = 8
+                    else:
+                        consts.hero.xs = 3 * 5
+                        consts.hero.projectile_speed = 8 * 2
             if ((event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE) or
                     (event.type == pygame.USEREVENT and event.button == pause_btn)):
                 consts.xspeed = 0
