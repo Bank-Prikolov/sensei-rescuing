@@ -12,5 +12,3 @@ def boss_cutscene():
 
 def end_cutscene():
     levels_menu.levels_menu()
-
-

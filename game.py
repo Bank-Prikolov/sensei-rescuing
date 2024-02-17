@@ -42,7 +42,7 @@ def game_def(lvl):
                 terminate()
             elif event.type == timer_event and started:
                 current_seconds += 1
-                # print(current_seconds)
+                print(current_seconds)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
                     consts.xspeed = consts.hero.xs
@@ -102,9 +102,7 @@ def game_def(lvl):
                     consts.xspeed = 0
                     predpause = consts.hero.get_coords()
                     consts.hero.end()
-                    started = False
                     pause.pause(current_seconds, len(list(lvl_gen.sloniks)))
-                    started = True
                     consts.hero = Hero(*predpause, windows.k ** windows.fullscreen, character)
                     if consts.lookingright:
                         consts.hero.change_hero('sr', predpause)

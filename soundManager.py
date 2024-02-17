@@ -16,4 +16,3 @@ def game_over_sound():
 
 def game_complete_sound():
     pass
-

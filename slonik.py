@@ -5,6 +5,7 @@ import consts
 import lvl_gen
 from processHelper import load_image
 
+
 class Slonik(pygame.sprite.Sprite):
     pic = load_image(consts.slonik)
     php = load_image(consts.php)
@@ -51,7 +52,8 @@ class Slonik(pygame.sprite.Sprite):
         hrop = lvl_gen.board.get_cell(list(lvl_gen.characters)[0].get_coords())
         enep = lvl_gen.board.get_cell(self.get_coords())
         if ((lvl_gen.board.get_cell((list(lvl_gen.characters)[0].rect.x,
-                             list(lvl_gen.characters)[0].rect.centery))[1] - lvl_gen.board.get_cell(self.rect[:2])[1] in [0])
+                             list(lvl_gen.characters)[0].rect.centery))[1] - lvl_gen.board.get_cell(self.rect[:2])[1]
+             in [0])
                 and (('=' not in lvl_gen.board.board[enep[1]][min(enep[0], hrop[0]) + 1: max(enep[0], hrop[0])])
                      and ('#' not in lvl_gen.board.board[enep[1]][min(enep[0], hrop[0]) + 1: max(enep[0], hrop[0])])
                      and ('&' not in lvl_gen.board.board[enep[1]][min(enep[0], hrop[0]) + 1: max(enep[0], hrop[0])]))):

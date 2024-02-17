@@ -3,7 +3,6 @@ import sys
 import os
 import windows
 import consts
-import fileManager
 import starsRecorder
 
 
