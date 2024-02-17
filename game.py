@@ -123,7 +123,7 @@ def game_def(lvl):
                     cheatPanel = not cheatPanel
                     consts.hero.xs = 3 * 5 ** cheatPanel
                     consts.hero.projectile_speed = 8 * 2 ** cheatPanel
-                    normalize = False
+                    normalize = not normalize
                 if cheatPanel and event.button == 4:
                     normalize = not normalize
                     if normalize:
