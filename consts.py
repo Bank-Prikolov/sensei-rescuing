@@ -26,6 +26,16 @@ heroNow, isGetHero2, getHero = fileManager.heroImport()
 wM, wS, volS = fileManager.volumeImport()
 languageNow = fileManager.languageImport()
 
+# game consts
+runright, runleft, lookingup, sitting = False, False, False, False
+jumping = False
+falling = False
+lookingright = 1
+shooting = 0
+xspeed = 0
+yspeed = 0
+hero = None
+
 # characters
 wai = r'characters\hero-wai.png'
 the_strongest = r'characters\hero-the-strongest.png'
