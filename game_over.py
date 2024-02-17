@@ -3,14 +3,15 @@ import game
 import levels_menu
 import windows
 import consts
+import soundManager
+import itemAnimator
 from processHelper import load_image, terminate, transition
 from itemCreator import Button
 from itemAnimator import AnimatedGameOver
 
 
 def game_over(whatFrame=0):
-    pygame.mixer.music.load(r"data\sounds\game-over-sound.mp3")
-    pygame.mixer.music.play(1)
+    soundManager.game_over_sound()
 
     bg_img_game_over = load_image(r"objects\animated\game-over-obj.png")
     bg_tr_game_over = pygame.transform.scale(bg_img_game_over,
@@ -35,13 +36,13 @@ def game_over(whatFrame=0):
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
                 running = False
-                consts.bg_group_over.empty()
+                itemAnimator.bg_group_over.empty()
                 transition()
                 levels_menu.levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == repeat_btn:
                 running = False
-                consts.bg_group_over.empty()
+                itemAnimator.bg_group_over.empty()
                 transition()
                 game.game_def(consts.lvlNow)
 
@@ -54,7 +55,7 @@ def game_over(whatFrame=0):
             game_over_bg.cur_frame = 129
             pygame.mixer.music.stop()
         game_over_bg.update(windows.screen, repeat_btn, to_lvlmenu_btn)
-        consts.bg_group_over.draw(windows.screen)
+        itemAnimator.bg_group_over.draw(windows.screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()

@@ -1,10 +1,14 @@
 import pygame
-import consts
+
+bg_group_start_screen = pygame.sprite.Group()
+bg_group_intro = pygame.sprite.Group()
+bg_group_over = pygame.sprite.Group()
+bg_group_complete = pygame.sprite.Group()
 
 
 class AnimatedIntro(pygame.sprite.Sprite):
     def __init__(self, sheet, columns, rows, x, y):
-        super().__init__(consts.bg_group_intro)
+        super().__init__(bg_group_intro)
         self.frames = []
         self.cut_sheet(sheet, columns, rows)
         self.cur_frame = 0
@@ -29,7 +33,7 @@ class AnimatedIntro(pygame.sprite.Sprite):
 
 class AnimatedStartScreen(pygame.sprite.Sprite):
     def __init__(self, sheet, columns, rows, x, y):
-        super().__init__(consts.bg_group_start_screen)
+        super().__init__(bg_group_start_screen)
         self.frames = []
         self.cut_sheet(sheet, columns, rows)
         self.cur_frame = 0
@@ -70,7 +74,7 @@ class AnimatedStartScreen(pygame.sprite.Sprite):
 
 class AnimatedGameOver(pygame.sprite.Sprite):
     def __init__(self, sheet, columns, rows, x, y):
-        super().__init__(consts.bg_group_over)
+        super().__init__(bg_group_over)
         self.frames = []
         self.cut_sheet(sheet, columns, rows)
         self.cur_frame = 0
@@ -100,7 +104,7 @@ class AnimatedGameOver(pygame.sprite.Sprite):
 
 class AnimatedGameComplete(pygame.sprite.Sprite):
     def __init__(self, sheet, columns, rows, x, y):
-        super().__init__(consts.bg_group_complete)
+        super().__init__(bg_group_complete)
         self.frames = []
         self.cut_sheet(sheet, columns, rows)
         self.cur_frame = 0

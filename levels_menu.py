@@ -5,6 +5,7 @@ import menu
 import game
 import cutscenes
 import starsRecorder
+import soundManager
 from itemChanger import timeChanger
 from itemCreator import Object, Button, Stars
 from processHelper import terminate, transition
@@ -16,11 +17,7 @@ def levels_menu():
     else:
         all_w, all_h = windows.width // 2 - 395, windows.height - 770
 
-    if consts.firstTime:
-        pygame.mixer.music.load(r"data\sounds\menu-theme-sound.mp3")
-        pygame.mixer.music.play(-1)
-        consts.firstTime = False
-    pygame.mixer.music.set_volume(consts.wM)
+    soundManager.menu_theme()
 
     title = Object(all_w, all_h, 700, 82, fr"objects\{consts.languageNow}\level-menu-title-obj.png")
 
@@ -84,21 +81,18 @@ def levels_menu():
 
             if event.type == pygame.USEREVENT and event.button == level1Button:
                 consts.lvlNow = 1
-                # pygame.mixer.music.stop()
                 consts.firstTime = True
                 transition()
                 cutscenes.start_cutscene()
 
             if event.type == pygame.USEREVENT and event.button == level2Button:
                 consts.lvlNow = 2
-                # pygame.mixer.music.stop()
                 consts.firstTime = True
                 transition()
                 game.game_def(2)
 
             if event.type == pygame.USEREVENT and event.button == levelBossButton:
                 consts.lvlNow = 3
-                # pygame.mixer.music.stop()
                 consts.firstTime = True
                 transition()
                 game.game_def(3)

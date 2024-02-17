@@ -8,15 +8,14 @@ import pause
 import consts
 import windows
 import starsRecorder
+import soundManager
 from hero import Hero
 from processHelper import terminate
 from itemChanger import starsChanger, pauseButtonChanger
 
 
 def game_def(lvl):
-    pygame.mixer.music.load(r"data\sounds\game-theme-sound.mp3")
-    pygame.mixer.music.play(-1)
-    pygame.mixer.music.set_volume(consts.wM)
+    soundManager.game_theme()
     start_coords = lvl_gen.generate_level(lvl)
     character = fileManager.heroImport()[0]
     pause_btn = pauseButtonChanger()

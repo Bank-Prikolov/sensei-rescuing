@@ -6,12 +6,6 @@ from processHelper import load_image
 clock = pygame.time.Clock()
 fps = 60
 
-# menu animated sprite groups
-bg_group_start_screen = pygame.sprite.Group()
-bg_group_intro = pygame.sprite.Group()
-bg_group_over = pygame.sprite.Group()
-bg_group_complete = pygame.sprite.Group()
-
 # menu consts
 img = load_image(r'backgrounds\main-menu-bg.png')
 img_fs = load_image(r"backgrounds\main-menu-fullScreen-bg.png")

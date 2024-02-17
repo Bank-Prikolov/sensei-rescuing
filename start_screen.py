@@ -3,6 +3,7 @@ import menu
 import windows
 import consts
 import starsRecorder
+import itemAnimator
 from processHelper import load_image
 from itemCreator import Button
 from itemAnimator import AnimatedIntro, AnimatedStartScreen
@@ -48,14 +49,14 @@ def start_screen():
                 button.handle_event(event)
 
         intro_bg.update()
-        consts.bg_group_intro.draw(windows.screen)
+        itemAnimator.bg_group_intro.draw(windows.screen)
         if intro_bg.cur_frame >= 111 * 3:
-            consts.bg_group_intro.empty()
+            itemAnimator.bg_group_intro.empty()
             intro_finish = True
 
         if intro_finish:
             start_bg.update(windows.screen, da_btn, net_btn)
-            consts.bg_group_start_screen.draw(windows.screen)
+            itemAnimator.bg_group_start_screen.draw(windows.screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()

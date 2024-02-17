@@ -6,6 +6,7 @@ import fileManager
 import info
 import settings
 import levels_menu
+import soundManager
 from processHelper import terminate, transition
 from itemCreator import Object, Button
 from itemChanger import fullscreenChanger
@@ -14,10 +15,8 @@ from itemChanger import fullscreenChanger
 def main_menu():
     if consts.firstTime:
         fullscreenChanger(windows.fullscreen, True)
-        pygame.mixer.music.load(r"data\sounds\menu-theme-sound.mp3")
-        pygame.mixer.music.play(-1)
-        consts.firstTime = False
-    pygame.mixer.music.set_volume(consts.wM)
+
+    soundManager.menu_theme()
 
     if not windows.fullscreen:
         all_w, all_h = windows.width // 2 - 443, windows.height - 619

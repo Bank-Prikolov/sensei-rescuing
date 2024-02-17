@@ -1,9 +1,19 @@
+import pygame
+import consts
+
+
 def menu_theme():
-    pass
+    if consts.firstTime:
+        pygame.mixer.music.load(r"data\sounds\menu-theme-sound.mp3")
+        pygame.mixer.music.play(-1)
+        consts.firstTime = False
+        pygame.mixer.music.set_volume(consts.wM)
 
 
 def game_theme():
-    pass
+    pygame.mixer.music.load(r"data\sounds\game-theme-sound.mp3")
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(consts.wM)
 
 
 def boss_theme():
@@ -11,8 +21,10 @@ def boss_theme():
 
 
 def game_over_sound():
-    pass
+    pygame.mixer.music.load(r"data\sounds\game-over-sound.mp3")
+    pygame.mixer.music.play(1)
 
 
 def game_complete_sound():
-    pass
+    pygame.mixer.music.load(r"data\sounds\game-complete-sound.mp3")
+    pygame.mixer.music.play(1)

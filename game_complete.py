@@ -4,14 +4,15 @@ import game
 import windows
 import consts
 import starsRecorder
+import soundManager
+import itemAnimator
 from processHelper import load_image, terminate, transition
 from itemCreator import Button, Stars
 from itemAnimator import AnimatedGameComplete
 
 
 def game_complete(whatFrame=0):
-    pygame.mixer.music.load(r"data\sounds\game-complete-sound.mp3")
-    pygame.mixer.music.play(1)
+    soundManager.game_complete_sound()
 
     bg_img_game_complete = load_image(r"objects\animated\game-complete-obj.png")
     bg_tr = pygame.transform.scale(bg_img_game_complete,
@@ -48,13 +49,13 @@ def game_complete(whatFrame=0):
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
                 running = False
-                consts.bg_group_complete.empty()
+                itemAnimator.bg_group_complete.empty()
                 transition()
                 levels_menu.levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == repeat_btn:
                 running = False
-                consts.bg_group_complete.empty()
+                itemAnimator.bg_group_complete.empty()
                 transition()
                 game.game_def(consts.lvlNow)
 
@@ -67,7 +68,7 @@ def game_complete(whatFrame=0):
             game_complete_bg.cur_frame = 149
             pygame.mixer.music.stop()
         game_complete_bg.update(windows.screen, record, stars, repeat_btn, to_lvlmenu_btn, levelTime, levelTimeRect)
-        consts.bg_group_complete.draw(windows.screen)
+        itemAnimator.bg_group_complete.draw(windows.screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()
