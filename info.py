@@ -8,10 +8,7 @@ from processHelper import terminate, transition
 
 
 def info_menu():
-    if not windows.fullscreen:
-        all_w, all_h = windows.width // 2 - 364, windows.height - 619
-    else:
-        all_w, all_h = windows.width // 2 - 364, windows.height - 820
+    all_w, all_h = windows.width // 2 - 363.5, windows.height // 2 - 534 // 2
 
     title = Object(all_w, all_h, 640, 82, fr"objects\{consts.languageNow}\info-title-obj.png")
 
@@ -26,7 +23,7 @@ def info_menu():
                               r"buttons\without text\press-github-btn.png",
                               r"data\sounds\menu-button-sound.mp3")
 
-    field = Object(all_w - 86, all_h + 115, 900, 430, fr"objects\{consts.languageNow}\info-field-obj.png")
+    field = Object(all_w - 86, all_h + 104, 900, 430, fr"objects\{consts.languageNow}\info-field-obj.png")
     alexandr = Object(all_w + 99, all_h + 462, 269, 46, fr"objects\{consts.languageNow}\alexandr-obj.png")
     igor = Object(all_w + 544, all_h + 462, 142, 45, fr"objects\{consts.languageNow}\igor-obj.png")
 

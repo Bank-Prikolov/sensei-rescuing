@@ -21,7 +21,7 @@ wM, wS, volS = fileManager.volumeImport()
 languageNow = fileManager.languageImport()
 
 # game consts
-runright, runleft, lookingup, sitting = False, False, False, False
+runright, runleft, sitting = False, False, False
 jumping = False
 falling = False
 lookingright = 1

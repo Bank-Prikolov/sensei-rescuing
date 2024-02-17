@@ -9,15 +9,12 @@ from processHelper import terminate, transition
 
 
 def settings_menu():
-    if not windows.fullscreen:
-        all_w, all_h = windows.width // 2 - 363, windows.height - 619
-    else:
-        all_w, all_h = windows.width // 2 - 363, windows.height - 820
+    all_w, all_h = windows.width // 2 - 363.5, windows.height // 2 - 534 // 2
 
     title = Object(all_w, all_h, 626, 82, fr"objects\{consts.languageNow}\settings-title-obj.png")
 
-    field_audio = Object(all_w - 87, all_h + 115, 420, 430, fr"objects\{consts.languageNow}\audio-field-obj.png")
-    field_video = Object(all_w + 393, all_h + 115, 420, 430, fr"objects\{consts.languageNow}\video-field-obj.png")
+    field_audio = Object(all_w - 87, all_h + 104, 420, 430, fr"objects\{consts.languageNow}\audio-field-obj.png")
+    field_video = Object(all_w + 393, all_h + 104, 420, 430, fr"objects\{consts.languageNow}\video-field-obj.png")
     fs_name = Object(all_w + 436, all_h + 235 if consts.languageNow == 'rus' else all_h + 215, 332, 75,
                      fr"objects\{consts.languageNow}\fullscreen-obj.png")
     sound_name = Object(field_audio.x + field_audio.width // 2 - 332 // 2 if consts.languageNow == 'rus'

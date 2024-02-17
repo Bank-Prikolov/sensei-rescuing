@@ -12,51 +12,48 @@ from processHelper import terminate, transition
 
 
 def levels_menu():
-    if not windows.fullscreen:
-        all_w, all_h = windows.width // 2 - 395, windows.height - 595
-    else:
-        all_w, all_h = windows.width // 2 - 395, windows.height - 770
-
     soundManager.menu_theme()
+
+    all_w, all_h = windows.width // 2 - 392.5, windows.height // 2 - 468 // 2
 
     title = Object(all_w, all_h, 700, 82, fr"objects\{consts.languageNow}\level-menu-title-obj.png")
 
     cross_btn = Button(all_w + title.width + 18, all_h + 8, 67, 72, r"buttons\without text\default-cross-btn.png",
                        r"buttons\without text\hover-cross-btn.png", r"buttons\without text\press-cross-btn.png",
                        r"data\sounds\menu-button-sound.mp3")
-    level1Button = Button(all_w - 58, all_h + 160, 144, 155, r"buttons\without text\default-first-btn.png",
+    level1Button = Button(all_w - 58, all_h + 153, 144, 155, r"buttons\without text\default-first-btn.png",
                           r"buttons\without text\hover-first-btn.png", r"buttons\without text\press-first-btn.png",
                           r"data\sounds\menu-button-sound.mp3")
-    level2Button = Button(all_w + 317, all_h + 160, 144, 155, r"buttons\without text\default-second-btn.png",
+    level2Button = Button(all_w + 317, all_h + 153, 144, 155, r"buttons\without text\default-second-btn.png",
                           r"buttons\without text\hover-second-btn.png", r"buttons\without text\press-second-btn.png",
                           r"data\sounds\menu-button-sound.mp3", r"buttons\without text\no-active-second-btn.png")
-    levelBossButton = Button(all_w + 692, all_h + 160, 144, 155, r"buttons\without text\default-boss-btn.png",
+    levelBossButton = Button(all_w + 692, all_h + 153, 144, 155, r"buttons\without text\default-boss-btn.png",
                              r"buttons\without text\hover-boss-btn.png", r"buttons\without text\press-boss-btn.png",
                              r"data\sounds\menu-button-sound.mp3", r"buttons\without text\no-active-boss-btn.png")
-    info_btn = Button(all_w + 858, all_h + 122.5, 18, 18, r"buttons\without text\default-level-info-btn.png",
+    info_btn = Button(all_w + 858, all_h + 115.5, 18, 18, r"buttons\without text\default-level-info-btn.png",
                       r"buttons\without text\hover-level-info-btn.png")
 
-    field_d = Object(all_w + 358.5, all_h - 95.5, 498, 218, fr"objects\{consts.languageNow}\level-info-field-obj.png")
+    field_d = Object(all_w + 358.5, all_h - 102.5, 498, 218, fr"objects\{consts.languageNow}\level-info-field-obj.png")
 
-    field = Object(all_w - 100, all_h + 111, 987, 252, r"objects\without text\level-menu-field-obj.png")
-    level1Field = Object(all_w - 79, all_h + 142, 186, 189, r"objects\without text\start-level-field-obj.png")
-    level2Field = Object(all_w + 121, all_h + 142, 360, 189, r"objects\without text\level-field-obj.png",
+    field = Object(all_w - 100, all_h + 104, 987, 252, r"objects\without text\level-menu-field-obj.png")
+    level1Field = Object(all_w - 79, all_h + 135, 186, 189, r"objects\without text\start-level-field-obj.png")
+    level2Field = Object(all_w + 121, all_h + 135, 360, 189, r"objects\without text\level-field-obj.png",
                          r"objects\without text\hover-level-field-obj.png")
-    levelBossField = Object(all_w + 496, all_h + 142, 360, 189,
+    levelBossField = Object(all_w + 496, all_h + 135, 360, 189,
                             r"objects\without text\level-field-obj.png",
                             r"objects\without text\hover-level-field-obj.png")
 
     zeroStars, oneStar, twoStars, threeStars = (
         r"objects\without text\stars-zero-obj.png", r"objects\without text\stars-one-obj.png",
         r"objects\without text\stars-two-obj.png", r"objects\without text\stars-three-obj.png")
-    level1StarsField = Object(all_w - 79, all_h + 375, 186, 100, r"objects\without text\stars-field-obj.png")
-    level1Stars = Stars(all_w - 79 + 186 // 2 - 152 // 2, all_h + 381, 152, 44, zeroStars, oneStar, twoStars,
+    level1StarsField = Object(all_w - 79, all_h + 368, 186, 100, r"objects\without text\stars-field-obj.png")
+    level1Stars = Stars(all_w - 79 + 186 // 2 - 152 // 2, all_h + 374, 152, 44, zeroStars, oneStar, twoStars,
                         threeStars)
-    level2StarsField = Object(all_w + 296, all_h + 375, 186, 100, r"objects\without text\stars-field-obj.png")
-    level2Stars = Stars(all_w + 296 + 186 // 2 - 152 // 2, all_h + 381, 152, 44, zeroStars, oneStar, twoStars,
+    level2StarsField = Object(all_w + 296, all_h + 368, 186, 100, r"objects\without text\stars-field-obj.png")
+    level2Stars = Stars(all_w + 296 + 186 // 2 - 152 // 2, all_h + 374, 152, 44, zeroStars, oneStar, twoStars,
                         threeStars)
-    levelBossStarsField = Object(all_w + 673, all_h + 375, 186, 100, r"objects\without text\stars-field-obj.png")
-    levelBossStars = Stars(all_w + 673 + 186 // 2 - 152 // 2, all_h + 381, 152, 44, zeroStars, oneStar, twoStars,
+    levelBossStarsField = Object(all_w + 673, all_h + 368, 186, 100, r"objects\without text\stars-field-obj.png")
+    levelBossStars = Stars(all_w + 673 + 186 // 2 - 152 // 2, all_h + 374, 152, 44, zeroStars, oneStar, twoStars,
                            threeStars)
 
     ButtonsFont = pygame.font.Font(r"data\fonts\PixelNumbers.ttf", 35)

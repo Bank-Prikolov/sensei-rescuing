@@ -108,13 +108,13 @@ def timeChanger(whatLevel, ButtonsFont, all_w, all_h, screen):
     time_sorted = f"{time // 60:02}:{time % 60:02}"
     if whatLevel == 1:
         levelTime = ButtonsFont.render(time_sorted, True, "#ffffff")
-        levelTimeRect = levelTime.get_rect(center=(all_w - 79 + 186 // 2, all_h + 455))
+        levelTimeRect = levelTime.get_rect(center=(all_w - 79 + 186 // 2, all_h + 448))
         return screen.blit(levelTime, levelTimeRect)
     if whatLevel == 2:
         levelTime = ButtonsFont.render(time_sorted, True, "#ffffff")
-        levelTimeRect = levelTime.get_rect(center=(all_w + 296 + 186 // 2, all_h + 455))
+        levelTimeRect = levelTime.get_rect(center=(all_w + 296 + 186 // 2, all_h + 448))
         return screen.blit(levelTime, levelTimeRect)
     if whatLevel == 3:
         levelTime = ButtonsFont.render(time_sorted, True, "#ffffff")
-        levelTimeRect = levelTime.get_rect(center=(all_w + 673 + 186 // 2, all_h + 455))
+        levelTimeRect = levelTime.get_rect(center=(all_w + 673 + 186 // 2, all_h + 448))
         return screen.blit(levelTime, levelTimeRect)

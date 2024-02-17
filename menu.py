@@ -18,10 +18,7 @@ def main_menu():
 
     soundManager.menu_theme()
 
-    if not windows.fullscreen:
-        all_w, all_h = windows.width // 2 - 443, windows.height - 619
-    else:
-        all_w, all_h = windows.width // 2 - 443, windows.height - 820
+    all_w, all_h = windows.width // 2 - 443, windows.height // 2 - 518 // 2
 
     title = Object(all_w, all_h, 886, 80, fr"objects\{consts.languageNow}\menu-title-obj.png")
 
