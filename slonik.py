@@ -24,7 +24,7 @@ class Slonik(pygame.sprite.Sprite):
         self.xspeed = 4
         self.act = act
         self.looking_right = lknrght
-        self.hp = 3
+        self.hp = 5
         self.bulletspeed = 10
         self.acter = 0
         self.step = 0

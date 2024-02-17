@@ -76,6 +76,8 @@ class Boss(pygame.sprite.Sprite):
         self.pospoint = 0
         self.herocords = [list(lvl_gen.characters)[0].rect[0] - list(lvl_gen.characters)[0].rect[2] // 2,
                           list(lvl_gen.characters)[0].rect[1] - list(lvl_gen.characters)[0].rect[3] // 2]
+        self.attack = 0
+        self.attack_counter = -59
 
     def cut_sheet(self, sprites, koef, act):
         self.rect = pygame.Rect(0, 0, 64 * koef,
@@ -88,6 +90,14 @@ class Boss(pygame.sprite.Sprite):
         return plist
 
     def update(self):
+        if self.herocords[0] < self.rect.x:
+            if self.looking_right:
+                self.looking_right = False
+                self.change_act(0, self.get_coords())
+        else:
+            if not self.looking_right:
+                self.looking_right = True
+                self.change_act(1, self.get_coords())
         self.herocords = [list(lvl_gen.characters)[0].rect[0] - list(lvl_gen.characters)[0].rect[2] // 2,
                           list(lvl_gen.characters)[0].rect[1] - list(lvl_gen.characters)[0].rect[3] // 2]
         lvl_gen.get_shadow(*self.rect)
@@ -106,6 +116,26 @@ class Boss(pygame.sprite.Sprite):
                     self.hitick = 0
                     self.step = 0
         self.counter = (self.counter + 1) % 8
+        if self.attack_counter == 0:
+            self.attack = self.make_attack()
+            print(self.attack)
+        elif self.attack_counter == 239:
+            self.attack = 0
+            self.make_move()
+        if self.attack == 1:
+            if self.attack_counter in [40, 80, 120]:
+                self.shoot()
+        elif self.attack == 2:
+            if self.attack_counter in [120, 200]:
+                self.make_move()
+            elif self.attack_counter in [60, 140, 220]:
+                self.shoot()
+        elif self.attack == 3:
+            if self.attack_counter in [120]:
+                self.shoot_circle()
+        else:
+            pass
+        self.attack_counter = (self.attack_counter + 1) % 240
 
     def set_coords(self, x, y):
         self.rect[:2] = [x, y]
@@ -132,13 +162,40 @@ class Boss(pygame.sprite.Sprite):
         else:
             yz = -1
         b_projectile_speed.append(((int(xz * bxs * self.k ** windows.fullscreen),
-                                   int(yz * bys * self.k ** windows.fullscreen)), 0))
+                                    int(yz * bys * self.k ** windows.fullscreen)), 0))
+
+    def shoot_circle(self):
+        if self.pospoint == 0:
+            xrange = [-1]
+            yrange = [-1, 1]
+        elif self.pospoint == 1:
+            xrange = [1]
+            yrange = [-1, 1]
+        elif self.pospoint == 2:
+            xrange = [1]
+            yrange = [-1]
+        elif self.pospoint == 3:
+            xrange = [-1]
+            yrange = [1]
+        else:
+            xrange = [-1, 1]
+            yrange = [1]
+        for xcoef in xrange:
+            for ycoef in yrange:
+                for xb in range(9):
+                    yb = self.bullet_speed - xb
+                    Animpic(self.get_coords()[0] + self.get_size()[0] // 2,
+                            self.get_coords()[1] + self.get_size()[1] // 2,
+                            Boss.php.get_width() * 3 // 8 * windows.k ** windows.fullscreen,
+                            Boss.php.get_height() * 3 // 8 * windows.k ** windows.fullscreen, Boss.php,
+                            boss_projectile_group, koef=self.k)
+                    b_projectile_speed.append(((int(xcoef * xb * self.k ** windows.fullscreen),
+                                                int(ycoef * yb * self.k ** windows.fullscreen)), 0))
 
     def get_hit(self):
         self.hp -= 2
         self.step = 2
-        self.shoot()
-        self.make_move()
+        self.attack_counter = 0
         return self.hp
 
     def change_act(self, act, coords):
@@ -173,3 +230,6 @@ class Boss(pygame.sprite.Sprite):
             self.change_act(1, self.get_coords())
             self.looking_right = True
         self.pospoint = a
+
+    def make_attack(self):
+        return random.randint(1, 3)
