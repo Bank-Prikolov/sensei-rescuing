@@ -74,6 +74,8 @@ class Boss(pygame.sprite.Sprite):
         self.step = 0
         self.hitick = 0
         self.pospoint = 0
+        self.herocords = [list(lvl_gen.characters)[0].rect[0] - list(lvl_gen.characters)[0].rect[2] // 2,
+                          list(lvl_gen.characters)[0].rect[1] - list(lvl_gen.characters)[0].rect[3] // 2]
 
     def cut_sheet(self, sprites, koef, act):
         self.rect = pygame.Rect(0, 0, 64 * koef,
@@ -86,6 +88,8 @@ class Boss(pygame.sprite.Sprite):
         return plist
 
     def update(self):
+        self.herocords = [list(lvl_gen.characters)[0].rect[0] - list(lvl_gen.characters)[0].rect[2] // 2,
+                          list(lvl_gen.characters)[0].rect[1] - list(lvl_gen.characters)[0].rect[3] // 2]
         lvl_gen.get_shadow(*self.rect)
         lvl_gen.shadowgroup.draw(windows.screen)
         self.image = self.frames[self.cur_frame]
@@ -110,15 +114,25 @@ class Boss(pygame.sprite.Sprite):
         return self.rect[0], self.rect[1]
 
     def shoot(self):
+        naborx = self.herocords[0], self.rect[0]
+        nabory = self.herocords[1], self.rect[1]
+        a, b = max(naborx) - min(naborx), max(nabory) - min(nabory)
+        bxs, bys = (self.bullet_speed * a / (a + b)).__round__(0), (self.bullet_speed * b / (a + b)).__round__(0)
         Animpic(self.get_coords()[0] + self.get_size()[0] // 2,
-                self.get_coords()[1] + self.get_size()[1] // 2.5,
+                self.get_coords()[1] + self.get_size()[1] // 2,
                 Boss.php.get_width() * 3 // 8 * windows.k ** windows.fullscreen,
                 Boss.php.get_height() * 3 // 8 * windows.k ** windows.fullscreen, Boss.php,
                 boss_projectile_group, koef=self.k)
         if self.looking_right:
-            b_projectile_speed.append((self.bullet_speed * self.k ** windows.fullscreen, 0))
+            xz = 1
         else:
-            b_projectile_speed.append((-self.bullet_speed * self.k ** windows.fullscreen, 0))
+            xz = -1
+        if self.rect[1] - self.rect[3] // 2 < self.herocords[1]:
+            yz = 1
+        else:
+            yz = -1
+        b_projectile_speed.append(((int(xz * bxs * self.k ** windows.fullscreen),
+                                   int(yz * bys * self.k ** windows.fullscreen)), 0))
 
     def get_hit(self):
         self.hp -= 2

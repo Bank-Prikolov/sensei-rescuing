@@ -201,5 +201,3 @@ class Hero(pygame.sprite.Sprite):
         consts.falling = False
         self.kill()
         lvl_gen.characters.empty()
-        lvl_gen.projectilesgroup.empty()
-        self.projectilespeed = []

@@ -24,6 +24,8 @@ triggergroup = pygame.sprite.Group()
 sloniks = pygame.sprite.Group()
 nmeprojectilesgroup = pygame.sprite.Group()
 anothertoches = pygame.sprite.Group()
+xwalls = pygame.sprite.Group()
+ywalls = pygame.sprite.Group()
 
 projectilespeed = []
 
@@ -54,6 +56,8 @@ class Board:
         self.top = top
 
     def render(self, sc):
+        xwalls.empty()
+        ywalls.empty()
         triggergroup.empty()
         toches.empty()
         platformgroup.empty()
@@ -70,10 +74,10 @@ class Board:
                              self.cell_size, consts.floor, toches)
                 elif self.board[y][x] == '#':
                     boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                             self.cell_size, consts.wallx, toches)
+                             self.cell_size, consts.wallx, toches, ywalls)
                 elif self.board[y][x] == '=':
                     boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                             self.cell_size, consts.wally, toches)
+                             self.cell_size, consts.wally, toches, xwalls)
                 elif self.board[y][x] == '@':
                     pass
                 elif self.board[y][x] == '_':
