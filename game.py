@@ -10,8 +10,7 @@ import windows
 import starsRecorder
 from hero import Hero
 from processHelper import terminate
-from itemCreator import Object
-from itemChanger import starsChanger
+from itemChanger import starsChanger, pauseButtonChanger
 
 
 def game_def(lvl):
@@ -20,12 +19,7 @@ def game_def(lvl):
     pygame.mixer.music.set_volume(consts.wM)
     start_coords = lvl_gen.generate_level(lvl)
     character = fileManager.heroImport()[0]
-    if not windows.fullscreen:
-        pause_btn = Object(windows.width - windows.width + 8, windows.height - windows.height + 6, 108, 54,
-                           r"objects\without text\pause-button-obj.png")
-    else:
-        pause_btn = Object(windows.otstupx + 8, windows.height - windows.height + 6, 144, 72,
-                           r"objects\without text\pause-button-obj.png")
+    pause_btn = pauseButtonChanger()
     lvl_gen.updater()
     consts.hero = Hero(*start_coords, windows.k ** windows.fullscreen, character)
     running = True
@@ -42,7 +36,7 @@ def game_def(lvl):
                 terminate()
             elif event.type == timer_event and started:
                 current_seconds += 1
-                print(current_seconds)
+                # print(current_seconds)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
                     consts.xspeed = consts.hero.xs
@@ -57,7 +51,7 @@ def game_def(lvl):
                     consts.runright = True
                     consts.runleft = False
                 elif event.key == pygame.K_s:
-                    consts. sitting = True
+                    consts.sitting = True
                 elif event.key == pygame.K_a:
                     consts.xspeed = consts.hero.xs
                     if not consts.jumping:
@@ -98,18 +92,6 @@ def game_def(lvl):
                         else:
                             consts.shooting = -consts.hero.projectile_speed * windows.k ** windows.fullscreen
                         consts.hero.shoot(consts.shooting)
-                elif event.key == pygame.K_ESCAPE:
-                    consts.xspeed = 0
-                    predpause = consts.hero.get_coords()
-                    consts.hero.end()
-                    pause.pause(current_seconds, len(list(lvl_gen.sloniks)))
-                    consts.hero = Hero(*predpause, windows.k ** windows.fullscreen, character)
-                    if consts.lookingright:
-                        consts.hero.change_hero('sr', predpause)
-                    else:
-                        consts.hero.change_hero('sl', predpause)
-                    lvl_gen.rescreen()
-                    lvl_gen.updater()
             elif event.type == pygame.WINDOWEXPOSED:
                 if consts.lookingright:
                     consts.hero.change_hero('sr', consts.hero.get_coords())
@@ -129,8 +111,25 @@ def game_def(lvl):
                     cheatPanel = not cheatPanel
                     consts.hero.xs = 3 * 5 ** cheatPanel
                     consts.hero.projectile_speed = 8 * 2 ** cheatPanel
+            if ((event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE) or
+                    (event.type == pygame.USEREVENT and event.button == pause_btn)):
+                consts.xspeed = 0
+                predpause = consts.hero.get_coords()
+                consts.hero.end()
+                pause.pause(current_seconds, len(list(lvl_gen.sloniks)))
+                consts.hero = Hero(*predpause, windows.k ** windows.fullscreen, character)
+                if consts.lookingright:
+                    consts.hero.change_hero('sr', predpause)
+                else:
+                    consts.hero.change_hero('sl', predpause)
+                lvl_gen.rescreen()
+                lvl_gen.updater()
 
+            pause_btn.handle_event(event, consts.volS)
+
+        pause_btn.check_hover(pygame.mouse.get_pos())
         pause_btn.draw(windows.screen)
+
         if pygame.sprite.spritecollide(consts.hero, lvl_gen.changegroup, False):
             lvl_gen.projectilesgroup.empty()
             lvl_gen.nmeprojectilesgroup.empty()

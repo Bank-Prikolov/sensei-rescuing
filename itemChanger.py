@@ -3,7 +3,23 @@ import windows
 import consts
 import starsRecorder
 import fileManager
-from itemCreator import Object
+from itemCreator import Object, Button\
+
+
+
+def pauseButtonChanger():
+    if not windows.fullscreen:
+        pause_btn = Button(windows.width - 60, 6, 52, 54,
+                           fr"buttons\without text\default-pause-btn.png",
+                           fr"buttons\without text\hover-pause-btn.png",
+                           "", r"data\sounds\menu-button-sound.mp3")
+    else:
+        pause_btn = Button(windows.width - windows.otstupx - 90,
+                           6, 78, 81,
+                           fr"buttons\without text\default-pause-btn.png",
+                           fr"buttons\without text\hover-pause-btn.png",
+                           "", r"data\sounds\menu-button-sound.mp3")
+    return pause_btn
 
 
 def fullscreenChanger(fullscreen, ft=False):
