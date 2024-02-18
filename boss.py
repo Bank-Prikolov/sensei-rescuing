@@ -206,7 +206,7 @@ class Boss(pygame.sprite.Sprite):
                                                 ycoef * yb * self.k ** windows.fullscreen), 0))
 
     def get_hit(self):
-        self.hp -= 4
+        self.hp -= 2
         self.step = 2
         return self.hp
 
@@ -246,7 +246,7 @@ class Boss(pygame.sprite.Sprite):
         self.pospoint = a
 
     def make_attack(self):
-        if self.hp < 10:
+        if self.hp < 20:
             return random.randint(2, 5)
         else:
             return random.randint(1, 3)
@@ -254,13 +254,13 @@ class Boss(pygame.sprite.Sprite):
     def rain_attack(self):
         a = random.randint(0, 1)
         for x in range(0 + a, 14 + a, 2):
-            Animpic(windows.otstupx * windows.fullscreen + (64 * self.k * x) + 96 * self.k * self.k - Boss.php.get_width() * 3 // 16 * self.k,
+            Animpic(windows.otstupx * windows.fullscreen + (
+                        64 * self.k * x) + 96 * self.k * self.k - Boss.php.get_width() * 3 // 16 * self.k,
                     windows.otstupy * windows.fullscreen + 64 * self.k - Boss.php.get_width() * 3 // 16 * self.k,
                     Boss.php.get_width() * 3 // 8 * self.k,
                     Boss.php.get_height() * 3 // 8 * self.k, Boss.php,
                     boss_projectile_group, koef=self.k)
             b_projectile_speed.append((((-1) ** a, int((self.bullet_speed - 1) * self.k ** windows.fullscreen)), 0))
-
 
     def slon_attack(self):
         if not lvl_gen.sloniks:
