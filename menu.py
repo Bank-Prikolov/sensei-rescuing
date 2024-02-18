@@ -18,42 +18,44 @@ def main_menu():
 
     soundManager.menu_theme()
 
-    all_w, all_h = windows.width // 2 - 443, windows.height // 2 - 518 // 2
+    title = Object(windows.width // 2 - 443, windows.height // 2 - 518 // 2, 886, 80,
+                   fr"objects\{consts.languageNow}\menu-title-obj.png")
 
-    title = Object(all_w, all_h, 886, 80, fr"objects\{consts.languageNow}\menu-title-obj.png")
+    updates_field = Object(title.x, title.y + 102, 304, 416, fr"objects\{consts.languageNow}\updates-field-obj.png")
 
-    updates_field = Object(all_w, all_h + 102, 304, 416, fr"objects\{consts.languageNow}\updates-field-obj.png")
-    buttons_field = Object(all_w + 315, all_h + 102, 256, 416, r"objects\without text\menu-buttons-field-obj.png")
-    hero_field = Object(all_w + 582, all_h + 102, 304, 416, fr"objects\{consts.languageNow}\hero-field-obj.png")
-
-    start_btn = Button(all_w + 323, all_h + 110, 240, 100, fr"buttons\{consts.languageNow}\default-start-btn.png",
+    buttons_field = Object(title.x + title.width / 2 - 256 / 2, title.y + 102, 256, 416,
+                           r"objects\without text\menu-buttons-field-obj.png")
+    start_btn = Button(buttons_field.x + buttons_field.width / 2 - 120, title.y + 110, 240, 100, fr"buttons\{consts.languageNow}\default-start-btn.png",
                        fr"buttons\{consts.languageNow}\hover-start-btn.png",
                        fr"buttons\{consts.languageNow}\press-start-btn.png",
                        r"data\sounds\menu-button-sound.mp3")
-    settings_btn = Button(all_w + 323, all_h + 210, 240, 100, fr"buttons\{consts.languageNow}\default-settings-btn.png",
+    settings_btn = Button(buttons_field.x + buttons_field.width / 2 - 120, title.y + 210, 240, 100,
+                          fr"buttons\{consts.languageNow}\default-settings-btn.png",
                           fr"buttons\{consts.languageNow}\hover-settings-btn.png",
                           fr"buttons\{consts.languageNow}\press-settings-btn.png",
                           r"data\sounds\menu-button-sound.mp3")
-    info_btn = Button(all_w + 323, all_h + 310, 240, 100, fr"buttons\{consts.languageNow}\default-info-btn.png",
+    info_btn = Button(buttons_field.x + buttons_field.width / 2 - 120, title.y + 310, 240, 100, fr"buttons\{consts.languageNow}\default-info-btn.png",
                       fr"buttons\{consts.languageNow}\hover-info-btn.png",
                       fr"buttons\{consts.languageNow}\press-info-btn.png",
                       r"data\sounds\menu-button-sound.mp3")
-    exit_btn = Button(all_w + 323, all_h + 410, 240, 100, fr"buttons\{consts.languageNow}\default-exit-btn.png",
+    exit_btn = Button(buttons_field.x + buttons_field.width / 2 - 120, title.y + 410, 240, 100, fr"buttons\{consts.languageNow}\default-exit-btn.png",
                       fr"buttons\{consts.languageNow}\hover-exit-btn.png",
                       fr"buttons\{consts.languageNow}\press-exit-btn.png",
                       r"data\sounds\menu-button-sound.mp3")
 
-    hero_choose = Object(all_w + 582 + 304 // 2 - 107 // 2, all_h + 102 + 95, 107, 204,
+    hero_field = Object(title.x + title.width - 304, title.y + 102, 304, 416,
+                        fr"objects\{consts.languageNow}\hero-field-obj.png")
+    hero_choose = Object(title.x + 582 + 304 // 2 - 107 // 2, title.y + 102 + 95, 107, 204,
                          r"objects\without text\hero-wai-obj.png", "",
                          r"objects\without text\hero-the-strongest-wai-obj.png")
 
-    arrow_btn = Button(all_w + 582 + 304 // 2 - 173 // 2 + 180, all_h + 102 + 95 + 241 // 2 - 36 // 2, 36, 40,
+    arrow_btn = Button(title.x + 582 + 304 // 2 - 173 // 2 + 180, title.y + 102 + 95 + 241 // 2 - 36 // 2, 36, 40,
                        r"buttons\without text\default-arrow-btn.png", r"buttons\without text\hover-arrow-btn.png",
                        r"buttons\without text\press-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
-    r_arrow_btn = Button(all_w + 582 + 304 // 2 - 173 // 2 - 43, all_h + 102 + 95 + 241 // 2 - 36 // 2, 36, 40,
+    r_arrow_btn = Button(title.x + 582 + 304 // 2 - 173 // 2 - 43, title.y + 102 + 95 + 241 // 2 - 36 // 2, 36, 40,
                          r"buttons\without text\default-r-arrow-btn.png", r"buttons\without text\hover-r-arrow-btn.png",
                          r"buttons\without text\press-r-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
-    choose_btn = Button(all_w + 582 + 304 // 2 - 159 // 2, all_h + 410, 159, 48,
+    choose_btn = Button(title.x + 582 + 304 // 2 - 159 // 2, title.y + 410, 159, 48,
                         fr"buttons\{consts.languageNow}\default-choose-btn.png",
                         fr"buttons\{consts.languageNow}\hover-choose-btn.png",
                         fr"buttons\{consts.languageNow}\press-choose-btn.png",
@@ -61,13 +63,11 @@ def main_menu():
                         fr"buttons\{consts.languageNow}\default-get-btn.png",
                         fr"buttons\{consts.languageNow}\hover-get-btn.png",
                         fr"buttons\{consts.languageNow}\press-get-btn.png")
-
-    field_get = Object(all_w + 582 + 304 // 2 - 159 // 2 - 42, all_h + 302, 243, 105,
+    field_get = Object(title.x + 582 + 304 // 2 - 159 // 2 - 42, title.y + 302, 243, 105,
                        fr"objects\{consts.languageNow}\how-to-get-obj.png")
-
-    field_ura = Object(all_w + 582, all_h + 102, 304, 416,
+    field_ura = Object(title.x + 582, title.y + 102, 304, 416,
                        fr"objects\{consts.languageNow}\hero-field-new-character-obj.png")
-    ura_btn = Button(field_ura.x + field_ura.width // 2 - 200 // 2, all_h + 340, 200, 90,
+    ura_btn = Button(field_ura.x + field_ura.width // 2 - 200 // 2, title.y + 370, 200, 90,
                      fr"buttons\{consts.languageNow}\default-ura-btn.png",
                      fr"buttons\{consts.languageNow}\hover-ura-btn.png",
                      fr"buttons\{consts.languageNow}\press-ura-btn.png",

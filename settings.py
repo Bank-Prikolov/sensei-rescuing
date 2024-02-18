@@ -9,49 +9,55 @@ from processHelper import terminate, transition
 
 
 def settings_menu():
-    all_w, all_h = windows.width // 2 - 363.5, windows.height // 2 - 534 // 2
-
-    title = Object(all_w, all_h, 626, 82, fr"objects\{consts.languageNow}\settings-title-obj.png")
-
-    field_audio = Object(all_w - 87, all_h + 104, 420, 430, fr"objects\{consts.languageNow}\audio-field-obj.png")
-    field_video = Object(all_w + 393, all_h + 104, 420, 430, fr"objects\{consts.languageNow}\video-field-obj.png")
-    fs_name = Object(all_w + 436, all_h + 235 if consts.languageNow == 'rus' else all_h + 215, 332, 75,
-                     fr"objects\{consts.languageNow}\fullscreen-obj.png")
-    sound_name = Object(field_audio.x + field_audio.width // 2 - 332 // 2 if consts.languageNow == 'rus'
-                        else field_audio.x + field_audio.width // 2 - 359 // 2, all_h + 385,
-                        332 if consts.languageNow == 'rus' else 359, 35, fr"objects\{consts.languageNow}\sound-obj.png")
-    music_name = Object(
-        field_audio.x + field_audio.width // 2 - 332 // 2 if consts.languageNow == 'rus'
-        else field_audio.x + field_audio.width // 2 - 359 // 2,
-        all_h + 249, 332 if consts.languageNow == 'rus' else 359, 35, fr"objects\{consts.languageNow}\music-obj.png")
-    music_slider_obj = Object(all_w - 31, all_h + 308, 302, 16, r"objects\without text\slider-obj.png")
-    sound_slider_obj = Object(all_w - 31, all_h + 444, 302, 16, r"objects\without text\slider-obj.png")
-    langauge_obj = Object(all_w + 436 + 57.5, all_h + 420, 215, 52,
-                          r"objects\rus\language-rus-obj.png", "", r"objects\eng\language-eng-obj.png")
-
-    cross_btn = Button(all_w + 646, all_h + 8, 67, 72, r"buttons\without text\default-cross-btn.png",
+    title = Object(windows.width // 2 - 743 / 2 if consts.languageNow == 'rus' else windows.width // 2 - 671 / 2,
+                   windows.height // 2 - 534 // 2,
+                   656 if consts.languageNow == 'rus' else 584, 82,
+                   fr"objects\{consts.languageNow}\settings-title-obj.png")
+    cross_btn = Button(title.x + title.width + 20, title.y + 8, 67, 72, r"buttons\without text\default-cross-btn.png",
                        r"buttons\without text\hover-cross-btn.png",
                        r"buttons\without text\press-cross-btn.png", r"data\sounds\menu-button-sound.mp3")
+
+    field_audio = Object(windows.width // 2 - 435, title.y + 104, 420, 430,
+                         fr"objects\{consts.languageNow}\audio-field-obj.png")
+    music_name = Object(field_audio.x + field_audio.width / 2 - 385 / 2,
+                        title.y + 238, 385, 34, fr"objects\{consts.languageNow}\music-obj.png")
+    sound_name = Object(field_audio.x + field_audio.width / 2 - 380 / 2, title.y + 372,
+                        380, 34, fr"objects\{consts.languageNow}\sound-obj.png")
+    music_slider_obj = Object(field_audio.x + field_audio.width / 2 - 302 / 2, music_name.y + music_name.height + 26,
+                              302, 16,
+                              r"objects\without text\slider-obj.png")
+    sound_slider_obj = Object(field_audio.x + field_audio.width / 2 - 302 / 2, sound_name.y + sound_name.height + 26,
+                              302, 16,
+                              r"objects\without text\slider-obj.png")
+    music_slider_btn = Button(music_slider_obj.x + music_slider_obj.width * consts.wM,
+                              music_slider_obj.y + music_slider_obj.height / 2 - 14, 26, 28,
+                              r"buttons\without text\default-slider-btn.png",
+                              r"buttons\without text\hover-slider-btn.png",
+                              r"buttons\without text\press-slider-btn.png")
+    sound_slider_btn = Button(sound_slider_obj.x + sound_slider_obj.width * consts.wS,
+                              sound_slider_obj.y + sound_slider_obj.height / 2 - 14, 26, 28,
+                              r"buttons\without text\default-slider-btn.png",
+                              r"buttons\without text\hover-slider-btn.png",
+                              r"buttons\without text\press-slider-btn.png")
+
+    field_video = Object(windows.width // 2 + 15, title.y + 104, 420, 430,
+                         fr"objects\{consts.languageNow}\video-field-obj.png")
+    fs_name = Object(field_video.x + field_video.width / 2 - 332 / 2, title.y + 226, 332, 75,
+                     fr"objects\{consts.languageNow}\fullscreen-obj.png")
     fs_btn = Button(fs_name.x + fs_name.width // 2 - 136 // 2, fs_name.y + fs_name.height + 15, 136, 62,
                     fr"buttons\{consts.languageNow}\fullscreen-off-btn.png",
                     rf"buttons\{consts.languageNow}\hover-fullscreen-off-btn.png",
                     fr"buttons\{consts.languageNow}\fullscreen-on-btn.png", r"data\sounds\menu-button-sound.mp3", "",
                     "", "", "", "", rf"buttons\{consts.languageNow}\hover-fullscreen-on-btn.png")
-    arrow_btn = Button(all_w + 732, all_h + 432, 36, 40,
-                       r"buttons\without text\default-arrow-btn.png", r"buttons\without text\hover-arrow-btn.png",
-                       r"buttons\without text\press-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
-    r_arrow_btn = Button(all_w + 436, all_h + 432, 36, 40,
-                         r"buttons\without text\default-r-arrow-btn.png", r"buttons\without text\hover-r-arrow-btn.png",
-                         r"buttons\without text\press-r-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
-
-    music_slider_btn = Button(music_slider_obj.x + music_slider_obj.width * consts.wM, all_h + 302, 26, 28,
-                              r"buttons\without text\default-slider-btn.png",
-                              r"buttons\without text\hover-slider-btn.png",
-                              r"buttons\without text\press-slider-btn.png")
-    sound_slider_btn = Button(sound_slider_obj.x + sound_slider_obj.width * consts.wS, all_h + 438, 26, 28,
-                              r"buttons\without text\default-slider-btn.png",
-                              r"buttons\without text\hover-slider-btn.png",
-                              r"buttons\without text\press-slider-btn.png")
+    langauge_obj = Object(field_video.x + field_video.width / 2 - 216 / 2, title.y + 406, 228, 50,
+                          r"objects\rus\language-rus-obj.png", "", r"objects\eng\language-eng-obj.png")
+    r_arrow_btn = Button(langauge_obj.x + langauge_obj.width + 15, langauge_obj.y + langauge_obj.height / 2 - 16, 36,
+                         40,
+                         r"buttons\without text\default-arrow-btn.png", r"buttons\without text\hover-arrow-btn.png",
+                         r"buttons\without text\press-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
+    arrow_btn = Button(langauge_obj.x - 36 - 15, langauge_obj.y + langauge_obj.height / 2 - 16, 36, 40,
+                       r"buttons\without text\default-r-arrow-btn.png", r"buttons\without text\hover-r-arrow-btn.png",
+                       r"buttons\without text\press-r-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
 
     running = True
     while running:
