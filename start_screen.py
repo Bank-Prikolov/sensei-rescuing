@@ -6,7 +6,7 @@ import starsRecorder
 import itemAnimator
 from processHelper import load_image
 from itemCreator import Button
-from itemAnimator import AnimatedIntro, AnimatedStartScreen
+from itemAnimator import AnimatedIntro, AnimatedObject
 
 
 def start_screen():
@@ -14,20 +14,26 @@ def start_screen():
 
     skalaSound = pygame.mixer.Sound(r"data\sounds\skala-sound.mp3")
 
-    bg_img_start = load_image(r"objects\animated\start-screen-obj.png")
-    start_bg = AnimatedStartScreen(bg_img_start, 46, 1, windows.width // 2 - 320,
-                                   windows.height // 2 - 145)
+    if consts.languageNow == 'rus':
+        img_start = load_image(r"objects\animated\start-screen-rus-obj.png")
+        start_screen_obj = AnimatedObject(img_start, 42, 1, windows.width // 2 - 320,
+                                          windows.height // 2 - 145)
+    else:
+        img_start = load_image(r"objects\animated\start-screen-eng-obj.png")
+        start_screen_obj = AnimatedObject(img_start, 45, 1, windows.width // 2 - 320,
+                                          windows.height // 2 - 145)
 
-    bg_img_intro = load_image(r"objects\animated\intro-obj.png")
-    bg_tr = pygame.transform.scale(bg_img_intro, (bg_img_intro.get_width() * 2, bg_img_intro.get_height() * 2))
-    intro_bg = AnimatedIntro(bg_tr, 112, 1, windows.width // 2 - 512,
+    img_intro = load_image(r"objects\animated\intro-obj.png")
+    tr_intro = pygame.transform.scale(img_intro, (img_intro.get_width() * 2, img_intro.get_height() * 2))
+    intro_bg = AnimatedIntro(tr_intro, 112, 1, windows.width // 2 - 512,
                              windows.height // 2 - 145)
 
-    da_btn = Button(windows.width // 2 - 165, windows.height // 2 - 10, 67, 60,
+    da_btn = Button(windows.width // 2 - 50 - 67 if consts.languageNow == 'rus' else windows.width // 2 - 50 - 92,
+                    windows.height // 2 - 10, 67 if consts.languageNow == 'rus' else 92, 60,
                     fr"buttons\{consts.languageNow}\default-da-btn.png",
                     fr"buttons\{consts.languageNow}\hover-da-btn.png",
                     fr"buttons\{consts.languageNow}\hover-da-btn.png", r"data\sounds\da-sound.mp3")
-    net_btn = Button(windows.width // 2 + 40, windows.height // 2 - 10, 86, 58,
+    net_btn = Button(windows.width // 2 + 50, windows.height // 2 - 10, 86 if consts.languageNow == 'rus' else 60, 58,
                      fr"buttons\{consts.languageNow}\default-net-btn.png",
                      fr"buttons\without text\hover-net-btn.png",
                      fr"buttons\without text\hover-net-btn.png", r"data\sounds\hi-hi-hi-ha-sound.mp3")
@@ -43,20 +49,28 @@ def start_screen():
                 skalaSound.play()
 
             if event.type == pygame.USEREVENT and event.button == da_btn:
+                consts.fps = 60
+                itemAnimator.animatedObjects.empty()
                 menu.main_menu()
 
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and intro_finish:
+                consts.fps = 300
+
+            if event.type == pygame.KEYUP and event.key == pygame.K_SPACE and intro_finish:
+                consts.fps = 60
+
             for button in [da_btn, net_btn]:
-                button.handle_event(event)
+                button.handle_event(event, consts.wS)
 
         intro_bg.update()
-        itemAnimator.bg_group_intro.draw(windows.screen)
+        itemAnimator.introGroup.draw(windows.screen)
         if intro_bg.cur_frame >= 111 * 3:
-            itemAnimator.bg_group_intro.empty()
+            itemAnimator.introGroup.empty()
             intro_finish = True
 
         if intro_finish:
-            start_bg.update(windows.screen, da_btn, net_btn)
-            itemAnimator.bg_group_start_screen.draw(windows.screen)
+            start_screen_obj.update_start_screen(windows.screen, da_btn, net_btn, consts.languageNow)
+            itemAnimator.animatedObjects.draw(windows.screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()

@@ -8,24 +8,31 @@ import soundManager
 import itemAnimator
 from processHelper import load_image, terminate, transition
 from itemCreator import Button, Stars
-from itemAnimator import AnimatedGameComplete
+from itemAnimator import AnimatedObject
 
 
-def game_complete(whatFrame=0):
-    soundManager.game_complete_sound()
+def game_complete():
+    soundManager.game_complete_sound(consts.languageNow)
 
-    bg_img_game_complete = load_image(r"objects\animated\game-complete-obj.png")
-    bg_tr = pygame.transform.scale(bg_img_game_complete,
-                                   (bg_img_game_complete.get_width() * 3, bg_img_game_complete.get_height() * 3))
-    game_complete_bg = AnimatedGameComplete(bg_tr, 16, 1, windows.width // 2 - 4752 * 3 // 16 // 2,
-                                            windows.height // 2 - 180 - 15 * 3)
+    if consts.languageNow == 'rus':
+        img_game_complete = load_image(r"objects\animated\game-complete-rus-obj.png")
+        tr_game_complete = pygame.transform.scale(img_game_complete,
+                                                (img_game_complete.get_width() * 3, img_game_complete.get_height() * 3))
+        game_complete_obj = AnimatedObject(tr_game_complete, 16, 1, windows.width // 2 - 4752 * 3 // 16 // 2,
+                                        windows.height // 2 - 180 - 15 * 3)
+    else:
+        img_game_complete = load_image(r"objects\animated\game-complete-eng-obj.png")
+        tr_game_complete = pygame.transform.scale(img_game_complete,
+                                                  (img_game_complete.get_width() * 3,
+                                                   img_game_complete.get_height() * 3))
+        game_complete_obj = AnimatedObject(tr_game_complete, 13, 1, windows.width // 2 - 4043 * 3 // 13 // 2,
+                                           windows.height // 2 - 180 - 12 * 3)
 
     record = starsRecorder.get_lastRecord(consts.lvlNow)
     zeroStars, oneStar, twoStars, threeStars = (
         r"objects\without text\stars-zero-obj.png", r"objects\without text\stars-one-obj.png",
         r"objects\without text\stars-two-obj.png", r"objects\without text\stars-three-obj.png")
     stars = Stars(windows.width // 2 - 152, windows.height // 2 - 40, 304, 88, zeroStars, oneStar, twoStars, threeStars)
-
     ButtonsFont = pygame.font.Font(r"data\fonts\PixelNumbers.ttf", 70)
     time = starsRecorder.get_lastSeconds(consts.lvlNow)
     time_sorted = f"{time // 60:02}:{time % 60:02}"
@@ -49,26 +56,25 @@ def game_complete(whatFrame=0):
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
                 running = False
-                itemAnimator.bg_group_complete.empty()
+                itemAnimator.animatedObjects.empty()
                 transition()
                 levels_menu.levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == repeat_btn:
                 running = False
-                itemAnimator.bg_group_complete.empty()
+                itemAnimator.animatedObjects.empty()
                 transition()
                 game.game_def(consts.lvlNow)
 
             for button in [repeat_btn, to_lvlmenu_btn]:
                 button.handle_event(event, consts.volS)
 
-        consts.game_state_filed.draw(windows.screen)
+        consts.game_state_field.draw(windows.screen)
 
-        if whatFrame:
-            game_complete_bg.cur_frame = 149
-            pygame.mixer.music.stop()
-        game_complete_bg.update(windows.screen, record, stars, repeat_btn, to_lvlmenu_btn, levelTime, levelTimeRect)
-        itemAnimator.bg_group_complete.draw(windows.screen)
+        game_complete_obj.update_game_complete(windows.screen, record, stars, repeat_btn, to_lvlmenu_btn, levelTime,
+                                              levelTimeRect,
+                                              consts.languageNow)
+        itemAnimator.animatedObjects.draw(windows.screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()

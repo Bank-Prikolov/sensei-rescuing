@@ -20,11 +20,11 @@ def boss_theme():
     pass
 
 
-def game_over_sound():
+def game_over_sound(ln):
     pygame.mixer.music.load(r"data\sounds\game-over-sound.mp3")
     pygame.mixer.music.play(1)
 
 
-def game_complete_sound():
+def game_complete_sound(ln):
     pygame.mixer.music.load(r"data\sounds\game-complete-sound.mp3")
     pygame.mixer.music.play(1)
