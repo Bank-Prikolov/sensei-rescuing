@@ -33,6 +33,9 @@ class Hero(pygame.sprite.Sprite):
         self.projectile_speed = 8
         self.shoot_counter = 9
         self.shooting = False
+        self.hp = 3
+        self.step = 0
+        self.hitick = 0
 
     def cut_sheet(self, sprites, koef, anim):
         self.rect = pygame.Rect(0, 0, 40 * koef,
@@ -43,6 +46,12 @@ class Hero(pygame.sprite.Sprite):
             self.frames.append(sprites.subsurface(pygame.Rect(
                 frame_location, self.rect.size)))
 
+    def get_hit(self):
+        self.hp -= 1
+        self.step = 2
+        print(self.hp)
+        return self.hp
+
     def update(self):
         self.image = self.frames[self.cur_frame]
         self.set_coords(*self.get_coords())
@@ -50,6 +59,22 @@ class Hero(pygame.sprite.Sprite):
             self.cur_frame = (self.cur_frame + 1) % 8
             self.counter = 0
         self.counter += 1
+
+        self.image = self.frames[self.cur_frame]
+        self.set_coords(*self.get_coords())
+        if not self.step:
+            if self.counter == 5:
+                self.cur_frame = (self.cur_frame + 1) % 8
+        else:
+            if self.counter % (self.step * 3) in range(0, 3):
+                if self.hitick != 4:
+                    a = pygame.transform.scale(load_image(consts.shadow), (self.rect.w, self.rect.h))
+                    self.image = a
+                    self.hitick += 1
+                else:
+                    self.hitick = 0
+                    self.step = 0
+        self.counter = (self.counter + 1) % 5
 
         if self.shooting:
             if self.shoot_counter == 10:
@@ -77,9 +102,10 @@ class Hero(pygame.sprite.Sprite):
             touchable = False
         elif consts.falling:
             if pygame.sprite.spritecollide(self, lvl_gen.platformgroup, False):
+                # print(list(pygame.sprite.spritecollide(self, lvl_gen.platformgroup, False))[0].rect[1] - heropos[1])
                 if windows.k == 1.5:
                     if windows.fullscreen:
-                        checklist = [-1, -13, -12, -15, -21, -47]
+                        checklist = [-1, -13, -12, -15, -21, -47, -8, -2, -6]
                     else:
                         checklist = [-1, -9, -8, -4, -25, -16, -14, -6, -31]
                 else:

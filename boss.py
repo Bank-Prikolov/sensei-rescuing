@@ -118,37 +118,37 @@ class Boss(pygame.sprite.Sprite):
         self.counter = (self.counter + 1) % 8
         if self.attack_counter == 0:
             self.attack = self.make_attack()
-        elif self.attack_counter == 359:
+        elif self.attack_counter == 419:
             self.attack = 0
             self.make_move()
         if self.attack == 1:
             if self.attack_counter in [40, 80, 120]:
                 self.shoot()
             elif self.attack_counter > 120 and self.step:
-                self.attack_counter = 358
+                self.attack_counter = 418
         elif self.attack == 2:
             if self.attack_counter in [120, 200]:
                 self.make_move()
             elif self.attack_counter in [60, 140, 220]:
                 self.shoot()
             elif self.attack_counter > 220 and self.step:
-                self.attack_counter = 358
+                self.attack_counter = 418
         elif self.attack == 3:
             if self.attack_counter in [120]:
                 self.shoot_circle()
             elif self.attack_counter > 120 and self.step:
-                self.attack_counter = 358
+                self.attack_counter = 418
         elif self.attack == 4:
             if self.attack_counter in [120]:
                 self.rain_attack()
             elif self.attack_counter > 120 and self.step:
-                self.attack_counter = 358
+                self.attack_counter = 418
         elif self.attack == 5:
             if self.attack_counter in [120]:
                 self.slon_attack()
         else:
             pass
-        self.attack_counter = (self.attack_counter + 1) % 360
+        self.attack_counter = (self.attack_counter + 1) % 420
 
     def set_coords(self, x, y):
         self.rect[:2] = [x, y]
@@ -206,7 +206,7 @@ class Boss(pygame.sprite.Sprite):
                                                 ycoef * yb * self.k ** windows.fullscreen), 0))
 
     def get_hit(self):
-        self.hp -= 2
+        self.hp -= 4
         self.step = 2
         return self.hp
 

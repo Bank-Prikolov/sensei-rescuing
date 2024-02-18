@@ -70,7 +70,7 @@ def game_def(lvl):
                     consts.runleft = True
                     consts.runright = False
                 elif event.key == pygame.K_SPACE:
-                    if consts.sitting:
+                    if consts.sitting and (not (consts.jumping or consts.falling)):
                         consts.yspeed = 7
                     else:
                         if (not (consts.jumping or consts.falling or consts.sitting)) or cheatPanel:
@@ -141,15 +141,16 @@ def game_def(lvl):
         pause_btn.draw(windows.screen)
 
         if pygame.sprite.spritecollide(consts.hero, lvl_gen.changegroup, False):
+            if thing == '':
+                thing = 1
+            else:
+                thing += 1
             lvl_gen.projectilesgroup.empty()
             lvl_gen.nmeprojectilesgroup.empty()
             lvl_gen.projectilespeed = []
             boss.boss_projectile_group.empty()
             boss.b_projectile_speed = []
-            if thing == '':
-                thing = 1
-            else:
-                thing += 1
+
             consts.hero.set_coords(*lvl_gen.generate_level(lvl + thing / 10))
             consts.hero.projectilespeed = []
             windows.screen.fill('#000000')
@@ -198,15 +199,20 @@ def game_def(lvl):
                     lvl_gen.projectilespeed[sprite][0], 0)
                 if pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite], lvl_gen.characters,
                                                False) and not cheatPanel:
-                    thing = ''
-                    consts.hero.end()
-                    lvl_gen.projectilespeed = []
-                    lvl_gen.nmeprojectilesgroup.empty()
-                    lvl_gen.updater()
-                    boss.boss_projectile_group.empty()
-                    boss.b_projectile_speed = []
-                    started = False
-                    game_over.game_over()
+                    if consts.hero.get_hit() == 0:
+                        thing = ''
+                        consts.hero.end()
+                        lvl_gen.projectilespeed = []
+                        lvl_gen.nmeprojectilesgroup.empty()
+                        lvl_gen.updater()
+                        boss.boss_projectile_group.empty()
+                        boss.b_projectile_speed = []
+                        started = False
+                        game_over.game_over()
+                    else:
+                        lvl_gen.projectilespeed.pop(sprite)
+                        list(lvl_gen.nmeprojectilesgroup)[sprite].kill()
+                        break
                 if (pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite], lvl_gen.toches, False)
                         or pygame.sprite.spritecollide(list(lvl_gen.nmeprojectilesgroup)[sprite],
                                                        lvl_gen.anothertoches, False)):
@@ -221,16 +227,29 @@ def game_def(lvl):
                     boss.b_projectile_speed[sprite][0][0], boss.b_projectile_speed[sprite][0][1])
                 if pygame.sprite.spritecollide(list(boss.boss_projectile_group)[sprite], lvl_gen.characters,
                                                False) and not cheatPanel:
-                    # thing = ''
-                    # consts.hero.end()
-                    # lvl_gen.projectilespeed = []
-                    # lvl_gen.nmeprojectilesgroup.empty()
-                    # boss.boss_projectile_group.empty()
-                    # boss.b_projectile_speed = []
-                    # lvl_gen.updater()
-                    # started = False
-                    # game_over.game_over()
-                    pass
+                    print('touch')
+                    if consts.hero.get_hit() == 0:
+                        consts.yspeed = 0
+                        lvl_gen.projectilesgroup.empty()
+                        lvl_gen.nmeprojectilesgroup.empty()
+                        lvl_gen.projectilespeed = []
+                        boss.boss_projectile_group.empty()
+                        boss.b_projectile_speed = []
+
+                        consts.hero.set_coords(*lvl_gen.generate_level(lvl + thing / 10))
+                        consts.hero.projectilespeed = []
+                        windows.screen.fill('#000000')
+                        consts.hero.hp = 3
+                        lvl_gen.updater()
+                        break
+                    else:
+                        pygame.draw.rect(windows.screen, (36, 34, 52), (
+                            list(boss.boss_projectile_group)[sprite].rect[0] - boss.b_projectile_speed[sprite][0][0],
+                            list(boss.boss_projectile_group)[sprite].rect[1] - boss.b_projectile_speed[sprite][0][1],
+                                         *list(boss.boss_projectile_group)[sprite].rect[2:]))
+                        list(boss.boss_projectile_group)[sprite].kill()
+                        boss.b_projectile_speed.pop(sprite)
+                        break
                 else:
                     if (pygame.sprite.spritecollide(list(boss.boss_projectile_group)[sprite], lvl_gen.xwalls,
                                                     False)
@@ -282,15 +301,28 @@ def game_def(lvl):
             if (pygame.sprite.spritecollide(consts.hero, lvl_gen.thorngroup, False)
                     or pygame.sprite.spritecollide(consts.hero, lvl_gen.sloniks, False)
                     or pygame.sprite.spritecollide(consts.hero, boss.boss_group, False)):
-                thing = ''
-                consts.hero.end()
-                lvl_gen.projectilespeed = []
-                lvl_gen.nmeprojectilesgroup.empty()
-                boss.boss_projectile_group.empty()
-                boss.b_projectile_speed = []
-                lvl_gen.updater()
-                started = False
-                game_over.game_over()
+                if lvl == 3 and thing == 2:
+                    consts.yspeed = 0
+                    lvl_gen.projectilesgroup.empty()
+                    lvl_gen.nmeprojectilesgroup.empty()
+                    lvl_gen.projectilespeed = []
+                    boss.boss_projectile_group.empty()
+                    boss.b_projectile_speed = []
+
+                    consts.hero.set_coords(*lvl_gen.generate_level(lvl + thing / 10))
+                    consts.hero.projectilespeed = []
+                    windows.screen.fill('#000000')
+                    lvl_gen.updater()
+                else:
+                    thing = ''
+                    consts.hero.end()
+                    lvl_gen.projectilespeed = []
+                    lvl_gen.nmeprojectilesgroup.empty()
+                    lvl_gen.updater()
+                    boss.boss_projectile_group.empty()
+                    boss.b_projectile_speed = []
+                    started = False
+                    game_over.game_over()
         if pygame.sprite.spritecollide(consts.hero, lvl_gen.triggergroup, False):
             if lvl == 3:
                 lvl_gen.remover(lvl_gen.board.get_cell(
