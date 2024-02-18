@@ -66,11 +66,11 @@ def main_menu():
                        fr"objects\{consts.languageNow}\how-to-get-obj.png")
 
     field_ura = Object(all_w + 582, all_h + 102, 304, 416,
-                       fr"objects\rus\hero-field-new-character-obj.png")
+                       fr"objects\{consts.languageNow}\hero-field-new-character-obj.png")
     ura_btn = Button(field_ura.x + field_ura.width // 2 - 200 // 2, all_h + 340, 200, 90,
-                     fr"buttons\rus\default-ura-btn.png",
-                     fr"buttons\rus\hover-ura-btn.png",
-                     fr"buttons\rus\press-ura-btn.png",
+                     fr"buttons\{consts.languageNow}\default-ura-btn.png",
+                     fr"buttons\{consts.languageNow}\hover-ura-btn.png",
+                     fr"buttons\{consts.languageNow}\press-ura-btn.png",
                      r"data\sounds\menu-button-sound.mp3")
 
     running = True
