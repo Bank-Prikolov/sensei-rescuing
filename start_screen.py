@@ -16,16 +16,16 @@ def start_screen():
 
     if consts.languageNow == 'rus':
         img_start = load_image(r"objects\animated\start-screen-rus-obj.png")
-        start_screen_obj = AnimatedObject(img_start, 42, 1, windows.width // 2 - 320,
+        start_screen_obj = AnimatedObject(img_start, 42, 1, windows.width / 2 - 26880 / 42 / 2,
                                           windows.height // 2 - 145)
     else:
         img_start = load_image(r"objects\animated\start-screen-eng-obj.png")
-        start_screen_obj = AnimatedObject(img_start, 45, 1, windows.width // 2 - 320,
+        start_screen_obj = AnimatedObject(img_start, 45, 1, windows.width / 2 - 28800 / 45 / 2,
                                           windows.height // 2 - 145)
 
     img_intro = load_image(r"objects\animated\intro-obj.png")
     tr_intro = pygame.transform.scale(img_intro, (img_intro.get_width() * 2, img_intro.get_height() * 2))
-    intro_bg = AnimatedIntro(tr_intro, 112, 1, windows.width // 2 - 512,
+    intro_obj = AnimatedIntro(tr_intro, 112, 1, windows.width // 2 - 512,
                              windows.height // 2 - 145)
 
     da_btn = Button(windows.width // 2 - 50 - 67 if consts.languageNow == 'rus' else windows.width // 2 - 50 - 92,
@@ -62,9 +62,9 @@ def start_screen():
             for button in [da_btn, net_btn]:
                 button.handle_event(event, consts.wS)
 
-        intro_bg.update()
+        intro_obj.update()
         itemAnimator.introGroup.draw(windows.screen)
-        if intro_bg.cur_frame >= 111 * 3:
+        if intro_obj.cur_frame >= 111 * 3:
             itemAnimator.introGroup.empty()
             intro_finish = True
 
