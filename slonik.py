@@ -10,7 +10,7 @@ class Slonik(pygame.sprite.Sprite):
     pic = load_image(consts.slonik)
     php = load_image(consts.php)
 
-    def __init__(self, x, y, koef, act=0, lknrght=True, trtspd=0):
+    def __init__(self, x, y, koef, act=0, lknrght=True, trtspd=0, hp=5):
         super().__init__(lvl_gen.sloniks)
         self.sprites = pygame.transform.scale(
             Slonik.pic, (Slonik.pic.get_width() // 2 * koef, Slonik.pic.get_height() // 2 * koef))
@@ -24,7 +24,7 @@ class Slonik(pygame.sprite.Sprite):
         self.xspeed = 4
         self.act = act
         self.looking_right = lknrght
-        self.hp = 5
+        self.hp = hp
         self.bulletspeed = 10
         self.acter = 0
         self.step = 0
