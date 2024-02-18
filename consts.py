@@ -19,7 +19,6 @@ firstTime = True
 heroNow, isGetHero2, getHero = fileManager.heroImport()
 wM, wS, volS = fileManager.volumeImport()
 languageNow = fileManager.languageImport()
-isPassed2, isPassedBoss = False, False
 
 # game consts
 runright, runleft, sitting = False, False, False

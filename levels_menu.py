@@ -48,7 +48,8 @@ def levels_menu():
                              r"buttons\without text\hover-boss-btn.png", r"buttons\without text\press-boss-btn.png",
                              r"data\sounds\menu-button-sound.mp3", r"buttons\without text\no-active-boss-btn.png")
 
-    info_btn = Button(field.x + field.width - 18 - 11, field.y + 10, 18, 18, r"buttons\without text\default-level-info-btn.png",
+    info_btn = Button(field.x + field.width - 18 - 11, field.y + 10, 18, 18,
+                      r"buttons\without text\default-level-info-btn.png",
                       r"buttons\without text\hover-level-info-btn.png")
     field_d = Object(info_btn.x - 499, info_btn.y - 219, 498, 218,
                      fr"objects\{consts.languageNow}\level-info-field-obj.png")

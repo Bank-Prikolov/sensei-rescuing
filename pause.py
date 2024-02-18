@@ -50,10 +50,17 @@ def pause(time, sloniks):
                          fr"objects\without text\pause-field-obj.png")
     left_field = Object(music_name.x + 434 // 2 - 470 // 2, windows.height // 2 - 246, 252, 342,
                         fr"objects\without text\left-field-obj.png")
-    time_title = Object(left_field.x + left_field.width // 2 - 196 // 2, windows.height // 2 - 185, 196, 34,
-                        fr"objects\{consts.languageNow}\pause-time-obj.png")
-    sloniks_title = Object(left_field.x + left_field.width // 2 - 234 // 2, windows.height // 2 - 50, 234, 37,
-                           fr"objects\{consts.languageNow}\pause-sloniks-obj.png")
+    time_title = Object(
+        left_field.x + left_field.width // 2 - 196 // 2 if consts.languageNow == 'rus'
+        else left_field.x + left_field.width // 2 - 190 // 2,
+        windows.height // 2 - 185,
+        196 if consts.languageNow == 'rus' else 190, 34,
+        fr"objects\{consts.languageNow}\pause-time-obj.png")
+    sloniks_title = Object(
+        left_field.x + left_field.width // 2 - 234 // 2 if consts.languageNow == 'rus'
+        else left_field.x + left_field.width // 2 - 145 / 2,
+        windows.height // 2 - 50, 234 if consts.languageNow == 'rus' else 145, 37,
+        fr"objects\{consts.languageNow}\pause-sloniks-obj.png")
     right_field = Object(sound_name.x + 434 // 2 - 470 // 2 + 470 - 252, windows.height // 2 - 246, 252, 342,
                          fr"objects\{consts.languageNow}\right-field-obj.png")
 
