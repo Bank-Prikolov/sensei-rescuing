@@ -310,17 +310,18 @@ def game_def(lvl):
             elif lvl == 3 and thing == 1:
                 lvl_gen.remover((7, 4), 'S')
             elif lvl == 3 and thing == 2:
-                consts.hero.end()
-                boss.boss_projectile_group.empty()
-                boss.b_projectile_speed = []
-                thing = ''
-                lvl_gen.updater()
-                started = False
-                record = starsChanger(lvl, current_seconds)
-                if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
-                    starsRecorder.push_record(lvl, 1, record, current_seconds)
-                starsRecorder.push_lastRecord(lvl, record, current_seconds)
-                game_complete.game_complete()
+                if not boss.boss_group:
+                    consts.hero.end()
+                    boss.boss_projectile_group.empty()
+                    boss.b_projectile_speed = []
+                    thing = ''
+                    lvl_gen.updater()
+                    started = False
+                    record = starsChanger(lvl, current_seconds)
+                    if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
+                        starsRecorder.push_record(lvl, 1, record, current_seconds)
+                    starsRecorder.push_lastRecord(lvl, record, current_seconds)
+                    game_complete.game_complete()
 
         if consts.runright or consts.runleft:
             if consts.runright:
