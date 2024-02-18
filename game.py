@@ -30,7 +30,6 @@ def game_def(lvl):
     lvl_gen.characters.draw(windows.screen)
     thing = ''
     cheatPanel = False  # cheats
-    normalize = True
     timer_event = pygame.USEREVENT + 1
     pygame.time.set_timer(timer_event, 1000)
     started = True
@@ -75,11 +74,8 @@ def game_def(lvl):
                         consts.yspeed = 7
                     else:
                         if (not (consts.jumping or consts.falling or consts.sitting)) or cheatPanel:
-                            if normalize:
-                                consts.yspeed = -9
-                                consts.jumping = True
-                            else:
-                                consts.yspeed = -9 - 2
+                            consts.jumping = True
+                            consts.yspeed = -9 - 2 * cheatPanel
                             if consts.lookingright:
                                 consts.hero.change_hero('jumpr', consts.hero.get_coords())
                             else:
@@ -123,15 +119,6 @@ def game_def(lvl):
                     cheatPanel = not cheatPanel
                     consts.hero.xs = 3 * 5 ** cheatPanel
                     consts.hero.projectile_speed = 8 * 2 ** cheatPanel
-                    normalize = not normalize
-                if cheatPanel and event.button == 4:
-                    normalize = not normalize
-                    if normalize:
-                        consts.hero.xs = 3
-                        consts.hero.projectile_speed = 8
-                    else:
-                        consts.hero.xs = 3 * 5
-                        consts.hero.projectile_speed = 8 * 2
             if ((event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE) or
                     (event.type == pygame.USEREVENT and event.button == pause_btn)):
                 consts.xspeed = 0
@@ -189,6 +176,8 @@ def game_def(lvl):
                 if pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite], boss.boss_group, False):
                     if (pygame.sprite.spritecollide(list(lvl_gen.projectilesgroup)[sprite],
                                                     boss.boss_group, False)[0].get_hit() == 0):
+                        pygame.draw.rect(windows.screen, (36, 34, 52), (
+                            list(boss.boss_group)[sprite].rect))
                         boss.boss_group.empty()
                     consts.hero.projectilespeed.pop(sprite)
                     list(lvl_gen.projectilesgroup)[sprite].kill()
@@ -232,15 +221,16 @@ def game_def(lvl):
                     boss.b_projectile_speed[sprite][0][0], boss.b_projectile_speed[sprite][0][1])
                 if pygame.sprite.spritecollide(list(boss.boss_projectile_group)[sprite], lvl_gen.characters,
                                                False) and not cheatPanel:
-                    thing = ''
-                    consts.hero.end()
-                    lvl_gen.projectilespeed = []
-                    lvl_gen.nmeprojectilesgroup.empty()
-                    boss.boss_projectile_group.empty()
-                    boss.b_projectile_speed = []
-                    lvl_gen.updater()
-                    started = False
-                    game_over.game_over()
+                    # thing = ''
+                    # consts.hero.end()
+                    # lvl_gen.projectilespeed = []
+                    # lvl_gen.nmeprojectilesgroup.empty()
+                    # boss.boss_projectile_group.empty()
+                    # boss.b_projectile_speed = []
+                    # lvl_gen.updater()
+                    # started = False
+                    # game_over.game_over()
+                    pass
                 else:
                     if (pygame.sprite.spritecollide(list(boss.boss_projectile_group)[sprite], lvl_gen.xwalls,
                                                     False)

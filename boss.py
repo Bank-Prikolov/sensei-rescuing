@@ -70,7 +70,7 @@ class Boss(pygame.sprite.Sprite):
         self.act = act
         self.looking_right = False
         self.hp = ord('p') + ord('h') + ord('p') - 96 * 3
-        self.bullet_speed = 8
+        self.bullet_speed = 7
         self.step = 0
         self.hitick = 0
         self.pospoint = 0
@@ -118,23 +118,29 @@ class Boss(pygame.sprite.Sprite):
         self.counter = (self.counter + 1) % 8
         if self.attack_counter == 0:
             self.attack = self.make_attack()
-        elif self.attack_counter == 239:
+        elif self.attack_counter == 359:
             self.attack = 0
             self.make_move()
         if self.attack == 1:
             if self.attack_counter in [40, 80, 120]:
                 self.shoot()
+            elif self.attack_counter > 120 and self.step:
+                self.attack_counter = 358
         elif self.attack == 2:
             if self.attack_counter in [120, 200]:
                 self.make_move()
             elif self.attack_counter in [60, 140, 220]:
                 self.shoot()
+            elif self.attack_counter > 220 and self.step:
+                self.attack_counter = 358
         elif self.attack == 3:
             if self.attack_counter in [120]:
                 self.shoot_circle()
+            elif self.attack_counter > 120 and self.step:
+                self.attack_counter = 358
         else:
             pass
-        self.attack_counter = (self.attack_counter + 1) % 240
+        self.attack_counter = (self.attack_counter + 1) % 360
 
     def set_coords(self, x, y):
         self.rect[:2] = [x, y]
@@ -181,7 +187,7 @@ class Boss(pygame.sprite.Sprite):
             yrange = [1]
         for xcoef in xrange:
             for ycoef in yrange:
-                for xb in range(9):
+                for xb in range(8):
                     yb = self.bullet_speed - xb
                     if yb != 0 and xb != 0:
                         Animpic(self.get_coords()[0] + self.get_size()[0] // 2,
@@ -190,12 +196,11 @@ class Boss(pygame.sprite.Sprite):
                                 Boss.php.get_height() * 3 // 8 * windows.k ** windows.fullscreen, Boss.php,
                                 boss_projectile_group, koef=self.k)
                         b_projectile_speed.append(((int(xcoef * xb * self.k ** windows.fullscreen),
-                                                    int(ycoef * yb * self.k ** windows.fullscreen)), 1))
+                                                    int(ycoef * yb * self.k ** windows.fullscreen)), 0))
 
     def get_hit(self):
         self.hp -= 2
         self.step = 2
-        self.attack_counter = 0
         return self.hp
 
     def change_act(self, act, coords):
@@ -233,3 +238,7 @@ class Boss(pygame.sprite.Sprite):
 
     def make_attack(self):
         return random.randint(1, 3)
+
+
+    def rain_attack(self):
+        pass
