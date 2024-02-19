@@ -1,14 +1,11 @@
 import pygame
-
 import consts
-
-animatedObjects = pygame.sprite.Group()
-introGroup = pygame.sprite.Group()
+import spriteGroups
 
 
 class AnimatedObject(pygame.sprite.Sprite):
     def __init__(self, sheet, columns, rows, x, y):
-        super().__init__(animatedObjects)
+        super().__init__(spriteGroups.animatedObjects)
         self.frames = []
         self.cut_sheet(sheet, columns, rows)
         self.cur_frame = 0
@@ -86,7 +83,7 @@ class AnimatedObject(pygame.sprite.Sprite):
 
 class AnimatedIntro(pygame.sprite.Sprite):
     def __init__(self, sheet, columns, rows, x, y):
-        super().__init__(introGroup)
+        super().__init__(spriteGroups.introGroup)
         self.frames = []
         self.cut_sheet(sheet, columns, rows)
         self.cur_frame = 0

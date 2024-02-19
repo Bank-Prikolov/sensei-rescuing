@@ -2,6 +2,7 @@ import pygame
 import consts
 import windows
 import lvl_gen
+import spriteGroups
 from processHelper import load_image
 import random
 
@@ -48,8 +49,6 @@ class Animpic(pygame.sprite.Sprite):
 
 
 boss_shoot_list = []
-boss_group = pygame.sprite.Group()
-boss_projectile_group = pygame.sprite.Group()
 b_projectile_speed = []
 
 
@@ -58,7 +57,7 @@ class Boss(pygame.sprite.Sprite):
     php = load_image(consts.boos_prjct)
 
     def __init__(self, x, y, koef, act=0):
-        super().__init__(boss_group)
+        super().__init__(spriteGroups.boss_group)
         self.sprites = pygame.transform.scale(
             Boss.pic, (Boss.pic.get_width() * koef, Boss.pic.get_height() * koef))
         self.k = koef
@@ -74,8 +73,8 @@ class Boss(pygame.sprite.Sprite):
         self.step = 0
         self.hitick = 0
         self.pospoint = 0
-        self.herocords = [list(lvl_gen.characters)[0].rect[0] - list(lvl_gen.characters)[0].rect[2] // 2,
-                          list(lvl_gen.characters)[0].rect[1] - list(lvl_gen.characters)[0].rect[3] // 2]
+        self.herocords = [list(spriteGroups.characters)[0].rect[0] - list(spriteGroups.characters)[0].rect[2] // 2,
+                          list(spriteGroups.characters)[0].rect[1] - list(spriteGroups.characters)[0].rect[3] // 2]
         self.attack = 0
         self.attack_counter = -59
 
@@ -98,10 +97,10 @@ class Boss(pygame.sprite.Sprite):
             if not self.looking_right:
                 self.looking_right = True
                 self.change_act(1, self.get_coords())
-        self.herocords = [list(lvl_gen.characters)[0].rect[0] - list(lvl_gen.characters)[0].rect[2] // 2,
-                          list(lvl_gen.characters)[0].rect[1] - list(lvl_gen.characters)[0].rect[3] // 2]
+        self.herocords = [list(spriteGroups.characters)[0].rect[0] - list(spriteGroups.characters)[0].rect[2] // 2,
+                          list(spriteGroups.characters)[0].rect[1] - list(spriteGroups.characters)[0].rect[3] // 2]
         lvl_gen.get_shadow(*self.rect)
-        lvl_gen.shadowgroup.draw(windows.screen)
+        spriteGroups.shadowgroup.draw(windows.screen)
         self.image = self.frames[self.cur_frame]
         if not self.step:
             if self.counter == 7:
@@ -165,7 +164,7 @@ class Boss(pygame.sprite.Sprite):
                 self.get_coords()[1] + self.get_size()[1] // 2,
                 Boss.php.get_width() * 3 // 8 * windows.k ** windows.fullscreen,
                 Boss.php.get_height() * 3 // 8 * windows.k ** windows.fullscreen, Boss.php,
-                boss_projectile_group, koef=self.k)
+                spriteGroups.boss_projectile_group, koef=self.k)
         if self.looking_right:
             xz = 1
         else:
@@ -201,7 +200,7 @@ class Boss(pygame.sprite.Sprite):
                             self.get_coords()[1] + self.get_size()[1] // 2,
                             Boss.php.get_width() * 3 // 8 * windows.k ** windows.fullscreen,
                             Boss.php.get_height() * 3 // 8 * windows.k ** windows.fullscreen, Boss.php,
-                            boss_projectile_group, koef=self.k)
+                            spriteGroups.boss_projectile_group, koef=self.k)
                     b_projectile_speed.append(((xcoef * xb * self.k ** windows.fullscreen,
                                                 ycoef * yb * self.k ** windows.fullscreen), 0))
 
@@ -233,7 +232,7 @@ class Boss(pygame.sprite.Sprite):
         m = min(srav)
         a = random.randint(0, 4)
         lvl_gen.get_shadow(*self.rect)
-        lvl_gen.shadowgroup.draw(windows.screen)
+        spriteGroups.shadowgroup.draw(windows.screen)
         while a == self.pospoint or a == srav.index(m):
             a = random.randint(0, 4)
         self.set_coords(windows.otstupx * windows.fullscreen + cordi[a][0] * self.k, cordi[a][1] * self.k)
@@ -259,11 +258,11 @@ class Boss(pygame.sprite.Sprite):
                     windows.otstupy * windows.fullscreen + 64 * self.k - Boss.php.get_width() * 3 // 16 * self.k,
                     Boss.php.get_width() * 3 // 8 * self.k,
                     Boss.php.get_height() * 3 // 8 * self.k, Boss.php,
-                    boss_projectile_group, koef=self.k)
+                    spriteGroups.boss_projectile_group, koef=self.k)
             b_projectile_speed.append((((-1) ** a, int((self.bullet_speed - 1) * self.k ** windows.fullscreen)), 0))
 
     def slon_attack(self):
-        if not lvl_gen.sloniks:
+        if not spriteGroups.sloniks:
             a = random.randint
             if a:
                 lvl_gen.remover((1, 2), block='e')

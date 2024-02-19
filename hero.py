@@ -1,14 +1,14 @@
 import pygame
-import lvl_gen
 import consts
 import boss
 import windows
+import spriteGroups
 from processHelper import load_image
 
 
 class Hero(pygame.sprite.Sprite):
     def __init__(self, x, y, koef, hr, anim=0, movement=False, act='sr'):
-        super().__init__(lvl_gen.characters)
+        super().__init__(spriteGroups.characters)
         if hr == 1:
             self.pic = load_image(consts.wai)
             self.fireball = consts.fireball
@@ -101,7 +101,7 @@ class Hero(pygame.sprite.Sprite):
         if consts.jumping:
             touchable = False
         elif consts.falling:
-            if pygame.sprite.spritecollide(self, lvl_gen.platformgroup, False):
+            if pygame.sprite.spritecollide(self, spriteGroups.platformgroup, False):
                 # print(list(pygame.sprite.spritecollide(self, lvl_gen.platformgroup, False))[0].rect[1] - heropos[1])
                 if windows.k == 1.5:
                     if windows.fullscreen:
@@ -113,7 +113,8 @@ class Hero(pygame.sprite.Sprite):
                         map(lambda x: int(x * windows.k ** windows.fullscreen),
                             [-1, -9, -8, -4, -25, -16, -14, -6])
                     )
-                if not (list(pygame.sprite.spritecollide(self, lvl_gen.platformgroup, False))[0].rect[1] - heropos[1]
+                if not (list(pygame.sprite.spritecollide(self, spriteGroups.platformgroup, False))[0].rect[1] - heropos[
+                    1]
                         in checklist):
                     touchable = False
                 else:
@@ -123,18 +124,18 @@ class Hero(pygame.sprite.Sprite):
         else:
             touchable = True
 
-        if pygame.sprite.spritecollide(self, lvl_gen.toches, False) or (
-                pygame.sprite.spritecollide(self, lvl_gen.platformgroup, False) and touchable):
-            if pygame.sprite.spritecollide(self, lvl_gen.toches, False):
-                if (pygame.sprite.spritecollide(self, lvl_gen.toches, False)[0].rect[1]
+        if pygame.sprite.spritecollide(self, spriteGroups.toches, False) or (
+                pygame.sprite.spritecollide(self, spriteGroups.platformgroup, False) and touchable):
+            if pygame.sprite.spritecollide(self, spriteGroups.toches, False):
+                if (pygame.sprite.spritecollide(self, spriteGroups.toches, False)[0].rect[1]
                         > consts.hero.get_coords()[1] - consts.yspeed):
                     self.rect = self.rect.move(0, pygame.sprite.spritecollide(
-                        self, lvl_gen.toches, False)[0].rect[1] - self.get_coords()[1] - self.get_size()[1])
+                        self, spriteGroups.toches, False)[0].rect[1] - self.get_coords()[1] - self.get_size()[1])
                 else:
                     self.rect = self.rect.move(0, -consts.yspeed * windows.k)
             else:
                 self.rect = self.rect.move(0, pygame.sprite.spritecollide(
-                    self, lvl_gen.platformgroup, False)[0].rect[1] - consts.hero.get_coords()[1]
+                    self, spriteGroups.platformgroup, False)[0].rect[1] - consts.hero.get_coords()[1]
                                            - consts.hero.get_size()[1])
 
             consts.yspeed = 0
@@ -197,7 +198,7 @@ class Hero(pygame.sprite.Sprite):
 
     def move(self, x, y):
         self.rect = self.rect.move(x, y)
-        if pygame.sprite.spritecollide(self, lvl_gen.toches, False):
+        if pygame.sprite.spritecollide(self, spriteGroups.toches, False):
             self.rect = self.rect.move(-x, -y)
 
     def get_coords(self):
@@ -215,7 +216,7 @@ class Hero(pygame.sprite.Sprite):
                      self.get_coords()[1] + self.get_size()[1] // 2,
                      40 // 2.5 * windows.k ** windows.fullscreen,
                      40 // 2.5 * windows.k ** windows.fullscreen, self.fireball,
-                     lvl_gen.projectilesgroup)
+                     spriteGroups.projectilesgroup)
             self.projectilespeed.append(spees)
             self.shooting = True
 
@@ -226,4 +227,4 @@ class Hero(pygame.sprite.Sprite):
         consts.jumping = False
         consts.falling = False
         self.kill()
-        lvl_gen.characters.empty()
+        spriteGroups.characters.empty()

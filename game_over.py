@@ -4,7 +4,7 @@ import levels_menu
 import windows
 import consts
 import soundManager
-import itemAnimator
+import spriteGroups
 from processHelper import load_image, terminate, transition
 from itemCreator import Button
 from itemAnimator import AnimatedObject
@@ -43,13 +43,13 @@ def game_over():
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
                 running = False
-                itemAnimator.animatedObjects.empty()
+                spriteGroups.animatedObjects.empty()
                 transition()
                 levels_menu.levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == repeat_btn:
                 running = False
-                itemAnimator.animatedObjects.empty()
+                spriteGroups.animatedObjects.empty()
                 transition()
                 game.game_def(consts.lvlNow)
 
@@ -59,7 +59,7 @@ def game_over():
         consts.game_state_field.draw(windows.screen)
 
         game_over_obj.update_game_over(windows.screen, repeat_btn, to_lvlmenu_btn, consts.languageNow)
-        itemAnimator.animatedObjects.draw(windows.screen)
+        spriteGroups.animatedObjects.draw(windows.screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()

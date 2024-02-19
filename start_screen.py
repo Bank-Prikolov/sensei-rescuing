@@ -3,7 +3,7 @@ import menu
 import windows
 import consts
 import starsRecorder
-import itemAnimator
+import spriteGroups
 from processHelper import load_image
 from itemCreator import Button
 from itemAnimator import AnimatedIntro, AnimatedObject
@@ -50,7 +50,7 @@ def start_screen():
 
             if event.type == pygame.USEREVENT and event.button == da_btn:
                 consts.fps = 60
-                itemAnimator.animatedObjects.empty()
+                spriteGroups.animatedObjects.empty()
                 menu.main_menu()
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and intro_finish:
@@ -63,14 +63,14 @@ def start_screen():
                 button.handle_event(event, consts.wS)
 
         intro_obj.update()
-        itemAnimator.introGroup.draw(windows.screen)
+        spriteGroups.introGroup.draw(windows.screen)
         if intro_obj.cur_frame >= 111 * 3:
-            itemAnimator.introGroup.empty()
+            spriteGroups.introGroup.empty()
             intro_finish = True
 
         if intro_finish:
             start_screen_obj.update_start_screen(windows.screen, da_btn, net_btn, consts.languageNow)
-            itemAnimator.animatedObjects.draw(windows.screen)
+            spriteGroups.animatedObjects.draw(windows.screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()

@@ -6,7 +6,15 @@ def start_cutscene():
     game.game_def(1)
 
 
-def boss_cutscene():
+def boss_greeting_cutscene():
+    pass
+
+
+def boss_win_cutscene():
+    pass
+
+
+def boss_loose_cutscene():
     pass
 
 

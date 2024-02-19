@@ -5,7 +5,7 @@ import windows
 import consts
 import starsRecorder
 import soundManager
-import itemAnimator
+import spriteGroups
 from processHelper import load_image, terminate, transition
 from itemCreator import Button, Stars
 from itemAnimator import AnimatedObject
@@ -56,13 +56,13 @@ def game_complete():
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
                 running = False
-                itemAnimator.animatedObjects.empty()
+                spriteGroups.animatedObjects.empty()
                 transition()
                 levels_menu.levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == repeat_btn:
                 running = False
-                itemAnimator.animatedObjects.empty()
+                spriteGroups.animatedObjects.empty()
                 transition()
                 game.game_def(consts.lvlNow)
 
@@ -74,7 +74,7 @@ def game_complete():
         game_complete_obj.update_game_complete(windows.screen, record, stars, repeat_btn, to_lvlmenu_btn, levelTime,
                                               levelTimeRect,
                                               consts.languageNow)
-        itemAnimator.animatedObjects.draw(windows.screen)
+        spriteGroups.animatedObjects.draw(windows.screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()
