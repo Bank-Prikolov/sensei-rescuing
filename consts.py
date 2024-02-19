@@ -7,9 +7,6 @@ clock = pygame.time.Clock()
 fps = 60
 
 # menu consts
-img = load_image(r'backgrounds\main-menu-bg.png')
-img_fs = load_image(r"backgrounds\main-menu-fullScreen-bg.png")
-menu_bg = None
 pause_field = None
 game_state_field = None
 isSliderMusic = False
@@ -42,6 +39,8 @@ php = r'characters\projectile-php.png'
 fireball = r'characters\projectile-fireball.png'
 hollow_purple = r'characters\projectile-hollow-purple.png'
 boos_prjct = r'characters\projectile-php-marker.png'
+projectileObj_speed = []
+b_projectile_speed = []
 
 # textures
 floor = r'textures\0-texture.png'
@@ -67,3 +66,6 @@ lvl3_2 = r'lvl_3_2.txt'
 
 # backgrounds
 game_bg = r'backgrounds\game-bg.png'
+img = load_image(r'backgrounds\main-menu-bg.png')
+img_fs = load_image(r"backgrounds\main-menu-fullScreen-bg.png")
+menu_bg = None

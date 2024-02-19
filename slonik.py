@@ -2,7 +2,7 @@ import pygame
 import windows
 import boss
 import consts
-import lvl_gen
+import levelGenerator
 import spriteGroups
 from processHelper import load_image
 
@@ -50,15 +50,17 @@ class Slonik(pygame.sprite.Sprite):
             else:
                 self.looking_right = True
         self.turn_speed = (self.turn_speed + 1) % 96
-        hrop = lvl_gen.board.get_cell(list(spriteGroups.characters)[0].get_coords())
-        enep = lvl_gen.board.get_cell(self.get_coords())
-        if ((lvl_gen.board.get_cell((list(spriteGroups.characters)[0].rect.x,
-                                     list(spriteGroups.characters)[0].rect.centery))[1] -
-             lvl_gen.board.get_cell(self.rect[:2])[1]
+        hrop = levelGenerator.board.get_cell(list(spriteGroups.characters)[0].get_coords())
+        enep = levelGenerator.board.get_cell(self.get_coords())
+        if ((levelGenerator.board.get_cell((list(spriteGroups.characters)[0].rect.x,
+                                            list(spriteGroups.characters)[0].rect.centery))[1] -
+             levelGenerator.board.get_cell(self.rect[:2])[1]
              in [0])
-                and (('=' not in lvl_gen.board.board[enep[1]][min(enep[0], hrop[0]) + 1: max(enep[0], hrop[0])])
-                     and ('#' not in lvl_gen.board.board[enep[1]][min(enep[0], hrop[0]) + 1: max(enep[0], hrop[0])])
-                     and ('&' not in lvl_gen.board.board[enep[1]][min(enep[0], hrop[0]) + 1: max(enep[0], hrop[0])]))):
+                and (('=' not in levelGenerator.board.board[enep[1]][min(enep[0], hrop[0]) + 1: max(enep[0], hrop[0])])
+                     and ('#' not in levelGenerator.board.board[enep[1]][
+                                     min(enep[0], hrop[0]) + 1: max(enep[0], hrop[0])])
+                     and ('&' not in levelGenerator.board.board[enep[1]][
+                                     min(enep[0], hrop[0]) + 1: max(enep[0], hrop[0])]))):
             if ((list(spriteGroups.characters)[0].rect.x < self.rect.x and not self.looking_right)
                     or (list(spriteGroups.characters)[0].rect.x > self.rect.x and self.looking_right)):
                 self.dontseeme = False
@@ -108,9 +110,9 @@ class Slonik(pygame.sprite.Sprite):
                  Slonik.php.get_height() // 2 * windows.k ** windows.fullscreen, consts.php,
                  spriteGroups.nmeprojectilesgroup)
         if self.looking_right:
-            lvl_gen.projectilespeed.append((self.bulletspeed * self.k ** windows.fullscreen, self))
+            consts.projectileObj_speed.append((self.bulletspeed * self.k ** windows.fullscreen, self))
         else:
-            lvl_gen.projectilespeed.append((-self.bulletspeed * self.k ** windows.fullscreen, self))
+            consts.projectileObj_speed.append((-self.bulletspeed * self.k ** windows.fullscreen, self))
 
     def get_hit(self, herox):
         self.hp -= 1

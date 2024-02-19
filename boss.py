@@ -1,7 +1,7 @@
 import pygame
 import consts
 import windows
-import lvl_gen
+import levelGenerator
 import spriteGroups
 from processHelper import load_image
 import random
@@ -46,10 +46,6 @@ class Animpic(pygame.sprite.Sprite):
             self.counter = (self.counter + 1) % len(self.frames)
             self.image = self.frames[self.counter]
         self.wait += 1
-
-
-boss_shoot_list = []
-b_projectile_speed = []
 
 
 class Boss(pygame.sprite.Sprite):
@@ -99,7 +95,7 @@ class Boss(pygame.sprite.Sprite):
                 self.change_act(1, self.get_coords())
         self.herocords = [list(spriteGroups.characters)[0].rect[0] - list(spriteGroups.characters)[0].rect[2] // 2,
                           list(spriteGroups.characters)[0].rect[1] - list(spriteGroups.characters)[0].rect[3] // 2]
-        lvl_gen.get_shadow(*self.rect)
+        levelGenerator.get_shadow(*self.rect)
         spriteGroups.shadowgroup.draw(windows.screen)
         self.image = self.frames[self.cur_frame]
         if not self.step:
@@ -173,8 +169,8 @@ class Boss(pygame.sprite.Sprite):
             yz = 1
         else:
             yz = -1
-        b_projectile_speed.append(((int(xz * bxs * self.k ** windows.fullscreen),
-                                    int(yz * bys * self.k ** windows.fullscreen)), 0))
+        consts.b_projectile_speed.append(((int(xz * bxs * self.k ** windows.fullscreen),
+                                           int(yz * bys * self.k ** windows.fullscreen)), 0))
 
     def shoot_circle(self):
         if self.pospoint == 0:  # [896, 66], [480, 66]]
@@ -201,8 +197,8 @@ class Boss(pygame.sprite.Sprite):
                             Boss.php.get_width() * 3 // 8 * windows.k ** windows.fullscreen,
                             Boss.php.get_height() * 3 // 8 * windows.k ** windows.fullscreen, Boss.php,
                             spriteGroups.boss_projectile_group, koef=self.k)
-                    b_projectile_speed.append(((xcoef * xb * self.k ** windows.fullscreen,
-                                                ycoef * yb * self.k ** windows.fullscreen), 0))
+                    consts.b_projectile_speed.append(((xcoef * xb * self.k ** windows.fullscreen,
+                                                       ycoef * yb * self.k ** windows.fullscreen), 0))
 
     def get_hit(self):
         self.hp -= 2
@@ -231,7 +227,7 @@ class Boss(pygame.sprite.Sprite):
         srav = [((x[0] - abs(self.herocords[0])) ** 2 + (x[1] - abs(self.herocords[1])) ** 2) ** 0.5 for x in cordi]
         m = min(srav)
         a = random.randint(0, 4)
-        lvl_gen.get_shadow(*self.rect)
+        levelGenerator.get_shadow(*self.rect)
         spriteGroups.shadowgroup.draw(windows.screen)
         while a == self.pospoint or a == srav.index(m):
             a = random.randint(0, 4)
@@ -254,21 +250,22 @@ class Boss(pygame.sprite.Sprite):
         a = random.randint(0, 1)
         for x in range(0 + a, 14 + a, 2):
             Animpic(windows.otstupx * windows.fullscreen + (
-                        64 * self.k * x) + 96 * self.k * self.k - Boss.php.get_width() * 3 // 16 * self.k,
+                    64 * self.k * x) + 96 * self.k * self.k - Boss.php.get_width() * 3 // 16 * self.k,
                     windows.otstupy * windows.fullscreen + 64 * self.k - Boss.php.get_width() * 3 // 16 * self.k,
                     Boss.php.get_width() * 3 // 8 * self.k,
                     Boss.php.get_height() * 3 // 8 * self.k, Boss.php,
                     spriteGroups.boss_projectile_group, koef=self.k)
-            b_projectile_speed.append((((-1) ** a, int((self.bullet_speed - 1) * self.k ** windows.fullscreen)), 0))
+            consts.b_projectile_speed.append(
+                (((-1) ** a, int((self.bullet_speed - 1) * self.k ** windows.fullscreen)), 0))
 
     def slon_attack(self):
         if not spriteGroups.sloniks:
             a = random.randint
             if a:
-                lvl_gen.remover((1, 2), block='e')
-                lvl_gen.remover((14, 6), block='e')
+                levelGenerator.remover((1, 2), block='e')
+                levelGenerator.remover((14, 6), block='e')
             else:
-                lvl_gen.remover((1, 6), block='e')
-                lvl_gen.remover((14, 2), block='e')
+                levelGenerator.remover((1, 6), block='e')
+                levelGenerator.remover((14, 2), block='e')
         else:
             self.attack_counter = 358
