@@ -9,8 +9,6 @@ import slonik
 import spriteGroups
 from processHelper import load_image
 
-projectilespeed = []
-
 
 class Board:
     def __init__(self, txt=None):
