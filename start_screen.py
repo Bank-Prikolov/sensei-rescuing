@@ -5,7 +5,7 @@ import consts
 import starsRecorder
 import spriteGroups
 from processHelper import load_image
-from itemCreator import Button
+from itemCreator import Button, Object
 from itemAnimator import AnimatedIntro, AnimatedObject
 
 
@@ -18,27 +18,34 @@ def start_screen():
         img_start = load_image(r"objects\animated\start-screen-rus-obj.png")
         start_screen_obj = AnimatedObject(img_start, 42, 1, windows.width / 2 - 26880 / 42 / 2,
                                           windows.height // 2 - 145)
+        question_finish = 41 * 10
     else:
         img_start = load_image(r"objects\animated\start-screen-eng-obj.png")
         start_screen_obj = AnimatedObject(img_start, 45, 1, windows.width / 2 - 28800 / 45 / 2,
                                           windows.height // 2 - 145)
+        question_finish = 44 * 10
 
     img_intro = load_image(r"objects\animated\intro-obj.png")
     tr_intro = pygame.transform.scale(img_intro, (img_intro.get_width() * 2, img_intro.get_height() * 2))
     intro_obj = AnimatedIntro(tr_intro, 112, 1, windows.width // 2 - 512,
-                             windows.height // 2 - 145)
+                              windows.height // 2 - 145)
 
-    da_btn = Button(windows.width // 2 - 50 - 67 if consts.languageNow == 'rus' else windows.width // 2 - 50 - 92,
-                    windows.height // 2 - 10, 67 if consts.languageNow == 'rus' else 92, 60,
+    da_btn = Button(windows.width // 2 - 50 - 92,
+                    windows.height // 2 - 10, 92, 60,
                     fr"buttons\{consts.languageNow}\default-da-btn.png",
                     fr"buttons\{consts.languageNow}\hover-da-btn.png",
                     fr"buttons\{consts.languageNow}\hover-da-btn.png", r"data\sounds\da-sound.mp3")
-    net_btn = Button(windows.width // 2 + 50, windows.height // 2 - 10, 86 if consts.languageNow == 'rus' else 60, 58,
+    net_btn = Button(windows.width // 2 + 50, windows.height // 2 - 10, 92, 60,
                      fr"buttons\{consts.languageNow}\default-net-btn.png",
                      fr"buttons\without text\hover-net-btn.png",
                      fr"buttons\without text\hover-net-btn.png", r"data\sounds\hi-hi-hi-ha-sound.mp3")
 
+    to_skip = Object(windows.width // 2 - 472 // 2, da_btn.y + da_btn.height + 100, 472, 38,
+                     fr"objects\{consts.languageNow}\to-skip-obj.png")
+
     intro_finish = False
+    wanna_skip = False
+    time_wanna_skip = 0
     running = True
     while running:
 
@@ -53,10 +60,16 @@ def start_screen():
                 spriteGroups.animatedObjects.empty()
                 menu.main_menu()
 
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and intro_finish:
-                consts.fps = 300
+            if event.type == pygame.KEYDOWN and intro_finish:
+                wanna_skip = True
 
-            if event.type == pygame.KEYUP and event.key == pygame.K_SPACE and intro_finish:
+            if (event.type == pygame.KEYDOWN and (
+                    event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER) and intro_finish):
+                consts.fps = 300
+                wanna_skip = False
+
+            if event.type == pygame.KEYUP and (
+                    event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER) and intro_finish:
                 consts.fps = 60
 
             for button in [da_btn, net_btn]:
@@ -71,6 +84,13 @@ def start_screen():
         if intro_finish:
             start_screen_obj.update_start_screen(windows.screen, da_btn, net_btn, consts.languageNow)
             spriteGroups.animatedObjects.draw(windows.screen)
+            if wanna_skip:
+                if time_wanna_skip >= 4800 or start_screen_obj.cur_frame == question_finish:
+                    wanna_skip = False
+                    time_wanna_skip = 0
+                else:
+                    to_skip.draw(windows.screen)
+                    time_wanna_skip += 60
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()
