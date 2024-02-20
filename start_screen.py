@@ -55,7 +55,6 @@ def start_screen():
                 soundManager.skala_sound()
 
             if event.type == pygame.USEREVENT and event.button == da_btn:
-                consts.fps = 60
                 spriteGroups.animatedObjects.empty()
                 menu.main_menu()
 
@@ -66,10 +65,6 @@ def start_screen():
                     event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER) and intro_finish):
                 consts.fps = 300
                 wanna_skip = False
-
-            if event.type == pygame.KEYUP and (
-                    event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER) and intro_finish:
-                consts.fps = 60
 
             for button in [da_btn, net_btn]:
                 button.handle_event(event, consts.wS)
@@ -90,6 +85,9 @@ def start_screen():
                 else:
                     to_skip.draw(windows.screen)
                     time_wanna_skip += 60
+
+        if start_screen_obj.cur_frame == start_screen_obj.columns_number * 10 - 10:
+            consts.fps = 60
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()
