@@ -28,3 +28,31 @@ def game_over_sound(ln):
 def game_complete_sound(ln):
     pygame.mixer.music.load(r"data\sounds\game-complete-sound.mp3")
     pygame.mixer.music.play(1)
+
+
+def skala_sound():
+    skalaSound = pygame.mixer.Sound(r"data\sounds\skala-sound.mp3")
+    skalaSound.play()
+
+
+def typing_sound():
+    pygame.mixer.music.load(r"data\sounds\start-screen-sound.mp3")
+    pygame.mixer.music.set_volume(consts.wS)
+    pygame.mixer.music.play(-1)
+
+
+def hit_sound():
+    hit = pygame.mixer.Sound(r"data\sounds\hit-sound.mp3")
+    hit.play()
+
+
+def stop_playback():
+    pygame.mixer.music.stop()
+
+
+def volume_zero():
+    pygame.mixer.music.set_volume(0)
+
+
+def volume_on():
+    pygame.mixer.music.set_volume(consts.wS)

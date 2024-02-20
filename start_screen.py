@@ -4,6 +4,7 @@ import windows
 import consts
 import starsRecorder
 import spriteGroups
+import soundManager
 from processHelper import load_image
 from itemCreator import Button, Object
 from itemAnimator import AnimatedIntro, AnimatedObject
@@ -11,8 +12,6 @@ from itemAnimator import AnimatedIntro, AnimatedObject
 
 def start_screen():
     starsRecorder.firstTime()
-
-    skalaSound = pygame.mixer.Sound(r"data\sounds\skala-sound.mp3")
 
     if consts.languageNow == 'rus':
         img_start = load_image(r"objects\animated\start-screen-rus-obj.png")
@@ -53,7 +52,7 @@ def start_screen():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                skalaSound.play()
+                soundManager.skala_sound()
 
             if event.type == pygame.USEREVENT and event.button == da_btn:
                 consts.fps = 60

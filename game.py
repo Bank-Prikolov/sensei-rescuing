@@ -90,6 +90,7 @@ def game_def(lvl):
                         if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
                             starsRecorder.push_record(lvl, 1, record, current_seconds)
                         starsRecorder.push_lastRecord(lvl, record, current_seconds)
+                        soundManager.stop_playback()
                         game_complete.game_complete()
                     else:
                         if consts.lookingright:
@@ -214,6 +215,7 @@ def game_def(lvl):
                         spriteGroups.boss_projectile_group.empty()
                         consts.b_projectile_speed = []
                         started = False
+                        soundManager.stop_playback()
                         game_over.game_over()
                     else:
                         consts.projectileObj_speed.pop(sprite)
@@ -339,6 +341,7 @@ def game_def(lvl):
                     spriteGroups.boss_projectile_group.empty()
                     consts.b_projectile_speed = []
                     started = False
+                    soundManager.stop_playback()
                     game_over.game_over()
         if pygame.sprite.spritecollide(consts.hero, spriteGroups.triggergroup, False):
             if lvl == 3:
@@ -373,6 +376,7 @@ def game_def(lvl):
                     if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
                         starsRecorder.push_record(lvl, 1, record, current_seconds)
                     starsRecorder.push_lastRecord(lvl, record, current_seconds)
+                    soundManager.stop_playback()
                     game_complete.game_complete()
 
         if consts.runright or consts.runleft:

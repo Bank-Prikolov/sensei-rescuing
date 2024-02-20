@@ -1,6 +1,6 @@
 import pygame
-import consts
 import spriteGroups
+import soundManager
 
 
 class AnimatedObject(pygame.sprite.Sprite):
@@ -29,21 +29,19 @@ class AnimatedObject(pygame.sprite.Sprite):
             numFrame = 44
 
         if self.cur_frame == 1:
-            pygame.mixer.music.load(r"data\sounds\start-screen-sound.mp3")
-            pygame.mixer.music.set_volume(consts.wS)
-            pygame.mixer.music.play(-1)
+            soundManager.typing_sound()
 
         if self.cur_frame < numFrame * 10:
             self.cur_frame = (self.cur_frame + 1) % len(self.frames)
             self.image = self.frames[self.cur_frame]
 
         if 18 * 10 < self.cur_frame < 26 * 10:
-            pygame.mixer.music.set_volume(0)
+            soundManager.volume_zero()
         else:
-            pygame.mixer.music.set_volume(consts.wS)
+            soundManager.volume_on()
 
         if self.cur_frame >= numFrame * 10:
-            pygame.mixer.music.stop()
+            soundManager.stop_playback()
             da_btn.check_hover(pygame.mouse.get_pos())
             da_btn.draw(screen)
             net_btn.check_hover(pygame.mouse.get_pos())
