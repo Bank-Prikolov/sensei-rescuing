@@ -1,6 +1,7 @@
 import pygame
 import consts
 import boss
+import soundManager
 import windows
 import spriteGroups
 from processHelper import load_image
@@ -49,7 +50,6 @@ class Hero(pygame.sprite.Sprite):
     def get_hit(self):
         self.hp -= 1
         self.step = 2
-        print(self.hp)
         return self.hp
 
     def update(self):
