@@ -17,7 +17,9 @@ def game_theme():
 
 
 def boss_theme():
-    pass
+    pygame.mixer.music.load(r"data\sounds\boss-theme-sound.mp3")
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(consts.wM)
 
 
 def game_over_sound(ln):
