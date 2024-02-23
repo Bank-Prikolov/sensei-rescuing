@@ -45,9 +45,10 @@ def settings_menu():
     fs_name = Object(field_video.x + field_video.width / 2 - 332 / 2, title.y + 226, 332, 75,
                      fr"objects\{consts.languageNow}\fullscreen-obj.png")
     fs_btn = Button(fs_name.x + fs_name.width // 2 - 136 // 2, fs_name.y + fs_name.height + 15, 136, 62,
-                    fr"buttons\{consts.languageNow}\fullscreen-off-btn.png",
+                    fr"buttons\{consts.languageNow}\default-fullscreen-off-btn.png",
                     rf"buttons\{consts.languageNow}\hover-fullscreen-off-btn.png",
-                    fr"buttons\{consts.languageNow}\fullscreen-on-btn.png", r"data\sounds\menu-button-sound.mp3", "",
+                    fr"buttons\{consts.languageNow}\default-fullscreen-on-btn.png",
+                    r"data\sounds\menu-button-sound.mp3", "",
                     "", "", "", "", rf"buttons\{consts.languageNow}\hover-fullscreen-on-btn.png")
     langauge_obj = Object(field_video.x + field_video.width / 2 - 216 / 2, title.y + 406, 228, 50,
                           r"objects\rus\language-rus-obj.png", "", r"objects\eng\language-eng-obj.png")
