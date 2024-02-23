@@ -151,8 +151,10 @@ def game_def(lvl):
             consts.projectileObj_speed = []
             spriteGroups.boss_projectile_group.empty()
             consts.b_projectile_speed = []
-
             consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
+            if lvl == 3 and thing == 2:
+                soundManager.stop_playback()
+                soundManager.boss_theme()
             consts.hero.projectilespeed = []
             windows.screen.fill('#000000')
             levelGenerator.updater()
@@ -238,7 +240,6 @@ def game_def(lvl):
                 if pygame.sprite.spritecollide(list(spriteGroups.boss_projectile_group)[sprite],
                                                spriteGroups.characters,
                                                False) and not cheatPanel:
-                    print('touch')
                     if consts.hero.get_hit() == 0:
                         consts.yspeed = 0
                         spriteGroups.projectilesgroup.empty()
@@ -329,6 +330,8 @@ def game_def(lvl):
                     consts.b_projectile_speed = []
 
                     consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
+                    consts.hero.rect.move(0, -16)
+                    consts.hero.hp = 3
                     consts.hero.projectilespeed = []
                     windows.screen.fill('#000000')
                     levelGenerator.updater()

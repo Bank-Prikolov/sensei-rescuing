@@ -121,6 +121,11 @@ class Boss(pygame.sprite.Sprite):
                 self.shoot()
             elif self.attack_counter > 120 and self.step:
                 self.attack_counter = 418
+            if self.attack_counter == 180:
+                if self.looking_right:
+                    self.change_act(1, self.get_coords())
+                else:
+                    self.change_act(0, self.get_coords())
         elif self.attack == 2:
             if self.attack_counter in [120, 200]:
                 self.make_move()
@@ -128,19 +133,39 @@ class Boss(pygame.sprite.Sprite):
                 self.shoot()
             elif self.attack_counter > 220 and self.step:
                 self.attack_counter = 418
+            if self.attack_counter == 280:
+                if self.looking_right:
+                    self.change_act(1, self.get_coords())
+                else:
+                    self.change_act(0, self.get_coords())
         elif self.attack == 3:
             if self.attack_counter in [120]:
                 self.shoot_circle()
             elif self.attack_counter > 120 and self.step:
                 self.attack_counter = 418
+            if self.attack_counter == 180:
+                if self.looking_right:
+                    self.change_act(1, self.get_coords())
+                else:
+                    self.change_act(0, self.get_coords())
         elif self.attack == 4:
             if self.attack_counter in [120]:
                 self.rain_attack()
             elif self.attack_counter > 120 and self.step:
                 self.attack_counter = 418
+            if self.attack_counter == 180:
+                if self.looking_right:
+                    self.change_act(1, self.get_coords())
+                else:
+                    self.change_act(0, self.get_coords())
         elif self.attack == 5:
             if self.attack_counter in [120]:
                 self.slon_attack()
+            if self.attack_counter == 180:
+                if self.looking_right:
+                    self.change_act(1, self.get_coords())
+                else:
+                    self.change_act(0, self.get_coords())
         else:
             pass
         self.attack_counter = (self.attack_counter + 1) % 420
@@ -169,10 +194,18 @@ class Boss(pygame.sprite.Sprite):
             yz = 1
         else:
             yz = -1
+        if self.looking_right:
+            self.change_act(3, self.get_coords())
+        else:
+            self.change_act(2, self.get_coords())
         consts.b_projectile_speed.append(((int(xz * bxs * self.k ** windows.fullscreen),
                                            int(yz * bys * self.k ** windows.fullscreen)), 0))
 
     def shoot_circle(self):
+        if self.looking_right:
+            self.change_act(3, self.get_coords())
+        else:
+            self.change_act(2, self.get_coords())
         if self.pospoint == 0:  # [896, 66], [480, 66]]
             xrange = [-1]
             yrange = [-1]
@@ -214,8 +247,14 @@ class Boss(pygame.sprite.Sprite):
             self.frames = self.cut_sheet(self.sprites, self.k, self.act)
         elif act == 1:
             self.frames = self.cut_sheet(self.sprites, self.k, self.act)
-        else:
-            pass
+        elif act == 2:
+            self.frames = self.cut_sheet(self.sprites, self.k, self.act)
+        elif act == 3:
+            self.frames = self.cut_sheet(self.sprites, self.k, self.act)
+        elif act == 4:
+            self.frames = self.cut_sheet(self.sprites, self.k, self.act)
+        elif act == 5:
+            self.frames = self.cut_sheet(self.sprites, self.k, self.act)
         self.image = self.frames[self.cur_frame]
         self.rect = self.rect.move(*pos)
 
@@ -247,10 +286,14 @@ class Boss(pygame.sprite.Sprite):
             return random.randint(1, 3)
 
     def rain_attack(self):
+        if self.looking_right:
+            self.change_act(5, self.get_coords())
+        else:
+            self.change_act(4, self.get_coords())
         a = random.randint(0, 1)
         for x in range(0 + a, 14 + a, 2):
             Animpic(windows.otstupx * windows.fullscreen + (
-                    64 * self.k * x) + 96 * self.k * self.k - Boss.php.get_width() * 3 // 16 * self.k,
+                    64 * self.k * x) + 96 * self.k - Boss.php.get_width() * 3 // 16 * self.k,
                     windows.otstupy * windows.fullscreen + 64 * self.k - Boss.php.get_width() * 3 // 16 * self.k,
                     Boss.php.get_width() * 3 // 8 * self.k,
                     Boss.php.get_height() * 3 // 8 * self.k, Boss.php,
@@ -260,12 +303,17 @@ class Boss(pygame.sprite.Sprite):
 
     def slon_attack(self):
         if not spriteGroups.sloniks:
-            a = random.randint
-            if a:
-                levelGenerator.remover((1, 2), block='e')
-                levelGenerator.remover((14, 6), block='e')
+            a = random.randint(0, 1)
+            if self.looking_right:
+                self.change_act(5, self.get_coords())
             else:
-                levelGenerator.remover((1, 6), block='e')
-                levelGenerator.remover((14, 2), block='e')
+                self.change_act(4, self.get_coords())
+            if a:
+                levelGenerator.remover((2, 2), block='e')
+                levelGenerator.remover((13, 6), block='e')
+            else:
+                levelGenerator.remover((2, 6), block='e')
+                levelGenerator.remover((13, 2), block='e')
         else:
+            self.shoot()
             self.attack_counter = 358
