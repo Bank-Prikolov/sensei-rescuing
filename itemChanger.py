@@ -14,13 +14,13 @@ def heroOnScreenChanger(hero, title, hero_field):
     if hero == 1:
         spriteGroups.animatedHero.empty()
         heroWai = AnimatedHero(load_image(r"objects\animated\hero-wai-obj.png"), 1, 8,
-                               hero_field.x + hero_field.width // 2 - 134 // 2,
+                               hero_field.x + hero_field.width // 2 - 116 // 2,
                                title.y + 188)
         current_hero = heroWai
     elif hero == 2:
         spriteGroups.animatedHero.empty()
         heroTheStrongest = AnimatedHero(load_image(r"objects\animated\hero-the-strongest-obj.png"), 1, 8,
-                                        hero_field.x + hero_field.width // 2 - 128 // 2 - 2,
+                                        hero_field.x + hero_field.width // 2 - 104 // 2,
                                         title.y + 188)
         current_hero = heroTheStrongest
     return current_hero
