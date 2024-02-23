@@ -270,7 +270,8 @@ class Boss(pygame.sprite.Sprite):
 
     def make_move(self):
         cordi = [[896, 322], [64, 322], [64, 66], [896, 66], [480, 66]]
-        srav = [((x[0] - abs(self.herocords[0])) ** 2 + (x[1] - abs(self.herocords[1])) ** 2) ** 0.5 for x in cordi]
+        srav = [((int(x[0]) - abs(self.herocords[0])) ** 2 + (int(x[1])
+                                                              - abs(self.herocords[1])) ** 2) ** 0.5 for x in cordi]
         m = min(srav)
         a = random.randint(0, 4)
         levelGenerator.get_shadow(*self.rect)
