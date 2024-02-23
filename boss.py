@@ -3,9 +3,9 @@ import consts
 import windows
 import levelGenerator
 import spriteGroups
-from processHelper import load_image
+import soundManager
 import random
-from soundManager import boss_take_hit, boss_next_attack
+from processHelper import load_image
 
 
 class Pic(pygame.sprite.Sprite):
@@ -122,7 +122,7 @@ class Boss(pygame.sprite.Sprite):
                 self.shoot()
             elif self.attack_counter > 120 and self.step:
                 self.attack_counter = 418
-                boss_take_hit()
+                soundManager.boss_take_hit()
             if self.attack_counter == 180:
                 if self.looking_right:
                     self.change_act(1, self.get_coords())
@@ -135,7 +135,7 @@ class Boss(pygame.sprite.Sprite):
                 self.shoot()
             elif self.attack_counter > 220 and self.step:
                 self.attack_counter = 418
-                boss_take_hit()
+                soundManager.boss_take_hit()
             if self.attack_counter == 280:
                 if self.looking_right:
                     self.change_act(1, self.get_coords())
@@ -146,7 +146,7 @@ class Boss(pygame.sprite.Sprite):
                 self.shoot_circle()
             elif self.attack_counter > 120 and self.step:
                 self.attack_counter = 418
-                boss_take_hit()
+                soundManager.boss_take_hit()
             if self.attack_counter == 180:
                 if self.looking_right:
                     self.change_act(1, self.get_coords())
@@ -156,7 +156,7 @@ class Boss(pygame.sprite.Sprite):
             if self.attack_counter in [120]:
                 self.rain_attack()
             elif self.attack_counter > 120 and self.step:
-                boss_take_hit()
+                soundManager.boss_take_hit()
                 self.attack_counter = 418
             if self.attack_counter == 180:
                 if self.looking_right:
@@ -174,7 +174,7 @@ class Boss(pygame.sprite.Sprite):
         else:
             pass
         if self.attack_counter == 417:
-            boss_next_attack()
+            soundManager.boss_next_attack()
         self.attack_counter = (self.attack_counter + 1) % 420
 
     def set_coords(self, x, y):

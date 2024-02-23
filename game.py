@@ -10,9 +10,8 @@ import starsRecorder
 import soundManager
 import spriteGroups
 from hero import Hero
-from itemAnimator import AnimatedHealthBar
-from processHelper import terminate, load_image
-from itemChanger import starsChanger, pauseButtonChanger
+from processHelper import terminate
+from itemChanger import starsChanger, pauseButtonChanger, healthBossBarChanger
 
 
 def game_def(lvl):
@@ -30,12 +29,7 @@ def game_def(lvl):
     running = True
     spriteGroups.characters.draw(windows.screen)
     thing = ''
-    img_tmp = load_image(r"objects\animated\boss-health-bar-obj.png")
-    tr_tmp = pygame.transform.scale(img_tmp,
-                                    (img_tmp.get_width() * 1.6, img_tmp.get_height() * 1.6))
-    healthBossBar = AnimatedHealthBar(tr_tmp, 41, 1,
-                                      windows.width // 2 - 200,
-                                      windows.height // 2)
+    healthBossBar = healthBossBarChanger()
     hit = 0
     cheatPanel = False  # cheats
     timer_event = pygame.USEREVENT + 1

@@ -5,8 +5,25 @@ import starsRecorder
 import fileManager
 import spriteGroups
 from processHelper import load_image
-from itemAnimator import AnimatedHero
+from itemAnimator import AnimatedHero, AnimatedHealthBar
 from itemCreator import Object, Button
+
+
+def healthBossBarChanger():
+    spriteGroups.health_bar.empty()
+    if not windows.fullscreen:
+        img_tmp = load_image(r"objects\animated\boss-health-bar-obj.png")
+        tr_tmp = pygame.transform.scale(img_tmp,
+                                    (img_tmp.get_width() * 1.68, img_tmp.get_height() * 1.68))
+        healthBossBar = AnimatedHealthBar(tr_tmp, 41, 1,
+                      windows.width // 2 - 14760 * 1.68 / 41 / 2, 12)
+    else:
+        img_tmp = load_image(r"objects\animated\boss-health-bar-obj.png")
+        tr_tmp = pygame.transform.scale(img_tmp,
+                                        (img_tmp.get_width() * 2, img_tmp.get_height() * 2))
+        healthBossBar = AnimatedHealthBar(tr_tmp, 41, 1,
+                          windows.width // 2 - 14760 * 2 / 41 / 2, 12)
+    return healthBossBar
 
 
 def heroOnScreenChanger(hero, title, hero_field):
