@@ -50,16 +50,20 @@ def hit_sound():
 
 
 def boss_take_hit():
-    sounds = [pygame.mixer.Sound(r"data\sounds\pamagiti-sound.mp3"), pygame.mixer.Sound(r"data\sounds\oioioi-sound.mp3"),
+    sounds = [pygame.mixer.Sound(r"data\sounds\pamagiti-sound.mp3"),
+              pygame.mixer.Sound(r"data\sounds\oioioi-sound.mp3"),
               pygame.mixer.Sound(r"data\sounds\ya-cho-to-ne-ponyal-sound.mp3")]
     randomSound = sounds[random.randint(0, 2)]
     randomSound.play()
 
 
 def boss_next_attack():
-    sounds = [pygame.mixer.Sound(r"data\sounds\pamagiti-sound.mp3"), pygame.mixer.Sound(r"data\sounds\oioioi-sound.mp3"),
-              pygame.mixer.Sound(r"data\sounds\ya-cho-to-ne-ponyal-sound.mp3")]
-    randomSound = sounds[random.randint(0, 2)]
+    sounds = [pygame.mixer.Sound(r"data\sounds\hvatit_nit-sound.mp3"),
+              pygame.mixer.Sound(r"data\sounds\nadayu-po-jope-sound.mp3"),
+              pygame.mixer.Sound(r"data\sounds\pozhaluysta-otchislyaytes-sound.mp3"),
+              pygame.mixer.Sound(r"data\sounds\ya-vas-otchislyu-sound.mp3"),
+              pygame.mixer.Sound(r"data\sounds\ya-vas-ubiu-sound.mp3")]
+    randomSound = sounds[random.randint(0, 4)]
     randomSound.play()
 
 
