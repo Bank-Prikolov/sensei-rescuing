@@ -10,7 +10,8 @@ import starsRecorder
 import soundManager
 import spriteGroups
 from hero import Hero
-from processHelper import terminate
+from itemAnimator import AnimatedHealthBar
+from processHelper import terminate, load_image
 from itemChanger import starsChanger, pauseButtonChanger
 
 
@@ -29,12 +30,20 @@ def game_def(lvl):
     running = True
     spriteGroups.characters.draw(windows.screen)
     thing = ''
+    img_tmp = load_image(r"objects\animated\boss-health-bar-obj.png")
+    tr_tmp = pygame.transform.scale(img_tmp,
+                                    (img_tmp.get_width() * 1.6, img_tmp.get_height() * 1.6))
+    healthBossBar = AnimatedHealthBar(tr_tmp, 41, 1,
+                                      windows.width // 2 - 200,
+                                      windows.height // 2)
+    hit = 0
     cheatPanel = False  # cheats
     timer_event = pygame.USEREVENT + 1
     pygame.time.set_timer(timer_event, 1000)
     started = True
     current_seconds = 0
     spriteGroups.projectilesgroup.empty()
+    checkLevel = False
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -116,7 +125,7 @@ def game_def(lvl):
                 elif event.key == pygame.K_a:
                     consts.runleft = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 5:  # cheats
+                if event.button == 5 and consts.cheatOn:  # cheats
                     cheatPanel = not cheatPanel
                     consts.hero.xs = 3 * 5 ** cheatPanel
                     consts.hero.projectile_speed = 8 * 2 ** cheatPanel
@@ -153,6 +162,7 @@ def game_def(lvl):
             consts.b_projectile_speed = []
             consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
             if lvl == 3 and thing == 2:
+                checkLevel = True
                 soundManager.stop_playback()
                 soundManager.boss_theme()
             consts.hero.projectilespeed = []
@@ -183,6 +193,7 @@ def game_def(lvl):
 
                 if pygame.sprite.spritecollide(list(spriteGroups.projectilesgroup)[sprite], spriteGroups.boss_group,
                                                False):
+                    hit += 2
                     if (pygame.sprite.spritecollide(list(spriteGroups.projectilesgroup)[sprite],
                                                     spriteGroups.boss_group, False)[0].get_hit() == 0):
                         pygame.draw.rect(windows.screen, (36, 34, 52), (
@@ -392,6 +403,9 @@ def game_def(lvl):
         consts.hero.update()
         spriteGroups.breakgroup.draw(windows.screen)
         spriteGroups.characters.draw(windows.screen)
+        if checkLevel:
+            healthBossBar.update(hit)
+            spriteGroups.health_bar.draw(windows.screen)
         spriteGroups.sloniks.update()
         spriteGroups.boss_group.update()
         spriteGroups.sloniks.draw(windows.screen)

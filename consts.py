@@ -26,6 +26,7 @@ shooting = 0
 xspeed = 0
 yspeed = 0
 hero = None
+cheatOn = True
 
 # characters
 wai = r'characters\hero-wai.png'

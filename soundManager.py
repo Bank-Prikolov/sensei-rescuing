@@ -1,5 +1,6 @@
 import pygame
 import consts
+import random
 
 
 def menu_theme():
@@ -46,6 +47,20 @@ def typing_sound():
 def hit_sound():
     hit = pygame.mixer.Sound(r"data\sounds\hit-sound.mp3")
     hit.play()
+
+
+def boss_take_hit():
+    sounds = [pygame.mixer.Sound(r"data\sounds\pamagiti-sound.mp3"), pygame.mixer.Sound(r"data\sounds\oioioi-sound.mp3"),
+              pygame.mixer.Sound(r"data\sounds\ya-cho-to-ne-ponyal-sound.mp3")]
+    randomSound = sounds[random.randint(0, 2)]
+    randomSound.play()
+
+
+def boss_next_attack():
+    sounds = [pygame.mixer.Sound(r"data\sounds\pamagiti-sound.mp3"), pygame.mixer.Sound(r"data\sounds\oioioi-sound.mp3"),
+              pygame.mixer.Sound(r"data\sounds\ya-cho-to-ne-ponyal-sound.mp3")]
+    randomSound = sounds[random.randint(0, 2)]
+    randomSound.play()
 
 
 def stop_playback():
