@@ -7,9 +7,10 @@ import info
 import settings
 import levels_menu
 import soundManager
+import spriteGroups
 from processHelper import terminate, transition
 from itemCreator import Object, Button
-from itemChanger import fullscreenChanger
+from itemChanger import fullscreenChanger, heroOnScreenChanger
 
 
 def main_menu():
@@ -25,7 +26,8 @@ def main_menu():
 
     buttons_field = Object(title.x + title.width / 2 - 256 / 2, title.y + 102, 256, 416,
                            r"objects\without text\menu-buttons-field-obj.png")
-    start_btn = Button(buttons_field.x + buttons_field.width / 2 - 120, title.y + 110, 240, 100, fr"buttons\{consts.languageNow}\default-start-btn.png",
+    start_btn = Button(buttons_field.x + buttons_field.width / 2 - 120, title.y + 110, 240, 100,
+                       fr"buttons\{consts.languageNow}\default-start-btn.png",
                        fr"buttons\{consts.languageNow}\hover-start-btn.png",
                        fr"buttons\{consts.languageNow}\press-start-btn.png",
                        r"data\sounds\menu-button-sound.mp3")
@@ -34,28 +36,26 @@ def main_menu():
                           fr"buttons\{consts.languageNow}\hover-settings-btn.png",
                           fr"buttons\{consts.languageNow}\press-settings-btn.png",
                           r"data\sounds\menu-button-sound.mp3")
-    info_btn = Button(buttons_field.x + buttons_field.width / 2 - 120, title.y + 310, 240, 100, fr"buttons\{consts.languageNow}\default-info-btn.png",
+    info_btn = Button(buttons_field.x + buttons_field.width / 2 - 120, title.y + 310, 240, 100,
+                      fr"buttons\{consts.languageNow}\default-info-btn.png",
                       fr"buttons\{consts.languageNow}\hover-info-btn.png",
                       fr"buttons\{consts.languageNow}\press-info-btn.png",
                       r"data\sounds\menu-button-sound.mp3")
-    exit_btn = Button(buttons_field.x + buttons_field.width / 2 - 120, title.y + 410, 240, 100, fr"buttons\{consts.languageNow}\default-exit-btn.png",
+    exit_btn = Button(buttons_field.x + buttons_field.width / 2 - 120, title.y + 410, 240, 100,
+                      fr"buttons\{consts.languageNow}\default-exit-btn.png",
                       fr"buttons\{consts.languageNow}\hover-exit-btn.png",
                       fr"buttons\{consts.languageNow}\press-exit-btn.png",
                       r"data\sounds\menu-button-sound.mp3")
 
     hero_field = Object(title.x + title.width - 304, title.y + 102, 304, 416,
                         fr"objects\{consts.languageNow}\hero-field-obj.png")
-    hero_choose = Object(title.x + 582 + 304 // 2 - 107 // 2, title.y + 102 + 95, 107, 204,
-                         r"objects\without text\hero-wai-obj.png", "",
-                         r"objects\without text\hero-the-strongest-wai-obj.png")
-
     arrow_btn = Button(title.x + 582 + 304 // 2 - 173 // 2 + 180, title.y + 102 + 95 + 241 // 2 - 36 // 2, 36, 40,
                        r"buttons\without text\default-arrow-btn.png", r"buttons\without text\hover-arrow-btn.png",
                        r"buttons\without text\press-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
     r_arrow_btn = Button(title.x + 582 + 304 // 2 - 173 // 2 - 43, title.y + 102 + 95 + 241 // 2 - 36 // 2, 36, 40,
                          r"buttons\without text\default-r-arrow-btn.png", r"buttons\without text\hover-r-arrow-btn.png",
                          r"buttons\without text\press-r-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
-    choose_btn = Button(title.x + 582 + 304 // 2 - 159 // 2, title.y + 410, 159, 48,
+    choose_btn = Button(hero_field.x + hero_field.width // 2 - 159 // 2, title.y + 410, 159, 48,
                         fr"buttons\{consts.languageNow}\default-choose-btn.png",
                         fr"buttons\{consts.languageNow}\hover-choose-btn.png",
                         fr"buttons\{consts.languageNow}\press-choose-btn.png",
@@ -74,7 +74,8 @@ def main_menu():
                      r"data\sounds\menu-button-sound.mp3")
 
     running = True
-    hero = consts.heroNow
+    hero = consts.heroNow if not consts.getHero else 2
+    current_hero = heroOnScreenChanger(hero, title, hero_field)
     while running:
 
         windows.screen.blit(consts.menu_bg, (0, 0))
@@ -114,8 +115,10 @@ def main_menu():
             if event.type == pygame.USEREVENT and (event.button == arrow_btn or event.button == r_arrow_btn):
                 if hero == 1:
                     hero = 2
+                    current_hero = heroOnScreenChanger(hero, title, hero_field)
                 elif hero == 2:
                     hero = 1
+                    current_hero = heroOnScreenChanger(hero, title, hero_field)
 
             for button in [start_btn, settings_btn, info_btn, exit_btn]:
                 button.handle_event(event, consts.volS)
@@ -130,11 +133,12 @@ def main_menu():
         for obj in [title, updates_field, buttons_field, hero_field]:
             obj.draw(windows.screen)
 
-        hero_choose.draw(windows.screen, hero)
-
         for button in [start_btn, settings_btn, info_btn, exit_btn, arrow_btn, r_arrow_btn]:
             button.check_hover(pygame.mouse.get_pos())
             button.draw(windows.screen)
+
+        current_hero.update()
+        spriteGroups.animatedHero.draw(windows.screen)
 
         if not consts.getHero:
             choose_btn.check_hover(pygame.mouse.get_pos())

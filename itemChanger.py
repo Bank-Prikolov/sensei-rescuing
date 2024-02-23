@@ -3,8 +3,27 @@ import windows
 import consts
 import starsRecorder
 import fileManager
-from itemCreator import Object, Button\
+import spriteGroups
+from processHelper import load_image
+from itemAnimator import AnimatedHero
+from itemCreator import Object, Button
 
+
+def heroOnScreenChanger(hero, title, hero_field):
+    current_hero = None
+    if hero == 1:
+        spriteGroups.animatedHero.empty()
+        heroWai = AnimatedHero(load_image(r"objects\animated\hero-wai-obj.png"), 1, 8,
+                               hero_field.x + hero_field.width // 2 - 134 // 2,
+                               title.y + 188)
+        current_hero = heroWai
+    elif hero == 2:
+        spriteGroups.animatedHero.empty()
+        heroTheStrongest = AnimatedHero(load_image(r"objects\animated\hero-the-strongest-obj.png"), 1, 8,
+                                        hero_field.x + hero_field.width // 2 - 128 // 2 - 2,
+                                        title.y + 188)
+        current_hero = heroTheStrongest
+    return current_hero
 
 
 def pauseButtonChanger():

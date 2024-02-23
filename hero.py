@@ -1,7 +1,7 @@
 import pygame
 import consts
 import boss
-import soundManager
+# import soundManager
 import windows
 import spriteGroups
 from processHelper import load_image

@@ -12,9 +12,7 @@ class Object:
         self.image = load_image(image_path)
         self.image = pygame.transform.scale(self.image, (width, height))
 
-        self.isHeroHere = False
         if image_path2:
-            self.isHeroHere = True
             self.image2 = load_image(image_path2)
             self.image2 = pygame.transform.scale(self.image2, (width, height))
 
@@ -32,15 +30,10 @@ class Object:
         if isActive:
             self.is_no_active = False
 
-    def draw(self, screen, whatHero=1):
+    def draw(self, screen):
         current_image = self.image
         if self.is_no_active:
             current_image = self.no_active_image
-        if self.isHeroHere:
-            if whatHero == 1:
-                current_image = self.image
-            elif whatHero == 2:
-                current_image = self.image2
         screen.blit(current_image, self.rect.topleft)
 
     def drawLanguage(self, screen, languageNow):

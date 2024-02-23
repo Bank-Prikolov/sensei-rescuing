@@ -8,7 +8,7 @@ import soundManager
 import spriteGroups
 from processHelper import load_image, terminate, transition
 from itemCreator import Button, Stars
-from itemAnimator import AnimatedObject
+from itemAnimator import AnimatedTypedText
 
 
 def game_complete():
@@ -18,15 +18,15 @@ def game_complete():
         img_game_complete = load_image(r"objects\animated\game-complete-rus-obj.png")
         tr_game_complete = pygame.transform.scale(img_game_complete,
                                                 (img_game_complete.get_width() * 3, img_game_complete.get_height() * 3))
-        game_complete_obj = AnimatedObject(tr_game_complete, 16, 1, windows.width // 2 - 4752 * 3 // 16 // 2,
-                                        windows.height // 2 - 225)
+        game_complete_obj = AnimatedTypedText(tr_game_complete, 16, 1, windows.width // 2 - 4752 * 3 // 16 // 2,
+                                              windows.height // 2 - 225)
     else:
         img_game_complete = load_image(r"objects\animated\game-complete-eng-obj.png")
         tr_game_complete = pygame.transform.scale(img_game_complete,
                                                   (img_game_complete.get_width() * 3,
                                                    img_game_complete.get_height() * 3))
-        game_complete_obj = AnimatedObject(tr_game_complete, 16, 1, windows.width // 2 - 6032 * 3 // 16 // 2,
-                                           windows.height // 2 - 225)
+        game_complete_obj = AnimatedTypedText(tr_game_complete, 16, 1, windows.width // 2 - 6032 * 3 // 16 // 2,
+                                              windows.height // 2 - 225)
 
     record = starsRecorder.get_lastRecord(consts.lvlNow)
     zeroStars, oneStar, twoStars, threeStars = (
@@ -56,13 +56,13 @@ def game_complete():
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
                 running = False
-                spriteGroups.animatedObjects.empty()
+                spriteGroups.animatedTypedText.empty()
                 transition()
                 levels_menu.levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == repeat_btn:
                 running = False
-                spriteGroups.animatedObjects.empty()
+                spriteGroups.animatedTypedText.empty()
                 transition()
                 game.game_def(consts.lvlNow)
 
@@ -74,7 +74,7 @@ def game_complete():
         game_complete_obj.update_game_complete(windows.screen, record, stars, repeat_btn, to_lvlmenu_btn, levelTime,
                                               levelTimeRect,
                                               consts.languageNow)
-        spriteGroups.animatedObjects.draw(windows.screen)
+        spriteGroups.animatedTypedText.draw(windows.screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()

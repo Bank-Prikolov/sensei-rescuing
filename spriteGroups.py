@@ -1,8 +1,9 @@
 import pygame
 
 # menu sprite groups
-animatedObjects = pygame.sprite.Group()
-introGroup = pygame.sprite.Group()
+animatedTypedText = pygame.sprite.Group()
+animatedIntro = pygame.sprite.Group()
+animatedHero = pygame.sprite.Group()
 
 # game sprite groups
 all_sprites = list()

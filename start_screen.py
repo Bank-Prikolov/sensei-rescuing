@@ -7,7 +7,7 @@ import spriteGroups
 import soundManager
 from processHelper import load_image
 from itemCreator import Button, Object
-from itemAnimator import AnimatedIntro, AnimatedObject
+from itemAnimator import AnimatedIntro, AnimatedTypedText
 
 
 def start_screen():
@@ -15,13 +15,13 @@ def start_screen():
 
     if consts.languageNow == 'rus':
         img_start = load_image(r"objects\animated\start-screen-rus-obj.png")
-        start_screen_obj = AnimatedObject(img_start, 42, 1, windows.width / 2 - 26880 / 42 / 2,
-                                          windows.height // 2 - 145)
+        start_screen_obj = AnimatedTypedText(img_start, 42, 1, windows.width / 2 - 26880 / 42 / 2,
+                                             windows.height // 2 - 145)
         question_finish = 41 * 10
     else:
         img_start = load_image(r"objects\animated\start-screen-eng-obj.png")
-        start_screen_obj = AnimatedObject(img_start, 45, 1, windows.width / 2 - 28800 / 45 / 2,
-                                          windows.height // 2 - 145)
+        start_screen_obj = AnimatedTypedText(img_start, 45, 1, windows.width / 2 - 28800 / 45 / 2,
+                                             windows.height // 2 - 145)
         question_finish = 44 * 10
 
     img_intro = load_image(r"objects\animated\intro-obj.png")
@@ -55,7 +55,7 @@ def start_screen():
                 soundManager.skala_sound()
 
             if event.type == pygame.USEREVENT and event.button == da_btn:
-                spriteGroups.animatedObjects.empty()
+                spriteGroups.animatedTypedText.empty()
                 menu.main_menu()
 
             if event.type == pygame.KEYDOWN and intro_finish:
@@ -70,14 +70,14 @@ def start_screen():
                 button.handle_event(event, consts.wS)
 
         intro_obj.update()
-        spriteGroups.introGroup.draw(windows.screen)
+        spriteGroups.animatedIntro.draw(windows.screen)
         if intro_obj.cur_frame >= 111 * 3:
-            spriteGroups.introGroup.empty()
+            spriteGroups.animatedIntro.empty()
             intro_finish = True
 
         if intro_finish:
             start_screen_obj.update_start_screen(windows.screen, da_btn, net_btn, consts.languageNow)
-            spriteGroups.animatedObjects.draw(windows.screen)
+            spriteGroups.animatedTypedText.draw(windows.screen)
             if wanna_skip:
                 if time_wanna_skip >= 4800 or start_screen_obj.cur_frame == question_finish:
                     wanna_skip = False
