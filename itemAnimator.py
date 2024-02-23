@@ -67,7 +67,7 @@ class AnimatedObject(pygame.sprite.Sprite):
         if ln == 'rus':
             numFrames = 15
         else:
-            numFrames = 12
+            numFrames = 15
         if self.cur_frame < numFrames * 10:
             self.cur_frame = (self.cur_frame + 1) % len(self.frames)
             self.image = self.frames[self.cur_frame]

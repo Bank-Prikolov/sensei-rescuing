@@ -19,14 +19,14 @@ def game_complete():
         tr_game_complete = pygame.transform.scale(img_game_complete,
                                                 (img_game_complete.get_width() * 3, img_game_complete.get_height() * 3))
         game_complete_obj = AnimatedObject(tr_game_complete, 16, 1, windows.width // 2 - 4752 * 3 // 16 // 2,
-                                        windows.height // 2 - 180 - 15 * 3)
+                                        windows.height // 2 - 225)
     else:
         img_game_complete = load_image(r"objects\animated\game-complete-eng-obj.png")
         tr_game_complete = pygame.transform.scale(img_game_complete,
                                                   (img_game_complete.get_width() * 3,
                                                    img_game_complete.get_height() * 3))
-        game_complete_obj = AnimatedObject(tr_game_complete, 13, 1, windows.width // 2 - 4043 * 3 // 13 // 2,
-                                           windows.height // 2 - 180 - 12 * 3)
+        game_complete_obj = AnimatedObject(tr_game_complete, 16, 1, windows.width // 2 - 6032 * 3 // 16 // 2,
+                                           windows.height // 2 - 225 + 8)
 
     record = starsRecorder.get_lastRecord(consts.lvlNow)
     zeroStars, oneStar, twoStars, threeStars = (
