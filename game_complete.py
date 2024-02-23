@@ -26,7 +26,7 @@ def game_complete():
                                                   (img_game_complete.get_width() * 3,
                                                    img_game_complete.get_height() * 3))
         game_complete_obj = AnimatedObject(tr_game_complete, 16, 1, windows.width // 2 - 6032 * 3 // 16 // 2,
-                                           windows.height // 2 - 225 + 8)
+                                           windows.height // 2 - 225)
 
     record = starsRecorder.get_lastRecord(consts.lvlNow)
     zeroStars, oneStar, twoStars, threeStars = (
