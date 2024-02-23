@@ -11,7 +11,7 @@ import soundManager
 import spriteGroups
 from hero import Hero
 from processHelper import terminate
-from itemChanger import starsChanger, pauseButtonChanger, healthBossBarChanger
+from itemChanger import starsChanger, pauseButtonChanger, healthBossBarChanger, heroHeartsChanger
 
 
 def game_def(lvl):
@@ -30,7 +30,9 @@ def game_def(lvl):
     spriteGroups.characters.draw(windows.screen)
     thing = ''
     healthBossBar = healthBossBarChanger()
-    hit = 0
+    heroHearts = heroHeartsChanger()
+    bossHit = 0
+    heroHit = 0
     cheatPanel = False  # cheats
     timer_event = pygame.USEREVENT + 1
     pygame.time.set_timer(timer_event, 1000)
@@ -187,7 +189,7 @@ def game_def(lvl):
 
                 if pygame.sprite.spritecollide(list(spriteGroups.projectilesgroup)[sprite], spriteGroups.boss_group,
                                                False):
-                    hit += 2
+                    bossHit += 2
                     if (pygame.sprite.spritecollide(list(spriteGroups.projectilesgroup)[sprite],
                                                     spriteGroups.boss_group, False)[0].get_hit() == 0):
                         pygame.draw.rect(windows.screen, (36, 34, 52), (
@@ -213,6 +215,7 @@ def game_def(lvl):
                     consts.projectileObj_speed[sprite][0], 0)
                 if pygame.sprite.spritecollide(list(spriteGroups.nmeprojectilesgroup)[sprite], spriteGroups.characters,
                                                False) and not cheatPanel:
+                    heroHit += 2
                     if consts.hero.get_hit() == 0:
                         thing = ''
                         consts.hero.end()
@@ -245,6 +248,7 @@ def game_def(lvl):
                 if pygame.sprite.spritecollide(list(spriteGroups.boss_projectile_group)[sprite],
                                                spriteGroups.characters,
                                                False) and not cheatPanel:
+                    heroHit += 2
                     if consts.hero.get_hit() == 0:
                         consts.yspeed = 0
                         spriteGroups.projectilesgroup.empty()
@@ -397,8 +401,10 @@ def game_def(lvl):
         consts.hero.update()
         spriteGroups.breakgroup.draw(windows.screen)
         spriteGroups.characters.draw(windows.screen)
+        heroHearts.update(heroHit)
+        spriteGroups.hero_health.draw(windows.screen)
         if checkLevel:
-            healthBossBar.update(hit)
+            healthBossBar.update(bossHit)
             spriteGroups.health_bar.draw(windows.screen)
         spriteGroups.sloniks.update()
         spriteGroups.boss_group.update()

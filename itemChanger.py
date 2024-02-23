@@ -5,8 +5,25 @@ import starsRecorder
 import fileManager
 import spriteGroups
 from processHelper import load_image
-from itemAnimator import AnimatedHero, AnimatedHealthBar
+from itemAnimator import AnimatedHero, AnimatedHealthBar, AnimatedHeroHealth
 from itemCreator import Object, Button
+
+
+def heroHeartsChanger():
+    spriteGroups.hero_health.empty()
+    if not windows.fullscreen:
+        img_tmp = load_image(r"objects\animated\hearts-obj.png")
+        tr_tmp = pygame.transform.scale(img_tmp,
+                                        (img_tmp.get_width() * 2, img_tmp.get_height() * 2))
+        heroHealth = AnimatedHeroHealth(tr_tmp, 5, 1,
+                                        12, 18)
+    else:
+        img_tmp = load_image(r"objects\animated\hearts-obj.png")
+        tr_tmp = pygame.transform.scale(img_tmp,
+                                        (img_tmp.get_width() * 4, img_tmp.get_height() * 4))
+        heroHealth = AnimatedHeroHealth(tr_tmp, 5, 1,
+                                        12, 18)
+    return heroHealth
 
 
 def healthBossBarChanger():
@@ -14,15 +31,15 @@ def healthBossBarChanger():
     if not windows.fullscreen:
         img_tmp = load_image(r"objects\animated\boss-health-bar-obj.png")
         tr_tmp = pygame.transform.scale(img_tmp,
-                                    (img_tmp.get_width() * 1.68, img_tmp.get_height() * 1.68))
+                                        (img_tmp.get_width() * 1.68, img_tmp.get_height() * 1.68))
         healthBossBar = AnimatedHealthBar(tr_tmp, 41, 1,
-                      windows.width // 2 - 14760 * 1.68 / 41 / 2, 12)
+                                          windows.width // 2 - 14760 * 1.68 / 41 / 2, 12)
     else:
         img_tmp = load_image(r"objects\animated\boss-health-bar-obj.png")
         tr_tmp = pygame.transform.scale(img_tmp,
                                         (img_tmp.get_width() * 2, img_tmp.get_height() * 2))
         healthBossBar = AnimatedHealthBar(tr_tmp, 41, 1,
-                          windows.width // 2 - 14760 * 2 / 41 / 2, 12)
+                                          windows.width // 2 - 14760 * 2 / 41 / 2, 12)
     return healthBossBar
 
 
@@ -78,7 +95,7 @@ def fullscreenChanger(fullscreen, ft=False):
         consts.pause_field = Object(windows.width - 1016, windows.height - 696, 1008, 688,
                                     r"objects\without text\pause-window-obj.png")
         consts.game_state_field = Object(windows.width - 1016, windows.height - 696, 1008, 688,
-                                    r"objects\without text\games-window-obj.png")
+                                         r"objects\without text\games-window-obj.png")
 
 
 def volumeChanger(event, music_slider_btn, music_slider_obj, sound_slider_btn, sound_slider_obj):
