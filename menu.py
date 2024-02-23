@@ -49,12 +49,6 @@ def main_menu():
 
     hero_field = Object(title.x + title.width - 304, title.y + 102, 304, 416,
                         fr"objects\{consts.languageNow}\hero-field-obj.png")
-    arrow_btn = Button(title.x + 582 + 304 // 2 - 173 // 2 + 180, title.y + 102 + 95 + 241 // 2 - 36 // 2, 36, 40,
-                       r"buttons\without text\default-arrow-btn.png", r"buttons\without text\hover-arrow-btn.png",
-                       r"buttons\without text\press-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
-    r_arrow_btn = Button(title.x + 582 + 304 // 2 - 173 // 2 - 43, title.y + 102 + 95 + 241 // 2 - 36 // 2, 36, 40,
-                         r"buttons\without text\default-r-arrow-btn.png", r"buttons\without text\hover-r-arrow-btn.png",
-                         r"buttons\without text\press-r-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
     choose_btn = Button(hero_field.x + hero_field.width // 2 - 159 // 2, title.y + 410, 159, 48,
                         fr"buttons\{consts.languageNow}\default-choose-btn.png",
                         fr"buttons\{consts.languageNow}\hover-choose-btn.png",
@@ -63,6 +57,12 @@ def main_menu():
                         fr"buttons\{consts.languageNow}\default-get-btn.png",
                         fr"buttons\{consts.languageNow}\hover-get-btn.png",
                         fr"buttons\{consts.languageNow}\press-get-btn.png")
+    arrow_btn = Button(choose_btn.x + choose_btn.width + 5, title.y + 102 + 95 + 241 // 2 - 36 // 2, 36, 40,
+                       r"buttons\without text\default-arrow-btn.png", r"buttons\without text\hover-arrow-btn.png",
+                       r"buttons\without text\press-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
+    r_arrow_btn = Button(choose_btn.x - 36 - 5, title.y + 102 + 95 + 241 // 2 - 36 // 2, 36, 40,
+                         r"buttons\without text\default-r-arrow-btn.png", r"buttons\without text\hover-r-arrow-btn.png",
+                         r"buttons\without text\press-r-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
     field_get = Object(title.x + 582 + 304 // 2 - 159 // 2 - 42, title.y + 302, 243, 105,
                        fr"objects\{consts.languageNow}\how-to-get-obj.png")
     field_ura = Object(title.x + 582, title.y + 102, 304, 416,

@@ -24,7 +24,7 @@ def levels_menu():
 
     field = Object(windows.width // 2 - 987 / 2, title.y + 104, 987, 252,
                    r"objects\without text\level-menu-field-obj.png")
-    level1Field = Object(field.x + 24, field.y + field.height / 2 - 189 / 2, 186, 189,
+    level1Field = Object(field.x + 27, field.y + field.height / 2 - 189 / 2, 186, 189,
                          r"objects\without text\start-level-field-obj.png")
     level2Field = Object(level1Field.x + level1Field.width + 13.5, field.y + field.height / 2 - 189 / 2, 360, 189,
                          r"objects\without text\level-field-obj.png",
