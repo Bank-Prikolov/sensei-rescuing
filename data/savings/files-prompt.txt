@@ -1,0 +1,14 @@
+volume-settings.txt:
+    first line - music volume (approximately 0 - 1)
+    second line - sounds volume (approximately 0 - 1)
+
+hero-settings.txt:
+    first line - choosing hero (1 - Wai; 2 - The Strongest)
+    second line - getting hero (if hero "The Strongest" is gotten - 1; else - 0)
+    third line - checking field "ura new hero" activity (if active - 1; else - 0)
+
+fullscreen-settings.txt:
+    first line - on/off fullscreen (0 - off; 1 - on)
+
+language-settings.txt:
+    first line - russian/english language (rus - russian, eng - english)
