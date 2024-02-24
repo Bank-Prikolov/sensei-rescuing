@@ -415,6 +415,8 @@ def game_def(lvl):
             consts.xspeed = 0
         consts.hero.update()
         spriteGroups.breakgroup.draw(windows.screen)
+        spriteGroups.glebgroup.update()
+        spriteGroups.glebgroup.draw(windows.screen)
         spriteGroups.characters.draw(windows.screen)
         heroHearts.update(heroHit)
         spriteGroups.hero_health.draw(windows.screen)

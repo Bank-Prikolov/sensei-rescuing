@@ -19,6 +19,37 @@ class Pic(pygame.sprite.Sprite):
         self.rect.y = y
 
 
+class Glebpic(pygame.sprite.Sprite):
+    def __init__(self, x, y, w, h, sprite, *group, koef):
+        self.sprites = pygame.transform.scale(load_image(sprite),
+                                              (w, h * 2))
+        print(self.sprites.get_rect())
+        super().__init__(*group)
+        self.counter = 0
+        self.frames = self.cut_sheet(self.sprites, koef)
+        self.image = self.frames[self.counter]
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.wait = 0
+
+    def cut_sheet(self, sprites, koef):
+        self.rect = pygame.Rect(0, 0, 64 * koef,
+                                64 * koef)
+        plist = list()
+        for i in range(sprites.get_height() // int(64 * koef)):
+            frame_location = (0, self.rect.h * i)
+            plist.append(sprites.subsurface(pygame.Rect(
+                frame_location, self.rect.size)))
+        return plist
+
+    def update(self):
+        if self.wait % 12 == 0:
+            self.counter = (self.counter + 1) % len(self.frames)
+            self.image = self.frames[self.counter]
+        self.wait += 1
+
+
 class Animpic(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h, sprite, *group, koef):
         self.sprites = pygame.transform.scale(sprite,
@@ -285,7 +316,8 @@ class Boss(pygame.sprite.Sprite):
     def make_move(self):
         cordi = [[896, 322], [64, 322], [64, 66], [896, 66], [480, 66]]
         cordi = [
-            [y[0] * self.k + windows.otstupx * windows.fullscreen, y[1] * self.k + (windows.otstupy - 10)* windows.fullscreen]
+            [y[0] * self.k + windows.otstupx * windows.fullscreen,
+             y[1] * self.k + (windows.otstupy - 10) * windows.fullscreen]
             for y in cordi]
         srav = [((int(x[0])
                   - abs(self.herocords[0])) ** 2 + (int(x[1]) - abs(self.herocords[1])) ** 2) ** 0.5 for x in cordi]
