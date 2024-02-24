@@ -427,6 +427,7 @@ def game_def(lvl):
         spriteGroups.hleb.update()
         spriteGroups.hleb.draw(windows.screen)
         spriteGroups.projectilesgroup.draw(windows.screen)
+        spriteGroups.finale.draw(windows.screen)
         consts.hero.update()
         spriteGroups.breakgroup.draw(windows.screen)
         spriteGroups.characters.draw(windows.screen)
@@ -439,7 +440,6 @@ def game_def(lvl):
             healthBossBar.update(consts.bossHit)
             spriteGroups.health_bar.draw(windows.screen)
         spriteGroups.triggergroup.draw(windows.screen)
-        spriteGroups.finale.draw(windows.screen)
         spriteGroups.boss_group.draw(windows.screen)
         spriteGroups.untouches.draw(windows.screen)
         pygame.draw.rect(windows.screen, '#000000',
