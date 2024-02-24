@@ -59,12 +59,12 @@ invis = r'textures\%-texture.png'
 horizon = r'textures\&-texture.png'
 
 # levels
-lvl1 = r'lvl_1.txt'
-lvl2 = r'lvl_2.txt'
-lvl2_1 = r'lvl_2_1.txt'
-lvl3 = r'lvl_3.txt'
-lvl3_1 = r'lvl_3_1.txt'
-lvl3_2 = r'lvl_3_2.txt'
+lvl1 = r'level-1.txt'
+lvl2 = r'level-2.txt'
+lvl2_1 = r'level-2-1.txt'
+lvl3 = r'level-3.txt'
+lvl3_1 = r'level-3-1.txt'
+lvl3_2 = r'level-3-2.txt'
 
 # backgrounds
 game_bg = r'backgrounds\game-bg.png'
