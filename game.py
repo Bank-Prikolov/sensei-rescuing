@@ -386,6 +386,7 @@ def game_def(lvl):
                                                                               1]),
                                                                       levelGenerator.board.get_size(),
                                                                       levelGenerator.board.get_size())))
+                levelGenerator.remover((14, 10), 'C')
                 levelGenerator.remover((11, 10))
 
         if not spriteGroups.boss_group:
@@ -440,8 +441,8 @@ def game_def(lvl):
         spriteGroups.sloniks.draw(windows.screen)
         spriteGroups.triggergroup.draw(windows.screen)
         spriteGroups.finale.draw(windows.screen)
-        spriteGroups.untouches.draw(windows.screen)
         spriteGroups.boss_group.draw(windows.screen)
+        spriteGroups.untouches.draw(windows.screen)
         pygame.draw.rect(windows.screen, '#000000',
                          (0, 0, windows.otstupx ** windows.fullscreen, windows.fullsize[1] ** windows.fullscreen))
         pygame.draw.rect(windows.screen, '#000000',

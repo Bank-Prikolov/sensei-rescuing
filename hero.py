@@ -31,7 +31,7 @@ class Hero(pygame.sprite.Sprite):
         self.act = act
         self.counter = 0
         self.projectilespeed = []
-        self.projectile_speed = 8
+        self.projectile_speed = 10
         self.shoot_counter = 9
         self.shooting = False
         self.hp = 3
