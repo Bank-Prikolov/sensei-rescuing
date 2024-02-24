@@ -41,13 +41,15 @@ def pauseButtonChanger():
         pause_btn = Button(windows.width - 54, 6, 46, 48,
                            fr"buttons\without text\default-pause-btn.png",
                            fr"buttons\without text\hover-pause-btn.png",
-                           "", r"data\sounds\menu-button-sound.mp3")
+                           fr"buttons\without text\press-pause-btn.png",
+                           r"data\sounds\menu-button-sound.mp3")
     else:
         pause_btn = Button(windows.width - windows.otstupx - 54 * windows.k,
                            6 * windows.k, 46 * windows.k, 48 * windows.k,
                            fr"buttons\without text\default-pause-btn.png",
                            fr"buttons\without text\hover-pause-btn.png",
-                           "", r"data\sounds\menu-button-sound.mp3")
+                           fr"buttons\without text\press-pause-btn.png",
+                           r"data\sounds\menu-button-sound.mp3")
     return pause_btn
 
 

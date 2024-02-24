@@ -149,6 +149,14 @@ class Button:
                 current_image = self.press_image
         screen.blit(current_image, self.rect.topleft)
 
+    def drawPauseBtn(self, screen, hitNow):
+        current_image = self.image
+        if self.is_hovered:
+            current_image = self.hover_image
+        if hitNow:
+            current_image = self.press_image
+        screen.blit(current_image, self.rect.topleft)
+
     def handle_event(self, event, volS=1):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.is_hovered and not self.is_no_active:
             self.is_pressed = True

@@ -33,6 +33,8 @@ def game_def(lvl):
     heroHearts = heroHeartsChanger()
     bossHit = 0
     heroHit = 0
+    hitNow = False
+    tmpHit = 0
     cheatPanel = False  # cheats
     timer_event = pygame.USEREVENT + 1
     pygame.time.set_timer(timer_event, 1000)
@@ -140,9 +142,6 @@ def game_def(lvl):
 
             pause_btn.handle_event(event, consts.volS)
 
-        pause_btn.check_hover(pygame.mouse.get_pos())
-        pause_btn.draw(windows.screen)
-
         if pygame.sprite.spritecollide(consts.hero, spriteGroups.changegroup, False):
             if thing == '':
                 thing = 1
@@ -214,6 +213,8 @@ def game_def(lvl):
                                                False) and not cheatPanel:
                     soundManager.hero_take_hit_sound()
                     heroHit += 2
+                    hitNow = True
+                    tmpHit = 5
                     if consts.hero.get_hit() == 0:
                         thing = ''
                         consts.hero.end()
@@ -248,6 +249,8 @@ def game_def(lvl):
                                                False) and not cheatPanel:
                     soundManager.hero_take_hit_sound()
                     heroHit += 2
+                    hitNow = True
+                    tmpHit = 5
                     if heroHit == 6:
                         heroHit = 0
                         bossHit = 0
@@ -415,6 +418,13 @@ def game_def(lvl):
                 consts.hero.move(-consts.xspeed * windows.k ** windows.fullscreen, 0)
         else:
             consts.xspeed = 0
+
+        pause_btn.check_hover(pygame.mouse.get_pos())
+        pause_btn.drawPauseBtn(windows.screen, hitNow)
+        if tmpHit == 0:
+            hitNow = False
+        else:
+            tmpHit -= 1
         spriteGroups.hleb.update()
         spriteGroups.hleb.draw(windows.screen)
         consts.hero.update()
