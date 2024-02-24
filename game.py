@@ -103,9 +103,6 @@ def game_def(lvl):
                         else:
                             consts.shooting = -consts.hero.projectile_speed * windows.k ** windows.fullscreen
                         consts.hero.shoot(consts.shooting)
-                elif event.key == pygame.K_e:
-                    for b in spriteGroups.boss_group:
-                        b.shoot()
             elif event.type == pygame.WINDOWEXPOSED:
                 if consts.lookingright:
                     consts.hero.change_hero('sr', consts.hero.get_coords())
@@ -191,7 +188,7 @@ def game_def(lvl):
                                                False):
                     bossHit += 2
                     if (pygame.sprite.spritecollide(list(spriteGroups.projectilesgroup)[sprite],
-                                                    spriteGroups.boss_group, False)[0].get_hit() == 0):
+                                                    spriteGroups.boss_group, False)[0].get_hit() <= 0):
                         pygame.draw.rect(windows.screen, (36, 34, 52), (
                             list(spriteGroups.boss_group)[sprite].rect))
                         spriteGroups.boss_group.empty()
@@ -387,27 +384,27 @@ def game_def(lvl):
                                                                       levelGenerator.board.get_size())))
                 levelGenerator.remover((11, 10))
 
-        if not spriteGroups.sloniks:
-            if lvl == 2 and thing == '':
-                levelGenerator.remover((2, 7), 'C')
-            elif lvl == 2 and thing == 1:
-                levelGenerator.remover((8, 4), 'F')
-            elif lvl == 3 and thing == 1:
-                levelGenerator.remover((7, 4), 'S')
-            elif lvl == 3 and thing == 2:
-                if not spriteGroups.boss_group:
-                    consts.hero.end()
-                    spriteGroups.boss_projectile_group.empty()
-                    consts.b_projectile_speed = []
-                    thing = ''
-                    levelGenerator.updater()
-                    started = False
-                    record = starsChanger(lvl, current_seconds)
-                    if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
-                        starsRecorder.push_record(lvl, 1, record, current_seconds)
-                    starsRecorder.push_lastRecord(lvl, record, current_seconds)
-                    soundManager.stop_playback()
-                    game_complete.game_complete()
+        if not spriteGroups.boss_group:
+            if lvl == 3 and thing == 2:
+                consts.hero.end()
+                spriteGroups.boss_projectile_group.empty()
+                consts.b_projectile_speed = []
+                thing = ''
+                levelGenerator.updater()
+                started = False
+                record = starsChanger(lvl, current_seconds)
+                if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
+                    starsRecorder.push_record(lvl, 1, record, current_seconds)
+                starsRecorder.push_lastRecord(lvl, record, current_seconds)
+                soundManager.stop_playback()
+                game_complete.game_complete()
+            elif not spriteGroups.sloniks:
+                if lvl == 2 and thing == '':
+                    levelGenerator.remover((2, 7), 'C')
+                elif lvl == 2 and thing == 1:
+                    levelGenerator.remover((8, 4), 'F')
+                elif lvl == 3 and thing == 1:
+                    levelGenerator.remover((7, 4), 'S')
 
         if consts.runright or consts.runleft:
             if consts.runright:

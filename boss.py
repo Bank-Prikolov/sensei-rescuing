@@ -74,6 +74,7 @@ class Boss(pygame.sprite.Sprite):
                           list(spriteGroups.characters)[0].rect[1] - list(spriteGroups.characters)[0].rect[3] // 2]
         self.attack = 0
         self.attack_counter = -59
+        self.cut = False
 
     def cut_sheet(self, sprites, koef, act):
         self.rect = pygame.Rect(0, 0, 64 * koef,
@@ -112,11 +113,18 @@ class Boss(pygame.sprite.Sprite):
                     self.hitick = 0
                     self.step = 0
         self.counter = (self.counter + 1) % 8
-        if self.attack_counter == 0:
+        if self.attack_counter == 0 and not self.cut:
             self.attack = self.make_attack()
         elif self.attack_counter == 419:
             self.attack = 0
             self.make_move()
+        elif self.cut and self.hp == 20:
+            if self.looking_right:
+                self.change_act(7, self.get_coords())
+            else:
+                self.change_act(6, self.get_coords())
+            self.hp -= 1
+            self.cut = False
         if self.attack == 1:
             if self.attack_counter in [40, 80, 120]:
                 self.shoot()
@@ -243,6 +251,8 @@ class Boss(pygame.sprite.Sprite):
     def get_hit(self):
         self.hp -= 2
         self.step = 2
+        if self.hp == 20 and not self.cut:
+            self.cut = True
         return self.hp
 
     def change_act(self, act, coords):
@@ -262,6 +272,10 @@ class Boss(pygame.sprite.Sprite):
             self.frames = self.cut_sheet(self.sprites, self.k, self.act)
         elif act == 5:
             self.frames = self.cut_sheet(self.sprites, self.k, self.act)
+        elif act == 6:
+            self.frames = self.cut_sheet(self.sprites, self.k, self.act)
+        elif act == 7:
+            self.frames = self.cut_sheet(self.sprites, self.k, self.act)
         self.image = self.frames[self.cur_frame]
         self.rect = self.rect.move(*pos)
 
@@ -270,15 +284,18 @@ class Boss(pygame.sprite.Sprite):
 
     def make_move(self):
         cordi = [[896, 322], [64, 322], [64, 66], [896, 66], [480, 66]]
-        srav = [((int(x[0]) - abs(self.herocords[0])) ** 2 + (int(x[1])
-                                                              - abs(self.herocords[1])) ** 2) ** 0.5 for x in cordi]
+        cordi = [
+            [y[0] * self.k + windows.otstupx * windows.fullscreen, y[1] * self.k + (windows.otstupy - 10)* windows.fullscreen]
+            for y in cordi]
+        srav = [((int(x[0])
+                  - abs(self.herocords[0])) ** 2 + (int(x[1]) - abs(self.herocords[1])) ** 2) ** 0.5 for x in cordi]
         m = min(srav)
         a = random.randint(0, 4)
         levelGenerator.get_shadow(*self.rect)
         spriteGroups.shadowgroup.draw(windows.screen)
         while a == self.pospoint or a == srav.index(m):
             a = random.randint(0, 4)
-        self.set_coords(windows.otstupx * windows.fullscreen + cordi[a][0] * self.k, cordi[a][1] * self.k)
+        self.set_coords(cordi[a][0], cordi[a][1])
         if a in [0, 3]:
             self.change_act(0, self.get_coords())
             self.looking_right = False
