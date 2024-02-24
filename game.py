@@ -201,7 +201,6 @@ def game_def(lvl):
                     consts.hero.projectilespeed.pop(sprite)
                     list(spriteGroups.projectilesgroup)[sprite].kill()
                     break
-            spriteGroups.projectilesgroup.draw(windows.screen)
 
         if spriteGroups.nmeprojectilesgroup:
             for sprite in range(len(spriteGroups.nmeprojectilesgroup)):
@@ -427,6 +426,7 @@ def game_def(lvl):
             tmpHit -= 1
         spriteGroups.hleb.update()
         spriteGroups.hleb.draw(windows.screen)
+        spriteGroups.projectilesgroup.draw(windows.screen)
         consts.hero.update()
         spriteGroups.breakgroup.draw(windows.screen)
         spriteGroups.characters.draw(windows.screen)

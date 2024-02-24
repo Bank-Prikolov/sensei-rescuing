@@ -102,10 +102,11 @@ class Hero(pygame.sprite.Sprite):
             touchable = False
         elif consts.falling:
             if pygame.sprite.spritecollide(self, spriteGroups.platformgroup, False):
-                # print(list(pygame.sprite.spritecollide(self, lvl_gen.platformgroup, False))[0].rect[1] - heropos[1])
+                # print(list(pygame.sprite.spritecollide(self,
+                # spriteGroups.platformgroup, False))[0].rect[1] - heropos[1])
                 if windows.k == 1.5:
                     if windows.fullscreen:
-                        checklist = [-1, -13, -12, -15, -21, -47, -8, -2, -6]
+                        checklist = [-1, -13, -12, -15, -21, -47, -8, -2, -6, -24]
                     else:
                         checklist = [-1, -9, -8, -4, -25, -16, -14, -6, -31]
                 else:

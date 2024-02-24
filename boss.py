@@ -5,6 +5,7 @@ import levelGenerator
 import spriteGroups
 import soundManager
 import random
+import game
 from processHelper import load_image
 
 
@@ -116,6 +117,7 @@ class Boss(pygame.sprite.Sprite):
         if self.attack_counter == 0 and not self.cut:
             self.attack = self.make_attack()
         elif self.attack_counter == 419:
+            self.cut = False
             self.attack = 0
             self.make_move()
         elif self.cut and self.hp == 20:
@@ -124,7 +126,6 @@ class Boss(pygame.sprite.Sprite):
             else:
                 self.change_act(6, self.get_coords())
             self.hp -= 1
-            self.cut = False
         if self.attack == 1:
             if self.attack_counter in [40, 80, 120]:
                 self.shoot()
@@ -249,10 +250,14 @@ class Boss(pygame.sprite.Sprite):
                                                        ycoef * yb), 0))
 
     def get_hit(self):
-        self.hp -= 2
-        self.step = 2
-        if self.hp == 20 and not self.cut:
-            self.cut = True
+        if not self.cut:
+            self.hp -= 2
+            self.step = 2
+            # строчка для Саши
+            if self.hp == 20:
+                self.cut = True
+                self.attack_counter = 300
+                self.attack = 0
         return self.hp
 
     def change_act(self, act, coords):
