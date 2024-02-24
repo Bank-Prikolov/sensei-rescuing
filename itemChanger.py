@@ -11,72 +11,7 @@ from itemAnimator import AnimatedHero
 from itemCreator import Object, Button
 
 
-def heroHeartsChanger():
-    spriteGroups.hero_health.empty()
-    if not windows.fullscreen:
-        img_tmp = load_image(r"objects\animated\hearts-obj.png")
-        tr_tmp = pygame.transform.scale(img_tmp,
-                                        (img_tmp.get_width() * 2, img_tmp.get_height() * 2))
-        heroHealth = AnimatedHeroHealth(tr_tmp, 5, 1,
-                                        12, 18)
-    else:
-        img_tmp = load_image(r"objects\animated\hearts-obj.png")
-        tr_tmp = pygame.transform.scale(img_tmp,
-                                        (img_tmp.get_width() * 4, img_tmp.get_height() * 4))
-        heroHealth = AnimatedHeroHealth(tr_tmp, 5, 1,
-                                        windows.otstupx + 12, 18)
-    return heroHealth
-
-
-def healthBossBarChanger():
-    spriteGroups.health_bar.empty()
-    if not windows.fullscreen:
-        img_tmp = load_image(r"objects\animated\boss-health-bar-obj.png")
-        tr_tmp = pygame.transform.scale(img_tmp,
-                                        (img_tmp.get_width() * 1, img_tmp.get_height() * 1))
-        healthBossBar = AnimatedHealthBar(tr_tmp, 41, 1,
-                                          windows.width // 2 - 14760 / 41 / 2, 30)
-    else:
-        img_tmp = load_image(r"objects\animated\boss-health-bar-obj.png")
-        tr_tmp = pygame.transform.scale(img_tmp,
-                                        (img_tmp.get_width() * 2, img_tmp.get_height() * 2))
-        healthBossBar = AnimatedHealthBar(tr_tmp, 41, 1,
-                                          windows.width // 2 - 14760 * 2 / 41 / 2, 20)
-    return healthBossBar
-
-
-def heroOnScreenChanger(hero, title, hero_field):
-    current_hero = None
-    if hero == 1:
-        spriteGroups.animatedHero.empty()
-        heroWai = AnimatedHero(load_image(r"objects\animated\hero-wai-obj.png"), 1, 8,
-                               hero_field.x + hero_field.width // 2 - 116 // 2,
-                               title.y + 188)
-        current_hero = heroWai
-    elif hero == 2:
-        spriteGroups.animatedHero.empty()
-        heroTheStrongest = AnimatedHero(load_image(r"objects\animated\hero-the-strongest-obj.png"), 1, 8,
-                                        hero_field.x + hero_field.width // 2 - 104 // 2,
-                                        title.y + 188)
-        current_hero = heroTheStrongest
-    return current_hero
-
-
-def pauseButtonChanger():
-    if not windows.fullscreen:
-        pause_btn = Button(windows.width - 60, 6, 52, 54,
-                           fr"buttons\without text\default-pause-btn.png",
-                           fr"buttons\without text\hover-pause-btn.png",
-                           "", r"data\sounds\menu-button-sound.mp3")
-    else:
-        pause_btn = Button(windows.width - windows.otstupx - 90,
-                           6, 78, 81,
-                           fr"buttons\without text\default-pause-btn.png",
-                           fr"buttons\without text\hover-pause-btn.png",
-                           "", r"data\sounds\menu-button-sound.mp3")
-    return pause_btn
-
-
+# game and menu changers
 def fullscreenChanger(fullscreen, ft=False):
     fileManager.fullscreenExport(windows.fullscreen)
     if fullscreen:
@@ -100,6 +35,55 @@ def fullscreenChanger(fullscreen, ft=False):
                                          r"objects\without text\games-window-obj.png")
 
 
+# game changers
+def pauseButtonChanger():
+    if not windows.fullscreen:
+        pause_btn = Button(windows.width - 54, 6, 46, 48,
+                           fr"buttons\without text\default-pause-btn.png",
+                           fr"buttons\without text\hover-pause-btn.png",
+                           "", r"data\sounds\menu-button-sound.mp3")
+    else:
+        pause_btn = Button(windows.width - windows.otstupx - 54 * windows.k,
+                           6 * windows.k, 46 * windows.k, 48 * windows.k,
+                           fr"buttons\without text\default-pause-btn.png",
+                           fr"buttons\without text\hover-pause-btn.png",
+                           "", r"data\sounds\menu-button-sound.mp3")
+    return pause_btn
+
+
+def heroHeartsChanger():
+    spriteGroups.hero_health.empty()
+    if not windows.fullscreen:
+        img_tmp = load_image(r"objects\animated\hearts-obj.png")
+        heroHealth = AnimatedHeroHealth(img_tmp, 5, 1,
+                                        7, 11)
+    else:
+        img_tmp = load_image(r"objects\animated\hearts-obj.png")
+        tr_tmp = pygame.transform.scale(img_tmp,
+                                        (img_tmp.get_width() * windows.k, img_tmp.get_height() * windows.k))
+        heroHealth = AnimatedHeroHealth(tr_tmp, 5, 1,
+                                        windows.otstupx + 7 * windows.k, 11 * windows.k)
+    return heroHealth
+
+
+def healthBossBarChanger():
+    spriteGroups.health_bar.empty()
+    if not windows.fullscreen:
+        img_tmp = load_image(r"objects\animated\boss-health-bar-obj.png")
+        tr_tmp = pygame.transform.scale(img_tmp,
+                                        (img_tmp.get_width() * 1.5, img_tmp.get_height() * 1.5))
+        healthBossBar = AnimatedHealthBar(tr_tmp, 41, 1,
+                                          windows.width // 2 - 14760 * 1.5 / 41 / 2, 18)
+    else:
+        img_tmp = load_image(r"objects\animated\boss-health-bar-obj.png")
+        tr_tmp = pygame.transform.scale(img_tmp,
+                                        (img_tmp.get_width() * 2, img_tmp.get_height() * 2))
+        healthBossBar = AnimatedHealthBar(tr_tmp, 41, 1,
+                                          windows.width // 2 - 14760 * 2 / 41 / 2, 18 * windows.k)
+    return healthBossBar
+
+
+# menu changers
 def volumeChanger(event, music_slider_btn, music_slider_obj, sound_slider_btn, sound_slider_obj):
     if consts.isSliderMusic:
         xM = music_slider_btn.rect[0]
@@ -173,3 +157,20 @@ def timeChanger(whatLevel, ButtonsFont, w, h, screen):
         levelTime = ButtonsFont.render(time_sorted, True, "#ffffff")
         levelTimeRect = levelTime.get_rect(center=(w + 186 // 2, h + 80))
         return screen.blit(levelTime, levelTimeRect)
+
+
+def heroOnScreenChanger(hero, title, hero_field):
+    current_hero = None
+    if hero == 1:
+        spriteGroups.animatedHero.empty()
+        heroWai = AnimatedHero(load_image(r"objects\animated\hero-wai-obj.png"), 1, 8,
+                               hero_field.x + hero_field.width // 2 - 116 // 2,
+                               title.y + 188)
+        current_hero = heroWai
+    elif hero == 2:
+        spriteGroups.animatedHero.empty()
+        heroTheStrongest = AnimatedHero(load_image(r"objects\animated\hero-the-strongest-obj.png"), 1, 8,
+                                        hero_field.x + hero_field.width // 2 - 104 // 2,
+                                        title.y + 188)
+        current_hero = heroTheStrongest
+    return current_hero
