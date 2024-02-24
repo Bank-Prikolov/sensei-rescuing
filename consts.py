@@ -12,7 +12,7 @@ game_state_field = None
 isSliderMusic = False
 isSliderSound = False
 lvlNow = None
-firstTime = True
+playingMenuMusic = True
 heroNow, isGetHero2, getHero = fileManager.heroImport()
 wM, wS, volS = fileManager.volumeImport()
 languageNow = fileManager.languageImport()
@@ -27,6 +27,10 @@ xspeed = 0
 yspeed = 0
 hero = None
 cheatOn = True
+bossHit = 0
+heroHit = 0
+hitNow = False
+tmpHit = 0
 
 # characters
 wai = r'characters\hero-wai.png'

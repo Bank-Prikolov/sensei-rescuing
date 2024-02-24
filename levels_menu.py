@@ -96,21 +96,21 @@ def levels_menu():
 
             if event.type == pygame.USEREVENT and event.button == level1Button:
                 consts.lvlNow = 1
-                consts.firstTime = True
+                consts.playingMenuMusic = True
                 soundManager.stop_playback()
                 transition()
                 cutscenes.start_cutscene()
 
             if event.type == pygame.USEREVENT and event.button == level2Button:
                 consts.lvlNow = 2
-                consts.firstTime = True
+                consts.playingMenuMusic = True
                 soundManager.stop_playback()
                 transition()
                 game.game_def(2)
 
             if event.type == pygame.USEREVENT and event.button == levelBossButton:
                 consts.lvlNow = 3
-                consts.firstTime = True
+                consts.playingMenuMusic = True
                 soundManager.stop_playback()
                 transition()
                 game.game_def(3)

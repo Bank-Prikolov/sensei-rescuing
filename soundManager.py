@@ -4,11 +4,11 @@ import random
 
 
 def menu_theme():
-    if consts.firstTime:
+    if consts.playingMenuMusic:
         pygame.mixer.music.load(r"data\sounds\menu-theme-sound.mp3")
         pygame.mixer.music.set_volume(consts.wM)
         pygame.mixer.music.play(-1)
-        consts.firstTime = False
+        consts.playingMenuMusic = False
 
 
 def game_theme():
