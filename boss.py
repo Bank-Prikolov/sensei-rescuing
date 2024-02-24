@@ -197,7 +197,7 @@ class Boss(pygame.sprite.Sprite):
             xz = 1
         else:
             xz = -1
-        if self.rect[1] - self.rect[3] // 2 < self.herocords[1]:
+        if self.rect[1] + self.rect[3] // 2 < self.herocords[1]:
             yz = 1
         else:
             yz = -1
@@ -237,8 +237,8 @@ class Boss(pygame.sprite.Sprite):
                             Boss.php.get_width() * 3 // 8 * windows.k ** windows.fullscreen,
                             Boss.php.get_height() * 3 // 8 * windows.k ** windows.fullscreen, Boss.php,
                             spriteGroups.boss_projectile_group, koef=self.k)
-                    consts.b_projectile_speed.append(((xcoef * xb * self.k ** windows.fullscreen,
-                                                       ycoef * yb * self.k ** windows.fullscreen), 0))
+                    consts.b_projectile_speed.append(((xcoef * xb,
+                                                       ycoef * yb), 0))
 
     def get_hit(self):
         self.hp -= 2

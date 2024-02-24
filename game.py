@@ -263,6 +263,11 @@ def game_def(lvl):
                         consts.b_projectile_speed = []
 
                         consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
+                        consts.sitting = False
+                        consts.runleft = False
+                        consts.runright = False
+                        consts.jumping = False
+                        consts.falling = False
                         consts.hero.projectilespeed = []
                         windows.screen.fill('#000000')
                         consts.hero.hp = 3
@@ -342,8 +347,13 @@ def game_def(lvl):
                     consts.projectileObj_speed = []
                     spriteGroups.boss_projectile_group.empty()
                     consts.b_projectile_speed = []
-
                     consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
+                    consts.hero.move(0, -8)
+                    consts.sitting = False
+                    consts.runleft = False
+                    consts.runright = False
+                    consts.jumping = False
+                    consts.falling = False
                     consts.hero.rect.move(0, -16)
                     consts.hero.hp = 3
                     soundManager.hero_take_hit_sound()
