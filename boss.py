@@ -23,7 +23,6 @@ class Glebpic(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h, sprite, *group, koef):
         self.sprites = pygame.transform.scale(load_image(sprite),
                                               (w, h * 2))
-        print(self.sprites.get_rect())
         super().__init__(*group)
         self.counter = 0
         self.frames = self.cut_sheet(self.sprites, koef)
