@@ -406,7 +406,7 @@ def game_def(lvl):
                 if lvl == 2 and thing == '':
                     levelGenerator.remover((2, 7), 'C')
                 elif lvl == 2 and thing == 1:
-                    levelGenerator.remover((8, 4), 'F')
+                    levelGenerator.remover((7, 4), 'F')
                 elif lvl == 3 and thing == 1:
                     levelGenerator.remover((7, 4), 'S')
 
