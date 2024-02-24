@@ -5,7 +5,6 @@ import levelGenerator
 import spriteGroups
 import soundManager
 import random
-import game
 from processHelper import load_image
 
 
