@@ -30,7 +30,7 @@ class AnimatedTypedText(pygame.sprite.Sprite):
             numFrame = 44
 
         if self.cur_frame == 1:
-            soundManager.typing_sound()
+            soundManager.typing_theme()
 
         if self.cur_frame < numFrame * 10:
             self.cur_frame = (self.cur_frame + 1) % len(self.frames)
@@ -177,6 +177,9 @@ class AnimatedHeroHealth(pygame.sprite.Sprite):
                     frame_location, self.rect.size)))
 
     def update(self, hit):
+        if hit == 0 and self.cur_frame == 2:
+            self.cur_frame = 0
+            self.image = self.frames[self.cur_frame]
         if self.cur_frame != hit:
             if self.counter == 10:
                 self.counter = 0

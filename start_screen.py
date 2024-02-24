@@ -6,12 +6,16 @@ import starsRecorder
 import spriteGroups
 import soundManager
 from processHelper import load_image
+from itemChanger import fullscreenChanger
 from itemCreator import Button, Object
 from itemAnimator import AnimatedIntro, AnimatedTypedText
 
 
 def start_screen():
     starsRecorder.firstTime()
+
+    if consts.firstTime:
+        fullscreenChanger(windows.fullscreen, True)
 
     if consts.languageNow == 'rus':
         img_start = load_image(r"objects\animated\start-screen-rus-obj.png")

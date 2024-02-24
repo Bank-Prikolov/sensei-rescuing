@@ -10,13 +10,10 @@ import soundManager
 import spriteGroups
 from processHelper import terminate, transition
 from itemCreator import Object, Button
-from itemChanger import fullscreenChanger, heroOnScreenChanger
+from itemChanger import heroOnScreenChanger
 
 
 def main_menu():
-    if consts.firstTime:
-        fullscreenChanger(windows.fullscreen, True)
-
     soundManager.menu_theme()
 
     title = Object(windows.width // 2 - 443, windows.height // 2 - 518 // 2, 886, 80,

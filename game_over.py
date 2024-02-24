@@ -11,7 +11,7 @@ from itemAnimator import AnimatedTypedText
 
 
 def game_over():
-    soundManager.game_over_sound(consts.languageNow)
+    soundManager.game_over_theme(consts.languageNow)
 
     if consts.languageNow == 'rus':
         img_game_over = load_image(r"objects\animated\game-over-rus-obj.png")

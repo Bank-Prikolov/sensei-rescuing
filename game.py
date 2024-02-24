@@ -215,6 +215,7 @@ def game_def(lvl):
                     consts.projectileObj_speed[sprite][0], 0)
                 if pygame.sprite.spritecollide(list(spriteGroups.nmeprojectilesgroup)[sprite], spriteGroups.characters,
                                                False) and not cheatPanel:
+                    soundManager.hero_take_hit_sound()
                     heroHit += 2
                     if consts.hero.get_hit() == 0:
                         thing = ''
@@ -248,9 +249,11 @@ def game_def(lvl):
                 if pygame.sprite.spritecollide(list(spriteGroups.boss_projectile_group)[sprite],
                                                spriteGroups.characters,
                                                False) and not cheatPanel:
+                    soundManager.hero_take_hit_sound()
                     heroHit += 2
                     if heroHit == 6:
                         heroHit = 0
+                        soundManager.hero_loose_boss_sound()
                     if consts.hero.get_hit() == 0:
                         consts.yspeed = 0
                         spriteGroups.projectilesgroup.empty()
@@ -343,7 +346,9 @@ def game_def(lvl):
                     consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
                     consts.hero.rect.move(0, -16)
                     consts.hero.hp = 3
+                    soundManager.hero_take_hit_sound()
                     heroHit = 0
+                    soundManager.hero_loose_boss_sound()
                     consts.hero.projectilespeed = []
                     windows.screen.fill('#000000')
                     levelGenerator.updater()

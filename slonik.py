@@ -119,7 +119,7 @@ class Slonik(pygame.sprite.Sprite):
         self.hp -= 1
         self.step = 2
         self.turn_speed = 1
-        soundManager.hit_sound()
+        soundManager.slonik_take_hit_sound()
         if self.get_coords()[0] - herox < 0:
             if not self.looking_right:
                 self.looking_right = True

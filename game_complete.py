@@ -12,7 +12,7 @@ from itemAnimator import AnimatedTypedText
 
 
 def game_complete():
-    soundManager.game_complete_sound(consts.languageNow)
+    soundManager.game_complete_theme()
 
     if consts.languageNow == 'rus':
         img_game_complete = load_image(r"objects\animated\game-complete-rus-obj.png")
