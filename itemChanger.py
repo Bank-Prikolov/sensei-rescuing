@@ -5,7 +5,9 @@ import starsRecorder
 import fileManager
 import spriteGroups
 from processHelper import load_image
-from itemAnimator import AnimatedHero, AnimatedHealthBar, AnimatedHeroHealth
+from boss import AnimatedHealthBar
+from hero import AnimatedHeroHealth
+from itemAnimator import AnimatedHero
 from itemCreator import Object, Button
 
 

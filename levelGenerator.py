@@ -6,6 +6,7 @@ import consts
 import windows
 import boss
 import slonik
+import hleb
 import spriteGroups
 from processHelper import load_image
 
@@ -45,7 +46,7 @@ class Board:
         spriteGroups.thorngroup.empty()
         spriteGroups.breakgroup.empty()
         spriteGroups.anothertoches.empty()
-        spriteGroups.glebgroup.empty()
+        spriteGroups.hleb.empty()
         for x in range(len(self.board[0])):
             for y in range(len(self.board)):
                 if self.board[y][x] == '0':
@@ -87,12 +88,12 @@ class Board:
                     boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                              self.cell_size, consts.horizon, spriteGroups.toches)
                 elif self.board[y][x] == 'H':
-                    boss.Glebpic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                                 self.cell_size, consts.hleb, spriteGroups.glebgroup,
+                    hleb.HlebPic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                                 self.cell_size, consts.hleb, spriteGroups.hleb,
                                  koef=windows.k ** windows.fullscreen)
                 else:
                     pass
-        spriteGroups.glebgroup.draw(sc)
+        spriteGroups.hleb.draw(sc)
         spriteGroups.triggergroup.draw(sc)
         spriteGroups.breakgroup.draw(sc)
         spriteGroups.thorngroup.draw(sc)

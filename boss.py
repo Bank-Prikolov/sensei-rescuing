@@ -19,36 +19,6 @@ class Pic(pygame.sprite.Sprite):
         self.rect.y = y
 
 
-class Glebpic(pygame.sprite.Sprite):
-    def __init__(self, x, y, w, h, sprite, *group, koef):
-        self.sprites = pygame.transform.scale(load_image(sprite),
-                                              (w, h * 2))
-        super().__init__(*group)
-        self.counter = 0
-        self.frames = self.cut_sheet(self.sprites, koef)
-        self.image = self.frames[self.counter]
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-        self.wait = 0
-
-    def cut_sheet(self, sprites, koef):
-        self.rect = pygame.Rect(0, 0, 64 * koef,
-                                64 * koef)
-        plist = list()
-        for i in range(sprites.get_height() // int(64 * koef)):
-            frame_location = (0, self.rect.h * i)
-            plist.append(sprites.subsurface(pygame.Rect(
-                frame_location, self.rect.size)))
-        return plist
-
-    def update(self):
-        if self.wait % 12 == 0:
-            self.counter = (self.counter + 1) % len(self.frames)
-            self.image = self.frames[self.counter]
-        self.wait += 1
-
-
 class Animpic(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h, sprite, *group, koef):
         self.sprites = pygame.transform.scale(sprite,
@@ -373,3 +343,34 @@ class Boss(pygame.sprite.Sprite):
         else:
             self.shoot()
             self.attack_counter = 358
+
+
+class AnimatedHealthBar(pygame.sprite.Sprite):
+    def __init__(self, sheet, columns, rows, x, y):
+        super().__init__(spriteGroups.health_bar)
+        self.frames = []
+        self.cut_sheet(sheet, columns, rows)
+        self.cur_frame = 0
+        self.image = self.frames[self.cur_frame]
+        self.rect = self.rect.move(x, y)
+        self.counter = 0
+
+    def cut_sheet(self, sheet, columns, rows):
+        self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
+                                sheet.get_height() // rows)
+        for j in range(rows):
+            for i in range(columns):
+                frame_location = (self.rect.w * i, self.rect.h * j)
+                self.frames.append(sheet.subsurface(pygame.Rect(
+                    frame_location, self.rect.size)))
+
+    def update(self, hit):
+        if hit == 0 and self.cur_frame != 0:
+            self.cur_frame = 0
+            self.image = self.frames[self.cur_frame]
+        if self.cur_frame != hit:
+            if self.counter == 6:
+                self.counter = 0
+                self.cur_frame = (self.cur_frame + 1) % len(self.frames)
+                self.image = self.frames[self.cur_frame]
+            self.counter += 1

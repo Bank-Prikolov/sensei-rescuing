@@ -250,6 +250,7 @@ def game_def(lvl):
                     heroHit += 2
                     if heroHit == 6:
                         heroHit = 0
+                        bossHit = 0
                         soundManager.hero_loose_boss_sound()
                     if consts.hero.get_hit() == 0:
                         consts.yspeed = 0
@@ -355,6 +356,7 @@ def game_def(lvl):
                     consts.hero.hp = 3
                     soundManager.hero_take_hit_sound()
                     heroHit = 0
+                    bossHit = 0
                     soundManager.hero_loose_boss_sound()
                     consts.hero.projectilespeed = []
                     windows.screen.fill('#000000')
@@ -413,10 +415,10 @@ def game_def(lvl):
                 consts.hero.move(-consts.xspeed * windows.k ** windows.fullscreen, 0)
         else:
             consts.xspeed = 0
+        spriteGroups.hleb.update()
+        spriteGroups.hleb.draw(windows.screen)
         consts.hero.update()
         spriteGroups.breakgroup.draw(windows.screen)
-        spriteGroups.glebgroup.update()
-        spriteGroups.glebgroup.draw(windows.screen)
         spriteGroups.characters.draw(windows.screen)
         heroHearts.update(heroHit)
         spriteGroups.hero_health.draw(windows.screen)
