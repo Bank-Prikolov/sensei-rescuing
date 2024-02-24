@@ -22,7 +22,7 @@ def heroHeartsChanger():
         tr_tmp = pygame.transform.scale(img_tmp,
                                         (img_tmp.get_width() * 4, img_tmp.get_height() * 4))
         heroHealth = AnimatedHeroHealth(tr_tmp, 5, 1,
-                                        12, 18)
+                                        windows.otstupx + 12, 18)
     return heroHealth
 
 
