@@ -31,6 +31,7 @@ bossHit = 0
 heroHit = 0
 hitNow = False
 tmpHit = 0
+heroHP = 3
 
 # characters
 wai = r'characters\hero-wai.png'

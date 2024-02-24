@@ -6,9 +6,9 @@ import consts
 import starsRecorder
 import soundManager
 import spriteGroups
+from itemCreator import Button
 from processHelper import load_image, terminate, transition
-from itemCreator import Button, Stars
-from itemAnimator import AnimatedTypedText
+from itemAnimator import AnimatedTypedText, AnimatedStars
 
 
 def game_complete():
@@ -17,7 +17,8 @@ def game_complete():
     if consts.languageNow == 'rus':
         img_game_complete = load_image(r"objects\animated\game-complete-rus-obj.png")
         tr_game_complete = pygame.transform.scale(img_game_complete,
-                                                (img_game_complete.get_width() * 3, img_game_complete.get_height() * 3))
+                                                  (img_game_complete.get_width() * 3,
+                                                   img_game_complete.get_height() * 3))
         game_complete_obj = AnimatedTypedText(tr_game_complete, 16, 1, windows.width // 2 - 4752 * 3 // 16 // 2,
                                               windows.height // 2 - 225)
     else:
@@ -29,10 +30,8 @@ def game_complete():
                                               windows.height // 2 - 225)
 
     record = starsRecorder.get_lastRecord(consts.lvlNow)
-    zeroStars, oneStar, twoStars, threeStars = (
-        r"objects\without text\stars-zero-obj.png", r"objects\without text\stars-one-obj.png",
-        r"objects\without text\stars-two-obj.png", r"objects\without text\stars-three-obj.png")
-    stars = Stars(windows.width // 2 - 152, windows.height // 2 - 40, 304, 88, zeroStars, oneStar, twoStars, threeStars)
+    stars = AnimatedStars(load_image(r"objects\animated\stars-obj.png"), 7, 1,
+                          windows.width // 2 - 2128 / 7 / 2, windows.height // 2 - 40)
     ButtonsFont = pygame.font.Font(r"data\fonts\PixelNumbers.ttf", 70)
     time = starsRecorder.get_lastSeconds(consts.lvlNow)
     time_sorted = f"{time // 60:02}:{time % 60:02}"
@@ -72,8 +71,8 @@ def game_complete():
         consts.game_state_field.draw(windows.screen)
 
         game_complete_obj.update_game_complete(windows.screen, record, stars, repeat_btn, to_lvlmenu_btn, levelTime,
-                                              levelTimeRect,
-                                              consts.languageNow)
+                                               levelTimeRect,
+                                               consts.languageNow)
         spriteGroups.animatedTypedText.draw(windows.screen)
 
         consts.clock.tick(consts.fps)

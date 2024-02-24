@@ -8,7 +8,7 @@ from itemCreator import Object, Button
 from itemChanger import volumeChanger
 
 
-def pause(time, sloniks):
+def pause(time, sloniks, level, thing):
     sound_name = Object(windows.width // 2 + 28, windows.height // 2 + 124, 434, 50,
                         fr"objects\{consts.languageNow}\sound-obj.png")
     music_name = Object(windows.width // 2 - 28 - 434, windows.height // 2 + 124, 434, 50,
@@ -52,23 +52,41 @@ def pause(time, sloniks):
     time_title = Object(
         left_field.x + left_field.width // 2 - 196 // 2 if consts.languageNow == 'rus'
         else left_field.x + left_field.width // 2 - 190 // 2,
-        windows.height // 2 - 185,
+        windows.height // 2 - 226,
         196 if consts.languageNow == 'rus' else 190, 34,
         fr"objects\{consts.languageNow}\pause-time-obj.png")
+    hearts_title = Object(
+        left_field.x + left_field.width // 2 - 232 // 2 if consts.languageNow == 'rus'
+        else left_field.x + left_field.width // 2 - 143 / 2,
+        time_title.y + time_title.height + 70, 232 if consts.languageNow == 'rus' else 143, 37,
+        fr"objects\{consts.languageNow}\pause-hearts-obj.png")
     sloniks_title = Object(
         left_field.x + left_field.width // 2 - 234 // 2 if consts.languageNow == 'rus'
         else left_field.x + left_field.width // 2 - 145 / 2,
-        windows.height // 2 - 50, 234 if consts.languageNow == 'rus' else 145, 37,
+        hearts_title.y + hearts_title.height + 70, 234 if consts.languageNow == 'rus' else 145, 37,
         fr"objects\{consts.languageNow}\pause-sloniks-obj.png")
     TimeFont = pygame.font.Font(r"data\fonts\PixelNumbers.ttf", 50)
     time_sorted = f"{time // 60:02}:{time % 60:02}"
     levelTime = TimeFont.render(time_sorted, True, "#ffffff")
     levelTimeRect = levelTime.get_rect(
         center=(time_title.x + time_title.width // 2, time_title.y + time_title.height + 40))
+    boss_ico = Object(sloniks_title.x + sloniks_title.width / 2 - 25, sloniks_title.y + sloniks_title.height + 10, 50,
+                      50,
+                      fr"objects\without text\boss-ico-obj.png")
     SloniksFont = pygame.font.Font(r"data\fonts\PixelNumbers.ttf", 50)
     levelSloniks = SloniksFont.render(str(sloniks), True, "#ffffff")
     levelSloniksRect = levelSloniks.get_rect(
         center=(sloniks_title.x + sloniks_title.width // 2, sloniks_title.y + sloniks_title.height + 40))
+    HeartsFont = pygame.font.Font(r"data\fonts\PixelNumbers.ttf", 50)
+    if consts.heroHit == 0:
+        tmpHearts = 3
+    elif consts.heroHit == 2:
+        tmpHearts = 2
+    else:
+        tmpHearts = 1
+    levelHearts = HeartsFont.render(str(tmpHearts), True, "#ffffff")
+    levelHeartsRect = levelHearts.get_rect(
+        center=(hearts_title.x + hearts_title.width // 2, hearts_title.y + hearts_title.height + 40))
 
     right_field = Object(sound_name.x + 434 // 2 - 470 // 2 + 470 - 252, windows.height // 2 - 246, 252, 342,
                          fr"objects\{consts.languageNow}\right-field-obj.png")
@@ -113,10 +131,9 @@ def pause(time, sloniks):
             for slider_button in [music_slider_btn, sound_slider_btn]:
                 slider_button.handle_event_slider(event)
 
-        for obj in [consts.pause_field, left_field, time_title, sloniks_title, pause_field, right_field, sound_field,
-                    music_field,
-                    title, sound_slider_obj, music_slider_obj, music_slider_btn, sound_slider_btn, sound_name,
-                    music_name]:
+        for obj in [consts.pause_field, left_field, time_title, sloniks_title, hearts_title, pause_field, right_field,
+                    sound_field, music_field, title, sound_slider_obj, music_slider_obj, music_slider_btn,
+                    sound_slider_btn, sound_name, music_name]:
             obj.draw(windows.screen)
 
         for button in [repeat_btn, to_lvlmenu_btn, play_btn, music_slider_btn, sound_slider_btn]:
@@ -124,6 +141,10 @@ def pause(time, sloniks):
             button.draw(windows.screen)
 
         windows.screen.blit(levelTime, levelTimeRect)
-        windows.screen.blit(levelSloniks, levelSloniksRect)
+        if not (level == 3 and thing == 2):
+            windows.screen.blit(levelSloniks, levelSloniksRect)
+        else:
+            boss_ico.draw(windows.screen)
+        windows.screen.blit(levelHearts, levelHeartsRect)
 
         pygame.display.flip()

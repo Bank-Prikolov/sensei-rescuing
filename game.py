@@ -23,7 +23,7 @@ def game_def(lvl):
     pause_btn = pauseButtonChanger()
     levelGenerator.updater()
     spriteGroups.characters.empty()
-    consts.hero = Hero(*start_coords, windows.k ** windows.fullscreen, character)
+    consts.hero = Hero(*start_coords, windows.k ** windows.fullscreen, character, consts.heroHP)
     consts.jumping = False
     consts.yspeed = 0
     running = True
@@ -36,6 +36,7 @@ def game_def(lvl):
     consts.heroHit = 0
     consts.hitNow = False
     consts.tmpHit = 0
+    consts.heroHP = 3
     timer_event = pygame.USEREVENT + 1
     pygame.time.set_timer(timer_event, 1000)
     started = True
@@ -129,9 +130,9 @@ def game_def(lvl):
                 consts.xspeed = 0
                 predpause = consts.hero.get_coords()
                 proj = consts.hero.projectilespeed
-                pause.pause(current_seconds, len(list(spriteGroups.sloniks)))
+                pause.pause(current_seconds, len(list(spriteGroups.sloniks)), lvl, thing)
                 spriteGroups.characters.empty()
-                consts.hero = Hero(*predpause, windows.k ** windows.fullscreen, character)
+                consts.hero = Hero(*predpause, windows.k ** windows.fullscreen, character, consts.heroHP)
                 consts.hero.projectilespeed = proj
                 if consts.lookingright:
                     consts.hero.change_hero('sr', predpause)
@@ -211,6 +212,7 @@ def game_def(lvl):
                                                False) and not cheatPanel:
                     soundManager.hero_take_hit_sound()
                     consts.heroHit += 2
+                    consts.heroHP -= 1
                     consts.hitNow = True
                     consts.tmpHit = 5
                     if consts.hero.get_hit() == 0:
@@ -247,6 +249,7 @@ def game_def(lvl):
                                                False) and not cheatPanel:
                     soundManager.hero_take_hit_sound()
                     consts.heroHit += 2
+                    consts.heroHP -= 1
                     consts.hitNow = True
                     consts.tmpHit = 5
                     if consts.heroHit == 6:
