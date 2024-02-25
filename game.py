@@ -44,13 +44,12 @@ def game_def(lvl):
     spriteGroups.projectilesgroup.empty()
     checkLevel = False
     while running:
-        print(consts.heroHP)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
             elif event.type == timer_event and started:
                 current_seconds += 1
-                # print(current_seconds)
+                print(current_seconds)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
                     consts.xspeed = consts.hero.xs
