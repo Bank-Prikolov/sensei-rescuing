@@ -116,31 +116,31 @@ def volumeChanger(event, music_slider_btn, music_slider_obj, sound_slider_btn, s
 
 def starsChanger(whatLevel, time):
     if whatLevel == 1:
-        if 0 < time <= 35:
+        if 0 <= time <= 30:
             return 3
-        elif 35 < time <= 40:
+        elif 30 < time <= 40:
             return 2
-        elif 40 < time <= 60:
+        elif 40 < time <= 50:
             return 1
-        elif time > 60:
+        elif time > 50:
             return 0
     if whatLevel == 2:
-        if 0 < time <= 65:
+        if 0 <= time <= 120:
             return 3
-        elif 65 < time <= 70:
+        elif 120 < time <= 135:
             return 2
-        elif 70 < time <= 90:
-            return 1
-        elif time > 90:
-            return 0
-    if whatLevel == 3:
-        if 0 < time <= 125:
-            return 3
-        elif 125 < time <= 130:
-            return 2
-        elif 130 < time <= 150:
+        elif 135 < time <= 150:
             return 1
         elif time > 150:
+            return 0
+    if whatLevel == 3:
+        if 0 <= time <= 200:
+            return 3
+        elif 200 < time <= 225:
+            return 2
+        elif 225 < time <= 250:
+            return 1
+        elif time > 250:
             return 0
 
 

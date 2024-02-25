@@ -34,7 +34,6 @@ class Hero(pygame.sprite.Sprite):
         self.projectile_speed = 10
         self.shoot_counter = 9
         self.shooting = False
-        self.hp = 3
         self.step = 0
         self.hitick = 0
 
@@ -48,9 +47,9 @@ class Hero(pygame.sprite.Sprite):
                 frame_location, self.rect.size)))
 
     def get_hit(self):
-        self.hp -= 1
+        consts.heroHP -= 1
         self.step = 2
-        return self.hp
+        return consts.heroHP
 
     def update(self):
         self.image = self.frames[self.cur_frame]

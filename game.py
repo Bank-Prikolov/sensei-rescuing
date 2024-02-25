@@ -34,11 +34,12 @@ def game_def(lvl):
     thing = ''
     healthBossBar = healthBossBarChanger()
     heroHearts = heroHeartsChanger()
-    bossHit = 0
-    heroHit = 0
-    hitNow = False
-    tmpHit = 0
     cheatPanel = False  # cheats
+    consts.bossHit = 0
+    consts.heroHit = 0
+    consts.hitNow = False
+    consts.tmpHit = 0
+    consts.heroHP = 3
     timer_event = pygame.USEREVENT + 1
     pygame.time.set_timer(timer_event, 1000)
     started = True
@@ -51,7 +52,7 @@ def game_def(lvl):
                 terminate()
             elif event.type == timer_event and started:
                 current_seconds += 1
-                # print(current_seconds)
+                print(current_seconds)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
                     consts.xspeed = consts.hero.xs
@@ -132,7 +133,7 @@ def game_def(lvl):
                 consts.xspeed = 0
                 predpause = consts.hero.get_coords()
                 proj = consts.hero.projectilespeed
-                pause.pause(current_seconds, len(list(spriteGroups.sloniks)))
+                pause.pause(current_seconds, len(list(spriteGroups.sloniks)), lvl, thing)
                 spriteGroups.characters.empty()
                 consts.hero = Hero(*predpause, windows.k ** windows.fullscreen, character)
                 consts.hero.projectilespeed = proj
@@ -188,7 +189,6 @@ def game_def(lvl):
 
                 if pygame.sprite.spritecollide(list(spriteGroups.projectilesgroup)[sprite], spriteGroups.boss_group,
                                                False):
-                    bossHit += 2
                     if (pygame.sprite.spritecollide(list(spriteGroups.projectilesgroup)[sprite],
                                                     spriteGroups.boss_group, False)[0].get_hit() <= 0):
                         pygame.draw.rect(windows.screen, (36, 34, 52), (
@@ -214,9 +214,9 @@ def game_def(lvl):
                 if pygame.sprite.spritecollide(list(spriteGroups.nmeprojectilesgroup)[sprite], spriteGroups.characters,
                                                False) and not cheatPanel:
                     soundManager.hero_take_hit_sound()
-                    heroHit += 2
-                    hitNow = True
-                    tmpHit = 5
+                    consts.heroHit += 2
+                    consts.hitNow = True
+                    consts.tmpHit = 5
                     if consts.hero.get_hit() == 0:
                         thing = ''
                         consts.hero.end()
@@ -250,12 +250,12 @@ def game_def(lvl):
                                                spriteGroups.characters,
                                                False) and not cheatPanel:
                     soundManager.hero_take_hit_sound()
-                    heroHit += 2
-                    hitNow = True
-                    tmpHit = 5
-                    if heroHit == 6:
-                        heroHit = 0
-                        bossHit = 0
+                    consts.heroHit += 2
+                    consts.hitNow = True
+                    consts.tmpHit = 5
+                    if consts.heroHit == 6:
+                        consts.heroHit = 0
+                        consts.bossHit = 0
                         soundManager.hero_loose_boss_sound()
                     if consts.hero.get_hit() == 0:
                         consts.yspeed = 0
@@ -273,7 +273,7 @@ def game_def(lvl):
                         consts.falling = False
                         consts.hero.projectilespeed = []
                         windows.screen.fill('#000000')
-                        consts.hero.hp = 3
+                        consts.heroHP = 3
                         levelGenerator.updater()
                         break
                     else:
@@ -358,10 +358,10 @@ def game_def(lvl):
                     consts.jumping = False
                     consts.falling = False
                     consts.hero.rect.move(0, -16)
-                    consts.hero.hp = 3
+                    consts.heroHP = 3
                     soundManager.hero_take_hit_sound()
-                    heroHit = 0
-                    bossHit = 0
+                    consts.heroHit = 0
+                    consts.bossHit = 0
                     soundManager.hero_loose_boss_sound()
                     consts.hero.projectilespeed = []
                     windows.screen.fill('#000000')
@@ -423,27 +423,27 @@ def game_def(lvl):
             consts.xspeed = 0
 
         pause_btn.check_hover(pygame.mouse.get_pos())
-        pause_btn.drawPauseBtn(windows.screen, hitNow)
-        if tmpHit == 0:
-            hitNow = False
+        pause_btn.drawPauseBtn(windows.screen, consts.hitNow)
+        if consts.tmpHit == 0:
+            consts.hitNow = False
         else:
-            tmpHit -= 1
+            consts.tmpHit -= 1
         spriteGroups.hleb.update()
         spriteGroups.hleb.draw(windows.screen)
         spriteGroups.projectilesgroup.draw(windows.screen)
+        spriteGroups.finale.draw(windows.screen)
         consts.hero.update()
         spriteGroups.breakgroup.draw(windows.screen)
         spriteGroups.characters.draw(windows.screen)
-        heroHearts.update(heroHit)
-        spriteGroups.hero_health.draw(windows.screen)
-        if checkLevel:
-            healthBossBar.update(bossHit)
-            spriteGroups.health_bar.draw(windows.screen)
         spriteGroups.sloniks.update()
         spriteGroups.boss_group.update()
         spriteGroups.sloniks.draw(windows.screen)
+        heroHearts.update(consts.heroHit)
+        spriteGroups.hero_health.draw(windows.screen)
+        if checkLevel:
+            healthBossBar.update(consts.bossHit)
+            spriteGroups.health_bar.draw(windows.screen)
         spriteGroups.triggergroup.draw(windows.screen)
-        spriteGroups.finale.draw(windows.screen)
         spriteGroups.boss_group.draw(windows.screen)
         spriteGroups.untouches.draw(windows.screen)
         pygame.draw.rect(windows.screen, '#000000',

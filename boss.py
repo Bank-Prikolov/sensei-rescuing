@@ -252,7 +252,7 @@ class Boss(pygame.sprite.Sprite):
         if not self.cut:
             self.hp -= 2
             self.step = 2
-            # строчка для Саши
+            consts.bossHit += 2
             if self.hp == 20:
                 self.cut = True
                 self.attack_counter = 300

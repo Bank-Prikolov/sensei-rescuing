@@ -13,9 +13,7 @@ from itemAnimator import AnimatedIntro, AnimatedTypedText
 
 def start_screen():
     starsRecorder.firstTime()
-
-    if consts.firstTime:
-        fullscreenChanger(windows.fullscreen, True)
+    fullscreenChanger(windows.fullscreen, True)
 
     if consts.languageNow == 'rus':
         img_start = load_image(r"objects\animated\start-screen-rus-obj.png")
