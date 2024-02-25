@@ -23,7 +23,7 @@ def game_def(lvl):
     pause_btn = pauseButtonChanger()
     levelGenerator.updater()
     spriteGroups.characters.empty()
-    consts.hero = Hero(*start_coords, windows.k ** windows.fullscreen, character, consts.heroHP)
+    consts.hero = Hero(*start_coords, windows.k ** windows.fullscreen, character)
     consts.jumping = False
     consts.yspeed = 0
     running = True
@@ -44,6 +44,7 @@ def game_def(lvl):
     spriteGroups.projectilesgroup.empty()
     checkLevel = False
     while running:
+        print(consts.heroHP)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
@@ -132,7 +133,7 @@ def game_def(lvl):
                 proj = consts.hero.projectilespeed
                 pause.pause(current_seconds, len(list(spriteGroups.sloniks)), lvl, thing)
                 spriteGroups.characters.empty()
-                consts.hero = Hero(*predpause, windows.k ** windows.fullscreen, character, consts.heroHP)
+                consts.hero = Hero(*predpause, windows.k ** windows.fullscreen, character)
                 consts.hero.projectilespeed = proj
                 if consts.lookingright:
                     consts.hero.change_hero('sr', predpause)
@@ -212,7 +213,6 @@ def game_def(lvl):
                                                False) and not cheatPanel:
                     soundManager.hero_take_hit_sound()
                     consts.heroHit += 2
-                    consts.heroHP -= 1
                     consts.hitNow = True
                     consts.tmpHit = 5
                     if consts.hero.get_hit() == 0:
@@ -249,7 +249,6 @@ def game_def(lvl):
                                                False) and not cheatPanel:
                     soundManager.hero_take_hit_sound()
                     consts.heroHit += 2
-                    consts.heroHP -= 1
                     consts.hitNow = True
                     consts.tmpHit = 5
                     if consts.heroHit == 6:
@@ -272,7 +271,7 @@ def game_def(lvl):
                         consts.falling = False
                         consts.hero.projectilespeed = []
                         windows.screen.fill('#000000')
-                        consts.hero.hp = 3
+                        consts.heroHP = 3
                         levelGenerator.updater()
                         break
                     else:
@@ -357,7 +356,7 @@ def game_def(lvl):
                     consts.jumping = False
                     consts.falling = False
                     consts.hero.rect.move(0, -16)
-                    consts.hero.hp = 3
+                    consts.heroHP = 3
                     soundManager.hero_take_hit_sound()
                     consts.heroHit = 0
                     consts.bossHit = 0
