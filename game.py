@@ -17,6 +17,9 @@ from itemChanger import starsChanger, pauseButtonChanger, healthBossBarChanger, 
 def game_def(lvl):
     spriteGroups.boss_projectile_group.empty()
     consts.b_projectile_speed = []
+    spriteGroups.nmeprojectilesgroup.empty()
+    consts.projectileObj_speed = []
+
     soundManager.game_theme()
     start_coords = levelGenerator.generate_level(lvl)
     character = fileManager.heroImport()[0]
