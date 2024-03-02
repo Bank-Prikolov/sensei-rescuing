@@ -3,7 +3,6 @@ import windows
 import consts
 import menu
 import game
-import cutscenes
 import starsRecorder
 import soundManager
 from itemChanger import timeChanger
@@ -99,7 +98,7 @@ def levels_menu():
                 consts.playingMenuMusic = True
                 soundManager.stop_playback()
                 transition()
-                cutscenes.start_cutscene()
+                game.game_def(1)
 
             if event.type == pygame.USEREVENT and event.button == level2Button:
                 consts.lvlNow = 2
