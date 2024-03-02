@@ -120,6 +120,7 @@ class Boss(pygame.sprite.Sprite):
             self.attack = 0
             self.make_move()
         elif self.cut and self.hp == 20:
+            self.attack_counter = 330
             if self.looking_right:
                 self.change_act(7, self.get_coords())
             else:
@@ -336,6 +337,10 @@ class Boss(pygame.sprite.Sprite):
     def slon_attack(self):
         if not spriteGroups.sloniks:
             a = random.randint(0, 1)
+            if levelGenerator.board.get_cell(self.herocords) in [(1, 1), (12, 5)] and a:
+                a = 0
+            elif levelGenerator.board.get_cell(self.herocords) in [(1, 5), (12, 1)] and not a:
+                a = 1
             if self.looking_right:
                 self.change_act(5, self.get_coords())
             else:
