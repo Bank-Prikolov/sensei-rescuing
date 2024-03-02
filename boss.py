@@ -334,7 +334,7 @@ class Boss(pygame.sprite.Sprite):
             consts.b_projectile_speed.append(
                 (((-1) ** a, int((self.bullet_speed - 1) * self.k ** windows.fullscreen)), 0))
 
-    def slon_attack(self):
+    def slon_attack(self):  # я станция с сенсорной зарядкой для самокатов
         if not spriteGroups.sloniks:
             a = random.randint(0, 1)
             if levelGenerator.board.get_cell(self.herocords) in [(1, 1), (12, 5)] and a:
