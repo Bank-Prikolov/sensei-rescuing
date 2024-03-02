@@ -52,7 +52,6 @@ def game_def(lvl):
                 terminate()
             elif event.type == timer_event and started:
                 current_seconds += 1
-                print(current_seconds)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
                     consts.xspeed = consts.hero.xs
