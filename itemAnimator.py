@@ -139,6 +139,7 @@ class AnimatedStars(pygame.sprite.Sprite):
         self.cur_frame = 0
         self.image = self.frames[self.cur_frame]
         self.rect = self.rect.move(x, y)
+        self.delay = 0
         self.counter = 0
         self.sound = 1
 
@@ -152,12 +153,15 @@ class AnimatedStars(pygame.sprite.Sprite):
                     frame_location, self.rect.size)))
 
     def update(self, record):
-        if self.cur_frame != record * 2:
-            if self.counter == 13:
-                self.counter = 0
-                if self.sound % 2 != 0:
-                    soundManager.star_sound()
-                self.cur_frame = (self.cur_frame + 1) % len(self.frames)
-                self.image = self.frames[self.cur_frame]
-                self.sound += 1
-            self.counter += 1
+        if self.delay == 20:
+            if self.cur_frame != record * 2:
+                if self.counter == 13:
+                    self.counter = 0
+                    if self.sound % 2 != 0:
+                        soundManager.star_sound()
+                    self.cur_frame = (self.cur_frame + 1) % len(self.frames)
+                    self.image = self.frames[self.cur_frame]
+                    self.sound += 1
+                self.counter += 1
+        else:
+            self.delay += 1
