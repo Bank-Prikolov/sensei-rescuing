@@ -74,14 +74,14 @@ def healthBossBarChanger():
         img_tmp = load_image(r"objects\animated\boss-health-bar-obj.png")
         tr_tmp = pygame.transform.scale(img_tmp,
                                         (img_tmp.get_width() * 1.5, img_tmp.get_height() * 1.5))
-        healthBossBar = AnimatedHealthBar(tr_tmp, 41, 1,
-                                          windows.width // 2 - 14760 * 1.5 / 41 / 2, 18)
+        healthBossBar = AnimatedHealthBar(tr_tmp, 52, 1,
+                                          windows.width // 2 - 18720 * 1.5 / 52 / 2, 18)
     else:
         img_tmp = load_image(r"objects\animated\boss-health-bar-obj.png")
         tr_tmp = pygame.transform.scale(img_tmp,
                                         (img_tmp.get_width() * 2, img_tmp.get_height() * 2))
-        healthBossBar = AnimatedHealthBar(tr_tmp, 41, 1,
-                                          windows.width // 2 - 14760 * 2 / 41 / 2, 18 * windows.k)
+        healthBossBar = AnimatedHealthBar(tr_tmp, 52, 1,
+                                          windows.width // 2 - 18720 * 2 / 52 / 2, 18 * windows.k)
     return healthBossBar
 
 

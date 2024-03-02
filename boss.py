@@ -253,6 +253,8 @@ class Boss(pygame.sprite.Sprite):
             self.hp -= 2
             self.step = 2
             consts.bossHit += 2
+            if consts.bossHit == 20:
+                consts.bossHit += 11
             if self.hp == 20:
                 self.cut = True
                 self.attack_counter = 300
