@@ -6,6 +6,7 @@ import game_complete
 import pause
 import consts
 import windows
+import cutscenes
 import starsRecorder
 import soundManager
 import spriteGroups
@@ -271,6 +272,7 @@ def game_def(lvl):
                         consts.jumping = False
                         consts.falling = False
                         consts.hero.projectilespeed = []
+                        cutscenes.boss_win_cutscene()
                         windows.screen.fill('#000000')
                         consts.heroHP = 3
                         levelGenerator.updater()
@@ -363,6 +365,7 @@ def game_def(lvl):
                     consts.bossHit = 0
                     soundManager.hero_loose_boss_sound()
                     consts.hero.projectilespeed = []
+                    cutscenes.boss_win_cutscene()
                     windows.screen.fill('#000000')
                     levelGenerator.updater()
                 else:
