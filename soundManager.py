@@ -87,6 +87,12 @@ def boss_next_attack_sound():
     randomSound.play()
 
 
+def star_sound():
+    starSound = pygame.mixer.Sound(r"data\sounds\star-sound.mp3")
+    starSound.set_volume(consts.volS)
+    starSound.play()
+
+
 def stop_playback():
     pygame.mixer.music.stop()
 

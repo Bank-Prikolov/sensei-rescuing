@@ -140,6 +140,7 @@ class AnimatedStars(pygame.sprite.Sprite):
         self.image = self.frames[self.cur_frame]
         self.rect = self.rect.move(x, y)
         self.counter = 0
+        self.sound = 1
 
     def cut_sheet(self, sheet, columns, rows):
         self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
@@ -154,6 +155,9 @@ class AnimatedStars(pygame.sprite.Sprite):
         if self.cur_frame != record * 2:
             if self.counter == 13:
                 self.counter = 0
+                if self.sound % 2 != 0:
+                    soundManager.star_sound()
                 self.cur_frame = (self.cur_frame + 1) % len(self.frames)
                 self.image = self.frames[self.cur_frame]
+                self.sound += 1
             self.counter += 1
