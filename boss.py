@@ -175,6 +175,9 @@ class Boss(pygame.sprite.Sprite):
         elif self.attack == 5:
             if self.attack_counter in [120]:
                 self.slon_attack()
+            elif self.attack_counter > 180 and self.step:
+                soundManager.boss_take_hit_sound()
+                self.attack_counter = 418
             if self.attack_counter == 180:
                 if self.looking_right:
                     self.change_act(1, self.get_coords())

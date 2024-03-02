@@ -414,7 +414,7 @@ def game_def(lvl):
                 elif lvl == 2 and thing == 1:
                     levelGenerator.remover((7, 4), 'F')
                 elif lvl == 3 and thing == 1:
-                    levelGenerator.remover((7, 4), 'S')
+                    levelGenerator.remover((9, 6), 'S')
 
         if consts.runright or consts.runleft:
             if consts.runright:
