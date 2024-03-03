@@ -9,6 +9,7 @@ fps = 60
 # menu consts
 pause_field = None
 game_state_field = None
+backgrBossWin = None
 isSliderMusic = False
 isSliderSound = False
 lvlNow = None
