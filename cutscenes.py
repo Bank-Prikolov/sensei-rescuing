@@ -41,9 +41,5 @@ def boss_win_cutscene():
         pygame.display.flip()
 
 
-def boss_loose_cutscene():
-    pass
-
-
 def end_cutscene():
     pass
