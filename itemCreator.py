@@ -48,7 +48,7 @@ class Object:
 class Button:
     def __init__(self, x, y, width, height, image_path, hover_image_path=None, press_image_path=None, sound_path=None,
                  no_active_image_path=None, hero=None, image_get_path=None, hover_image_get_path=None,
-                 press_image_get_path=None, hover_2_image_path=None, hover_sound=None):
+                 press_image_get_path=None, hover_2_image_path=None):
         self.x = x
         self.y = y
         self.width = width

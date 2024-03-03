@@ -60,7 +60,7 @@ def start_screen():
                 spriteGroups.animatedTypedText.empty()
                 menu.main_menu()
 
-            if event.type == pygame.KEYDOWN and intro_finish:
+            if event.type == pygame.KEYDOWN and intro_finish and consts.fps != 300:
                 wanna_skip = True
 
             if (event.type == pygame.KEYDOWN and (
