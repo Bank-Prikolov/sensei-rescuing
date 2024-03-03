@@ -61,10 +61,10 @@ def slonik_take_hit_sound():
     slonikHit.play()
 
 
-def hero_loose_boss_sound():
-    slonikHit = pygame.mixer.Sound(r"data\sounds\hero-loose-boss-sound.mp3")
-    slonikHit.set_volume(consts.volS)
-    slonikHit.play()
+def hero_lose_boss_sound():
+    bossWin = pygame.mixer.Sound(r"data\sounds\boss-win-sound.mp3")
+    bossWin.set_volume(consts.volS)
+    bossWin.play()
 
 
 def boss_take_hit_sound():

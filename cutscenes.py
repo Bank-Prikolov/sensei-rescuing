@@ -18,21 +18,17 @@ def boss_greeting_cutscene():
 
 
 def boss_win_cutscene():
-    soundManager.stop_playback()
-
     field = AnimatedError(load_image(fr"cutscenes\boss-win\hero-lose-boss-field-obj.png"), 2, 1,
                           windows.width // 2 - 1290 / 4,
-                          windows.height // 2 - 513 / 2)
-    yes_btn = Button(field.x + 645 / 2 - 92 - 20, field.y + 513 - 38 - 56, 92, 38,
+                          windows.height // 2 - 448 / 2)
+    yes_btn = Button(field.x + 645 / 2 - 118, field.y + 374, 92, 38,
                      fr"cutscenes\boss-win\default-yes-btn.png",
                      fr"cutscenes\boss-win\hover-yes-btn.png",
                      "",
-                     r"data\sounds\menu-button-sound.mp3")
-    no_btn = Button(field.x + 645 / 2 + 20, field.y + 513 - 38 - 56, 92, 38,
+                     r"data\sounds\revive-sound.mp3")
+    no_btn = Button(field.x + 645 / 2 + 20, field.y + 374, 92, 38,
                     fr"cutscenes\boss-win\default-no-btn.png",
-                    fr"cutscenes\boss-win\hover-no-btn.png",
-                    "",
-                    r"data\sounds\menu-button-sound.mp3")
+                    fr"cutscenes\boss-win\hover-no-btn.png")
 
     running = True
     while running:

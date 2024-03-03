@@ -256,7 +256,8 @@ def game_def(lvl):
                     if consts.heroHit == 6:
                         consts.heroHit = 0
                         consts.bossHit = 0
-                        soundManager.hero_loose_boss_sound()
+                        soundManager.stop_playback()
+                        soundManager.hero_lose_boss_sound()
                     if consts.hero.get_hit() == 0:
                         consts.yspeed = 0
                         spriteGroups.projectilesgroup.empty()
@@ -363,7 +364,8 @@ def game_def(lvl):
                     soundManager.hero_take_hit_sound()
                     consts.heroHit = 0
                     consts.bossHit = 0
-                    soundManager.hero_loose_boss_sound()
+                    soundManager.stop_playback()
+                    soundManager.hero_lose_boss_sound()
                     consts.hero.projectilespeed = []
                     cutscenes.boss_win_cutscene()
                     windows.screen.fill('#000000')
