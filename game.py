@@ -67,7 +67,8 @@ def game_def(lvl):
                     consts.runright = True
                     consts.runleft = False
                 elif event.key == pygame.K_s:
-                    consts.sitting = True
+                    if not (consts.jumping or consts.falling):
+                        consts.yspeed = 7
                 elif event.key == pygame.K_a:
                     consts.xspeed = consts.hero.xs
                     if not consts.jumping:
@@ -81,16 +82,13 @@ def game_def(lvl):
                     consts.runleft = True
                     consts.runright = False
                 elif event.key == pygame.K_SPACE:
-                    if consts.sitting and (not (consts.jumping or consts.falling)):
-                        consts.yspeed = 7
-                    else:
-                        if (not (consts.jumping or consts.falling or consts.sitting)) or cheatPanel:
-                            consts.jumping = True
-                            consts.yspeed = -9 - 2 * cheatPanel
-                            if consts.lookingright:
-                                consts.hero.change_hero('jumpr', consts.hero.get_coords())
-                            else:
-                                consts.hero.change_hero('jumpl', consts.hero.get_coords())
+                    if (not (consts.jumping or consts.falling)) or cheatPanel:
+                        consts.jumping = True
+                        consts.yspeed = -9 - 2 * cheatPanel
+                        if consts.lookingright:
+                            consts.hero.change_hero('jumpr', consts.hero.get_coords())
+                        else:
+                            consts.hero.change_hero('jumpl', consts.hero.get_coords())
                 elif event.key == pygame.K_w:
                     if pygame.sprite.spritecollide(consts.hero, spriteGroups.finale, False):
                         thing = ''
@@ -119,8 +117,6 @@ def game_def(lvl):
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_d:
                     consts.runright = False
-                elif event.key == pygame.K_s:
-                    consts.sitting = False
                 elif event.key == pygame.K_a:
                     consts.runleft = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -218,16 +214,41 @@ def game_def(lvl):
                     consts.hitNow = True
                     consts.tmpHit = 5
                     if consts.hero.get_hit() == 0:
-                        thing = ''
-                        consts.hero.end()
-                        consts.projectileObj_speed = []
-                        spriteGroups.nmeprojectilesgroup.empty()
-                        levelGenerator.updater()
-                        spriteGroups.boss_projectile_group.empty()
-                        consts.b_projectile_speed = []
-                        started = False
-                        soundManager.stop_playback()
-                        game_over.game_over()
+                        if not (lvl == 3 and thing == 2):
+                            thing = ''
+                            consts.hero.end()
+                            consts.projectileObj_speed = []
+                            spriteGroups.nmeprojectilesgroup.empty()
+                            levelGenerator.updater()
+                            spriteGroups.boss_projectile_group.empty()
+                            consts.b_projectile_speed = []
+                            started = False
+                            soundManager.stop_playback()
+                            game_over.game_over()
+                        else:
+                            spriteGroups.projectilesgroup.empty()
+                            spriteGroups.nmeprojectilesgroup.empty()
+                            consts.projectileObj_speed = []
+                            spriteGroups.boss_projectile_group.empty()
+                            consts.b_projectile_speed = []
+                            consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
+                            consts.hero.move(0, -8)
+                            consts.runleft = False
+                            consts.runright = False
+                            consts.jumping = False
+                            consts.falling = False
+                            consts.hero.rect.move(0, -16)
+                            consts.heroHP = 3
+                            soundManager.hero_take_hit_sound()
+                            consts.heroHit = 0
+                            consts.bossHit = 0
+                            soundManager.stop_playback()
+                            soundManager.hero_lose_boss_sound()
+                            consts.hero.projectilespeed = []
+                            cutscenes.boss_win_cutscene()
+                            windows.screen.fill('#000000')
+                            levelGenerator.updater()
+                        break
                     else:
                         consts.projectileObj_speed.pop(sprite)
                         list(spriteGroups.nmeprojectilesgroup)[sprite].kill()
@@ -267,7 +288,6 @@ def game_def(lvl):
                         consts.b_projectile_speed = []
 
                         consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
-                        consts.sitting = False
                         consts.runleft = False
                         consts.runright = False
                         consts.jumping = False
@@ -354,7 +374,6 @@ def game_def(lvl):
                     consts.b_projectile_speed = []
                     consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
                     consts.hero.move(0, -8)
-                    consts.sitting = False
                     consts.runleft = False
                     consts.runright = False
                     consts.jumping = False

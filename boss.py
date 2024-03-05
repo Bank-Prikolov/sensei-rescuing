@@ -307,7 +307,7 @@ class Boss(pygame.sprite.Sprite):
         while a == self.pospoint or a == srav.index(m):
             a = random.randint(0, 4)
         self.set_coords(cordi[a][0], cordi[a][1])
-        if a in [0, 3]:
+        if a in [0, 3, 4]:
             self.change_act(0, self.get_coords())
             self.looking_right = False
         elif a in [1, 2]:
