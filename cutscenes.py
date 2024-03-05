@@ -4,7 +4,7 @@ import consts
 import game_over
 import spriteGroups
 import soundManager
-from itemCreator import Button
+from itemCreator import Button, Object
 from processHelper import terminate, load_image
 from cutsceneAnimator import AnimatedError
 
@@ -56,6 +56,7 @@ def boss_win_cutscene():
             button.check_hover(pygame.mouse.get_pos())
             button.draw(windows.screen)
 
+        consts.clock.tick(consts.fps)
         pygame.display.flip()
 
 

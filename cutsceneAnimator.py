@@ -24,7 +24,7 @@ class AnimatedError(pygame.sprite.Sprite):
                     frame_location, self.rect.size)))
 
     def update(self):
-        if self.counter == 380:
+        if self.counter == 60:
             self.counter = 0
             self.cur_frame = (self.cur_frame + 1) % len(self.frames)
             self.image = self.frames[self.cur_frame]
