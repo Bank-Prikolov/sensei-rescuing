@@ -33,6 +33,8 @@ heroHit = 0
 hitNow = False
 tmpHit = 0
 heroHP = 3
+final_countdown = False
+animend = False
 
 # characters
 wai = r'characters\hero-wai.png'

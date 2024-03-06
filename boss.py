@@ -87,14 +87,15 @@ class Boss(pygame.sprite.Sprite):
         return plist
 
     def update(self):
-        if self.herocords[0] < self.rect.x:
-            if self.looking_right:
-                self.looking_right = False
-                self.change_act(0, self.get_coords())
-        else:
-            if not self.looking_right:
-                self.looking_right = True
-                self.change_act(1, self.get_coords())
+        if not consts.final_countdown:
+            if self.herocords[0] < self.rect.x:
+                if self.looking_right:
+                    self.looking_right = False
+                    self.change_act(0, self.get_coords())
+            else:
+                if not self.looking_right:
+                    self.looking_right = True
+                    self.change_act(1, self.get_coords())
         self.herocords = [list(spriteGroups.characters)[0].rect[0] - list(spriteGroups.characters)[0].rect[2] // 2,
                           list(spriteGroups.characters)[0].rect[1] - list(spriteGroups.characters)[0].rect[3] // 2]
         levelGenerator.get_shadow(*self.rect)
@@ -113,80 +114,103 @@ class Boss(pygame.sprite.Sprite):
                     self.hitick = 0
                     self.step = 0
         self.counter = (self.counter + 1) % 8
-        if self.attack_counter == 0 and not self.cut:
-            self.attack = self.make_attack()
-        elif self.attack_counter == 419:
-            self.cut = False
-            self.attack = 0
-            self.make_move()
-        elif self.cut and self.hp == 20:
-            self.attack_counter = 330
-            if self.looking_right:
-                self.change_act(7, self.get_coords())
-            else:
-                self.change_act(6, self.get_coords())
-            self.hp -= 1
-        if self.attack == 1:
-            if self.attack_counter in [40, 80, 120]:
-                self.shoot()
-            elif self.attack_counter > 120 and self.step:
-                self.attack_counter = 418
-                soundManager.boss_take_hit_sound()
-            if self.attack_counter == 180:
-                if self.looking_right:
-                    self.change_act(1, self.get_coords())
-                else:
-                    self.change_act(0, self.get_coords())
-        elif self.attack == 2:
-            if self.attack_counter in [120, 200]:
+        if not consts.final_countdown:
+            if self.attack_counter == 0 and not self.cut:
+                self.attack = self.make_attack()
+            elif self.attack_counter == 419:
+                self.cut = False
+                self.attack = 0
                 self.make_move()
-            elif self.attack_counter in [60, 140, 220]:
-                self.shoot()
-            elif self.attack_counter > 220 and self.step:
-                self.attack_counter = 418
-                soundManager.boss_take_hit_sound()
-            if self.attack_counter == 280:
+            elif self.cut and self.hp == 20:
+                self.attack_counter = 330
                 if self.looking_right:
-                    self.change_act(1, self.get_coords())
+                    self.change_act(7, self.get_coords())
                 else:
-                    self.change_act(0, self.get_coords())
-        elif self.attack == 3:
-            if self.attack_counter in [120]:
-                self.shoot_circle()
-            elif self.attack_counter > 120 and self.step:
-                self.attack_counter = 418
-                soundManager.boss_take_hit_sound()
-            if self.attack_counter == 180:
-                if self.looking_right:
-                    self.change_act(1, self.get_coords())
-                else:
-                    self.change_act(0, self.get_coords())
-        elif self.attack == 4:
-            if self.attack_counter in [120]:
-                self.rain_attack()
-            elif self.attack_counter > 120 and self.step:
-                soundManager.boss_take_hit_sound()
-                self.attack_counter = 418
-            if self.attack_counter == 180:
-                if self.looking_right:
-                    self.change_act(1, self.get_coords())
-                else:
-                    self.change_act(0, self.get_coords())
-        elif self.attack == 5:
-            if self.attack_counter in [120]:
-                self.slon_attack()
-            elif self.attack_counter > 180 and self.step:
-                soundManager.boss_take_hit_sound()
-                self.attack_counter = 418
-            if self.attack_counter == 180:
-                if self.looking_right:
-                    self.change_act(1, self.get_coords())
-                else:
-                    self.change_act(0, self.get_coords())
+                    self.change_act(6, self.get_coords())
+                self.hp -= 1
+            if self.attack == 1:
+                if self.attack_counter in [40, 80, 120]:
+                    self.shoot()
+                elif self.attack_counter > 120 and self.step:
+                    self.attack_counter = 418
+                    soundManager.boss_take_hit_sound()
+                if self.attack_counter == 180:
+                    if self.looking_right:
+                        self.change_act(1, self.get_coords())
+                    else:
+                        self.change_act(0, self.get_coords())
+            elif self.attack == 2:
+                if self.attack_counter in [120, 200]:
+                    self.make_move()
+                elif self.attack_counter in [60, 140, 220]:
+                    self.shoot()
+                elif self.attack_counter > 220 and self.step:
+                    self.attack_counter = 418
+                    soundManager.boss_take_hit_sound()
+                if self.attack_counter == 280:
+                    if self.looking_right:
+                        self.change_act(1, self.get_coords())
+                    else:
+                        self.change_act(0, self.get_coords())
+            elif self.attack == 3:
+                if self.attack_counter in [120]:
+                    self.shoot_circle()
+                elif self.attack_counter > 120 and self.step:
+                    self.attack_counter = 418
+                    soundManager.boss_take_hit_sound()
+                if self.attack_counter == 180:
+                    if self.looking_right:
+                        self.change_act(1, self.get_coords())
+                    else:
+                        self.change_act(0, self.get_coords())
+            elif self.attack == 4:
+                if self.attack_counter in [120]:
+                    self.rain_attack()
+                elif self.attack_counter > 120 and self.step:
+                    soundManager.boss_take_hit_sound()
+                    self.attack_counter = 418
+                if self.attack_counter == 180:
+                    if self.looking_right:
+                        self.change_act(1, self.get_coords())
+                    else:
+                        self.change_act(0, self.get_coords())
+            elif self.attack == 5:
+                if self.attack_counter in [120]:
+                    self.slon_attack()
+                elif self.attack_counter > 180 and self.step:
+                    soundManager.boss_take_hit_sound()
+                    self.attack_counter = 418
+                if self.attack_counter == 180:
+                    if self.looking_right:
+                        self.change_act(1, self.get_coords())
+                    else:
+                        self.change_act(0, self.get_coords())
+            else:
+                pass
+            if self.attack_counter == 417:
+                soundManager.boss_next_attack_sound()
+
         else:
-            pass
-        if self.attack_counter == 417:
-            soundManager.boss_next_attack_sound()
+            if windows.fullscreen:
+                y = 318
+            else:
+                y = 322
+            em = 480 * self.k + windows.otstupx * windows.fullscreen, y * self.k + (
+                        windows.otstupy - 10) * windows.fullscreen
+            if self.get_coords() != em:
+                self.set_coords(*em)
+                self.attack_counter = 0
+            if not consts.animend:
+                if self.attack_counter == 180:
+                    self.change_act(9, self.get_coords())
+                elif self.attack_counter == 237:
+                    self.change_act(10, self.get_coords())
+                elif self.attack_counter == 294:
+                    self.change_act(11, self.get_coords())
+                    consts.animend = True
+            else:
+                if self.attack_counter == 419:
+                    self.kill()
         self.attack_counter = (self.attack_counter + 1) % 420
 
     def set_coords(self, x, y):
@@ -225,7 +249,7 @@ class Boss(pygame.sprite.Sprite):
             self.change_act(3, self.get_coords())
         else:
             self.change_act(2, self.get_coords())
-        if self.pospoint == 0:  # [896, 66], [480, 66]]
+        if self.pospoint == 0:
             xrange = [-1]
             yrange = [-1]
         elif self.pospoint == 1:
@@ -270,22 +294,7 @@ class Boss(pygame.sprite.Sprite):
         self.act = act
         self.frames = []
         self.cur_frame = 0
-        if act == 0:
-            self.frames = self.cut_sheet(self.sprites, self.k, self.act)
-        elif act == 1:
-            self.frames = self.cut_sheet(self.sprites, self.k, self.act)
-        elif act == 2:
-            self.frames = self.cut_sheet(self.sprites, self.k, self.act)
-        elif act == 3:
-            self.frames = self.cut_sheet(self.sprites, self.k, self.act)
-        elif act == 4:
-            self.frames = self.cut_sheet(self.sprites, self.k, self.act)
-        elif act == 5:
-            self.frames = self.cut_sheet(self.sprites, self.k, self.act)
-        elif act == 6:
-            self.frames = self.cut_sheet(self.sprites, self.k, self.act)
-        elif act == 7:
-            self.frames = self.cut_sheet(self.sprites, self.k, self.act)
+        self.frames = self.cut_sheet(self.sprites, self.k, self.act)
         self.image = self.frames[self.cur_frame]
         self.rect = self.rect.move(*pos)
 

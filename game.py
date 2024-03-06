@@ -29,6 +29,8 @@ def game_def(lvl):
     spriteGroups.characters.empty()
     consts.hero = Hero(*start_coords, windows.k ** windows.fullscreen, character)
     consts.jumping = False
+    consts.final_countdown = False
+    consts.animend = False
     consts.yspeed = 0
     running = True
     spriteGroups.characters.draw(windows.screen)
@@ -187,14 +189,21 @@ def game_def(lvl):
 
                 if pygame.sprite.spritecollide(list(spriteGroups.projectilesgroup)[sprite], spriteGroups.boss_group,
                                                False):
-                    if (pygame.sprite.spritecollide(list(spriteGroups.projectilesgroup)[sprite],
-                                                    spriteGroups.boss_group, False)[0].get_hit() <= 0):
-                        pygame.draw.rect(windows.screen, (36, 34, 52), (
-                            list(spriteGroups.boss_group)[sprite].rect))
-                        spriteGroups.boss_group.empty()
-                    consts.hero.projectilespeed.pop(sprite)
-                    list(spriteGroups.projectilesgroup)[sprite].kill()
-                    break
+                    if not consts.final_countdown:
+                        if (pygame.sprite.spritecollide(list(spriteGroups.projectilesgroup)[sprite],
+                                                        spriteGroups.boss_group, False)[0].get_hit() <= 0):
+                            consts.final_countdown = True
+                            spriteGroups.sloniks.empty()
+                            consts.projectileObj_speed = []
+                            bo55 = pygame.sprite.spritecollide(list(spriteGroups.projectilesgroup)[sprite],
+                                                               spriteGroups.boss_group, False)[0]
+                            bo55.change_act(8, bo55.get_coords())
+                            spriteGroups.nmeprojectilesgroup.empty()
+                            spriteGroups.boss_projectile_group.empty()
+                            levelGenerator.updater()
+                        consts.hero.projectilespeed.pop(sprite)
+                        list(spriteGroups.projectilesgroup)[sprite].kill()
+                        break
 
                 if (pygame.sprite.spritecollide(list(spriteGroups.projectilesgroup)[sprite], spriteGroups.toches, False)
                         or pygame.sprite.spritecollide(list(spriteGroups.projectilesgroup)[sprite],
@@ -367,41 +376,45 @@ def game_def(lvl):
             if (pygame.sprite.spritecollide(consts.hero, spriteGroups.thorngroup, False)
                     or pygame.sprite.spritecollide(consts.hero, spriteGroups.sloniks, False)
                     or pygame.sprite.spritecollide(consts.hero, spriteGroups.boss_group, False)):
-                if lvl == 3 and thing == 2:
-                    consts.yspeed = 0
-                    spriteGroups.projectilesgroup.empty()
-                    spriteGroups.nmeprojectilesgroup.empty()
-                    consts.projectileObj_speed = []
-                    spriteGroups.boss_projectile_group.empty()
-                    consts.b_projectile_speed = []
-                    consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
-                    consts.hero.move(0, -8)
-                    consts.runleft = False
-                    consts.runright = False
-                    consts.jumping = False
-                    consts.falling = False
-                    consts.hero.rect.move(0, -16)
-                    consts.heroHP = 3
-                    soundManager.hero_take_hit_sound()
-                    consts.heroHit = 0
-                    consts.bossHit = 0
-                    soundManager.stop_playback()
-                    soundManager.hero_lose_boss_sound()
-                    consts.hero.projectilespeed = []
-                    cutscenes.boss_win_cutscene()
-                    windows.screen.fill('#000000')
-                    levelGenerator.updater()
+                if pygame.sprite.spritecollide(consts.hero, spriteGroups.boss_group, False) and consts.final_countdown:
+                    pass
                 else:
-                    thing = ''
-                    consts.hero.end()
-                    consts.projectileObj_speed = []
-                    spriteGroups.nmeprojectilesgroup.empty()
-                    levelGenerator.updater()
-                    spriteGroups.boss_projectile_group.empty()
-                    consts.b_projectile_speed = []
-                    started = False
-                    soundManager.stop_playback()
-                    game_over.game_over()
+                    if lvl == 3 and thing == 2:
+                        consts.final_countdown = False
+                        consts.yspeed = 0
+                        spriteGroups.projectilesgroup.empty()
+                        spriteGroups.nmeprojectilesgroup.empty()
+                        consts.projectileObj_speed = []
+                        spriteGroups.boss_projectile_group.empty()
+                        consts.b_projectile_speed = []
+                        consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
+                        consts.hero.move(0, -8)
+                        consts.runleft = False
+                        consts.runright = False
+                        consts.jumping = False
+                        consts.falling = False
+                        consts.hero.rect.move(0, -16)
+                        consts.heroHP = 3
+                        soundManager.hero_take_hit_sound()
+                        consts.heroHit = 0
+                        consts.bossHit = 0
+                        soundManager.stop_playback()
+                        soundManager.hero_lose_boss_sound()
+                        consts.hero.projectilespeed = []
+                        cutscenes.boss_win_cutscene()
+                        windows.screen.fill('#000000')
+                        levelGenerator.updater()
+                    else:
+                        thing = ''
+                        consts.hero.end()
+                        consts.projectileObj_speed = []
+                        spriteGroups.nmeprojectilesgroup.empty()
+                        levelGenerator.updater()
+                        spriteGroups.boss_projectile_group.empty()
+                        consts.b_projectile_speed = []
+                        started = False
+                        soundManager.stop_playback()
+                        game_over.game_over()
         if pygame.sprite.spritecollide(consts.hero, spriteGroups.triggergroup, False):
             if lvl == 3:
                 levelGenerator.remover(levelGenerator.board.get_cell(
@@ -455,13 +468,14 @@ def game_def(lvl):
             consts.tmpHit -= 1
         spriteGroups.hleb.update()
         spriteGroups.hleb.draw(windows.screen)
-        spriteGroups.projectilesgroup.draw(windows.screen)
         spriteGroups.finale.draw(windows.screen)
         consts.hero.update()
+        spriteGroups.boss_group.update()
         spriteGroups.breakgroup.draw(windows.screen)
+        spriteGroups.boss_group.draw(windows.screen)
+        spriteGroups.projectilesgroup.draw(windows.screen)
         spriteGroups.characters.draw(windows.screen)
         spriteGroups.sloniks.update()
-        spriteGroups.boss_group.update()
         spriteGroups.sloniks.draw(windows.screen)
         heroHearts.update(consts.heroHit)
         spriteGroups.hero_health.draw(windows.screen)
@@ -469,7 +483,6 @@ def game_def(lvl):
             healthBossBar.update(consts.bossHit)
             spriteGroups.health_bar.draw(windows.screen)
         spriteGroups.triggergroup.draw(windows.screen)
-        spriteGroups.boss_group.draw(windows.screen)
         spriteGroups.untouches.draw(windows.screen)
         pygame.draw.rect(windows.screen, '#000000',
                          (0, 0, windows.otstupx ** windows.fullscreen, windows.fullsize[1] ** windows.fullscreen))
