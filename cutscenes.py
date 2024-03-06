@@ -10,7 +10,22 @@ from cutsceneAnimator import AnimatedError
 
 
 def hleb_greeting_cutscene():
-    pass
+    field = Object(windows.width - 1016, windows.height - 696, 806, 114,
+                   r"cutscenes\hleb-greeting\test.png")
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminate()
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                running = False
+
+        field.draw(windows.screen)
+
+        consts.clock.tick(consts.fps)
+        pygame.display.flip()
 
 
 def boss_greeting_cutscene():

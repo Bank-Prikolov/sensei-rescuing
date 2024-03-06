@@ -139,6 +139,8 @@ def game_def(lvl):
                     consts.hero.change_hero('sl', predpause)
                 levelGenerator.rescreen()
                 levelGenerator.updater()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+                cutscenes.hleb_greeting_cutscene()
 
             pause_btn.handle_event(event, consts.volS)
 
