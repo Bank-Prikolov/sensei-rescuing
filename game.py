@@ -33,6 +33,7 @@ def game_def(lvl):
     consts.animend = False
     consts.yspeed = 0
     running = True
+    keyboardUnlock = False if lvl == 1 else True
     spriteGroups.characters.draw(windows.screen)
     thing = ''
     healthBossBar = healthBossBarChanger()
@@ -55,7 +56,7 @@ def game_def(lvl):
                 terminate()
             elif event.type == timer_event and started:
                 current_seconds += 1
-            elif event.type == pygame.KEYDOWN:
+            elif event.type == pygame.KEYDOWN and keyboardUnlock:
                 if event.key == pygame.K_d:
                     consts.xspeed = consts.hero.xs
                     if not consts.jumping:
@@ -141,8 +142,6 @@ def game_def(lvl):
                     consts.hero.change_hero('sl', predpause)
                 levelGenerator.rescreen()
                 levelGenerator.updater()
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
-                cutscenes.hleb_greeting_cutscene()
 
             pause_btn.handle_event(event, consts.volS)
 
@@ -489,5 +488,11 @@ def game_def(lvl):
         pygame.draw.rect(windows.screen, '#000000',
                          (windows.fullsize[0] - windows.otstupx, 0, windows.fullsize[0] ** windows.fullscreen,
                           windows.fullsize[1] ** windows.fullscreen))
+
+        if lvl == 1 and consts.hero.get_coords() == start_coords and not keyboardUnlock:
+            cutscenes.hleb_greeting_cutscene()
+            levelGenerator.updater()
+            keyboardUnlock = True
+
         consts.clock.tick(consts.fps)
         pygame.display.flip()

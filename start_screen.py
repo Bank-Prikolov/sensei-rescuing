@@ -1,5 +1,5 @@
 import pygame
-import menu
+import loading
 import windows
 import consts
 import starsRecorder
@@ -57,8 +57,9 @@ def start_screen():
                 soundManager.skala_sound()
 
             if event.type == pygame.USEREVENT and event.button == da_btn:
+                running = False
                 spriteGroups.animatedTypedText.empty()
-                menu.main_menu()
+                loading.loading_menu()
 
             if event.type == pygame.KEYDOWN and intro_finish and consts.fps != 300:
                 wanna_skip = True

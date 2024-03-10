@@ -93,6 +93,12 @@ def star_sound():
     starSound.play()
 
 
+def talking_sound():
+    talkingSound = pygame.mixer.Sound(r"data\sounds\talking-sound.mp3")
+    talkingSound.set_volume(consts.volS)
+    talkingSound.play()
+
+
 def stop_playback():
     pygame.mixer.music.stop()
 

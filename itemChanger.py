@@ -26,7 +26,7 @@ def fullscreenChanger(fullscreen, ft=False):
                                          r"objects\without text\games-window-obj.png")
         consts.backgrBossWin = Object(windows.otstupx + 8, windows.height - 1072,
                                       windows.width - windows.otstupx * 2 - 16, 1064,
-                                      r"cutscenes\boss-win\hero-lose-boss-backgr-obj.png")
+                                      r"cutscenes\boss-win\boss-win-backgr-obj.png")
     else:
         if not ft:
             windows.width, windows.height = windows.size
@@ -37,7 +37,7 @@ def fullscreenChanger(fullscreen, ft=False):
         consts.game_state_field = Object(windows.width - 1016, windows.height - 696, 1008, 688,
                                          r"objects\without text\games-window-obj.png")
         consts.backgrBossWin = Object(windows.width - 1016, windows.height - 696, 1008, 688,
-                                      r"cutscenes\boss-win\hero-lose-boss-backgr-obj.png")
+                                      r"cutscenes\boss-win\boss-win-backgr-obj.png")
 
 
 # game changers

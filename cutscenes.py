@@ -4,16 +4,23 @@ import consts
 import game_over
 import spriteGroups
 import soundManager
-from itemCreator import Button, Object
+import levelGenerator
+from itemCreator import Button
 from processHelper import terminate, load_image
-from cutsceneAnimator import AnimatedError
+from cutsceneAnimator import AnimatedError, AnimatedDialogue
 
 
 def hleb_greeting_cutscene():
-    field = Object(windows.width - 1016, windows.height - 696, 806, 114,
-                   r"cutscenes\hleb-greeting\test.png")
-
+    dialogueWaiHleb = AnimatedDialogue(consts.WaiHleb,
+                                              865, 1,
+                                              windows.width // 2 - 697190 / 865 / 2,
+                                              18)
     running = True
+    consts.hero.change_hero('r', consts.hero.get_coords())
+    consts.runright = True
+    consts.xspeed = 1.9
+    consts.lookingright = 1
+    dialogueStart = False
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -22,8 +29,23 @@ def hleb_greeting_cutscene():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
 
-        field.draw(windows.screen)
+        if consts.hero.get_coords()[0] != 154:
+            consts.hero.move(consts.xspeed * windows.k ** windows.fullscreen, 0)
+        else:
+            consts.xspeed = 0
+            consts.runright = False
+            dialogueStart = True
 
+        if dialogueStart:
+            dialogueWaiHleb.hleb_greeting_update()
+            spriteGroups.animatedDialogue.draw(windows.screen)
+
+        spriteGroups.hleb.update()
+        spriteGroups.hleb.draw(windows.screen)
+        levelGenerator.get_shadow(*consts.hero.get_coords(), *consts.hero.get_size())
+        spriteGroups.shadowgroup.draw(windows.screen)
+        consts.hero.update()
+        spriteGroups.characters.draw(windows.screen)
         consts.clock.tick(consts.fps)
         pygame.display.flip()
 
@@ -33,7 +55,7 @@ def boss_greeting_cutscene():
 
 
 def boss_win_cutscene():
-    field = AnimatedError(load_image(fr"cutscenes\boss-win\hero-lose-boss-field-obj.png"), 2, 1,
+    field = AnimatedError(load_image(fr"cutscenes\boss-win\boss-win-field-obj.png"), 2, 1,
                           windows.width // 2 - 1290 / 4,
                           windows.height // 2 - 448 / 2)
     yes_btn = Button(field.x + 645 / 2 - 118, field.y + 374, 92, 38,

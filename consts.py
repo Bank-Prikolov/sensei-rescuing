@@ -35,6 +35,19 @@ tmpHit = 0
 heroHP = 3
 final_countdown = False
 animend = False
+WaiHleb = None
+StrongestHleb = None
+WaiBossGreeting = None
+StrongestBossGreeting = None
+WaiBossEnding = None
+StrongestBossEnding = None
+WaiHleb_FS = None
+StrongestHleb_FS = None
+WaiBossGreeting_FS = None
+StrongestBossGreeting_FS = None
+WaiBossEnding_FS = None
+StrongestBossEnding_FS = None
+
 
 # characters
 wai = r'characters\hero-wai.png'

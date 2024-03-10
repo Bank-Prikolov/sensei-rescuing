@@ -6,9 +6,10 @@ animatedIntro = pygame.sprite.Group()
 animatedHero = pygame.sprite.Group()
 animatedStars = pygame.sprite.Group()
 animatedError = pygame.sprite.Group()
+animatedFight = pygame.sprite.Group()
+animatedDialogue = pygame.sprite.Group()
 
 # game sprite groups
-all_sprites = list()
 toches = pygame.sprite.Group()
 bgroup = pygame.sprite.Group()
 platformgroup = pygame.sprite.Group()
