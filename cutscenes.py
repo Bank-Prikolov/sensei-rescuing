@@ -12,13 +12,13 @@ from cutsceneAnimator import AnimatedError, AnimatedDialogue
 
 def hleb_greeting_cutscene():
     dialogueWaiHleb = AnimatedDialogue(consts.WaiHleb,
-                                              865, 1,
-                                              windows.width // 2 - 697190 / 865 / 2,
-                                              18)
+                                       865, 1,
+                                       windows.width // 2 - 697190 / 865 / 2,
+                                       18)
     running = True
     consts.hero.change_hero('r', consts.hero.get_coords())
     consts.runright = True
-    consts.xspeed = 1.9
+    consts.xspeed = 2
     consts.lookingright = 1
     dialogueStart = False
     while running:
@@ -51,7 +51,27 @@ def hleb_greeting_cutscene():
 
 
 def boss_greeting_cutscene():
-    pass
+    dialogueWaiBossGreeting = AnimatedDialogue(consts.WaiBossGreeting,
+                                       865, 1,
+                                       windows.width // 2 - 697190 / 865 / 2,
+                                       18)
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminate()
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                running = False
+
+        dialogueWaiBossGreeting.hleb_greeting_update()
+        spriteGroups.animatedDialogue.draw(windows.screen)
+        # levelGenerator.get_shadow(*consts.hero.get_coords(), *consts.hero.get_size())
+        # spriteGroups.shadowgroup.draw(windows.screen)
+        consts.hero.update()
+        spriteGroups.characters.draw(windows.screen)
+        consts.clock.tick(consts.fps)
+        pygame.display.flip()
 
 
 def boss_win_cutscene():

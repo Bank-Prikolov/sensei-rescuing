@@ -1,8 +1,12 @@
 import pygame
+import soundManager
+import spriteGroups
 import windows
 import consts
-import threading
 import menu
+import threading
+from itemCreator import Object
+from itemAnimator import AnimatedDots
 from processHelper import load_image, terminate
 
 
@@ -34,6 +38,17 @@ def loading_menu():
     loadingItems = threading.Thread(target=loading_items)
     loadingItems.start()
 
+    soundManager.menu_theme()
+
+    field = Object(windows.width // 2 - 350 // 2, windows.height // 2 - 170 // 2, 350, 170,
+                   fr"objects\without text\loading-field-obj.png")
+    title = Object(
+        field.x + field.width // 2 - 286 / 2 if consts.languageNow == 'rus' else field.x + field.width // 2 - 254 / 2,
+        field.y + 30, 286 if consts.languageNow == 'rus' else 254, 58,
+        fr"objects\{consts.languageNow}\loading-title-obj.png")
+    dots = AnimatedDots(load_image(r"objects\animated\dots-obj.png"), 4, 1, field.x + field.width // 2 - 544 / 4 / 2,
+                        field.y + field.height - 40 - 30)
+
     running = True
     while running:
 
@@ -46,4 +61,10 @@ def loading_menu():
         if not loadingItems.is_alive():
             menu.main_menu()
 
+        field.draw(windows.screen)
+        title.draw(windows.screen)
+        dots.update()
+        spriteGroups.animatedDots.draw(windows.screen)
+
+        consts.clock.tick(consts.fps)
         pygame.display.flip()
