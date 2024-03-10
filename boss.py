@@ -210,7 +210,7 @@ class Boss(pygame.sprite.Sprite):
                     consts.animend = True
             else:
                 if self.attack_counter == 419:
-                    self.kill()
+                    consts.end_cs = True
         self.attack_counter = (self.attack_counter + 1) % 420
 
     def set_coords(self, x, y):

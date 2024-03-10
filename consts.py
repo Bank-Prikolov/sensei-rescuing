@@ -33,6 +33,7 @@ heroHit = 0
 hitNow = False
 tmpHit = 0
 heroHP = 3
+end_cs = False
 final_countdown = False
 animend = False
 WaiHleb = None

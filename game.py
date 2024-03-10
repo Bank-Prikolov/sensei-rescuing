@@ -22,6 +22,7 @@ def game_def(lvl):
     consts.projectileObj_speed = []
 
     soundManager.game_theme()
+    greeting = False
     start_coords = levelGenerator.generate_level(lvl)
     character = fileManager.heroImport()[0]
     pause_btn = pauseButtonChanger()
@@ -429,8 +430,9 @@ def game_def(lvl):
                 levelGenerator.remover((14, 10), 'C')
                 levelGenerator.remover((11, 10))
 
-        if not spriteGroups.boss_group:
+        if not spriteGroups.boss_group or consts.end_cs:
             if lvl == 3 and thing == 2:
+                cutscenes.boss_lose_cutscene(character)
                 consts.hero.end()
                 spriteGroups.boss_projectile_group.empty()
                 consts.b_projectile_speed = []
@@ -490,9 +492,14 @@ def game_def(lvl):
                           windows.fullsize[1] ** windows.fullscreen))
 
         if lvl == 1 and consts.hero.get_coords() == start_coords and not keyboardUnlock:
-            cutscenes.hleb_greeting_cutscene()
+            cutscenes.hleb_greeting_cutscene(character)
             levelGenerator.updater()
             keyboardUnlock = True
+
+        if lvl == 3 and thing == 2 and not greeting:
+            cutscenes.boss_greeting_cutscene(character)
+            levelGenerator.updater()
+            greeting = True
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()
