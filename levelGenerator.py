@@ -251,6 +251,8 @@ def updater():
     global board
     spriteGroups.bgroup.draw(windows.screen)
     board.render(windows.screen)
+    spriteGroups.hero_health.draw(windows.screen)
+    consts.pause_btn.drawPauseBtn(windows.screen, consts.hitNow)
 
 
 def get_shadow(x, y, w, h):

@@ -1,4 +1,6 @@
 import pygame
+
+import consts
 import soundManager
 import spriteGroups
 
@@ -44,6 +46,12 @@ class AnimatedDialogue(pygame.sprite.Sprite):
         self.rect = self.rect.move(x, y)
         self.counter = 0
         self.sound = 0
+        self.tmp = 0
+        self.talksWithHleb = [13, 39, 105, 145, 195, 206, 255, 333, 406, 444, 497, 531, 548, 610, 635, 663, 728, 784,
+                              810, 827, 854, 864]
+        self.talksWithBossGreeting = [13, 38, 52, 78]
+        self.talksWithBossEnding = [27, 41, 73, 123, 159, 170]
+        consts.nextFrames = True
 
     def cut_sheet(self, sheet, columns, rows):
         self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
@@ -54,13 +62,30 @@ class AnimatedDialogue(pygame.sprite.Sprite):
                 self.frames.append(sheet.subsurface(pygame.Rect(
                     frame_location, self.rect.size)))
 
-    def hleb_greeting_update(self):
-        if self.counter == 3:
-            if self.sound == 6:
-                soundManager.talking_sound()
-                self.sound = 0
-            self.cur_frame = (self.cur_frame + 1) % len(self.frames)
-            self.image = self.frames[self.cur_frame]
-            self.counter = 0
-        self.counter += 1
-        self.sound += 1
+    def dialogue_update(self, whatCS):
+        if consts.nextFrames:
+            if self.counter == 5:
+                if self.sound == 5:
+                    soundManager.talking_sound()
+                    self.sound = 0
+                self.cur_frame = (self.cur_frame + 1) % len(self.frames)
+                self.image = self.frames[self.cur_frame]
+                self.counter = 0
+            self.counter += 1
+            self.sound += 1
+        if consts.nextFrames:
+            if whatCS == 'hg':
+                if self.cur_frame == self.talksWithHleb[self.tmp]:
+                    self.counter = 5
+                    self.tmp += 1
+                    consts.nextFrames = False
+            if whatCS == 'bg':
+                if self.cur_frame == self.talksWithBossGreeting[self.tmp]:
+                    self.counter = 5
+                    self.tmp += 1
+                    consts.nextFrames = False
+            if whatCS == 'be':
+                if self.cur_frame == self.talksWithBossEnding[self.tmp]:
+                    self.counter = 5
+                    self.tmp += 1
+                    consts.nextFrames = False

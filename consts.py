@@ -48,6 +48,8 @@ WaiBossGreeting_FS = None
 StrongestBossGreeting_FS = None
 WaiBossEnding_FS = None
 StrongestBossEnding_FS = None
+nextFrames = True
+pause_btn = None
 
 
 # characters

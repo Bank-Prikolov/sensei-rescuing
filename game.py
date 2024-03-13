@@ -25,7 +25,7 @@ def game_def(lvl):
     greeting = False
     start_coords = levelGenerator.generate_level(lvl)
     character = fileManager.heroImport()[0]
-    pause_btn = pauseButtonChanger()
+    consts.pause_btn = pauseButtonChanger()
     levelGenerator.updater()
     spriteGroups.characters.empty()
     consts.hero = Hero(*start_coords, windows.k ** windows.fullscreen, character)
@@ -129,7 +129,7 @@ def game_def(lvl):
                     consts.hero.xs = 3 * 5 ** cheatPanel
                     consts.hero.projectile_speed = 8 * 2 ** cheatPanel
             if ((event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE) or
-                    (event.type == pygame.USEREVENT and event.button == pause_btn)):
+                    (event.type == pygame.USEREVENT and event.button == consts.pause_btn)):
                 consts.xspeed = 0
                 predpause = consts.hero.get_coords()
                 proj = consts.hero.projectilespeed
@@ -144,7 +144,7 @@ def game_def(lvl):
                 levelGenerator.rescreen()
                 levelGenerator.updater()
 
-            pause_btn.handle_event(event, consts.volS)
+            consts.pause_btn.handle_event(event, consts.volS)
 
         if pygame.sprite.spritecollide(consts.hero, spriteGroups.changegroup, False):
             if thing == '':
@@ -439,7 +439,6 @@ def game_def(lvl):
                 spriteGroups.boss_projectile_group.empty()
                 consts.b_projectile_speed = []
                 thing = ''
-                levelGenerator.updater()
                 started = False
                 record = starsChanger(lvl, current_seconds)
                 if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
@@ -463,8 +462,8 @@ def game_def(lvl):
         else:
             consts.xspeed = 0
 
-        pause_btn.check_hover(pygame.mouse.get_pos())
-        pause_btn.drawPauseBtn(windows.screen, consts.hitNow)
+        consts.pause_btn.check_hover(pygame.mouse.get_pos())
+        consts.pause_btn.drawPauseBtn(windows.screen, consts.hitNow)
         if consts.tmpHit == 0:
             consts.hitNow = False
         else:
@@ -495,14 +494,12 @@ def game_def(lvl):
 
         if lvl == 1 and consts.hero.get_coords() == start_coords and not keyboardUnlock:
             cutscenes.hleb_greeting_cutscene(character)
-            levelGenerator.updater()
             keyboardUnlock = True
 
         if lvl == 3 and thing == 2 and not greeting:
             list(spriteGroups.boss_group)[0].cutscene = 1
             cutscenes.boss_greeting_cutscene(character)
             list(spriteGroups.boss_group)[0].cutscene = 0
-            levelGenerator.updater()
             greeting = True
 
         consts.clock.tick(consts.fps)
