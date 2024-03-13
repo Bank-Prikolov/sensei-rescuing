@@ -5,6 +5,7 @@ import windows
 import consts
 import soundManager
 import spriteGroups
+import levelGenerator
 from processHelper import load_image, terminate, transition
 from itemCreator import Button
 from itemAnimator import AnimatedTypedText
@@ -52,6 +53,10 @@ def game_over():
                 spriteGroups.animatedTypedText.empty()
                 transition()
                 game.game_def(consts.lvlNow)
+
+            if event.type == pygame.WINDOWEXPOSED:
+                levelGenerator.rescreen()
+                levelGenerator.updater()
 
             for button in [repeat_btn, to_lvlmenu_btn]:
                 button.handle_event(event, consts.volS)

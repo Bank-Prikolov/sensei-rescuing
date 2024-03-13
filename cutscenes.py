@@ -13,18 +13,18 @@ from cutsceneAnimator import AnimatedError, AnimatedDialogue
 def hleb_greeting_cutscene(character):
     if not windows.fullscreen:
         dialogueWaiHleb = AnimatedDialogue((consts.WaiHleb if character == 0 else consts.StrongestHleb),
-                                        865, 1,
-                                        windows.width // 2 - 697190 / 865 / 2,
-                                        18)
+                                           865, 1,
+                                           windows.width // 2 - 697190 / 865 / 2,
+                                           18)
     else:
         dialogueWaiHleb = AnimatedDialogue((consts.WaiHleb_FS if character == 0 else consts.StrongestHleb_FS),
-                                        865, 1,
-                                        windows.width // 2 - 697190 * 1.5 / 865 / 2,
-                                        18 * 1.5)
+                                           865, 1,
+                                           windows.width // 2 - 697190 * 1.5 / 865 / 2,
+                                           18 * 1.5)
     running = True
     consts.hero.change_hero('r', consts.hero.get_coords())
     consts.runright = True
-    consts.xspeed = 2
+    consts.xspeed = 1
     consts.lookingright = 1
     dialogueStart = False
     while running:
@@ -36,6 +36,10 @@ def hleb_greeting_cutscene(character):
                 running = False
                 spriteGroups.animatedDialogue.empty()
 
+            if event.type == pygame.WINDOWEXPOSED:
+                levelGenerator.rescreen()
+                levelGenerator.updater()
+
         if consts.hero.get_coords()[0] != (154 if not windows.fullscreen else 438):
             consts.hero.move(consts.xspeed * windows.k ** windows.fullscreen, 0)
         else:
@@ -43,12 +47,14 @@ def hleb_greeting_cutscene(character):
             consts.runright = False
             dialogueStart = True
 
+        # spriteGroups.sloniks.update()
+        # spriteGroups.sloniks.draw(windows.screen)
         if dialogueStart:
             dialogueWaiHleb.hleb_greeting_update()
             spriteGroups.animatedDialogue.draw(windows.screen)
-
         spriteGroups.hleb.update()
         spriteGroups.hleb.draw(windows.screen)
+        spriteGroups.breakgroup.draw(windows.screen)
         levelGenerator.get_shadow(*consts.hero.get_coords(), *consts.hero.get_size())
         spriteGroups.shadowgroup.draw(windows.screen)
         consts.hero.update()
@@ -84,14 +90,18 @@ def boss_greeting_cutscene(character):
                 running = False
                 spriteGroups.animatedDialogue.empty()
 
+            if event.type == pygame.WINDOWEXPOSED:
+                levelGenerator.rescreen()
+                levelGenerator.updater()
+
         dialogueWaiBossGreeting.hleb_greeting_update()
         spriteGroups.animatedDialogue.draw(windows.screen)
         levelGenerator.get_shadow(*consts.hero.get_coords(), *consts.hero.get_size())
         spriteGroups.shadowgroup.draw(windows.screen)
         consts.hero.update()
         spriteGroups.characters.draw(windows.screen)
-        # spriteGroups.boss_group.update()
-        # spriteGroups.boss_group.draw(windows.screen)
+        spriteGroups.boss_group.update()
+        spriteGroups.boss_group.draw(windows.screen)
         consts.clock.tick(consts.fps)
         pygame.display.flip()
 
@@ -123,6 +133,10 @@ def boss_win_cutscene():
             if event.type == pygame.USEREVENT and event.button == no_btn:
                 spriteGroups.animatedError.empty()
                 game_over.game_over()
+
+            if event.type == pygame.WINDOWEXPOSED:
+                levelGenerator.rescreen()
+                levelGenerator.updater()
 
             for button in [yes_btn, no_btn]:
                 button.handle_event(event, consts.volS)
@@ -165,13 +179,18 @@ def boss_lose_cutscene(character):
                 running = False
                 spriteGroups.animatedDialogue.empty()
 
+            if event.type == pygame.WINDOWEXPOSED:
+                levelGenerator.rescreen()
+                levelGenerator.updater()
+
         levelGenerator.get_shadow(*consts.hero.get_coords(), *consts.hero.get_size())
         spriteGroups.shadowgroup.draw(windows.screen)
         consts.hero.update()
         spriteGroups.characters.draw(windows.screen)
         dialogueWaiBossLose.hleb_greeting_update()
+        spriteGroups.breakgroup.draw(windows.screen)
         spriteGroups.animatedDialogue.draw(windows.screen)
-        # spriteGroups.boss_group.update()
-        # spriteGroups.boss_group.draw(windows.screen)
+        spriteGroups.boss_group.update()
+        spriteGroups.boss_group.draw(windows.screen)
         consts.clock.tick(consts.fps)
         pygame.display.flip()

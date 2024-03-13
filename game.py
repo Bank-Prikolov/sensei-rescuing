@@ -20,7 +20,7 @@ def game_def(lvl):
     consts.b_projectile_speed = []
     spriteGroups.nmeprojectilesgroup.empty()
     consts.projectileObj_speed = []
-
+    consts.end_cs = False
     soundManager.game_theme()
     greeting = False
     start_coords = levelGenerator.generate_level(lvl)
@@ -432,7 +432,9 @@ def game_def(lvl):
 
         if not spriteGroups.boss_group or consts.end_cs:
             if lvl == 3 and thing == 2:
+                list(spriteGroups.boss_group)[0].cutscene = 1
                 cutscenes.boss_lose_cutscene(character)
+                list(spriteGroups.boss_group)[0].cutscene = 0
                 consts.hero.end()
                 spriteGroups.boss_projectile_group.empty()
                 consts.b_projectile_speed = []
@@ -497,7 +499,9 @@ def game_def(lvl):
             keyboardUnlock = True
 
         if lvl == 3 and thing == 2 and not greeting:
+            list(spriteGroups.boss_group)[0].cutscene = 1
             cutscenes.boss_greeting_cutscene(character)
+            list(spriteGroups.boss_group)[0].cutscene = 0
             levelGenerator.updater()
             greeting = True
 

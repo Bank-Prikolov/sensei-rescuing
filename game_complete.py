@@ -6,6 +6,7 @@ import consts
 import starsRecorder
 import soundManager
 import spriteGroups
+import levelGenerator
 from itemCreator import Button
 from processHelper import load_image, terminate, transition
 from itemAnimator import AnimatedTypedText, AnimatedStars
@@ -64,6 +65,10 @@ def game_complete():
                 spriteGroups.animatedTypedText.empty()
                 transition()
                 game.game_def(consts.lvlNow)
+
+            if event.type == pygame.WINDOWEXPOSED:
+                levelGenerator.rescreen()
+                levelGenerator.updater()
 
             for button in [repeat_btn, to_lvlmenu_btn]:
                 button.handle_event(event, consts.volS)

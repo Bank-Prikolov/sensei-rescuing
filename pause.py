@@ -3,6 +3,7 @@ import consts
 import levels_menu
 import game
 import windows
+import levelGenerator
 from processHelper import terminate, transition
 from itemCreator import Object, Button
 from itemChanger import volumeChanger
@@ -124,6 +125,10 @@ def pause(time, sloniks, level, thing):
                 if consts.isSliderMusic or consts.isSliderSound:
                     if consts.isSliderMusic or consts.isSliderSound:
                         volumeChanger(event, music_slider_btn, music_slider_obj, sound_slider_btn, sound_slider_obj)
+
+            if event.type == pygame.WINDOWEXPOSED:
+                levelGenerator.rescreen()
+                levelGenerator.updater()
 
             for button in [repeat_btn, to_lvlmenu_btn, play_btn]:
                 button.handle_event(event, consts.volS)
