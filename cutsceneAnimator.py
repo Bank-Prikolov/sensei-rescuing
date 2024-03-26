@@ -45,7 +45,6 @@ class AnimatedDialogue(pygame.sprite.Sprite):
         self.image = self.frames[self.cur_frame]
         self.rect = self.rect.move(x, y)
         self.counter = 0
-        self.sound = 0
         self.tmp = 0
         self.talksWithHleb = [13, 39, 105, 145, 195, 206, 255, 333, 406, 444, 497, 531, 548, 610, 635, 663, 728, 784,
                               810, 827, 854, 864]
@@ -65,14 +64,11 @@ class AnimatedDialogue(pygame.sprite.Sprite):
     def dialogue_update(self, whatCS):
         if consts.nextFrames:
             if self.counter == 5:
-                if self.sound == 5:
-                    soundManager.talking_sound()
-                    self.sound = 0
+                soundManager.talking_sound()
                 self.cur_frame = (self.cur_frame + 1) % len(self.frames)
                 self.image = self.frames[self.cur_frame]
                 self.counter = 0
             self.counter += 1
-            self.sound += 1
         if consts.nextFrames:
             if whatCS == 'hg':
                 if self.cur_frame == self.talksWithHleb[self.tmp]:
