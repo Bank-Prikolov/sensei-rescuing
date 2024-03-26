@@ -11,6 +11,41 @@ import spriteGroups
 from processHelper import load_image
 
 
+class UltimateAnimPic(pygame.sprite.Sprite):
+    def __init__(self, x, y, w, h, sprite, *group, speed=2, n=1):
+        self.sprites = pygame.transform.scale(load_image(sprite),
+                                              (w * n, h))
+        super().__init__(*group)
+        self.counter = 0
+        self.width = w
+        self.height = h
+        self.frames = self.cut_sheet(self.sprites)
+        self.image = self.frames[self.counter]
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.waitmark = speed
+        self.wait = 0
+
+    def cut_sheet(self, sprites):
+        self.rect = pygame.Rect(0, 0, self.width,
+                                self.height)
+        plist = list()
+        for i in range(sprites.get_width() // int(self.width)):
+            frame_location = (self.width * i, 0)
+            plist.append(sprites.subsurface(pygame.Rect(
+                frame_location, self.rect.size)))
+        return plist
+
+    def update(self):
+        get_shadow(*self.rect)
+        spriteGroups.shadowgroup.draw(windows.screen)
+        if self.wait % self.waitmark == 0:
+            self.counter = (self.counter + 1) % len(self.frames)
+            self.image = self.frames[self.counter]
+        self.wait += 1
+
+
 class Board:
     def __init__(self, txt=None):
         if txt:
@@ -61,8 +96,8 @@ class Board:
                 elif self.board[y][x] == '@':
                     pass
                 elif self.board[y][x] == '_':
-                    boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                             self.cell_size, consts.plat, spriteGroups.untouches)
+                    UltimateAnimPic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                                    self.cell_size, consts.plat, spriteGroups.untouches, n=4, speed=6)
                     boss.Pic(self.left + (self.cell_size * x) + self.cell_size // 4, self.top + (self.cell_size * y),
                              self.cell_size - self.cell_size // 2,
                              self.cell_size // 64, consts.placeholder, spriteGroups.platformgroup)

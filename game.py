@@ -29,6 +29,8 @@ def game_def(lvl):
     levelGenerator.updater()
     spriteGroups.characters.empty()
     consts.hero = Hero(*start_coords, windows.k ** windows.fullscreen, character)
+    # if lvl == 1:
+
     consts.jumping = False
     consts.final_countdown = False
     consts.animend = False
@@ -271,7 +273,7 @@ def game_def(lvl):
                     consts.projectileObj_speed.pop(sprite)
                     list(spriteGroups.nmeprojectilesgroup)[sprite].kill()
                     break
-            spriteGroups.nmeprojectilesgroup.draw(windows.screen)
+
 
         if spriteGroups.boss_projectile_group:
             for sprite in range(len(spriteGroups.boss_projectile_group)):
@@ -370,7 +372,6 @@ def game_def(lvl):
                             consts.b_projectile_speed[sprite][0][1],
                             *list(spriteGroups.boss_projectile_group)[sprite].rect[2:]))
                 list(spriteGroups.boss_projectile_group)[sprite].update()
-            levelGenerator.spriteGroups.boss_projectile_group.draw(windows.screen)
 
         if not cheatPanel:
             if (pygame.sprite.spritecollide(consts.hero, spriteGroups.thorngroup, False)
@@ -468,13 +469,17 @@ def game_def(lvl):
             consts.hitNow = False
         else:
             consts.tmpHit -= 1
+        spriteGroups.untouches.update()
+        spriteGroups.untouches.draw(windows.screen)
+        levelGenerator.spriteGroups.boss_projectile_group.draw(windows.screen)
+        spriteGroups.nmeprojectilesgroup.draw(windows.screen)
         spriteGroups.hleb.update()
         spriteGroups.hleb.draw(windows.screen)
-        spriteGroups.finale.draw(windows.screen)
         consts.hero.update()
         spriteGroups.boss_group.update()
         spriteGroups.breakgroup.draw(windows.screen)
         spriteGroups.boss_group.draw(windows.screen)
+        spriteGroups.finale.draw(windows.screen)
         spriteGroups.projectilesgroup.draw(windows.screen)
         spriteGroups.characters.draw(windows.screen)
         spriteGroups.sloniks.update()
@@ -485,7 +490,6 @@ def game_def(lvl):
             healthBossBar.update(consts.bossHit)
             spriteGroups.health_bar.draw(windows.screen)
         spriteGroups.triggergroup.draw(windows.screen)
-        spriteGroups.untouches.draw(windows.screen)
         pygame.draw.rect(windows.screen, '#000000',
                          (0, 0, windows.otstupx ** windows.fullscreen, windows.fullsize[1] ** windows.fullscreen))
         pygame.draw.rect(windows.screen, '#000000',
