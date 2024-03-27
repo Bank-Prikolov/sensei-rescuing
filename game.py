@@ -470,15 +470,15 @@ def game_def(lvl):
         else:
             consts.tmpHit -= 1
         spriteGroups.untouches.update()
+        spriteGroups.boss_group.update()
+        spriteGroups.boss_group.draw(windows.screen)
         spriteGroups.untouches.draw(windows.screen)
         levelGenerator.spriteGroups.boss_projectile_group.draw(windows.screen)
         spriteGroups.nmeprojectilesgroup.draw(windows.screen)
         spriteGroups.hleb.update()
         spriteGroups.hleb.draw(windows.screen)
         consts.hero.update()
-        spriteGroups.boss_group.update()
         spriteGroups.breakgroup.draw(windows.screen)
-        spriteGroups.boss_group.draw(windows.screen)
         spriteGroups.finale.draw(windows.screen)
         spriteGroups.projectilesgroup.draw(windows.screen)
         spriteGroups.characters.draw(windows.screen)

@@ -1,7 +1,6 @@
 import pygame
 import consts
 import boss
-# import soundManager
 import windows
 import spriteGroups
 from processHelper import load_image
@@ -17,7 +16,7 @@ class Hero(pygame.sprite.Sprite):
             self.pic = load_image(consts.the_strongest)
             self.fireball = consts.hollow_purple
         self.sprites = pygame.transform.scale(
-            self.pic, (self.pic.get_width() // 2 * koef, self.pic.get_height() // 2 * koef))
+            self.pic, (self.pic.get_width() * 2 * koef, self.pic.get_height() * 2 * koef))
         self.k = koef
         self.frames = []
         self.cut_sheet(self.sprites, koef, anim)
@@ -214,8 +213,8 @@ class Hero(pygame.sprite.Sprite):
         if not self.shooting:
             boss.Pic(self.get_coords()[0] + self.get_size()[0] // 4,
                      self.get_coords()[1] + self.get_size()[1] // 2,
-                     40 // 2.5 * windows.k ** windows.fullscreen,
-                     40 // 2.5 * windows.k ** windows.fullscreen, self.fireball,
+                     16 * windows.k ** windows.fullscreen,
+                     16 * windows.k ** windows.fullscreen, self.fireball,
                      spriteGroups.projectilesgroup)
             self.projectilespeed.append(spees)
             self.shooting = True

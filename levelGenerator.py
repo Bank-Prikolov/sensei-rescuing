@@ -105,20 +105,23 @@ class Board:
                     boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                              self.cell_size, consts.finish, spriteGroups.finale)
                 elif self.board[y][x] == 'C':
-                    boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                             self.cell_size, consts.change, spriteGroups.changegroup, spriteGroups.untouches)
+                    UltimateAnimPic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                                    self.cell_size, consts.change, spriteGroups.untouches, spriteGroups.changegroup,
+                                    n=4, speed=8)
                 elif self.board[y][x] == '^':
                     boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                              self.cell_size, consts.thorn, spriteGroups.thorngroup, spriteGroups.anothertoches)
                 elif self.board[y][x] == 'S':
-                    boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                             self.cell_size, consts.boss_door, spriteGroups.changegroup, spriteGroups.untouches)
+                    UltimateAnimPic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                                    self.cell_size, consts.boss_door, spriteGroups.changegroup, spriteGroups.untouches,
+                                    n=8, speed=8)
                 elif self.board[y][x] == '%':
                     boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                              self.cell_size, consts.invis, spriteGroups.breakgroup)
                 elif self.board[y][x] == 't':
-                    boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                             self.cell_size, consts.trigger, spriteGroups.triggergroup)
+                    UltimateAnimPic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                                    self.cell_size, consts.trigger, spriteGroups.triggergroup, spriteGroups.untouches,
+                                    n=8, speed=8)
                 elif self.board[y][x] == '&':
                     boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                              self.cell_size, consts.horizon, spriteGroups.toches)
@@ -313,8 +316,8 @@ def remover(pos, block='.'):
                      board.cell_size, consts.wally, spriteGroups.toches)
             spriteGroups.toches.draw(windows.screen)
         elif block == '_':
-            boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
-                     board.cell_size, consts.plat, spriteGroups.untouches)
+            UltimateAnimPic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                            board.cell_size, consts.plat, spriteGroups.untouches, n=4, speed=6)
             boss.Pic(board.left + (board.cell_size * x) + board.cell_size // 4, board.top + (board.cell_size * y),
                      board.cell_size - board.cell_size // 2,
                      board.cell_size // 64, consts.placeholder, spriteGroups.platformgroup)
@@ -325,25 +328,25 @@ def remover(pos, block='.'):
                      board.cell_size, consts.finish, spriteGroups.finale)
             spriteGroups.finale.draw(windows.screen)
         elif block == 'C':
-            boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
-                     board.cell_size, consts.change, spriteGroups.changegroup, spriteGroups.untouches)
-            spriteGroups.untouches.draw(windows.screen)
+            UltimateAnimPic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                            board.cell_size, consts.change, spriteGroups.changegroup, spriteGroups.untouches, n=4,
+                            speed=8)
         elif block == '^':
             boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
                      board.cell_size, consts.thorn, spriteGroups.thorngroup, spriteGroups.anothertoches)
             spriteGroups.anothertoches.draw(windows.screen)
         elif block == 'S':
-            boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
-                     board.cell_size, consts.boss_door, spriteGroups.changegroup, spriteGroups.untouches)
-            spriteGroups.untouches.draw(windows.screen)
+            UltimateAnimPic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                            board.cell_size, consts.boss_door, spriteGroups.changegroup, spriteGroups.untouches,
+                            n=8, speed=8)
         elif block == '%':
             boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
                      board.cell_size, consts.invis, spriteGroups.breakgroup)
             spriteGroups.breakgroup.draw(windows.screen)
         elif block == 't':
-            boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
-                     board.cell_size, consts.trigger, spriteGroups.triggergroup)
-            spriteGroups.triggergroup.draw(windows.screen)
+            UltimateAnimPic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                            board.cell_size, consts.trigger, spriteGroups.triggergroup, spriteGroups.untouches, n=8,
+                            speed=8)
         elif block == '&':
             boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
                      board.cell_size, consts.horizon, spriteGroups.toches)

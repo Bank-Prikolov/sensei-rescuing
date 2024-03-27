@@ -15,7 +15,7 @@ class Slonik(pygame.sprite.Sprite):
     def __init__(self, x, y, koef, act=0, lknrght=True, trtspd=0, hp=3):
         super().__init__(spriteGroups.sloniks)
         self.sprites = pygame.transform.scale(
-            Slonik.pic, (Slonik.pic.get_width() // 2 * koef, Slonik.pic.get_height() // 2 * koef))
+            Slonik.pic, (Slonik.pic.get_width() * 2 * koef, Slonik.pic.get_height() * 2 * koef))
         self.k = koef
         self.frames = []
         self.cut_sheet(self.sprites, koef, act)
