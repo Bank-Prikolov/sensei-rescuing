@@ -78,13 +78,15 @@ def hleb_greeting_cutscene(character):
         spriteGroups.sloniks.update()
         spriteGroups.sloniks.draw(windows.screen)
         spriteGroups.breakgroup.draw(windows.screen)
-        if dialogueStart:
-            dialogueWaiHleb.dialogue_update('hg')
-            spriteGroups.animatedDialogue.draw(windows.screen)
         spriteGroups.hleb.update()
         spriteGroups.hleb.draw(windows.screen)
         levelGenerator.get_shadow(*consts.hero.get_coords(), *consts.hero.get_size())
         spriteGroups.shadowgroup.draw(windows.screen)
+        spriteGroups.untouches.update()
+        spriteGroups.untouches.draw(windows.screen)
+        if dialogueStart:
+            dialogueWaiHleb.dialogue_update('hg')
+            spriteGroups.animatedDialogue.draw(windows.screen)
         consts.hero.update()
         spriteGroups.characters.draw(windows.screen)
         consts.clock.tick(consts.fps)

@@ -36,6 +36,8 @@ def game_def(lvl):
     running = True
     keyboardUnlock = False if lvl == 1 else True
     spriteGroups.characters.draw(windows.screen)
+    if lvl == 1:
+        levelGenerator.remover((1, 10), block='k')
     thing = ''
     healthBossBar = healthBossBarChanger()
     heroHearts = heroHeartsChanger()
@@ -498,6 +500,8 @@ def game_def(lvl):
         if lvl == 1 and consts.hero.get_coords() == start_coords and not keyboardUnlock:
             cutscenes.hleb_greeting_cutscene(character)
             keyboardUnlock = True
+            levelGenerator.remover((1, 10), block='.')
+            levelGenerator.remover((1, 10), block='k')
 
         if lvl == 3 and thing == 2 and not greeting:
             list(spriteGroups.boss_group)[0].cutscene = 1
