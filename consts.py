@@ -81,6 +81,8 @@ boss_door = r'textures\S-texture.png'
 trigger = r'textures\t-texture.png'
 invis = r'textures\%-texture.png'
 horizon = r'textures\&-texture.png'
+closed = r'textures\ff-texture.png'
+startdoor = r'textures\k-texture.png'
 
 # levels
 lvl1 = r'level-1.txt'

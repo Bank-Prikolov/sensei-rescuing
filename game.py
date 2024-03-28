@@ -29,8 +29,6 @@ def game_def(lvl):
     levelGenerator.updater()
     spriteGroups.characters.empty()
     consts.hero = Hero(*start_coords, windows.k ** windows.fullscreen, character)
-    # if lvl == 1:
-
     consts.jumping = False
     consts.final_countdown = False
     consts.animend = False
@@ -274,7 +272,6 @@ def game_def(lvl):
                     list(spriteGroups.nmeprojectilesgroup)[sprite].kill()
                     break
 
-
         if spriteGroups.boss_projectile_group:
             for sprite in range(len(spriteGroups.boss_projectile_group)):
                 list(spriteGroups.boss_projectile_group)[sprite].rect = list(spriteGroups.boss_projectile_group)[
@@ -448,7 +445,9 @@ def game_def(lvl):
                 soundManager.stop_playback()
                 game_complete.game_complete()
             elif not spriteGroups.sloniks:
-                if lvl == 2 and thing == '':
+                if lvl == 1:
+                    levelGenerator.remover((13, 2), 'F')
+                elif lvl == 2 and thing == '':
                     levelGenerator.remover((2, 7), 'C')
                 elif lvl == 2 and thing == 1:
                     levelGenerator.remover((7, 4), 'F')

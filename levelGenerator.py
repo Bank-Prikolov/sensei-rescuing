@@ -101,9 +101,9 @@ class Board:
                     boss.Pic(self.left + (self.cell_size * x) + self.cell_size // 4, self.top + (self.cell_size * y),
                              self.cell_size - self.cell_size // 2,
                              self.cell_size // 64, consts.placeholder, spriteGroups.platformgroup)
-                elif self.board[y][x] == 'F':
+                elif self.board[y][x] == 'f':
                     boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
-                             self.cell_size, consts.finish, spriteGroups.finale)
+                             self.cell_size, consts.closed, spriteGroups.untouches)
                 elif self.board[y][x] == 'C':
                     UltimateAnimPic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                                     self.cell_size, consts.change, spriteGroups.untouches, spriteGroups.changegroup,
@@ -360,6 +360,9 @@ def remover(pos, block='.'):
                           windows.k ** windows.fullscreen, 0, lknrght=random.randint(0, 2),
                           trtspd=12 * random.randint(0, 8), hp=1)
             spriteGroups.sloniks.draw(windows.screen)
+        elif board.board[y][x] == 'k':
+            boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                     board.cell_size, consts.startdoor, spriteGroups.untouches)
 
 
 def get_key(d, value):
