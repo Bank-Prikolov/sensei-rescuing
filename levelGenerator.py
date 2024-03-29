@@ -129,6 +129,9 @@ class Board:
                     hleb.HlebPic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                                  self.cell_size, consts.hleb, spriteGroups.hleb,
                                  koef=windows.k ** windows.fullscreen)
+                elif board.board[y][x] == 'k':
+                    boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+                             board.cell_size, consts.startdoor, spriteGroups.untouches)
                 else:
                     pass
         spriteGroups.hleb.draw(sc)

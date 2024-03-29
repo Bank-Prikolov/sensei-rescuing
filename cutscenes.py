@@ -122,6 +122,7 @@ def boss_greeting_cutscene(character):
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 levelGenerator.updater()
+                list(spriteGroups.boss_group)[0].change_act(0, list(spriteGroups.boss_group)[0].get_coords())
                 spriteGroups.health_bar.draw(windows.screen)
                 running = False
                 spriteGroups.animatedDialogue.empty()
@@ -180,6 +181,8 @@ def boss_greeting_cutscene(character):
                 and d_counter >= 60):
             dialogueWaiBossGreeting.dialogue_update('bg')
             spriteGroups.animatedDialogue.draw(windows.screen)
+        spriteGroups.untouches.update()
+        spriteGroups.untouches.draw(windows.screen)
         levelGenerator.get_shadow(*consts.hero.get_coords(), *consts.hero.get_size())
         spriteGroups.shadowgroup.draw(windows.screen)
         consts.hero.update()
@@ -294,6 +297,15 @@ def boss_lose_cutscene(character):
             running = False
             spriteGroups.animatedDialogue.empty()
 
+        if dialogueWaiBossLose.cur_frame == dialogueWaiBossLose.talksWithBossEnding[-2]:
+            time.sleep(0.6)
+            levelGenerator.updater()
+            consts.xspeed = 0
+            running = False
+            spriteGroups.animatedDialogue.empty()
+
+        spriteGroups.untouches.update()
+        spriteGroups.untouches.draw(windows.screen)
         levelGenerator.get_shadow(*consts.hero.get_coords(), *consts.hero.get_size())
         spriteGroups.shadowgroup.draw(windows.screen)
         consts.hero.update()

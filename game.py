@@ -39,6 +39,7 @@ def game_def(lvl):
     if lvl == 1:
         levelGenerator.remover((1, 10), block='k')
     thing = ''
+    doorCounter = 0
     healthBossBar = healthBossBarChanger()
     heroHearts = heroHeartsChanger()
     cheatPanel = False  # cheats
@@ -149,6 +150,7 @@ def game_def(lvl):
             consts.pause_btn.handle_event(event, consts.volS)
 
         if pygame.sprite.spritecollide(consts.hero, spriteGroups.changegroup, False):
+            soundManager.teleport_sound()
             if thing == '':
                 thing = 1
             else:
@@ -201,6 +203,8 @@ def game_def(lvl):
                                                                spriteGroups.boss_group, False)[0]
                             bo55.change_act(8, bo55.get_coords())
                             spriteGroups.nmeprojectilesgroup.empty()
+                            soundManager.stop_playback()
+                            soundManager.boss_lose_sound()
                             spriteGroups.boss_projectile_group.empty()
                             levelGenerator.updater()
                         consts.hero.projectilespeed.pop(sprite)
@@ -427,6 +431,7 @@ def game_def(lvl):
                                                                               1]),
                                                                       levelGenerator.board.get_size(),
                                                                       levelGenerator.board.get_size())))
+                soundManager.get_key_sound()
                 levelGenerator.remover((14, 10), 'C')
                 levelGenerator.remover((11, 10))
 
@@ -449,10 +454,14 @@ def game_def(lvl):
             elif not spriteGroups.sloniks:
                 if lvl == 1:
                     levelGenerator.remover((13, 2), 'F')
+                    soundManager.door_open_sound() if doorCounter == 0 else None
+                    doorCounter += 1
                 elif lvl == 2 and thing == '':
                     levelGenerator.remover((2, 7), 'C')
                 elif lvl == 2 and thing == 1:
                     levelGenerator.remover((7, 4), 'F')
+                    soundManager.door_open_sound() if doorCounter == 0 else None
+                    doorCounter += 1
                 elif lvl == 3 and thing == 1:
                     levelGenerator.remover((9, 6), 'S')
 
