@@ -202,6 +202,7 @@ def game_def(lvl):
                             bo55 = pygame.sprite.spritecollide(list(spriteGroups.projectilesgroup)[sprite],
                                                                spriteGroups.boss_group, False)[0]
                             bo55.change_act(8, bo55.get_coords())
+
                             spriteGroups.nmeprojectilesgroup.empty()
                             soundManager.stop_playback()
                             soundManager.boss_lose_sound()

@@ -101,6 +101,9 @@ class Board:
                     boss.Pic(self.left + (self.cell_size * x) + self.cell_size // 4, self.top + (self.cell_size * y),
                              self.cell_size - self.cell_size // 2,
                              self.cell_size // 64, consts.placeholder, spriteGroups.platformgroup)
+                elif self.board[y][x] == 'F':
+                    boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                             self.cell_size, consts.finish, spriteGroups.finale)
                 elif self.board[y][x] == 'f':
                     boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                              self.cell_size, consts.closed, spriteGroups.untouches)
