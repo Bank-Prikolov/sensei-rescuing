@@ -13,9 +13,11 @@ import spriteGroups
 from hero import Hero
 from processHelper import terminate
 from itemChanger import starsChanger, pauseButtonChanger, healthBossBarChanger, heroHeartsChanger
+from AI_lvl import new_lvl
 
 
 def game_def(lvl):
+    new_lvl()
     spriteGroups.boss_projectile_group.empty()
     consts.b_projectile_speed = []
     spriteGroups.nmeprojectilesgroup.empty()
