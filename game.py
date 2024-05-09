@@ -13,7 +13,7 @@ import spriteGroups
 from hero import Hero
 from processHelper import terminate
 from itemChanger import starsChanger, pauseButtonChanger, healthBossBarChanger, heroHeartsChanger
-from randomLevelGeneration import new_lvl
+from randomLevelGenerator import new_lvl
 
 
 def game_def(lvl):
