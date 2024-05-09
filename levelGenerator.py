@@ -364,7 +364,7 @@ def remover(pos, block='.'):
         elif board.board[y][x] == 'e':
             slonik.Slonik(board.left + (board.cell_size * x), board.top + (board.cell_size * y),
                           windows.k ** windows.fullscreen, 0, lknrght=random.randint(0, 2),
-                          trtspd=12 * random.randint(0, 8), hp=1)
+                          trtspd=12 * random.randint(0, 8), hp=1, zaderzhka=True)
             spriteGroups.sloniks.draw(windows.screen)
         elif board.board[y][x] == 'k':
             boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
