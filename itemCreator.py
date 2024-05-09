@@ -1,4 +1,5 @@
 import pygame
+import windows
 from processHelper import load_image
 
 
@@ -48,7 +49,7 @@ class Object:
 class Button:
     def __init__(self, x, y, width, height, image_path, hover_image_path=None, press_image_path=None, sound_path=None,
                  no_active_image_path=None, hero=None, image_get_path=None, hover_image_get_path=None,
-                 press_image_get_path=None, hover_2_image_path=None):
+                 press_image_get_path=None, hover_2_image_path=None, no_normal_fs_image_path=None):
         self.x = x
         self.y = y
         self.width = width
@@ -80,6 +81,11 @@ class Button:
         else:
             self.is_no_active = False
 
+        self.no_normal_fs_image = self.image
+        if no_normal_fs_image_path:
+            self.no_normal_fs_image = load_image(no_normal_fs_image_path)
+            self.no_normal_fs_image = pygame.transform.scale(self.no_normal_fs_image, (width, height))
+
         if image_get_path:
             self.get_image = load_image(image_get_path)
             self.get_image = pygame.transform.scale(self.get_image, (width, height))
@@ -110,16 +116,19 @@ class Button:
         self.is_hovered = self.rect.collidepoint(mouse_pos)
 
     def draw_f11(self, screen, fs=None):
-        if fs:
-            if self.is_hovered:
-                current_image = self.hover_image_2
-            else:
-                current_image = self.press_image
+        if not windows.screenChecker:
+            current_image = self.no_normal_fs_image
         else:
-            if self.is_hovered:
-                current_image = self.hover_image
+            if fs:
+                if self.is_hovered:
+                    current_image = self.hover_image_2
+                else:
+                    current_image = self.press_image
             else:
-                current_image = self.image
+                if self.is_hovered:
+                    current_image = self.hover_image
+                else:
+                    current_image = self.image
         screen.blit(current_image, self.rect.topleft)
 
     def draw_heroBtn(self, screen, hero, heroNow, isGetHero2):

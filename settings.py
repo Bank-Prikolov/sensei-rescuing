@@ -1,4 +1,5 @@
 import pygame
+import webbrowser
 import windows
 import consts
 import menu
@@ -49,7 +50,16 @@ def settings_menu():
                     rf"buttons\{consts.languageNow}\hover-fullscreen-off-btn.png",
                     fr"buttons\{consts.languageNow}\default-fullscreen-on-btn.png",
                     r"data\sounds\menu-button-sound.mp3", "",
-                    "", "", "", "", rf"buttons\{consts.languageNow}\hover-fullscreen-on-btn.png")
+                    "", "", "", "", rf"buttons\{consts.languageNow}\hover-fullscreen-on-btn.png",
+                    fr"buttons\{consts.languageNow}\no-active-fullscreen-off-btn.png")
+    fs_message = Object(fs_btn.x + fs_btn.width // 2 - 324 / 2, fs_btn.y - 154, 324, 152,
+                        fr"objects\{consts.languageNow}\for-starichoks-obj.png")
+    fs_message_btn = Button(fs_message.x + fs_message.width // 2 - 106 / 2, fs_message.y + fs_message.height - 66, 106,
+                            32,
+                            fr"buttons\{consts.languageNow}\default-get-btn.png",
+                            fr"buttons\{consts.languageNow}\hover-get-btn.png",
+                            fr"buttons\{consts.languageNow}\press-get-btn.png", r"data\sounds\menu-button-sound.mp3")
+
     langauge_obj = Object(field_video.x + field_video.width / 2 - 216 / 2, title.y + 406, 228, 50,
                           r"objects\rus\language-rus-obj.png", "", r"objects\eng\language-eng-obj.png")
     r_arrow_btn = Button(langauge_obj.x + langauge_obj.width + 15, langauge_obj.y + langauge_obj.height / 2 - 16, 36,
@@ -60,6 +70,7 @@ def settings_menu():
                        r"buttons\without text\default-r-arrow-btn.png", r"buttons\without text\hover-r-arrow-btn.png",
                        r"buttons\without text\press-r-arrow-btn.png", r"data\sounds\menu-button-sound.mp3")
 
+    tmpCheckS = False
     running = True
     while running:
 
@@ -79,14 +90,15 @@ def settings_menu():
                 menu.main_menu()
 
             if event.type == pygame.USEREVENT and event.button == fs_btn:
-                if windows.fullscreen:
-                    windows.fullscreen = 0
-                    fullscreenChanger(windows.fullscreen)
-                    settings_menu()
-                else:
-                    windows.fullscreen = 1
-                    fullscreenChanger(windows.fullscreen)
-                    settings_menu()
+                if windows.screenChecker:
+                    if windows.fullscreen:
+                        windows.fullscreen = 0
+                        fullscreenChanger(windows.fullscreen)
+                        settings_menu()
+                    else:
+                        windows.fullscreen = 1
+                        fullscreenChanger(windows.fullscreen)
+                        settings_menu()
 
             if event.type == pygame.USEREVENT and (event.button == arrow_btn or event.button == r_arrow_btn):
                 if consts.languageNow == 'eng':
@@ -112,8 +124,14 @@ def settings_menu():
                 if consts.isSliderMusic or consts.isSliderSound:
                     volumeChanger(event, music_slider_btn, music_slider_obj, sound_slider_btn, sound_slider_obj)
 
+            elif event.type == pygame.USEREVENT and event.button == fs_message_btn:
+                webbrowser.open('https://www.dns-shop.ru/catalog/recipe/7fcb16e8135fbd91/fullhd/')
+
             for button in [cross_btn, fs_btn, arrow_btn, r_arrow_btn]:
                 button.handle_event(event, consts.volS)
+
+            if tmpCheckS:
+                fs_message_btn.handle_event(event, consts.volS)
 
             for slider_button in [music_slider_btn, sound_slider_btn]:
                 slider_button.handle_event_slider(event)
@@ -128,7 +146,17 @@ def settings_menu():
             button.check_hover(pygame.mouse.get_pos())
             button.draw(windows.screen)
 
-        fs_btn.check_hover(pygame.mouse.get_pos())
+        if windows.screenChecker:
+            fs_btn.check_hover(pygame.mouse.get_pos())
+        if (pygame.mouse.get_pos()[0] < fs_message.x or pygame.mouse.get_pos()[0] > fs_message.x + fs_message.width
+                or pygame.mouse.get_pos()[1] < fs_message.y or pygame.mouse.get_pos()[1] > fs_btn.y + fs_btn.height):
+            tmpCheckS = False
+        if fs_btn.rect.collidepoint(pygame.mouse.get_pos()) and not windows.screenChecker:
+            tmpCheckS = True
+        if tmpCheckS:
+            fs_message.draw(windows.screen)
+            fs_message_btn.check_hover(pygame.mouse.get_pos())
+            fs_message_btn.draw(windows.screen)
         fs_btn.draw_f11(windows.screen, windows.fullscreen)
 
         consts.clock.tick(consts.fps)
