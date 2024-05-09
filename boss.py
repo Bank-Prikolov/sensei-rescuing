@@ -21,9 +21,9 @@ class Pic(pygame.sprite.Sprite):
 
 class Animpic(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h, sprite, *group, koef):
+        super().__init__(*group)
         self.sprites = pygame.transform.scale(sprite,
                                               (w, h))
-        super().__init__(*group)
         self.counter = 0
         self.frames = self.cut_sheet(self.sprites, koef)
         self.image = self.frames[self.counter]
@@ -49,9 +49,38 @@ class Animpic(pygame.sprite.Sprite):
         self.wait += 1
 
 
+class Disapanimpic(Animpic):
+    def __init__(self, x, y, w, h, sprite, *group, koef):
+
+        super().__init__(x, y, sprite.get_width() * 2 * koef, sprite.get_height() * 2 * koef, sprite, *group, koef=koef)
+        self.wait = 6
+
+    def cut_sheet(self, sprites, koef):
+        self.rect = pygame.Rect(0, 0, 32 * 2 * koef,
+                                54 * 2 * koef)
+        plist = list()
+        for i in range(sprites.get_height() // int(54 * 2 * koef)):
+            frame_location = (0, self.rect.h * i)
+            plist.append(sprites.subsurface(pygame.Rect(
+                frame_location, self.rect.size)))
+        return plist
+
+    def update(self):
+        levelGenerator.get_shadow(*self.rect)
+        spriteGroups.shadowgroup.draw(windows.screen)
+        if self.wait % 6 == 0:
+            if self.counter > len(self.frames) - 2:
+                self.kill()
+            else:
+                self.counter = self.counter + 1
+                self.image = self.frames[self.counter]
+        self.wait += 1
+
+
 class Boss(pygame.sprite.Sprite):
     pic = load_image(consts.kowlad)
     php = load_image(consts.boos_prjct)
+    telep = load_image(consts.tp)
 
     def __init__(self, x, y, koef, act=0):
         super().__init__(spriteGroups.boss_group)
@@ -181,7 +210,7 @@ class Boss(pygame.sprite.Sprite):
                 else:
                     y = 322
                 em = 480 * self.k + windows.otstupx * windows.fullscreen, y * self.k + (
-                            windows.otstupy - 10) * windows.fullscreen
+                        windows.otstupy - 10) * windows.fullscreen
                 if self.get_coords() != em:
                     self.set_coords(*em)
                     self.attack_counter = 0
@@ -303,6 +332,7 @@ class Boss(pygame.sprite.Sprite):
         return self.rect[2:4]
 
     def make_move(self):
+        Disapanimpic(*self.rect, Boss.telep, spriteGroups.telep_group, koef=self.k)
         cordi = [[896, 322], [64, 322], [64, 66], [896, 66], [480, 66]]
         cordi = [
             [y[0] * self.k + windows.otstupx * windows.fullscreen,

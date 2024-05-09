@@ -59,6 +59,7 @@ shadow = r'characters\shadow.png'
 slonik = r'characters\enemy-slonik-php.png'
 kowlad = r'characters\enemy-kowlad.png'
 hleb = r'characters\hleb.png'
+tp = r'characters\boss-tp.png'
 
 # projectiles
 php = r'characters\projectile-php.png'

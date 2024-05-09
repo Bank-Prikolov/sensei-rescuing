@@ -13,7 +13,7 @@ import spriteGroups
 from hero import Hero
 from processHelper import terminate
 from itemChanger import starsChanger, pauseButtonChanger, healthBossBarChanger, heroHeartsChanger
-from randomLevelGenerator import new_lvl
+from AI_lvl import new_lvl
 
 
 def game_def(lvl):
@@ -485,6 +485,8 @@ def game_def(lvl):
         spriteGroups.untouches.update()
         spriteGroups.boss_group.update()
         spriteGroups.boss_group.draw(windows.screen)
+        spriteGroups.telep_group.update()
+        spriteGroups.telep_group.draw(windows.screen)
         spriteGroups.untouches.draw(windows.screen)
         levelGenerator.spriteGroups.boss_projectile_group.draw(windows.screen)
         spriteGroups.nmeprojectilesgroup.draw(windows.screen)
