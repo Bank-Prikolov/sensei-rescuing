@@ -1,6 +1,9 @@
 # PyGame "Sensei Rescuing"
 #### Action platformer in the genre of Roguelike and Metroidvania, dedicated to the confrontation between Python and PHP
-### 📑 Detailed Description
+<details>
+<summary>📑 Detailed Description</summary>
+
+</details>
 
 ## 🛠️ Tech stack
 ㅤ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
