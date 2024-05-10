@@ -73,7 +73,6 @@ def new_lvl(slozhnost=0):
                     lvl[finy - 1] = change_index(lvl[finy - 1], finx + 1, '.')
                 if str(finx - 1) in dostupnie[finy - 1]:
                     dostupnie[finy - 1].remove(str(finx + 1))
-                dostupnie[finy - 1].remove(str(finx + 1))
                 dostupnie[finy].remove(str(finx + 1))
 
         # map
@@ -164,6 +163,24 @@ def new_lvl(slozhnost=0):
                     else:
                         break
 
+        for wally in range(height):
+            if '.=.' in lvl[wally]:
+                if wally != 9:
+                    if (lvl[wally + 1][lvl[wally].index('.=.'): lvl[wally].index('.=.') + 3]
+                            in ['===', '.==', '==.', '..=', '=..']):
+                        lvl[wally] = change_index(lvl[wally], lvl[wally].index('.=.') + 1, '.')
+                else:
+                    lvl[wally] = change_index(lvl[wally], lvl[wally].index('.=.') + 1, '.')
+            if '.==.' in lvl[wally]:
+                if wally != 9:
+                    if (lvl[wally + 1][lvl[wally].index('.==.'): lvl[wally].index('.==.') + 3]
+                            in ['====', '.===', '===.', '..==', '==..', '=..=']):
+                        lvl[wally] = change_index(lvl[wally], lvl[wally].index('.==.') + 1, '.')
+                        lvl[wally] = change_index(lvl[wally], lvl[wally].index('.==.') + 2, '.')
+                else:
+                    lvl[wally] = change_index(lvl[wally], lvl[wally].index('.=.') + 1, '.')
+                    lvl[wally] = change_index(lvl[wally], lvl[wally].index('.==.') + 2, '.')
+
         square = []
         for x in range(width):
             line = []
@@ -200,6 +217,18 @@ def new_lvl(slozhnost=0):
 
                 square = []
 
+        for wally2 in range(height):
+            if '__' in lvl[wally2]:
+                lvl[wally2] = lvl[wally2].replace('__', random.choice(['_.', '._']))
+        # odnastena = ['.=.' in ''.join(elem[0]) for elem in square]
+        # dvesteni = ['.==.' in ''.join(elem[0]) for elem in square]
+        # if any(odnastena):
+        #     choice = random.choice([el for el in range(len(square)) if odnastena[el]])
+        #     for changex in range(width - 2):
+        #         if ''.join([lvl[choice + 3 * (round - 1)][changex], lvl[choice + 3 * (round - 1)][changex + 1],
+        #                     lvl[choice + 3 * (round - 1)][changex + 2]]) == '.=.':
+        #             lvl[choice + 3 * (round - 1)] = change_index(lvl[choice + 3 * (round - 1)], changex + 1, '.')
+        #
         # kolvoslonikov = random.randint(1, min(2 + slozhnost, 5))
         # lvl[y] = change_index(lvl[y], x, ('0', '&', '=')[random.randint(0, 2)])
         # for slon in range(kolvoslonikov):
