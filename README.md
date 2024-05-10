@@ -1,5 +1,9 @@
 # PyGame "Sensei Rescuing"
 **Action platformer in the genre of Roguelike and Metroidvania, dedicated to the confrontation between Python and PHP**
+
+> [!NOTE]
+> This project includes [another repository](https://github.com/mikhalexandr/Flask-Sensei-Rescuing-API) where **the API for interacting with the leaderboard** is implemented
+
 <details>
 <summary><b>📑 Detailed Description</b></summary>
 <b>Game screens:</b>
