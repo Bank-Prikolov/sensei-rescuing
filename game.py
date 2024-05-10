@@ -467,6 +467,7 @@ def game_def(lvl):
                             doorCounter += 1
                         elif mark == 'c':
                             levelGenerator.remover(end_coords, 'C')
+                            soundManager.tp_activated()
                             doorCounter += 1
                 else:
                     if lvl == 3 and thing == 1:

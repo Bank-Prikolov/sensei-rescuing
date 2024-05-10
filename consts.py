@@ -95,6 +95,10 @@ lvl3 = r'level-3.txt'
 lvl3_1 = r'level-3-1.txt'
 lvl3_2 = r'level-3-2.txt'
 
+endless1 = r'endless_1.txt'
+endless2 = r'endless_2.txt'
+endless3 = r'endless_3.txt'
+
 # backgrounds
 game_bg = r'backgrounds\game-bg.png'
 img = load_image(r'backgrounds\main-menu-bg.png')

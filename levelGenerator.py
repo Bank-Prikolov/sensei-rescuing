@@ -259,7 +259,7 @@ class Background(pygame.sprite.Sprite):
 board = Board()
 
 
-def generate_level(lvlnum):
+def generate_level(lvlnum, slozh=3):
     global board
     if lvlnum == 1:
         level = consts.lvl1
