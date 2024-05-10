@@ -5,7 +5,7 @@ import consts
 import fileManager
 import info
 import settings
-import levels_menu
+import modeSelection
 import spriteGroups
 from processHelper import terminate, transition
 from itemCreator import Object, Button
@@ -81,7 +81,7 @@ def main_menu():
 
             if event.type == pygame.USEREVENT and event.button == start_btn:
                 transition()
-                levels_menu.levels_menu()
+                modeSelection.modeSelection()
 
             if event.type == pygame.USEREVENT and event.button == settings_btn:
                 transition()
