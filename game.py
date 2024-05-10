@@ -25,7 +25,7 @@ def game_def(lvl):
     consts.end_cs = False
     soundManager.game_theme()
     greeting = False
-    start_coords = levelGenerator.generate_level(lvl)
+    start_coords, end_coords = levelGenerator.generate_level(lvl)
     character = fileManager.heroImport()[0]
     consts.pause_btn = pauseButtonChanger()
     levelGenerator.updater()
@@ -162,7 +162,8 @@ def game_def(lvl):
             consts.projectileObj_speed = []
             spriteGroups.boss_projectile_group.empty()
             consts.b_projectile_speed = []
-            consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
+            start_coords, end_coords = levelGenerator.generate_level(lvl + thing / 10)
+            consts.hero.set_coords(*start_coords)
             if lvl == 3 and thing == 2:
                 checkLevel = True
                 soundManager.stop_playback()
@@ -251,7 +252,8 @@ def game_def(lvl):
                             consts.projectileObj_speed = []
                             spriteGroups.boss_projectile_group.empty()
                             consts.b_projectile_speed = []
-                            consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
+                            start_coords, end_coords = levelGenerator.generate_level(lvl + thing / 10)
+                            consts.hero.set_coords(*start_coords)
                             consts.hero.move(0, -8)
                             consts.runleft = False
                             consts.runright = False
@@ -306,7 +308,8 @@ def game_def(lvl):
                         spriteGroups.boss_projectile_group.empty()
                         consts.b_projectile_speed = []
 
-                        consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
+                        start_coords, end_coords = levelGenerator.generate_level(lvl + thing / 10)
+                        consts.hero.set_coords(*start_coords)
                         consts.runleft = False
                         consts.runright = False
                         consts.jumping = False
@@ -394,7 +397,8 @@ def game_def(lvl):
                         consts.projectileObj_speed = []
                         spriteGroups.boss_projectile_group.empty()
                         consts.b_projectile_speed = []
-                        consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
+                        start_coords, end_coords = levelGenerator.generate_level(lvl + thing / 10)
+                        consts.hero.set_coords(*start_coords)
                         consts.hero.move(0, -8)
                         consts.runleft = False
                         consts.runright = False
@@ -455,18 +459,27 @@ def game_def(lvl):
                 soundManager.stop_playback()
                 game_complete.game_complete()
             elif not spriteGroups.sloniks:
-                if lvl == 1:
-                    levelGenerator.remover((13, 2), 'F')
-                    soundManager.door_open_sound() if doorCounter == 0 else None
-                    doorCounter += 1
-                elif lvl == 2 and thing == '':
-                    levelGenerator.remover((2, 7), 'C')
-                elif lvl == 2 and thing == 1:
-                    levelGenerator.remover((7, 4), 'F')
-                    soundManager.door_open_sound() if doorCounter == 0 else None
-                    doorCounter += 1
-                elif lvl == 3 and thing == 1:
-                    levelGenerator.remover((9, 6), 'S')
+                if end_coords:
+                    if doorCounter == 0:
+                        levelGenerator.remover(end_coords, 'F')
+                        soundManager.door_open_sound()
+                        doorCounter += 1
+                else:
+                    if lvl == 2 and thing == '':
+                        levelGenerator.remover((2, 7), 'C')
+                    elif lvl == 3 and thing == 1:
+                        levelGenerator.remover((9, 6),  'S')
+                # if lvl == 1:
+                #     levelGenerator.remover((13, 2), 'F')
+                #     soundManager.door_open_sound() if doorCounter == 0 else None
+                #     doorCounter += 1
+                # elif lvl == 2 and thing == '':
+                #     levelGenerator.remover((2, 7), 'C')
+                # elif lvl == 2 and thing == 1:
+                #     levelGenerator.remover((7, 4), 'F')
+                #     soundManager.door_open_sound() if doorCounter == 0 else None
+                #     doorCounter += 1
+
 
         if consts.runright or consts.runleft:
             if consts.runright:

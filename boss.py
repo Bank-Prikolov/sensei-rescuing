@@ -53,7 +53,7 @@ class Disapanimpic(Animpic):
     def __init__(self, x, y, w, h, sprite, *group, koef):
 
         super().__init__(x, y, sprite.get_width() * 2 * koef, sprite.get_height() * 2 * koef, sprite, *group, koef=koef)
-        self.wait = 6
+        self.wait = 4
 
     def cut_sheet(self, sprites, koef):
         self.rect = pygame.Rect(0, 0, 32 * 2 * koef,
@@ -68,7 +68,7 @@ class Disapanimpic(Animpic):
     def update(self):
         levelGenerator.get_shadow(*self.rect)
         spriteGroups.shadowgroup.draw(windows.screen)
-        if self.wait % 6 == 0:
+        if self.wait % 4 == 0:
             if self.counter > len(self.frames) - 2:
                 self.kill()
             else:

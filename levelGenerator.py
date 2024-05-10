@@ -219,6 +219,7 @@ class Board:
 
     def get_start_end_pos(self):
         a = 0
+        b = 0
         for x in range(len(self.board[0])):
             for y in range(len(self.board)):
                 if self.board[y][x] == '@':
@@ -226,8 +227,9 @@ class Board:
                             10 * windows.k ** windows.fullscreen + self.cell_size * x),
                          (self.top + (
                                  10 * windows.k ** windows.fullscreen + self.cell_size * y)))
-                    break
-        return a
+                elif self.board[y][x] == 'f':
+                    b = (x, y)
+        return a, b
 
 
 class Background(pygame.sprite.Sprite):
