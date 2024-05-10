@@ -3,7 +3,7 @@
 ### 📑 Detailed Description
 
 ## 🛠️ Tech stack
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+ㅤ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![PyGame](https://img.shields.io/badge/pygame-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Python](https://img.shields.io/badge/screeninfo-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
