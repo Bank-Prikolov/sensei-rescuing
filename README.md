@@ -68,7 +68,7 @@ An action platformer in the Roguelike and Metroidvania genre, dedicated to the c
 git clone https://github.com/mikhalexandr/PyGame-Sensei-Rescuing.git
 ```
 
-* Install all required dependencies from `requirements.txt`
+* Install all required dependencies from `requirements.txt`:
 ```
 pip install requirements.txt
 ```
