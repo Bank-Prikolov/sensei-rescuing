@@ -76,6 +76,6 @@ pip install requirements.txt
 * Run `main.py`
 
 ## 👾 Download Game
-* You can visit the game page on [itch.io](mikhalexandr.itch.io/sensei-rescuing) and download it from there
+* You can visit the game page on [itch.io](htpps://mikhalexandr.itch.io/sensei-rescuing) and download it from there
 * You can download `Sensei Rescuing.zip` from [this directory](https://github.com/mikhalexandr/PyGame-Sensei-Rescuing/tree/main/project%20product) and after that run `Sensei Rescuing.exe`
 * You can download the project and run `Sensei Rescuing.exe` from [this directory](https://github.com/mikhalexandr/PyGame-Sensei-Rescuing/tree/main/project%20product)
