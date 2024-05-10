@@ -459,7 +459,7 @@ def game_def(lvl):
                 soundManager.stop_playback()
                 game_complete.game_complete()
             elif not spriteGroups.sloniks:
-                if end_coords:
+                if end_coords and thing == 2:
                     if doorCounter == 0:
                         levelGenerator.remover(end_coords, 'F')
                         soundManager.door_open_sound()

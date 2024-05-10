@@ -31,8 +31,7 @@ def new_lvl():
                 lvl[ply] = change_index(lvl[ply], plx - 1 + j, 'x')
                 dostupnie[ply].remove(f'{plx - 1 + j}')
         # finish
-        finy = random.randint(0, 13)
-        print(finy)
+        finy = random.randint(0, 9)
         finx = int(random.choice(dostupnie[finy]))
         lvl[finy] = change_index(lvl[finy], finx, 'f')
         if finy < 9:
@@ -47,12 +46,11 @@ def new_lvl():
         #     # slonchoice = list(range(0, 13)).remove(x), list(range(0, 13)).remove(y)
         #     sx, sy = random.choice(list(range(0, 13))), random.choice(list(range(0, 9)))
         #     lvl[sy] = change_index(lvl[sy], sx, 'e')
-        print(*dostupnie, sep='\n')
+        # print(*dostupnie, sep='\n')
         print('\n'.join(lvl))
         lvl = fst + '#' + '#\n#'.join(lvl) + '#\n' + last
         lvl.replace('x', '.')
         with open(fr'data/levels/{name}.txt', 'w') as endres:
             endres.writelines(lvl)
-
 
 new_lvl()
