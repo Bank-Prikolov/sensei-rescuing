@@ -57,7 +57,7 @@ An action platformer in the Roguelike and Metroidvania genre, dedicated to the c
 ## 🛠️ Tech stack
 ㅤ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![PyGame](https://img.shields.io/badge/pygame-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![Python](https://img.shields.io/badge/screeninfo-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Screeninfo](https://img.shields.io/badge/screeninfo-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
 ![Aseprite](https://img.shields.io/badge/Aseprite-FFFFFF?style=for-the-badge&logo=Aseprite&logoColor=#7D929E)
 ![FL Studio](https://img.shields.io/badge/FL%20Studio-9933CC?style=for-the-badge&logo=apple-music&logoColor=white)
