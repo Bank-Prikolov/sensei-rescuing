@@ -31,7 +31,9 @@ def new_lvl():
                 lvl[ply] = change_index(lvl[ply], plx - 1 + j, 'x')
                 dostupnie[ply].remove(f'{plx - 1 + j}')
         # finish
-        finx, finy = random.cho(0, 13), random.randint(1, 9)
+        finy = random.randint(0, 13)
+        print(finy)
+        finx = int(random.choice(dostupnie[finy]))
         lvl[finy] = change_index(lvl[finy], finx, 'f')
         if finy < 9:
             lvl[finy + 1] = change_index(lvl[finy + 1], finx, ('0', '&', '=')[random.randint(0, 2)])
