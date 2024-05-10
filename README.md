@@ -54,7 +54,7 @@ An action platformer in the Roguelike and Metroidvania genre, dedicated to the c
   </ul>
 </details>
 
-## 🛠️ Tech stack
+## 🛠️ Tech Stack
 ㅤ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![PyGame](https://img.shields.io/badge/pygame-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Screeninfo](https://img.shields.io/badge/screeninfo-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
