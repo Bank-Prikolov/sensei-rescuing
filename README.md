@@ -5,7 +5,7 @@ An action platformer in the Roguelike and Metroidvania genre, dedicated to the c
 > This project includes [another repository](https://github.com/mikhalexandr/Flask-Sensei-Rescuing-API) where **the API for interacting with the leaderboard** is implemented
 
 <details>
-<summary>📑 Detailed Description</summary>
+<summary><b>📑 Detailed Description</b></summary>
 <b>Game screens:</b>
   <ul>
     <li>game menu windows:</li>
