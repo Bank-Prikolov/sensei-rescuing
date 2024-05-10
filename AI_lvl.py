@@ -33,7 +33,10 @@ def new_lvl():
         # finish
         finy = random.randint(0, 9)
         finx = int(random.choice(dostupnie[finy]))
-        lvl[finy] = change_index(lvl[finy], finx, 'f')
+        if i == 3:
+            lvl[finy] = change_index(lvl[finy], finx, 'f')
+        else:
+            lvl[finy] = change_index(lvl[finy], finx, 'c')
         if finy < 9:
             lvl[finy + 1] = change_index(lvl[finy + 1], finx, ('0', '&', '=')[random.randint(0, 2)])
         if finx < 13:

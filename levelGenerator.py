@@ -111,6 +111,9 @@ class Board:
                     UltimateAnimPic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                                     self.cell_size, consts.change, spriteGroups.untouches, spriteGroups.changegroup,
                                     n=4, speed=8)
+                elif self.board[y][x] == 'c':
+                    boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                             self.cell_size, consts.broken, spriteGroups.untouches)
                 elif self.board[y][x] == '^':
                     boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                              self.cell_size, consts.thorn, spriteGroups.thorngroup, spriteGroups.anothertoches)
@@ -220,6 +223,7 @@ class Board:
     def get_start_end_pos(self):
         a = 0
         b = 0
+        c = ''
         for x in range(len(self.board[0])):
             for y in range(len(self.board)):
                 if self.board[y][x] == '@':
@@ -229,7 +233,11 @@ class Board:
                                  10 * windows.k ** windows.fullscreen + self.cell_size * y)))
                 elif self.board[y][x] == 'f':
                     b = (x, y)
-        return a, b
+                    c = 'f'
+                elif self.board[y][x] == 'c':
+                    b = (x, y)
+                    c = 'c'
+        return a, b, c
 
 
 class Background(pygame.sprite.Sprite):
@@ -336,6 +344,9 @@ def remover(pos, block='.'):
                      board.cell_size, consts.finish, spriteGroups.finale)
             spriteGroups.finale.draw(windows.screen)
         elif block == 'C':
+            # boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
+            #          board.cell_size, consts.shadow, spriteGroups.shadowgroup)
+            # spriteGroups.shadowgroup.draw(windows.screen)
             UltimateAnimPic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
                             board.cell_size, consts.change, spriteGroups.changegroup, spriteGroups.untouches, n=4,
                             speed=8)

@@ -25,7 +25,7 @@ def game_def(lvl):
     consts.end_cs = False
     soundManager.game_theme()
     greeting = False
-    start_coords, end_coords = levelGenerator.generate_level(lvl)
+    start_coords, end_coords, mark = levelGenerator.generate_level(lvl)
     character = fileManager.heroImport()[0]
     consts.pause_btn = pauseButtonChanger()
     levelGenerator.updater()
@@ -162,7 +162,7 @@ def game_def(lvl):
             consts.projectileObj_speed = []
             spriteGroups.boss_projectile_group.empty()
             consts.b_projectile_speed = []
-            start_coords, end_coords = levelGenerator.generate_level(lvl + thing / 10)
+            start_coords, end_coords, mark = levelGenerator.generate_level(lvl + thing / 10)
             consts.hero.set_coords(*start_coords)
             if lvl == 3 and thing == 2:
                 checkLevel = True
@@ -252,7 +252,7 @@ def game_def(lvl):
                             consts.projectileObj_speed = []
                             spriteGroups.boss_projectile_group.empty()
                             consts.b_projectile_speed = []
-                            start_coords, end_coords = levelGenerator.generate_level(lvl + thing / 10)
+                            start_coords, end_coords, mark = levelGenerator.generate_level(lvl + thing / 10)
                             consts.hero.set_coords(*start_coords)
                             consts.hero.move(0, -8)
                             consts.runleft = False
@@ -308,7 +308,7 @@ def game_def(lvl):
                         spriteGroups.boss_projectile_group.empty()
                         consts.b_projectile_speed = []
 
-                        start_coords, end_coords = levelGenerator.generate_level(lvl + thing / 10)
+                        start_coords, end_coords, mark = levelGenerator.generate_level(lvl + thing / 10)
                         consts.hero.set_coords(*start_coords)
                         consts.runleft = False
                         consts.runright = False
@@ -397,7 +397,7 @@ def game_def(lvl):
                         consts.projectileObj_speed = []
                         spriteGroups.boss_projectile_group.empty()
                         consts.b_projectile_speed = []
-                        start_coords, end_coords = levelGenerator.generate_level(lvl + thing / 10)
+                        start_coords, end_coords, mark = levelGenerator.generate_level(lvl + thing / 10)
                         consts.hero.set_coords(*start_coords)
                         consts.hero.move(0, -8)
                         consts.runleft = False
@@ -439,7 +439,7 @@ def game_def(lvl):
                                                                       levelGenerator.board.get_size(),
                                                                       levelGenerator.board.get_size())))
                 soundManager.get_key_sound()
-                levelGenerator.remover((14, 10), 'C')
+                # levelGenerator.remover((14, 10), 'C')
                 levelGenerator.remover((11, 10))
 
         if not spriteGroups.boss_group or consts.end_cs:
@@ -459,15 +459,17 @@ def game_def(lvl):
                 soundManager.stop_playback()
                 game_complete.game_complete()
             elif not spriteGroups.sloniks:
-                if end_coords and thing == 2:
+                if end_coords:
                     if doorCounter == 0:
-                        levelGenerator.remover(end_coords, 'F')
-                        soundManager.door_open_sound()
-                        doorCounter += 1
+                        if mark == 'f':
+                            levelGenerator.remover(end_coords, 'F')
+                            soundManager.door_open_sound()
+                            doorCounter += 1
+                        elif mark == 'c':
+                            levelGenerator.remover(end_coords, 'C')
+                            doorCounter += 1
                 else:
-                    if lvl == 2 and thing == '':
-                        levelGenerator.remover((2, 7), 'C')
-                    elif lvl == 3 and thing == 1:
+                    if lvl == 3 and thing == 1:
                         levelGenerator.remover((9, 6),  'S')
                 # if lvl == 1:
                 #     levelGenerator.remover((13, 2), 'F')
