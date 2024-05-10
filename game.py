@@ -153,6 +153,7 @@ def game_def(lvl):
 
         if pygame.sprite.spritecollide(consts.hero, spriteGroups.changegroup, False):
             soundManager.teleport_sound()
+            doorCounter = 0
             if thing == '':
                 thing = 1
             else:
@@ -439,7 +440,6 @@ def game_def(lvl):
                                                                       levelGenerator.board.get_size(),
                                                                       levelGenerator.board.get_size())))
                 soundManager.get_key_sound()
-                # levelGenerator.remover((14, 10), 'C')
                 levelGenerator.remover((11, 10))
 
         if not spriteGroups.boss_group or consts.end_cs:
@@ -471,17 +471,6 @@ def game_def(lvl):
                 else:
                     if lvl == 3 and thing == 1:
                         levelGenerator.remover((9, 6),  'S')
-                # if lvl == 1:
-                #     levelGenerator.remover((13, 2), 'F')
-                #     soundManager.door_open_sound() if doorCounter == 0 else None
-                #     doorCounter += 1
-                # elif lvl == 2 and thing == '':
-                #     levelGenerator.remover((2, 7), 'C')
-                # elif lvl == 2 and thing == 1:
-                #     levelGenerator.remover((7, 4), 'F')
-                #     soundManager.door_open_sound() if doorCounter == 0 else None
-                #     doorCounter += 1
-
 
         if consts.runright or consts.runleft:
             if consts.runright:

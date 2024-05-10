@@ -344,9 +344,6 @@ def remover(pos, block='.'):
                      board.cell_size, consts.finish, spriteGroups.finale)
             spriteGroups.finale.draw(windows.screen)
         elif block == 'C':
-            # boss.Pic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
-            #          board.cell_size, consts.shadow, spriteGroups.shadowgroup)
-            # spriteGroups.shadowgroup.draw(windows.screen)
             UltimateAnimPic(board.left + (board.cell_size * x), board.top + (board.cell_size * y), board.cell_size,
                             board.cell_size, consts.change, spriteGroups.changegroup, spriteGroups.untouches, n=4,
                             speed=8)
