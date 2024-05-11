@@ -26,5 +26,4 @@ def get_user(user_name):
 def check_existence():
     cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='user';")
     table_exists = cur.fetchone()
-    print(table_exists)
     return table_exists
