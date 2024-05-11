@@ -13,11 +13,9 @@ import spriteGroups
 from hero import Hero
 from processHelper import terminate
 from itemChanger import starsChanger, pauseButtonChanger, healthBossBarChanger, heroHeartsChanger
-from AI_lvl import new_lvl
 
 
-def game_def(lvl):
-    new_lvl()
+def game_def(lvl, endless=False):
     spriteGroups.boss_projectile_group.empty()
     consts.b_projectile_speed = []
     spriteGroups.nmeprojectilesgroup.empty()
@@ -25,7 +23,7 @@ def game_def(lvl):
     consts.end_cs = False
     soundManager.game_theme()
     greeting = False
-    start_coords, end_coords, mark = levelGenerator.generate_level(lvl)
+    start_coords, end_coords, mark = levelGenerator.generate_level(lvl, endless=endless)
     character = fileManager.heroImport()[0]
     consts.pause_btn = pauseButtonChanger()
     levelGenerator.updater()
@@ -163,7 +161,7 @@ def game_def(lvl):
             consts.projectileObj_speed = []
             spriteGroups.boss_projectile_group.empty()
             consts.b_projectile_speed = []
-            start_coords, end_coords, mark = levelGenerator.generate_level(lvl + thing / 10)
+            start_coords, end_coords, mark = levelGenerator.generate_level(lvl + thing / 10, endless=endless)
             consts.hero.set_coords(*start_coords)
             if lvl == 3 and thing == 2:
                 checkLevel = True
@@ -253,7 +251,7 @@ def game_def(lvl):
                             consts.projectileObj_speed = []
                             spriteGroups.boss_projectile_group.empty()
                             consts.b_projectile_speed = []
-                            start_coords, end_coords, mark = levelGenerator.generate_level(lvl + thing / 10)
+                            start_coords, end_coords, mark = levelGenerator.generate_level(lvl + thing / 10, endless=endless)
                             consts.hero.set_coords(*start_coords)
                             consts.hero.move(0, -8)
                             consts.runleft = False
@@ -309,7 +307,7 @@ def game_def(lvl):
                         spriteGroups.boss_projectile_group.empty()
                         consts.b_projectile_speed = []
 
-                        start_coords, end_coords, mark = levelGenerator.generate_level(lvl + thing / 10)
+                        start_coords, end_coords, mark = levelGenerator.generate_level(lvl + thing / 10, endless=endless)
                         consts.hero.set_coords(*start_coords)
                         consts.runleft = False
                         consts.runright = False
@@ -398,7 +396,7 @@ def game_def(lvl):
                         consts.projectileObj_speed = []
                         spriteGroups.boss_projectile_group.empty()
                         consts.b_projectile_speed = []
-                        start_coords, end_coords, mark = levelGenerator.generate_level(lvl + thing / 10)
+                        start_coords, end_coords, mark = levelGenerator.generate_level(lvl + thing / 10, endless=endless)
                         consts.hero.set_coords(*start_coords)
                         consts.hero.move(0, -8)
                         consts.runleft = False

@@ -7,7 +7,7 @@ def change_index(stroka: str, index, a):
     return stroka
 
 
-def new_lvl(slozhnost=0):
+def new_lvls(slozhnost=0):
     for i in range(1, 4):
         width, height = 14, 10
         name = f'endless_{i}'

@@ -9,6 +9,7 @@ import slonik
 import hleb
 import spriteGroups
 from processHelper import load_image
+from AI_lvl import new_lvls
 
 
 class UltimateAnimPic(pygame.sprite.Sprite):
@@ -259,22 +260,31 @@ class Background(pygame.sprite.Sprite):
 board = Board()
 
 
-def generate_level(lvlnum, slozh=3):
+def generate_level(lvlnum, slozh=3, endless=False):
     global board
-    if lvlnum == 1:
-        level = consts.lvl1
-    elif lvlnum == 2:
-        level = consts.lvl2
-    elif lvlnum == 2.1:
-        level = consts.lvl2_1
-    elif lvlnum == 3:
-        level = consts.lvl3
-    elif lvlnum == 3:
-        level = consts.lvl3
-    elif lvlnum == 3.1:
-        level = consts.lvl3_1
+    if not endless:
+        if lvlnum == 1:
+            level = consts.lvl1
+        elif lvlnum == 2:
+            level = consts.lvl2
+        elif lvlnum == 2.1:
+            level = consts.lvl2_1
+        elif lvlnum == 3:
+            level = consts.lvl3
+        elif lvlnum == 3:
+            level = consts.lvl3
+        elif lvlnum == 3.1:
+            level = consts.lvl3_1
+        else:
+            level = consts.lvl3_2
     else:
-        level = consts.lvl3_2
+        new_lvls()
+        if lvlnum == 1:
+            level = consts.endless1
+        elif lvlnum == 1.1:
+            level = consts.endless2
+        else:
+            level = consts.endless3
     Background(*windows.size, 0, 0, windows.k)
     board = Board(level)
     board.set_view(windows.otstupx * windows.fullscreen,
