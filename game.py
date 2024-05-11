@@ -99,8 +99,8 @@ def game_def(lvl, endless=False):
                             consts.hero.change_hero('jumpl', consts.hero.get_coords())
                 elif event.key == pygame.K_w:
                     if pygame.sprite.spritecollide(consts.hero, spriteGroups.finale, False):
+                        thing = ''
                         if not endless:
-                            thing = ''
                             consts.hero.end()
                             levelGenerator.updater()
                             started = False
@@ -111,6 +111,7 @@ def game_def(lvl, endless=False):
                             soundManager.stop_playback()
                             game_complete.game_complete()
                         else:
+                            lvl = 1
                             doorCounter = 0
                             new_lvls()
                             spriteGroups.projectilesgroup.empty()
