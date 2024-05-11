@@ -1,10 +1,13 @@
 import pygame
+
+import userRecorder
 import windows
 import consts
 import menu
 import levels_menu
 import nameGetting
 import starsRecorder
+import phpStorm_menu
 from itemCreator import Object, Button
 from processHelper import terminate, transition
 
@@ -58,8 +61,12 @@ def modeSelection():
                 levels_menu.levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == phpStorm_btn:
-                transition()
-                nameGetting.getting_name()
+                if userRecorder.check_existence() is not None:
+                    transition()
+                    phpStorm_menu.phpStorm_menu()
+                else:
+                    transition()
+                    nameGetting.getting_name()
 
             for button in [campaign_btn, phpStorm_btn, cross_btn]:
                 button.handle_event(event, consts.volS)

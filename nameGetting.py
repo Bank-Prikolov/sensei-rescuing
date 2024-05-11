@@ -1,9 +1,10 @@
 import pygame
-
 import phpStorm_menu
 import windows
 import consts
+import api_requests
 import modeSelection
+import userRecorder
 from itemCreator import Object, Button
 from processHelper import terminate, transition
 
@@ -60,8 +61,14 @@ def getting_name():
                 modeSelection.modeSelection()
 
             if event.type == pygame.USEREVENT and event.button == mark_btn:
-                transition()
-                phpStorm_menu.phpStorm_menu()
+                if api_requests.checkUser(user_text):
+                    user_text = ''
+                else:
+                    userRecorder.userIdentity(user_text)
+                    u = userRecorder.get_user(user_text)
+                    api_requests.registerUser(str(u[0]), str(u[1]), int(u[2]), int(u[3]))
+                    transition()
+                    phpStorm_menu.phpStorm_menu()
 
             for button in [cross_btn]:
                 button.handle_event(event, consts.volS)
