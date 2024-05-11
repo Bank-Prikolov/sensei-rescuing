@@ -90,38 +90,38 @@ def boss_next_attack_sound():
 
 def star_sound():
     starSound = pygame.mixer.Sound(r"data\sounds\star-sound.mp3")
-    # starSound.set_volume(consts.volS)
-    # starSound.play()
+    starSound.set_volume(consts.volS)
+    starSound.play()
 
 
 def talking_sound():
     talkingSound = pygame.mixer.Sound(r"data\sounds\talking-sound.mp3")
-    # talkingSound.set_volume(0.2)
-    # talkingSound.play()
+    talkingSound.set_volume(0.2)
+    talkingSound.play()
 
 
 def boss_lose_sound():
     bossLoseSound = pygame.mixer.Sound(r"data\sounds\boss-lose-sound.mp3")
-    # bossLoseSound.set_volume(consts.wM)
-    # bossLoseSound.play()
+    bossLoseSound.set_volume(consts.wM)
+    bossLoseSound.play()
 
 
 def door_open_sound():
     doorSound = pygame.mixer.Sound(r"data\sounds\door-open-sound.mp3")
-    # doorSound.set_volume(consts.volS)
-    # doorSound.play(0)
+    doorSound.set_volume(consts.volS)
+    doorSound.play(0)
 
 
 def teleport_sound():
     teleportSound = pygame.mixer.Sound(r"data\sounds\teleport-sound.mp3")
-    # teleportSound.set_volume(consts.volS)
-    # teleportSound.play(0)
+    teleportSound.set_volume(consts.volS)
+    teleportSound.play(0)
 
 
 def get_key_sound():
     getKeySound = pygame.mixer.Sound(r"data\sounds\get-key-sound.mp3")
-    # getKeySound.set_volume(consts.volS)
-    # getKeySound.play()
+    getKeySound.set_volume(consts.volS)
+    getKeySound.play()
 
 
 def tp_activated():
