@@ -90,8 +90,7 @@ broken = r'textures\C_broken-texture.png'
 
 # levels
 lvl1 = r'level-1.txt'
-lvl2 = r'endless_1.txt'
-# lvl2 = r'level-2.txt'
+lvl2 = r'level-2.txt'
 lvl2_1 = r'level-2-1.txt'
 lvl3 = r'level-3.txt'
 lvl3_1 = r'level-3-1.txt'
