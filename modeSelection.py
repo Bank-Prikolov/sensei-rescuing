@@ -3,7 +3,7 @@ import windows
 import consts
 import menu
 import levels_menu
-import phpStorm_menu
+import nameGetting
 import starsRecorder
 from itemCreator import Object, Button
 from processHelper import terminate, transition
@@ -59,7 +59,7 @@ def modeSelection():
 
             if event.type == pygame.USEREVENT and event.button == phpStorm_btn:
                 transition()
-                phpStorm_menu.phpStorm_menu()
+                nameGetting.getting_name()
 
             for button in [campaign_btn, phpStorm_btn, cross_btn]:
                 button.handle_event(event, consts.volS)

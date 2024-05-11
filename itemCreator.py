@@ -1,4 +1,6 @@
 import pygame
+
+import consts
 import windows
 from processHelper import load_image
 
@@ -49,7 +51,8 @@ class Object:
 class Button:
     def __init__(self, x, y, width, height, image_path, hover_image_path=None, press_image_path=None, sound_path=None,
                  no_active_image_path=None, hero=None, image_get_path=None, hover_image_get_path=None,
-                 press_image_get_path=None, hover_2_image_path=None, no_normal_fs_image_path=None):
+                 press_image_get_path=None, hover_2_image_path=None, no_normal_fs_image_path=None,
+                 no_normal_name_path=None):
         self.x = x
         self.y = y
         self.width = width
@@ -85,6 +88,11 @@ class Button:
         if no_normal_fs_image_path:
             self.no_normal_fs_image = load_image(no_normal_fs_image_path)
             self.no_normal_fs_image = pygame.transform.scale(self.no_normal_fs_image, (width, height))
+
+        self.no_normal_name_image = self.image
+        if no_normal_name_path:
+            self.no_normal_name_image = load_image(no_normal_name_path)
+            self.no_normal_name_image = pygame.transform.scale(self.no_normal_name_image, (width, height))
 
         if image_get_path:
             self.get_image = load_image(image_get_path)
@@ -158,6 +166,17 @@ class Button:
                 current_image = self.press_image
         screen.blit(current_image, self.rect.topleft)
 
+    def drawMarkBtn(self, screen):
+        current_image = self.image
+        if self.no_normal_name_image and not consts.rightNameChecker:
+            current_image = self.no_normal_name_image
+        else:
+            if self.is_hovered:
+                current_image = self.hover_image
+            if self.is_pressed:
+                current_image = self.press_image
+        screen.blit(current_image, self.rect.topleft)
+
     def drawPauseBtn(self, screen, hitNow):
         current_image = self.image
         if self.is_hovered:
@@ -166,8 +185,9 @@ class Button:
             current_image = self.press_image
         screen.blit(current_image, self.rect.topleft)
 
-    def handle_event(self, event, volS=1):
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.is_hovered and not self.is_no_active:
+    def handle_event(self, event, volS=1, rightCheck=True):
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.is_hovered and not self.is_no_active\
+                and (rightCheck or consts.rightNameChecker):
             self.is_pressed = True
             if self.sound:
                 pygame.mixer.Sound.set_volume(self.sound, volS)
