@@ -278,7 +278,7 @@ def generate_level(lvlnum, slozh=3, endless=False):
         else:
             level = consts.lvl3_2
     else:
-        new_lvls()
+        # new_lvls()
         if lvlnum == 1:
             level = consts.endless1
         elif lvlnum == 1.1:
