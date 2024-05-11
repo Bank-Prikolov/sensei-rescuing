@@ -13,7 +13,7 @@ import spriteGroups
 from hero import Hero
 from processHelper import terminate
 from itemChanger import starsChanger, pauseButtonChanger, healthBossBarChanger, heroHeartsChanger
-
+from AI_lvl import  new_lvls
 
 def game_def(lvl, endless=False):
     spriteGroups.boss_projectile_group.empty()
@@ -99,10 +99,10 @@ def game_def(lvl, endless=False):
                             consts.hero.change_hero('jumpl', consts.hero.get_coords())
                 elif event.key == pygame.K_w:
                     if pygame.sprite.spritecollide(consts.hero, spriteGroups.finale, False):
-                        thing = ''
-                        consts.hero.end()
-                        levelGenerator.updater()
                         if not endless:
+                            thing = ''
+                            consts.hero.end()
+                            levelGenerator.updater()
                             started = False
                             record = starsChanger(lvl, current_seconds)
                             if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
@@ -110,6 +110,17 @@ def game_def(lvl, endless=False):
                                 starsRecorder.push_lastRecord(lvl, record, current_seconds)
                             soundManager.stop_playback()
                             game_complete.game_complete()
+                        else:
+                            doorCounter = 0
+                            new_lvls()
+                            spriteGroups.projectilesgroup.empty()
+                            spriteGroups.nmeprojectilesgroup.empty()
+                            consts.projectileObj_speed = []
+                            spriteGroups.boss_projectile_group.empty()
+                            consts.b_projectile_speed = []
+                            start_coords, end_coords, mark = levelGenerator.generate_level(1, endless=endless)
+                            levelGenerator.updater()
+                            consts.hero.set_coords(*start_coords)
                     else:
                         if consts.lookingright:
                             consts.shooting = consts.hero.projectile_speed * windows.k ** windows.fullscreen
