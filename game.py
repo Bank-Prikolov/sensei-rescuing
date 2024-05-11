@@ -458,7 +458,7 @@ def game_def(lvl, endless=False):
                     starsRecorder.push_lastRecord(lvl, record, current_seconds)
                     soundManager.stop_playback()
                     game_complete.game_complete()
-                elif not spriteGroups.sloniks:
+            elif not spriteGroups.sloniks:
                 if end_coords:
                     if doorCounter == 0:
                         if mark == 'f':
