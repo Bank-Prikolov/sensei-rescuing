@@ -55,10 +55,17 @@ def new_lvl(slozhnost=0):
             if str(finx - 1) in dostupnie[finy]:
                 if placedFin:
                     lvl[finy] = change_index(lvl[finy], finx - 1, '_')
-                    lvl[finy - 1] = change_index(lvl[finy], finx - 1, '_')
+                    lvl[finy - 1] = change_index(lvl[finy - 1], finx - 1, '_')
                 else:
                     lvl[finy - 1] = change_index(lvl[finy - 1], finx - 1, '.')
                     lvl[finy] = change_index(lvl[finy], finx - 1, '.')
+                if finy < 9:
+                    lvl[finy + 1] = change_index(lvl[finy + 1], finx - 1, '_')
+                    lvl[finy] = change_index(lvl[finy], finx - 1, '_')
+                    if str(finx - 1) in dostupnie[finy]:
+                        lvl[finy] = change_index(lvl[finy], finx - 1, '_')
+                    if str(finx - 1) in dostupnie[finy + 1]:
+                        dostupnie[finy + 1].remove(str(finx - 1))
                 if str(finx - 1) in dostupnie[finy - 1]:
                     dostupnie[finy - 1].remove(str(finx - 1))
                 dostupnie[finy].remove(str(finx - 1))
@@ -71,8 +78,13 @@ def new_lvl(slozhnost=0):
                 else:
                     lvl[finy] = change_index(lvl[finy], finx + 1, '.')
                     lvl[finy - 1] = change_index(lvl[finy - 1], finx + 1, '.')
+                if finy < 9:
+                    lvl[finy + 1] = change_index(lvl[finy + 1], finx + 1, '_')
+                    lvl[finy] = change_index(lvl[finy], finx + 1, '_')
+                    if str(finx + 1) in dostupnie[finy + 1]:
+                        dostupnie[finy + 1].remove(str(finx + 1))
                 if str(finx - 1) in dostupnie[finy - 1]:
-                    dostupnie[finy - 1].remove(str(finx + 1))
+                    dostupnie[finy - 1].remove(str(finx - 1))
                 dostupnie[finy].remove(str(finx + 1))
 
         # map
@@ -167,19 +179,34 @@ def new_lvl(slozhnost=0):
             if '.=.' in lvl[wally]:
                 if wally != 9:
                     if (lvl[wally + 1][lvl[wally].index('.=.'): lvl[wally].index('.=.') + 3]
-                            in ['===', '.==', '==.', '..=', '=..']):
+                            in ['===', '.==', '==.', '..=', '=..'] + ['===', '_==', '==_', '__=', '=__']):
                         lvl[wally] = change_index(lvl[wally], lvl[wally].index('.=.') + 1, '.')
                 else:
                     lvl[wally] = change_index(lvl[wally], lvl[wally].index('.=.') + 1, '.')
-            if '.==.' in lvl[wally]:
+            if '_=.' in lvl[wally]:
                 if wally != 9:
-                    if (lvl[wally + 1][lvl[wally].index('.==.'): lvl[wally].index('.==.') + 3]
-                            in ['====', '.===', '===.', '..==', '==..', '=..=']):
-                        lvl[wally] = change_index(lvl[wally], lvl[wally].index('.==.') + 1, '.')
-                        lvl[wally] = change_index(lvl[wally], lvl[wally].index('.==.') + 2, '.')
+                    if (lvl[wally + 1][lvl[wally].index('_=.'): lvl[wally].index('_=.') + 3]
+                            in ['===', '.==', '==.', '..=', '=..'] + ['===', '_==', '==_', '__=', '=__']):
+                        lvl[wally] = change_index(lvl[wally], lvl[wally].index('_=.') + 1, '.')
                 else:
-                    lvl[wally] = change_index(lvl[wally], lvl[wally].index('.=.') + 1, '.')
-                    lvl[wally] = change_index(lvl[wally], lvl[wally].index('.==.') + 2, '.')
+                    lvl[wally] = change_index(lvl[wally], lvl[wally].index('_=.') + 1, '.')
+            if '.=_' in lvl[wally]:
+                if wally != 9:
+                    if (lvl[wally + 1][lvl[wally].index('.=_'): lvl[wally].index('.=_') + 3]
+                            in ['===', '.==', '==.', '..=', '=..'] + ['===', '_==', '==_', '__=', '=__']):
+                        lvl[wally] = change_index(lvl[wally], lvl[wally].index('.=_') + 1, '.')
+                else:
+                    lvl[wally] = change_index(lvl[wally], lvl[wally].index('.=_') + 1, '.')
+            if '.==.' in lvl[wally]:
+                ind = lvl[wally].index('.==.')
+                if wally != 9:
+                    if (lvl[wally + 1][lvl[wally].index('.==.'): lvl[wally].index('.==.') + 4]
+                            in ['====', '.===', '===.', '..==', '==..', '=..=']):
+                        lvl[wally] = change_index(lvl[wally], ind + 1, '.')
+                        lvl[wally] = change_index(lvl[wally], ind + 2, '.')
+                else:
+                    lvl[wally] = change_index(lvl[wally], ind + 1, '.')
+                    lvl[wally] = change_index(lvl[wally], ind + 2, '.')
 
         square = []
         for x in range(width):
@@ -210,7 +237,7 @@ def new_lvl(slozhnost=0):
                 for linex in range(width):
                     for liney in range(height - 2):
                         if ''.join([lvl[liney][linex], lvl[liney + 1][linex],
-                                    lvl[liney + 2][linex]]) in ['_._', '__.', '_..']:
+                                    lvl[liney + 2][linex]]) in ['_._', '__.', '_=.']:
                             lvl[liney] = change_index(lvl[liney], linex, '_')
                             lvl[liney + 1] = change_index(lvl[liney + 1], linex, '_')
                             lvl[liney + 2] = change_index(lvl[liney + 2], linex, '_')
@@ -220,22 +247,21 @@ def new_lvl(slozhnost=0):
         for wally2 in range(height):
             if '__' in lvl[wally2]:
                 lvl[wally2] = lvl[wally2].replace('__', random.choice(['_.', '._']))
-        # odnastena = ['.=.' in ''.join(elem[0]) for elem in square]
-        # dvesteni = ['.==.' in ''.join(elem[0]) for elem in square]
-        # if any(odnastena):
-        #     choice = random.choice([el for el in range(len(square)) if odnastena[el]])
-        #     for changex in range(width - 2):
-        #         if ''.join([lvl[choice + 3 * (round - 1)][changex], lvl[choice + 3 * (round - 1)][changex + 1],
-        #                     lvl[choice + 3 * (round - 1)][changex + 2]]) == '.=.':
-        #             lvl[choice + 3 * (round - 1)] = change_index(lvl[choice + 3 * (round - 1)], changex + 1, '.')
-        #
-        # kolvoslonikov = random.randint(1, min(2 + slozhnost, 5))
-        # lvl[y] = change_index(lvl[y], x, ('0', '&', '=')[random.randint(0, 2)])
-        # for slon in range(kolvoslonikov):
-        #     sx, sy = random.ra
-        #     sx, sy = random.choice(list(range(0, 13))), random.choice(list(range(0, 9)))
-        #     lvl[sy] = change_index(lvl[sy], sx, 'e')
-        # print(*dostupnie, sep='\n')
+
+        # slons
+
+        # kolvo = random.randint(1, 5)
+        # for x in range(kolvo):
+        #     slony = random.randint(0, 9)
+        #     slonx = random.choice(dostupnie[slony])
+        #     lvl[slony] = change_index(lvl[slony], int(slonx), 'e')
+        # print(kolvo)
+        
+        # for slonx in range(width):
+        #     for slony in range(height - 1):
+        #         pass
+
+
         print('\n'.join(lvl))
         lvl = fst + '#' + '#\n#'.join(lvl) + '#\n' + last
         lvl.replace('x', '.')
@@ -243,4 +269,6 @@ def new_lvl(slozhnost=0):
             endres.writelines(lvl)
 
 
+# for _ in range(10000):
+#     new_lvl()
 new_lvl()
