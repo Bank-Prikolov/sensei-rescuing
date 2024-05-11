@@ -6,12 +6,13 @@ import consts
 import soundManager
 import spriteGroups
 import levelGenerator
+import phpStorm_menu
 from processHelper import load_image, terminate, transition
 from itemCreator import Button
 from itemAnimator import AnimatedTypedText
 
 
-def game_over():
+def game_over(endless):
     soundManager.game_over_theme(consts.languageNow)
 
     if consts.languageNow == 'rus':
@@ -46,7 +47,10 @@ def game_over():
                 running = False
                 spriteGroups.animatedTypedText.empty()
                 transition()
-                levels_menu.levels_menu()
+                if endless:
+                    phpStorm_menu.phpStorm_menu()
+                else:
+                    levels_menu.levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == repeat_btn:
                 running = False

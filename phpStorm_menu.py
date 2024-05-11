@@ -4,6 +4,7 @@ import consts
 import modeSelection
 import userRecorder
 from itemCreator import Button
+import game
 from processHelper import terminate, transition
 
 
@@ -16,6 +17,10 @@ def phpStorm_menu():
     new_game_btn = Button(windows.width // 2 - 288 // 2, windows.height // 2 + 12, 288, 112,
                           fr"buttons\rus\default-newgame-btn.png", fr"buttons\rus\hover-newgame-btn.png",
                           fr"buttons\rus\press-newgame-btn.png", r"data\sounds\menu-button-sound.mp3")
+    cross_btn = Button(continue_btn.x + continue_btn.width + 24 + 4, continue_btn.y - 26 - 4, 24, 26,
+                       fr"buttons\without text\default-cross-btn.png",
+                       fr"buttons\without text\hover-cross-btn.png",
+                       fr"buttons\without text\press-cross-btn.png", r"data\sounds\menu-button-sound.mp3")
     if userRecorder.get_info()[2] == 0:
         consts.continueChecker = False
     else:
@@ -34,13 +39,21 @@ def phpStorm_menu():
                     transition()
                     modeSelection.modeSelection()
 
-            for button in [new_game_btn]:
+            if event.type == pygame.USEREVENT and event.button == cross_btn:
+                transition()
+                modeSelection.modeSelection()
+
+            if event.type == pygame.USEREVENT and event.button == new_game_btn:
+                transition()
+                game.game_def(1, endless=True)
+
+            for button in [new_game_btn, cross_btn]:
                 button.handle_event(event, consts.volS)
 
             for button in [continue_btn]:
                 button.handle_event(event, consts.volS, continueCheck=False)
 
-        for button in [new_game_btn]:
+        for button in [new_game_btn, cross_btn]:
             button.check_hover(pygame.mouse.get_pos())
             button.draw(windows.screen)
 

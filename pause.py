@@ -4,12 +4,13 @@ import levels_menu
 import game
 import windows
 import levelGenerator
+import phpStorm_menu
 from processHelper import terminate, transition
 from itemCreator import Object, Button
 from itemChanger import volumeChanger
 
 
-def pause(time, sloniks, level, thing):
+def pause(time, sloniks, level, thing, endless):
     sound_name = Object(windows.width // 2 + 28, windows.height // 2 + 124, 434, 50,
                         fr"objects\{consts.languageNow}\sound-obj.png")
     music_name = Object(windows.width // 2 - 28 - 434, windows.height // 2 + 124, 434, 50,
@@ -99,12 +100,19 @@ def pause(time, sloniks, level, thing):
                 terminate()
 
             if event.type == pygame.USEREVENT and event.button == to_lvlmenu_btn:
-                transition()
-                levels_menu.levels_menu()
+                if endless:
+                    transition()
+                    pygame.mixer.music.load(r"data\sounds\menu-theme-sound.mp3")
+                    pygame.mixer.music.set_volume(consts.wM)
+                    pygame.mixer.music.play(-1)
+                    phpStorm_menu.phpStorm_menu()
+                else:
+                    transition()
+                    levels_menu.levels_menu()
 
             if event.type == pygame.USEREVENT and event.button == repeat_btn:
                 transition()
-                game.game_def(consts.lvlNow)
+                game.game_def(consts.lvlNow, endless=endless)
 
             if event.type == pygame.USEREVENT and event.button == play_btn:
                 running = False
