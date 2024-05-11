@@ -112,7 +112,7 @@ def pause(time, sloniks, level, thing, endless):
 
             if event.type == pygame.USEREVENT and event.button == repeat_btn:
                 transition()
-                game.game_def(consts.lvlNow, endless=endless)
+                game.game_def(1 if endless else consts.lvlNow, endless=endless)
 
             if event.type == pygame.USEREVENT and event.button == play_btn:
                 running = False

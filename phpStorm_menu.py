@@ -5,6 +5,7 @@ import modeSelection
 import userRecorder
 from itemCreator import Button
 import game
+import AI_lvl
 from processHelper import terminate, transition
 
 
@@ -14,10 +15,10 @@ def phpStorm_menu():
                           fr"buttons\rus\press-continue-btn.png", r"data\sounds\menu-button-sound.mp3",
                           "", "", "", "", "",
                           "", "", "", fr"buttons\rus\no-active-continue-btn.png")
-    new_game_btn = Button(windows.width // 2 - 288 // 2, windows.height // 2 + 12, 288, 112,
+    new_game_btn = Button(windows.width // 2 - 288 // 2, windows.height // 2 - 112 - 12, 288, 112,
                           fr"buttons\rus\default-newgame-btn.png", fr"buttons\rus\hover-newgame-btn.png",
                           fr"buttons\rus\press-newgame-btn.png", r"data\sounds\menu-button-sound.mp3")
-    cross_btn = Button(continue_btn.x + continue_btn.width + 24 + 4, continue_btn.y - 26 - 4, 24, 26,
+    cross_btn = Button(continue_btn.x + continue_btn.width + 48 + 4, continue_btn.y - 52 - 4, 48, 52,
                        fr"buttons\without text\default-cross-btn.png",
                        fr"buttons\without text\hover-cross-btn.png",
                        fr"buttons\without text\press-cross-btn.png", r"data\sounds\menu-button-sound.mp3")
@@ -45,21 +46,22 @@ def phpStorm_menu():
 
             if event.type == pygame.USEREVENT and event.button == new_game_btn:
                 transition()
+                AI_lvl.new_lvls()
                 game.game_def(1, endless=True)
 
             for button in [new_game_btn, cross_btn]:
                 button.handle_event(event, consts.volS)
 
-            for button in [continue_btn]:
-                button.handle_event(event, consts.volS, continueCheck=False)
+            # for button in [continue_btn]:
+            #     button.handle_event(event, consts.volS, continueCheck=False)
 
         for button in [new_game_btn, cross_btn]:
             button.check_hover(pygame.mouse.get_pos())
             button.draw(windows.screen)
 
-        if consts.continueChecker:
-            continue_btn.check_hover(pygame.mouse.get_pos())
-        continue_btn.drawContinueBtn(windows.screen)
+        # if consts.continueChecker:
+        #     continue_btn.check_hover(pygame.mouse.get_pos())
+        # continue_btn.drawContinueBtn(windows.screen)
 
         consts.clock.tick(consts.fps)
         pygame.display.flip()
