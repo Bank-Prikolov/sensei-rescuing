@@ -1,11 +1,36 @@
-# PyGame "Sensei Rescuing"
+# PyGame Sensei Rescuing
 An action platformer in the Roguelike and Metroidvania genre, dedicated to the confrontation between Python and PHP, which includes completing levels, defeating enemies and a boss, interesting gameplay, as well as an original story, music, design and interface
 
 > [!NOTE]
-> This project includes [another repository](https://github.com/mikhalexandr/Flask-Sensei-Rescuing-API) where **the API for interacting with the leaderboard** is implemented
+> This project includes [another repository](https://github.com/mikhalexandr/rating-api) where **the API for interacting with the leaderboard** is implemented
 
-<details>
-<summary><b>📑 Detailed Description</b></summary>
+## 🛠️ Tech Stack
+ㅤ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![PyGame](https://img.shields.io/badge/pygame-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Screeninfo](https://img.shields.io/badge/screeninfo-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
+![Aseprite](https://img.shields.io/badge/Aseprite-FFFFFF?style=for-the-badge&logo=Aseprite&logoColor=#7D929E)
+![FL Studio](https://img.shields.io/badge/FL%20Studio-9933CC?style=for-the-badge&logo=apple-music&logoColor=white)
+
+## 🎯 Quick Start
+* Clone the project to your computer from Github using the command:
+```
+git clone https://github.com/mikhalexandr/pygame-sensei-rescuing.git
+```
+
+* Install all required dependencies from `requirements.txt`:
+```
+pip install requirements.txt
+```
+
+* Run `main.py`
+
+## 👾 Download Game
+* You can visit the game page on [itch.io](https://mikhalexandr.itch.io/sensei-rescuing) and download it from there
+* You can download `Sensei Rescuing.zip` from [this directory](https://github.com/mikhalexandr/pygame-sensei-rescuing/tree/main/project%20product) and after that run `Sensei Rescuing.exe`
+* You can download the project and run `Sensei Rescuing.exe` from [this directory](https://github.com/mikhalexandr/pygame-sensei-rescuing/tree/main/project%20product)
+
+## 📝 Documentation
 <b>Game screens:</b>
   <ul>
     <li>game menu windows:</li>
@@ -52,30 +77,3 @@ An action platformer in the Roguelike and Metroidvania genre, dedicated to the c
         <li>Door EXIT: level final</li>
       </ol>
   </ul>
-</details>
-
-## 🛠️ Tech Stack
-ㅤ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![PyGame](https://img.shields.io/badge/pygame-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![Screeninfo](https://img.shields.io/badge/screeninfo-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
-![Aseprite](https://img.shields.io/badge/Aseprite-FFFFFF?style=for-the-badge&logo=Aseprite&logoColor=#7D929E)
-![FL Studio](https://img.shields.io/badge/FL%20Studio-9933CC?style=for-the-badge&logo=apple-music&logoColor=white)
-
-## 🎯 Quick Start
-* Clone the project to your computer from Github using the command:
-```
-git clone https://github.com/mikhalexandr/PyGame-Sensei-Rescuing.git
-```
-
-* Install all required dependencies from `requirements.txt`:
-```
-pip install requirements.txt
-```
-
-* Run `main.py`
-
-## 👾 Download Game
-* You can visit the game page on [itch.io](https://mikhalexandr.itch.io/sensei-rescuing) and download it from there
-* You can download `Sensei Rescuing.zip` from [this directory](https://github.com/mikhalexandr/PyGame-Sensei-Rescuing/tree/main/project%20product) and after that run `Sensei Rescuing.exe`
-* You can download the project and run `Sensei Rescuing.exe` from [this directory](https://github.com/mikhalexandr/PyGame-Sensei-Rescuing/tree/main/project%20product)
