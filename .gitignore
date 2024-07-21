@@ -1,3 +1,5 @@
 .idea
-/data/savings/starsRecorder.sqlite
+.venv
+
+/data/starsRecorder.sqlite
 /project product/data/savings/starsRecorder.sqlite

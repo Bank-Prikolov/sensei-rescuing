@@ -1,6 +1,6 @@
 import pygame
 from start_screen import start_screen
-from processHelper import load_image
+from misc.specfunctions import load_image
 
 pygame.init()
 pygame.display.set_caption('Sensei Rescuing')
