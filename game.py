@@ -13,9 +13,9 @@ import spriteGroups
 from hero import Hero
 from processHelper import terminate
 from itemChanger import starsChanger, pauseButtonChanger, healthBossBarChanger, heroHeartsChanger
+from AI_lvl import  new_lvls
 
-
-def game_def(lvl):
+def game_def(lvl, endless=False):
     spriteGroups.boss_projectile_group.empty()
     consts.b_projectile_speed = []
     spriteGroups.nmeprojectilesgroup.empty()
@@ -23,7 +23,7 @@ def game_def(lvl):
     consts.end_cs = False
     soundManager.game_theme()
     greeting = False
-    start_coords = levelGenerator.generate_level(lvl)
+    start_coords, end_coords, mark = levelGenerator.generate_level(lvl, endless=endless)
     character = fileManager.heroImport()[0]
     consts.pause_btn = pauseButtonChanger()
     levelGenerator.updater()
@@ -36,8 +36,9 @@ def game_def(lvl):
     running = True
     keyboardUnlock = False if lvl == 1 else True
     spriteGroups.characters.draw(windows.screen)
-    if lvl == 1:
-        levelGenerator.remover((1, 10), block='k')
+    if not endless:
+        if lvl == 1:
+            levelGenerator.remover((1, 10), block='k')
     thing = ''
     doorCounter = 0
     healthBossBar = healthBossBarChanger()
@@ -99,15 +100,28 @@ def game_def(lvl):
                 elif event.key == pygame.K_w:
                     if pygame.sprite.spritecollide(consts.hero, spriteGroups.finale, False):
                         thing = ''
-                        consts.hero.end()
-                        levelGenerator.updater()
-                        started = False
-                        record = starsChanger(lvl, current_seconds)
-                        if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
-                            starsRecorder.push_record(lvl, 1, record, current_seconds)
-                        starsRecorder.push_lastRecord(lvl, record, current_seconds)
-                        soundManager.stop_playback()
-                        game_complete.game_complete()
+                        if not endless:
+                            consts.hero.end()
+                            levelGenerator.updater()
+                            started = False
+                            record = starsChanger(lvl, current_seconds)
+                            if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
+                                starsRecorder.push_record(lvl, 1, record, current_seconds)
+                                starsRecorder.push_lastRecord(lvl, record, current_seconds)
+                            soundManager.stop_playback()
+                            game_complete.game_complete()
+                        else:
+                            lvl = 1
+                            doorCounter = 0
+                            new_lvls()
+                            spriteGroups.projectilesgroup.empty()
+                            spriteGroups.nmeprojectilesgroup.empty()
+                            consts.projectileObj_speed = []
+                            spriteGroups.boss_projectile_group.empty()
+                            consts.b_projectile_speed = []
+                            start_coords, end_coords, mark = levelGenerator.generate_level(1, endless=endless)
+                            levelGenerator.updater()
+                            consts.hero.set_coords(*start_coords)
                     else:
                         if consts.lookingright:
                             consts.shooting = consts.hero.projectile_speed * windows.k ** windows.fullscreen
@@ -136,7 +150,7 @@ def game_def(lvl):
                 consts.xspeed = 0
                 predpause = consts.hero.get_coords()
                 proj = consts.hero.projectilespeed
-                pause.pause(current_seconds, len(list(spriteGroups.sloniks)), lvl, thing)
+                pause.pause(current_seconds, len(list(spriteGroups.sloniks)), lvl, thing, endless)
                 spriteGroups.characters.empty()
                 consts.hero = Hero(*predpause, windows.k ** windows.fullscreen, character)
                 consts.hero.projectilespeed = proj
@@ -151,6 +165,7 @@ def game_def(lvl):
 
         if pygame.sprite.spritecollide(consts.hero, spriteGroups.changegroup, False):
             soundManager.teleport_sound()
+            doorCounter = 0
             if thing == '':
                 thing = 1
             else:
@@ -160,7 +175,8 @@ def game_def(lvl):
             consts.projectileObj_speed = []
             spriteGroups.boss_projectile_group.empty()
             consts.b_projectile_speed = []
-            consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
+            start_coords, end_coords, mark = levelGenerator.generate_level(lvl + thing / 10, endless=endless)
+            consts.hero.set_coords(*start_coords)
             if lvl == 3 and thing == 2:
                 checkLevel = True
                 soundManager.stop_playback()
@@ -242,14 +258,15 @@ def game_def(lvl):
                             consts.b_projectile_speed = []
                             started = False
                             soundManager.stop_playback()
-                            game_over.game_over()
+                            game_over.game_over(endless)
                         else:
                             spriteGroups.projectilesgroup.empty()
                             spriteGroups.nmeprojectilesgroup.empty()
                             consts.projectileObj_speed = []
                             spriteGroups.boss_projectile_group.empty()
                             consts.b_projectile_speed = []
-                            consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
+                            start_coords, end_coords, mark = levelGenerator.generate_level(lvl + thing / 10, endless=endless)
+                            consts.hero.set_coords(*start_coords)
                             consts.hero.move(0, -8)
                             consts.runleft = False
                             consts.runright = False
@@ -304,7 +321,8 @@ def game_def(lvl):
                         spriteGroups.boss_projectile_group.empty()
                         consts.b_projectile_speed = []
 
-                        consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
+                        start_coords, end_coords, mark = levelGenerator.generate_level(lvl + thing / 10, endless=endless)
+                        consts.hero.set_coords(*start_coords)
                         consts.runleft = False
                         consts.runright = False
                         consts.jumping = False
@@ -392,7 +410,8 @@ def game_def(lvl):
                         consts.projectileObj_speed = []
                         spriteGroups.boss_projectile_group.empty()
                         consts.b_projectile_speed = []
-                        consts.hero.set_coords(*levelGenerator.generate_level(lvl + thing / 10))
+                        start_coords, end_coords, mark = levelGenerator.generate_level(lvl + thing / 10, endless=endless)
+                        consts.hero.set_coords(*start_coords)
                         consts.hero.move(0, -8)
                         consts.runleft = False
                         consts.runright = False
@@ -419,7 +438,7 @@ def game_def(lvl):
                         consts.b_projectile_speed = []
                         started = False
                         soundManager.stop_playback()
-                        game_over.game_over()
+                        game_over.game_over(endless)
         if pygame.sprite.spritecollide(consts.hero, spriteGroups.triggergroup, False):
             if lvl == 3:
                 levelGenerator.remover(levelGenerator.board.get_cell(
@@ -433,7 +452,6 @@ def game_def(lvl):
                                                                       levelGenerator.board.get_size(),
                                                                       levelGenerator.board.get_size())))
                 soundManager.get_key_sound()
-                levelGenerator.remover((14, 10), 'C')
                 levelGenerator.remover((11, 10))
 
         if not spriteGroups.boss_group or consts.end_cs:
@@ -445,26 +463,28 @@ def game_def(lvl):
                 spriteGroups.boss_projectile_group.empty()
                 consts.b_projectile_speed = []
                 thing = ''
-                started = False
-                record = starsChanger(lvl, current_seconds)
-                if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
-                    starsRecorder.push_record(lvl, 1, record, current_seconds)
-                starsRecorder.push_lastRecord(lvl, record, current_seconds)
-                soundManager.stop_playback()
-                game_complete.game_complete()
+                if not endless:
+                    started = False
+                    record = starsChanger(lvl, current_seconds)
+                    if current_seconds < starsRecorder.get_seconds(lvl) or starsRecorder.get_seconds(lvl) == 0:
+                        starsRecorder.push_record(lvl, 1, record, current_seconds)
+                    starsRecorder.push_lastRecord(lvl, record, current_seconds)
+                    soundManager.stop_playback()
+                    game_complete.game_complete()
             elif not spriteGroups.sloniks:
-                if lvl == 1:
-                    levelGenerator.remover((13, 2), 'F')
-                    soundManager.door_open_sound() if doorCounter == 0 else None
-                    doorCounter += 1
-                elif lvl == 2 and thing == '':
-                    levelGenerator.remover((2, 7), 'C')
-                elif lvl == 2 and thing == 1:
-                    levelGenerator.remover((7, 4), 'F')
-                    soundManager.door_open_sound() if doorCounter == 0 else None
-                    doorCounter += 1
-                elif lvl == 3 and thing == 1:
-                    levelGenerator.remover((9, 6), 'S')
+                if end_coords:
+                    if doorCounter == 0:
+                        if mark == 'f':
+                            levelGenerator.remover(end_coords, 'F')
+                            soundManager.door_open_sound()
+                            doorCounter += 1
+                        elif mark == 'c':
+                            levelGenerator.remover(end_coords, 'C')
+                            soundManager.tp_activated()
+                            doorCounter += 1
+                else:
+                    if lvl == 3 and thing == 1:
+                        levelGenerator.remover((9, 6),  'S')
 
         if consts.runright or consts.runleft:
             if consts.runright:
@@ -483,6 +503,8 @@ def game_def(lvl):
         spriteGroups.untouches.update()
         spriteGroups.boss_group.update()
         spriteGroups.boss_group.draw(windows.screen)
+        spriteGroups.telep_group.update()
+        spriteGroups.telep_group.draw(windows.screen)
         spriteGroups.untouches.draw(windows.screen)
         levelGenerator.spriteGroups.boss_projectile_group.draw(windows.screen)
         spriteGroups.nmeprojectilesgroup.draw(windows.screen)
@@ -506,12 +528,14 @@ def game_def(lvl):
         pygame.draw.rect(windows.screen, '#000000',
                          (windows.fullsize[0] - windows.otstupx, 0, windows.fullsize[0] ** windows.fullscreen,
                           windows.fullsize[1] ** windows.fullscreen))
-
-        if lvl == 1 and consts.hero.get_coords() == start_coords and not keyboardUnlock:
-            cutscenes.hleb_greeting_cutscene(character)
+        if not endless:
+            if lvl == 1 and consts.hero.get_coords() == start_coords and not keyboardUnlock:
+                cutscenes.hleb_greeting_cutscene(character)
+                keyboardUnlock = True
+                levelGenerator.remover((1, 10), block='.')
+                levelGenerator.remover((1, 10), block='k')
+        else:
             keyboardUnlock = True
-            levelGenerator.remover((1, 10), block='.')
-            levelGenerator.remover((1, 10), block='k')
 
         if lvl == 3 and thing == 2 and not greeting:
             list(spriteGroups.boss_group)[0].cutscene = 1

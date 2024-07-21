@@ -1,8 +1,8 @@
 import pygame
 import windows
 import consts
-import menu
 import game
+import modeSelection
 import starsRecorder
 import soundManager
 from itemChanger import timeChanger
@@ -87,11 +87,11 @@ def levels_menu():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     transition()
-                    menu.main_menu()
+                    modeSelection.modeSelection()
 
             if event.type == pygame.USEREVENT and event.button == cross_btn:
                 transition()
-                menu.main_menu()
+                modeSelection.modeSelection()
 
             if event.type == pygame.USEREVENT and event.button == level1Button:
                 consts.lvlNow = 1

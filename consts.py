@@ -17,6 +17,8 @@ playingMenuMusic = True
 heroNow, isGetHero2, getHero = fileManager.heroImport()
 wM, wS, volS = fileManager.volumeImport()
 languageNow = fileManager.languageImport()
+rightNameChecker = None
+continueChecker = None
 
 # game consts
 runright, runleft, sitting = False, False, False
@@ -59,6 +61,7 @@ shadow = r'characters\shadow.png'
 slonik = r'characters\enemy-slonik-php.png'
 kowlad = r'characters\enemy-kowlad.png'
 hleb = r'characters\hleb.png'
+tp = r'characters\boss-tp.png'
 
 # projectiles
 php = r'characters\projectile-php.png'
@@ -83,6 +86,7 @@ invis = r'textures\%-texture.png'
 horizon = r'textures\&-texture.png'
 closed = r'textures\ff-texture.png'
 startdoor = r'textures\k-texture.png'
+broken = r'textures\C_broken-texture.png'
 
 # levels
 lvl1 = r'level-1.txt'
@@ -91,6 +95,10 @@ lvl2_1 = r'level-2-1.txt'
 lvl3 = r'level-3.txt'
 lvl3_1 = r'level-3-1.txt'
 lvl3_2 = r'level-3-2.txt'
+
+endless1 = r'endless_1.txt'
+endless2 = r'endless_2.txt'
+endless3 = r'endless_3.txt'
 
 # backgrounds
 game_bg = r'backgrounds\game-bg.png'

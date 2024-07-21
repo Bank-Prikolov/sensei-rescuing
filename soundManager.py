@@ -124,6 +124,12 @@ def get_key_sound():
     getKeySound.play()
 
 
+def tp_activated():
+    tpActivated = pygame.mixer.Sound(r"data\sounds\tp-activated-sound.mp3")
+    tpActivated.set_volume(consts.volS)
+    tpActivated.play()
+
+
 def stop_playback():
     pygame.mixer.music.stop()
 

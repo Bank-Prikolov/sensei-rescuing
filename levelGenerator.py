@@ -9,6 +9,7 @@ import slonik
 import hleb
 import spriteGroups
 from processHelper import load_image
+from AI_lvl import new_lvls
 
 
 class UltimateAnimPic(pygame.sprite.Sprite):
@@ -111,6 +112,9 @@ class Board:
                     UltimateAnimPic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                                     self.cell_size, consts.change, spriteGroups.untouches, spriteGroups.changegroup,
                                     n=4, speed=8)
+                elif self.board[y][x] == 'c':
+                    boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
+                             self.cell_size, consts.broken, spriteGroups.untouches)
                 elif self.board[y][x] == '^':
                     boss.Pic(self.left + (self.cell_size * x), self.top + (self.cell_size * y), self.cell_size,
                              self.cell_size, consts.thorn, spriteGroups.thorngroup, spriteGroups.anothertoches)
@@ -219,6 +223,8 @@ class Board:
 
     def get_start_end_pos(self):
         a = 0
+        b = 0
+        c = ''
         for x in range(len(self.board[0])):
             for y in range(len(self.board)):
                 if self.board[y][x] == '@':
@@ -226,8 +232,13 @@ class Board:
                             10 * windows.k ** windows.fullscreen + self.cell_size * x),
                          (self.top + (
                                  10 * windows.k ** windows.fullscreen + self.cell_size * y)))
-                    break
-        return a
+                elif self.board[y][x] == 'f':
+                    b = (x, y)
+                    c = 'f'
+                elif self.board[y][x] == 'c':
+                    b = (x, y)
+                    c = 'c'
+        return a, b, c
 
 
 class Background(pygame.sprite.Sprite):
@@ -249,22 +260,31 @@ class Background(pygame.sprite.Sprite):
 board = Board()
 
 
-def generate_level(lvlnum):
+def generate_level(lvlnum, slozh=3, endless=False):
     global board
-    if lvlnum == 1:
-        level = consts.lvl1
-    elif lvlnum == 2:
-        level = consts.lvl2
-    elif lvlnum == 2.1:
-        level = consts.lvl2_1
-    elif lvlnum == 3:
-        level = consts.lvl3
-    elif lvlnum == 3:
-        level = consts.lvl3
-    elif lvlnum == 3.1:
-        level = consts.lvl3_1
+    if not endless:
+        if lvlnum == 1:
+            level = consts.lvl1
+        elif lvlnum == 2:
+            level = consts.lvl2
+        elif lvlnum == 2.1:
+            level = consts.lvl2_1
+        elif lvlnum == 3:
+            level = consts.lvl3
+        elif lvlnum == 3:
+            level = consts.lvl3
+        elif lvlnum == 3.1:
+            level = consts.lvl3_1
+        else:
+            level = consts.lvl3_2
     else:
-        level = consts.lvl3_2
+        # new_lvls()
+        if lvlnum == 1:
+            level = consts.endless1
+        elif lvlnum == 1.1:
+            level = consts.endless2
+        else:
+            level = consts.endless3
     Background(*windows.size, 0, 0, windows.k)
     board = Board(level)
     board.set_view(windows.otstupx * windows.fullscreen,
