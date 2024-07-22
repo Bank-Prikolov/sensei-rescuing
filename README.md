@@ -1,8 +1,5 @@
 # PyGame Sensei Rescuing
-An action platformer in the Roguelike and Metroidvania genre, dedicated to the confrontation between Python and PHP, which includes completing levels, defeating enemies and a boss, interesting gameplay, as well as an original story, music, design and interface
-
-> [!NOTE]
-> This project includes [another repository](https://github.com/mikhalexandr/rating-api) where **the API for interacting with the leaderboard** is implemented
+An action platformer in the Metroidvania genre, dedicated to the confrontation between Python and PHP, which includes completing levels, defeating enemies and a boss, interesting gameplay, as well as an original story, music, design and interface
 
 ## 🛠️ Tech Stack
 ㅤ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
