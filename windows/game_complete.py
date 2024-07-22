@@ -1,13 +1,11 @@
 import pygame
-import levels
 import game
 from config import consts
-from managing import sounds_managing, stars_managing
 import spriteGroups
 import levelGenerator
-from windows.items.item_creating import Button
-from misc.specfunctions import load_image, terminate, transition
-from windows.items.item_animation import AnimatedTypedText, AnimatedStars
+from items.static.stars import Button
+from misc.utils import load_image, terminate, transition
+from items.animated.emerging_stars import AnimatedTypedText, AnimatedStars
 
 
 def game_complete():

@@ -1,5 +1,6 @@
 import sqlite3
 
+
 con = sqlite3.connect(r"data\savings\starsRecorder.sqlite")
 cur = con.cursor()
 

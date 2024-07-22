@@ -1,8 +1,9 @@
 import pygame
 import sys
 import os
-from config import consts
-from managing import stars_managing
+
+from config import MenuGameConsts, WindowsSettings
+from managing import con
 
 
 def load_image(name, colorkey=None):
@@ -30,21 +31,21 @@ def transition():
                 pygame.quit()
                 sys.exit()
 
-        transition_surface = pygame.Surface((windows.width, windows.height))
+        transition_surface = pygame.Surface((WindowsSettings.width, WindowsSettings.height))
         transition_surface.fill((0, 0, 0))
         transition_surface.set_alpha(transition_level)
-        windows.screen.blit(transition_surface, (0, 0))
+        WindowsSettings.screen.blit(transition_surface, (0, 0))
 
         transition_level += 5
         if transition_level >= 105:
             transition_level = 255
             running = False
 
-        consts.clock.tick(70)
+        MenuGameConsts.clock.tick(70)
         pygame.display.flip()
 
 
 def terminate():
-    starsRecorder.con.close()
+    con.close()
     pygame.quit()
     sys.exit()

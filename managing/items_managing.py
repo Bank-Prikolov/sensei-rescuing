@@ -1,11 +1,11 @@
 import pygame
 from config import consts
 import spriteGroups
-from misc.specfunctions import load_image
+from misc.utils import load_image
 from gameplay.objects.boss import AnimatedHealthBar
 from hero import AnimatedHeroHealth
-from windows.items.item_animation import AnimatedHero
-from item_creating import Object, Button
+from items.animated.emerging_stars import AnimatedHero
+from items.static.stars import Object, Button
 
 
 # game and menu changers

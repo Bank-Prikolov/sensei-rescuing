@@ -1,11 +1,10 @@
 import pygame
 from config import consts
-import levels
 import game
 import levelGenerator
-from misc.specfunctions import terminate, transition
-from windows.items.item_creating import Object, Button
-from windows.items.item_changing import volumeChanger
+from misc.utils import terminate, transition
+from items.static.stars import Object, Button
+from managing.items_managing import volumeChanger
 
 
 def pause(time, sloniks, level, thing):

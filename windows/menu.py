@@ -1,14 +1,12 @@
 import pygame
 import webbrowser
 from config import consts
-from managing import files_managing
 import info
 import settings
-import levels
 import spriteGroups
-from misc.specfunctions import terminate, transition
-from windows.items.item_creating import Object, Button
-from windows.items.item_changing import heroOnScreenChanger
+from misc.utils import terminate, transition
+from items.static.stars import Object, Button
+from managing.items_managing import heroOnScreenChanger
 
 
 def main_menu():

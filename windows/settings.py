@@ -2,10 +2,9 @@ import pygame
 import webbrowser
 from config import consts
 import menu
-from managing import files_managing
-from windows.items.item_creating import Object, Button
-from windows.items.item_changing import fullscreenChanger, volumeChanger
-from misc.specfunctions import terminate, transition
+from items.static.stars import Object, Button
+from managing.items_managing import fullscreenChanger, volumeChanger
+from misc.utils import terminate, transition
 
 
 def settings_menu():

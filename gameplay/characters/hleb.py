@@ -1,5 +1,5 @@
 import pygame
-from misc.specfunctions import load_image
+from misc.utils import load_image
 
 
 class HlebPic(pygame.sprite.Sprite):

@@ -2,8 +2,8 @@ import pygame
 from config import consts
 import menu
 import webbrowser
-from windows.items.item_creating import Object, Button
-from misc.specfunctions import terminate, transition
+from items.static.stars import Object, Button
+from misc.utils import terminate, transition
 
 
 def info_menu():

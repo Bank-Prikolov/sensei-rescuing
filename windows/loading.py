@@ -1,12 +1,11 @@
 import pygame
-from managing import sounds_managing
 import spriteGroups
 from config import consts
 import menu
 import threading
-from windows.items.item_creating import Object
-from windows.items.item_animation import AnimatedDots
-from misc.specfunctions import load_image, terminate
+from items.static.stars import Object
+from items.animated.emerging_stars import AnimatedDots
+from misc.utils import load_image, terminate
 
 
 def loading_items():

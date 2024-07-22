@@ -3,7 +3,7 @@ from gameplay.objects import boss
 from config import consts
 import levelGenerator
 import spriteGroups
-from misc.specfunctions import load_image
+from misc.utils import load_image
 
 
 class Slonik(pygame.sprite.Sprite):

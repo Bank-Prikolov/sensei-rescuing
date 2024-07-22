@@ -2,10 +2,9 @@ import pygame
 from config import consts
 import menu
 import game
-from managing import sounds_managing, stars_managing
-from windows.items.item_changing import timeChanger
-from windows.items.item_creating import Object, Button, Stars
-from misc.specfunctions import terminate, transition
+from managing.items_managing import timeChanger
+from items.static.stars import Object, Button, Stars
+from misc.utils import terminate, transition
 
 
 def levels_menu():

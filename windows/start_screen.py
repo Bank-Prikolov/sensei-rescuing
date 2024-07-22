@@ -2,11 +2,10 @@ import pygame
 import loading
 from config import consts
 import spriteGroups
-from managing import sounds_managing, stars_managing
-from misc.specfunctions import load_image
-from windows.items.item_changing import fullscreenChanger
-from windows.items.item_creating import Button, Object
-from windows.items.item_animation import AnimatedIntro, AnimatedTypedText
+from misc.utils import load_image
+from managing.items_managing import fullscreenChanger
+from items.static.stars import Button, Object
+from items.animated.emerging_stars import AnimatedIntro, AnimatedTypedText
 
 
 def start_screen():

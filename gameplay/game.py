@@ -1,5 +1,4 @@
 import pygame.surface
-import levelGenerator
 import game_over
 import game_complete
 import pause
@@ -7,8 +6,8 @@ from config import consts
 import cutscenes
 import spriteGroups
 from gameplay.objects.hero import Hero
-from misc.specfunctions import terminate
-from windows.items.item_changing import starsChanger, pauseButtonChanger, healthBossBarChanger, heroHeartsChanger
+from misc.utils import terminate
+from managing.items_managing import starsChanger, pauseButtonChanger, healthBossBarChanger, heroHeartsChanger
 
 
 def game_def(lvl):

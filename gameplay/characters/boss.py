@@ -1,10 +1,9 @@
 import pygame
 from config import consts
-import levelGenerator
-import spriteGroups
-from managing import sounds_managing
+from gameplay import level_generating
+from config import GameSprites, SizeSettings, WindowsSettings
 import random
-from misc.specfunctions import load_image
+from misc.utils import load_image
 
 
 class Pic(pygame.sprite.Sprite):
@@ -53,7 +52,7 @@ class Boss(pygame.sprite.Sprite):
     php = load_image(consts.boos_prjct)
 
     def __init__(self, x, y, koef, act=0):
-        super().__init__(spriteGroups.boss_group)
+        super().__init__(GameSprites.boss_group)
         self.sprites = pygame.transform.scale(
             Boss.pic, (Boss.pic.get_width() * koef, Boss.pic.get_height() * koef))
         self.k = koef
@@ -69,8 +68,8 @@ class Boss(pygame.sprite.Sprite):
         self.step = 0
         self.hitick = 0
         self.pospoint = 0
-        self.herocords = [list(spriteGroups.characters)[0].rect[0] - list(spriteGroups.characters)[0].rect[2] // 2,
-                          list(spriteGroups.characters)[0].rect[1] - list(spriteGroups.characters)[0].rect[3] // 2]
+        self.herocords = [list(GameSprites.characters)[0].rect[0] - list(GameSprites.characters)[0].rect[2] // 2,
+                          list(GameSprites.characters)[0].rect[1] - list(GameSprites.characters)[0].rect[3] // 2]
         self.attack = 0
         self.attack_counter = -59
         self.cut = False
@@ -97,8 +96,8 @@ class Boss(pygame.sprite.Sprite):
                     if not self.looking_right:
                         self.looking_right = True
                         self.change_act(1, self.get_coords())
-            self.herocords = [list(spriteGroups.characters)[0].rect[0] - list(spriteGroups.characters)[0].rect[2] // 2,
-                              list(spriteGroups.characters)[0].rect[1] - list(spriteGroups.characters)[0].rect[3] // 2]
+            self.herocords = [list(GameSprites.characters)[0].rect[0] - list(GameSprites.characters)[0].rect[2] // 2,
+                              list(GameSprites.characters)[0].rect[1] - list(GameSprites.characters)[0].rect[3] // 2]
             if not consts.final_countdown:
                 if self.attack_counter == 0 and not self.cut:
                     self.attack = self.make_attack()
@@ -175,12 +174,12 @@ class Boss(pygame.sprite.Sprite):
                 if self.attack_counter == 417:
                     soundManager.boss_next_attack_sound()
             else:
-                if windows.fullscreen:
+                if WindowsSettings.fullscreen:
                     y = 318
                 else:
                     y = 322
-                em = 480 * self.k + windows.otstupx * windows.fullscreen, y * self.k + (
-                            windows.otstupy - 10) * windows.fullscreen
+                em = 480 * self.k + WindowsSettings.otstupx * WindowsSettings.fullscreen, y * self.k + (
+                            WindowsSettings.otstupy - 10) * WindowsSettings.fullscreen
                 if self.get_coords() != em:
                     self.set_coords(*em)
                     self.attack_counter = 0
@@ -197,7 +196,7 @@ class Boss(pygame.sprite.Sprite):
                         consts.end_cs = True
             self.attack_counter = (self.attack_counter + 1) % 420
         levelGenerator.get_shadow(*self.rect)
-        spriteGroups.shadowgroup.draw(windows.screen)
+        GameSprites.shadowgroup.draw(WindowsSettings.screen)
         self.image = self.frames[self.cur_frame]
         if not self.step:
             if self.counter == 7:
@@ -226,9 +225,9 @@ class Boss(pygame.sprite.Sprite):
         bxs, bys = (self.bullet_speed * a / (a + b)).__round__(0), (self.bullet_speed * b / (a + b)).__round__(0)
         Animpic(self.get_coords()[0] + self.get_size()[0] // 2,
                 self.get_coords()[1] + self.get_size()[1] // 2,
-                Boss.php.get_width() * 3 // 8 * windows.k ** windows.fullscreen,
-                Boss.php.get_height() * 3 // 8 * windows.k ** windows.fullscreen, Boss.php,
-                spriteGroups.boss_projectile_group, koef=self.k)
+                Boss.php.get_width() * 3 // 8 * WindowsSettings.k ** WindowsSettings.fullscreen,
+                Boss.php.get_height() * 3 // 8 * WindowsSettings.k ** WindowsSettings.fullscreen, Boss.php,
+                GameSprites.boss_projectile_group, koef=self.k)
         if self.looking_right:
             xz = 1
         else:
@@ -241,8 +240,8 @@ class Boss(pygame.sprite.Sprite):
             self.change_act(3, self.get_coords())
         else:
             self.change_act(2, self.get_coords())
-        consts.b_projectile_speed.append(((int(xz * bxs * self.k ** windows.fullscreen),
-                                           int(yz * bys * self.k ** windows.fullscreen)), 0))
+        consts.b_projectile_speed.append(((int(xz * bxs * self.k ** WindowsSettings.fullscreen),
+                                           int(yz * bys * self.k ** WindowsSettings.fullscreen)), 0))
 
     def shoot_circle(self):
         if self.looking_right:
@@ -270,9 +269,9 @@ class Boss(pygame.sprite.Sprite):
                     xb = self.bullet_speed - yb
                     Animpic(self.get_coords()[0] + self.get_size()[0] // 2,
                             self.get_coords()[1] + self.get_size()[1] // 2,
-                            Boss.php.get_width() * 3 // 8 * windows.k ** windows.fullscreen,
-                            Boss.php.get_height() * 3 // 8 * windows.k ** windows.fullscreen, Boss.php,
-                            spriteGroups.boss_projectile_group, koef=self.k)
+                            Boss.php.get_width() * 3 // 8 * WindowsSettings.k ** WindowsSettings.fullscreen,
+                            Boss.php.get_height() * 3 // 8 * WindowsSettings.k ** WindowsSettings.fullscreen, Boss.php,
+                            GameSprites.boss_projectile_group, koef=self.k)
                     consts.b_projectile_speed.append(((xcoef * xb,
                                                        ycoef * yb), 0))
 
@@ -304,15 +303,15 @@ class Boss(pygame.sprite.Sprite):
     def make_move(self):
         cordi = [[896, 322], [64, 322], [64, 66], [896, 66], [480, 66]]
         cordi = [
-            [y[0] * self.k + windows.otstupx * windows.fullscreen,
-             y[1] * self.k + (windows.otstupy - 10) * windows.fullscreen]
+            [y[0] * self.k + WindowsSettings.otstupx * WindowsSettings.fullscreen,
+             y[1] * self.k + (WindowsSettings.otstupy - 10) * WindowsSettings.fullscreen]
             for y in cordi]
         srav = [((int(x[0])
                   - abs(self.herocords[0])) ** 2 + (int(x[1]) - abs(self.herocords[1])) ** 2) ** 0.5 for x in cordi]
         m = min(srav)
         a = random.randint(0, 4)
         levelGenerator.get_shadow(*self.rect)
-        spriteGroups.shadowgroup.draw(windows.screen)
+        GameSprites.shadowgroup.draw(WindowsSettings.screen)
         while a == self.pospoint or a == srav.index(m):
             a = random.randint(0, 4)
         self.set_coords(cordi[a][0], cordi[a][1])
@@ -337,17 +336,18 @@ class Boss(pygame.sprite.Sprite):
             self.change_act(4, self.get_coords())
         a = random.randint(0, 1)
         for x in range(0 + a, 14 + a, 2):
-            Animpic(windows.otstupx * windows.fullscreen + (
+            Animpic(WindowsSettings.otstupx * WindowsSettings.fullscreen + (
                     64 * self.k * x) + 96 * self.k - Boss.php.get_width() * 3 // 16 * self.k,
-                    windows.otstupy * windows.fullscreen + 64 * self.k - Boss.php.get_width() * 3 // 16 * self.k,
+                    WindowsSettings.otstupy * WindowsSettings.fullscreen + 64 * self.k - Boss.php.get_width() * 3 // 16
+                    * self.k,
                     Boss.php.get_width() * 3 // 8 * self.k,
                     Boss.php.get_height() * 3 // 8 * self.k, Boss.php,
-                    spriteGroups.boss_projectile_group, koef=self.k)
+                    GameSprites.boss_projectile_group, koef=self.k)
             consts.b_projectile_speed.append(
-                (((-1) ** a, int((self.bullet_speed - 1) * self.k ** windows.fullscreen)), 0))
+                (((-1) ** a, int((self.bullet_speed - 1) * self.k ** WindowsSettings.fullscreen)), 0))
 
     def slon_attack(self):
-        if not spriteGroups.sloniks:
+        if not GameSprites.sloniks:
             a = random.randint(0, 1)
             if levelGenerator.board.get_cell(self.herocords) in [(1, 1), (12, 5)] and a:
                 a = 0
@@ -370,7 +370,7 @@ class Boss(pygame.sprite.Sprite):
 
 class AnimatedHealthBar(pygame.sprite.Sprite):
     def __init__(self, sheet, columns, rows, x, y):
-        super().__init__(spriteGroups.health_bar)
+        super().__init__(GameSprites.health_bar)
         self.frames = []
         self.cut_sheet(sheet, columns, rows)
         self.cur_frame = 0

@@ -2,7 +2,7 @@ import pygame
 from config import consts
 from gameplay.objects import boss
 import spriteGroups
-from misc.specfunctions import load_image
+from misc.utils import load_image
 
 
 class Hero(pygame.sprite.Sprite):
